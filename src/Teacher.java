@@ -7,4 +7,9 @@ class Teacher extends Person {
     }
 
     public String getPosition() {return position;}
+
+    @Override
+    public String toString() {
+        return "Teacher: " + getName() + " | Position: " + position;
+    }
 }

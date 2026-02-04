@@ -18,6 +18,8 @@ public class UniversityService {
         university.getFaculties().add(fi);
     }
 
+
+    /** * =====   WORK WITH STUDENTS  ===== * **/
     // Adding a student
     public void addStudent(String name, int course, int group) {
         Student newStudent = new Student(name, course, group);
@@ -88,6 +90,35 @@ public class UniversityService {
                 for (Student s : dept.getStudents()) {
                     if (s.getCourse() == course) {
                         result.add(s);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    /** * =====   WORK WITH TEACHERS  ===== * **/
+    // Adding a teacher
+    public void addTeacher(String name, String position) {
+        if (!university.getFaculties().isEmpty() &&
+                !university.getFaculties().get(0).getDepartments().isEmpty()) {
+            // Deciding where to sign (first Faculty and first Department)
+            university.getFaculties().get(0)
+                    .getDepartments().get(0)
+                    .getTeachers().add(new Teacher(name, position));
+        }
+    }
+
+    /** ===== SEARCH ===== **/
+    // Find teachers by name
+    public List<Teacher> findTeachersByName(String namePart) {
+        List<Teacher> result = new ArrayList<>();
+
+        for (Faculty f : university.getFaculties()) {
+            for (Department d : f.getDepartments()) {
+                for (Teacher t : d.getTeachers()) {
+                    if (t.getName().toLowerCase().contains(namePart.toLowerCase())) {
+                        result.add(t);
                     }
                 }
             }
