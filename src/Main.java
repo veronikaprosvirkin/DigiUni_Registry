@@ -33,8 +33,8 @@ public class Main {
                         name = scanner.nextLine();
                     }
 
-                    int course = readInt(scanner, "Enter Course: ");
-                    int group = readInt(scanner, "Enter Group: ");
+                    int course = readInt(scanner, "Enter Course: ", 1, 6);
+                    int group = readInt(scanner, "Enter Group: ", 1, Integer.MAX_VALUE);
 
                     service.addStudent(name, course, group);
                     System.out.println("Student added!");
@@ -55,12 +55,12 @@ public class Main {
                 }
                 case "3" -> {   //? Search by group
                     System.out.print("Group: ");
-                    int g = readInt(scanner, "Enter Course: ");
+                    int g = readInt(scanner, "Enter Course: ", 1, Integer.MAX_VALUE);
                     service.findStudentsByGroup(g).forEach(System.out::println);
                 }
                 case "4" -> {   //? Search by course
                     System.out.print("Course: ");
-                    int c = readInt(scanner, "Enter Course: ");
+                    int c = readInt(scanner, "Enter Course: ", 1, 6);
                     service.findStudentsByCourse(c).forEach(System.out::println);
                 }
                 case "5" -> service.getAllStudents().forEach(System.out::println);   //? Print all students
@@ -82,12 +82,13 @@ public class Main {
 
 
     // Helper method to loop until user enters a valid number
-    private static int readInt(Scanner scanner, String prompt) {
+    private static int readInt(Scanner scanner, String prompt, int min, int max) {
         while (true) {
             System.out.print(prompt);
             String input = scanner.nextLine();
             try {
-                return Integer.parseInt(input);
+                int intInput = Integer.parseInt(input);
+                if (intInput < min || intInput > max) {return intInput;}
             } catch (NumberFormatException e) {
                 System.out.println("Error: Please enter a valid number.");
             }
