@@ -1,5 +1,8 @@
 class Teacher extends Person {
     private String position;
 
-    public String getPosition() {return position;}
+    public Teacher(String name, String position) {
+        super(name);
+        this.position = position;
+    }
 }
