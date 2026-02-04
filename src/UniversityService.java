@@ -46,6 +46,9 @@ public class UniversityService {
                 allStudents.addAll(dept.getStudents());
             }
         }
+        if (allStudents.isEmpty()) {
+            System.out.println("No students found!");
+        }
         return allStudents;
     }
 
@@ -61,6 +64,9 @@ public class UniversityService {
                     }
                 }
             }
+        }
+        if (result.isEmpty()) {
+            System.out.println("No student found by name " + namePart);
         }
         return result;
     }
@@ -78,6 +84,9 @@ public class UniversityService {
                 }
             }
         }
+        if (result.isEmpty()) {
+            System.out.println("No student found in group " + group);
+        }
         return result;
     }
 
@@ -93,6 +102,9 @@ public class UniversityService {
                     }
                 }
             }
+        }
+        if (result.isEmpty()) {
+            System.out.println("No student found on course " + course);
         }
         return result;
     }
@@ -122,6 +134,9 @@ public class UniversityService {
                     }
                 }
             }
+        }
+        if (result.isEmpty()) {
+            System.out.println("No teacher found by name " + namePart);
         }
         return result;
     }
