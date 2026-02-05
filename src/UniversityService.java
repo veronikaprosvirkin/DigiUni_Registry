@@ -238,20 +238,20 @@ public class UniversityService {
     }
 
     // Search by name
-    public List<Student> findStudentsByName(String namePart) {
+    public List<Student> findStudentsByFullName(String namePart) {
         List<Student> result = new ArrayList<>();
 
         for (Faculty faculty : university.getFaculties()) {
             for (Speciality spec : faculty.getSpeciality()) {
                 for (Student s : spec.getStudents()) {
-                    if (s.getName().toLowerCase().contains(namePart.toLowerCase())) {
+                    if (s.getFullName().toLowerCase().contains(namePart.toLowerCase())) {
                         result.add(s);
                     }
                 }
             }
         }
         if (result.isEmpty()) {
-            System.out.println("No student found by name " + namePart);
+            System.out.println("No student found by full name " + namePart);
         }
         return result;
     }
@@ -323,13 +323,13 @@ public class UniversityService {
 
     /** ===== SEARCH ===== **/
     // Find teachers by name
-    public List<Teacher> findTeachersByName(String namePart) {
+    public List<Teacher> findTeachersByFullName(String namePart) {
         List<Teacher> result = new ArrayList<>();
 
         for (Faculty f : university.getFaculties()) {
             for (Department d : f.getDepartments()) {
                 for (Teacher t : d.getTeachers()) {
-                    if (t.getName().toLowerCase().contains(namePart.toLowerCase())) {
+                    if (t.getFullName().toLowerCase().contains(namePart.toLowerCase())) {
                         result.add(t);
                     }
                 }

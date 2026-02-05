@@ -14,12 +14,11 @@ public class Main {
         while (true) {
             System.out.println("\n--- DigiUni (Hierarchical) ---");
             System.out.println("1. Add Student");
-            System.out.println("2. Find by Name");
-            System.out.println("3. Find by Surname");
-            System.out.println("4. Find by Group");
-            System.out.println("5. Find by Course");
-            System.out.println("6. Show All Students");
-            System.out.println("7. Add Teacher ");
+            System.out.println("2. Find by Full Name");
+            System.out.println("3. Find by Group");
+            System.out.println("4. Find by Course");
+            System.out.println("5. Show All Students");
+            System.out.println("6. Add Teacher ");
             System.out.println("0. Exit");
             System.out.print("> ");
 
@@ -36,62 +35,48 @@ public class Main {
                     if (selectedSpeciality == null) break;
 
                     // Student's info
-                    System.out.print("Name: ");
-                    String name = scanner.nextLine();
-                    System.out.print("Surname: ");
-                    String surname = scanner.nextLine();
-                    while (name.isBlank()) {
-                        System.out.print("Name cannot be empty. Enter Name: ");
-                        name = scanner.nextLine();
-                    }
+                    String name = readLine(scanner, "Name: ", true);
+                    String surname = readLine(scanner, "Surname: ", true);
                     int course = readInt(scanner, "Enter Course (1-6): ", 1, 6);
                     int group = readInt(scanner, "Enter Group: ", 1, Integer.MAX_VALUE);
 
                     // Save
-
                     Student s = new Student(name, surname, course, group,
                             selectedFaculty.getName(),
                             selectedSpeciality.getName());
                     service.addStudentToDepartment(s, selectedSpeciality);
                     System.out.println("Student added to " + selectedSpeciality.getName());
                 }
-                case "2" -> {   //? Search by name
-                    System.out.println("1. Find Student\n2. Find Teacher");
-                    String type = scanner.nextLine();
+                case "2" -> {   //? Search by full name
+                    System.out.println("1. Find Student");
+                    System.out.println("2. Find Teacher");
+                    int type = readInt(scanner, "> ", 1, 2);
 
-                    System.out.print("Enter name part: ");
+                    System.out.print("Enter full name part: ");
                     String q = scanner.nextLine();
 
-                    if (type.equals("1")) {             // Search among students
-                        service.findStudentsByName(q).forEach(System.out::println);
+                    if (type==1) {             // Search among students
+                        service.findStudentsByFullName(q).forEach(System.out::println);
                     }
-                    else if (type.equals("2")) {      // Search among teachers
-                        service.findTeachersByName(q).forEach(System.out::println);
+                    else if (type==2) {      // Search among teachers
+                        service.findTeachersByFullName(q).forEach(System.out::println);
                     }
                 }
-                case "3" -> { //? Search by surname
-                    System.out.print("Enter surname part: ");
-                    String q = scanner.nextLine();
-                    service.findStudentsBySurname(q).forEach(System.out::println);
-                }
-                case "4" -> {   //? Search by group
+                case "3" -> {   //? Search by group
                     System.out.print("Group: ");
                     int g = readInt(scanner, "Enter Course: ", 1, Integer.MAX_VALUE);
                     service.findStudentsByGroup(g).forEach(System.out::println);
                 }
-                case "5" -> {   //? Search by course
+                case "4" -> {   //? Search by course
                     System.out.print("Course: ");
                     int c = readInt(scanner, "Enter Course: ", 1, 6);
                     service.findStudentsByCourse(c).forEach(System.out::println);
                 }
-                case "6" -> service.getAllStudents().forEach(System.out::println);   //? Print all students
-                case "7" -> {   //? Create a teacher
-                    System.out.print("Teacher Name: ");
-                    String name = scanner.nextLine();
-                    System.out.print("Teacher Surname: ");
-                    String surname = scanner.nextLine();
-                    System.out.print("Position: ");
-                    String pos = scanner.nextLine();
+                case "5" -> service.getAllStudents().forEach(System.out::println);   //? Print all students
+                case "6" -> {   //? Create a teacher
+                    String name = readLine(scanner, "Teacher name: ", true);
+                    String surname = readLine(scanner, "Teacher Surname: ", true);
+                    String pos = readLine(scanner, "Position: ", true);
                     service.addTeacher(name,surname, pos);
                     System.out.println("Teacher added!");
                 }
@@ -138,6 +123,25 @@ public class Main {
     }
 
     /**
+     * ? Method that checks if the line is not blank
+     * @param scanner
+     * @param prompt
+     * @return
+     */
+    private static String readLine(Scanner scanner, String prompt, boolean mustBeNotEmpty) {
+        System.out.print(prompt);
+        String line = scanner.nextLine();
+        if (mustBeNotEmpty) {
+            while (line.isBlank()) {
+                System.out.println("Field cannot be empty!");
+                System.out.print(prompt);
+                line = scanner.nextLine();
+            }
+        }
+        return line;
+    }
+
+    /**
      * ? Faculty selection
      * @param scanner
      * @param service
@@ -169,7 +173,7 @@ public class Main {
             System.out.println("No departments in this faculty!");
             return null;
         }
-        System.out.println("--- Choose Department ---");
+        System.out.println("--- Choose Speciality ---");
         for (int i = 0; i < specialities.size(); i++) {
             System.out.println((i + 1) + ". " + specialities.get(i).getName());
         }
