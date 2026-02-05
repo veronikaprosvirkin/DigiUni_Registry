@@ -35,18 +35,8 @@ public class Main {
                     if (selectedSpeciality == null) break;
 
                     // Student's info
-                    System.out.print("Name: ");
-                    String name = scanner.nextLine();
-                    while (name.isBlank()) {
-                        System.out.print("Name cannot be empty. Enter name: ");
-                        name = scanner.nextLine();
-                    }
-                    System.out.print("Surname: ");
-                    String surname = scanner.nextLine();
-                    while (surname.isBlank()) {
-                        System.out.print("Surname cannot be empty. Enter surname: ");
-                        surname = scanner.nextLine();
-                    }
+                    String name = readNotEmptyLine(scanner, "Name: ");
+                    String surname = readNotEmptyLine(scanner, "Surname: ");
                     int course = readInt(scanner, "Enter Course (1-6): ", 1, 6);
                     int group = readInt(scanner, "Enter Group: ", 1, Integer.MAX_VALUE);
 
@@ -84,12 +74,9 @@ public class Main {
                 }
                 case "5" -> service.getAllStudents().forEach(System.out::println);   //? Print all students
                 case "6" -> {   //? Create a teacher
-                    System.out.print("Teacher Name: ");
-                    String name = scanner.nextLine();
-                    System.out.print("Teacher Surname: ");
-                    String surname = scanner.nextLine();
-                    System.out.print("Position: ");
-                    String pos = scanner.nextLine();
+                    String name = readNotEmptyLine(scanner, "Teacher name: ");
+                    String surname = readNotEmptyLine(scanner, "Teacher Surname: ");
+                    String pos = readNotEmptyLine(scanner, "Position: ");
                     service.addTeacher(name,surname, pos);
                     System.out.println("Teacher added!");
                 }
@@ -136,6 +123,23 @@ public class Main {
     }
 
     /**
+     * ? Method that checks if the line is not blank
+     * @param scanner
+     * @param prompt
+     * @return
+     */
+    private static String readNotEmptyLine(Scanner scanner, String prompt) {
+        System.out.print(prompt);
+        String line = scanner.nextLine();
+        while (line.isBlank()) {
+            System.out.println("Field cannot be empty!");
+            System.out.print(prompt);
+            line = scanner.nextLine();
+        }
+        return line;
+    }
+
+    /**
      * ? Faculty selection
      * @param scanner
      * @param service
@@ -167,7 +171,7 @@ public class Main {
             System.out.println("No departments in this faculty!");
             return null;
         }
-        System.out.println("--- Choose Department ---");
+        System.out.println("--- Choose Speciality ---");
         for (int i = 0; i < specialities.size(); i++) {
             System.out.println((i + 1) + ". " + specialities.get(i).getName());
         }
