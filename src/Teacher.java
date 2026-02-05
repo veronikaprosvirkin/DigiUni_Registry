@@ -10,6 +10,6 @@ class Teacher extends Person {
 
     @Override
     public String toString() {
-        return "Teacher: " + getName() + " | Position: " + position;
+        return "Teacher: " + getFullName() + " | Position: " + position;
     }
 }
