@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/university-management.iml" filepath="$PROJECT_DIR$/university-management.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/DigiUni_Registry.iml" filepath="$PROJECT_DIR$/.idea/DigiUni_Registry.iml" />
     </modules>
   </component>
 </project>
