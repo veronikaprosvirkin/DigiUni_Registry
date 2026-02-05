@@ -57,16 +57,15 @@ public class Main {
                 case "2" -> {   //? Search by full name
                     System.out.println("1. Find Student");
                     System.out.println("2. Find Teacher");
-                    System.out.print("> ");
-                    String type = scanner.nextLine();
+                    int type = readInt(scanner, "> ", 1, 2);
 
                     System.out.print("Enter full name part: ");
                     String q = scanner.nextLine();
 
-                    if (type.equals("1")) {             // Search among students
+                    if (type==1) {             // Search among students
                         service.findStudentsByFullName(q).forEach(System.out::println);
                     }
-                    else if (type.equals("2")) {      // Search among teachers
+                    else if (type==2) {      // Search among teachers
                         service.findTeachersByFullName(q).forEach(System.out::println);
                     }
                 }
