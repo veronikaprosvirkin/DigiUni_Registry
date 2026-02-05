@@ -57,7 +57,7 @@ public class Main {
                 case "2" -> {   //? Search by full name
                     System.out.println("1. Find Student");
                     System.out.println("2. Find Teacher");
-                    System.out.println(">");
+                    System.out.print("> ");
                     String type = scanner.nextLine();
 
                     System.out.print("Enter full name part: ");
