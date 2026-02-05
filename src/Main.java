@@ -63,12 +63,10 @@ public class Main {
                     }
                 }
                 case "3" -> {   //? Search by group
-                    System.out.print("Group: ");
-                    int g = readInt(scanner, "Enter Course: ", 1, Integer.MAX_VALUE);
+                    int g = readInt(scanner, "Enter Group: ", 1, Integer.MAX_VALUE);
                     service.findStudentsByGroup(g).forEach(System.out::println);
                 }
                 case "4" -> {   //? Search by course
-                    System.out.print("Course: ");
                     int c = readInt(scanner, "Enter Course: ", 1, 6);
                     service.findStudentsByCourse(c).forEach(System.out::println);
                 }
