@@ -34,18 +34,22 @@ public class Main {
                     Speciality selectedSpeciality = selectDepartment(scanner, selectedFaculty);
                     if (selectedSpeciality == null) break;
 
+
                     // Student's info
                     String name = readLine(scanner, "Name: ", true);
                     String surname = readLine(scanner, "Surname: ", true);
                     int course = readInt(scanner, "Enter Course (1-6): ", 1, 6);
-                    int group = readInt(scanner, "Enter Group: ", 1, Integer.MAX_VALUE);
+                    int groupNumber = readInt(scanner, "Enter Group: ", 1, Integer.MAX_VALUE);
+
 
                     // Save
-                    Student s = new Student(name, surname, course, group,
+                    Student s = new Student(name, surname, course, groupNumber,
                             selectedFaculty.getName(),
                             selectedSpeciality.getName());
-                    service.addStudentToDepartment(s, selectedSpeciality);
-                    System.out.println("Student added to " + selectedSpeciality.getName());
+                    service.addStudentToSpeciality(s, selectedSpeciality, groupNumber);
+
+                    System.out.println("Student " + name + " added to group " + groupNumber +
+                            " in " + selectedSpeciality.getName());
                 }
                 case "2" -> {   //? Search by full name
                     System.out.println("1. Find Student");
@@ -63,8 +67,41 @@ public class Main {
                     }
                 }
                 case "3" -> {   //? Search by group
-                    int g = readInt(scanner, "Enter Group: ", 1, Integer.MAX_VALUE);
-                    service.findStudentsByGroup(g).forEach(System.out::println);
+
+                    System.out.println("1. Find in specific speciality");
+                    System.out.println("2. Find in all university");
+
+                    int type = readInt(scanner, "> ", 1, 2);
+
+                    if (type == 1) {    // Search in specific speciality
+
+                        Faculty selectedFaculty = selectFaculty(scanner, service);
+                        if (selectedFaculty == null) break;
+
+                        Speciality selectedSpeciality = selectDepartment(scanner, selectedFaculty);
+                        if (selectedSpeciality == null) break;
+
+                        int groupNumber = readInt(scanner, "Enter Group number: ", 1, Integer.MAX_VALUE);
+
+                        List<Student> results = service.findStudentsInSpecialityByGroup(selectedSpeciality, groupNumber);
+
+                        if (results.isEmpty()) {
+                            System.out.println("No students found in group " + groupNumber + " within " + selectedSpeciality.getName());
+                        } else {
+                            results.forEach(System.out::println);
+                        }
+                    }
+                    else {      // Search in all university
+                        int groupNumber = readInt(scanner, "Enter Group number: ", 1, Integer.MAX_VALUE);
+
+                        List<Student> results = service.findStudentsByGroup(groupNumber);
+
+                        if (results.isEmpty()) {
+                            System.out.println("No students found in group " + groupNumber + " in the whole university.");
+                        } else {
+                            results.forEach(System.out::println);
+                        }
+                    }
                 }
                 case "4" -> {   //? Search by course
                     int c = readInt(scanner, "Enter Course: ", 1, 6);
