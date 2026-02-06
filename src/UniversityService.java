@@ -200,26 +200,60 @@ public class UniversityService {
 
 
     /** * =====   WORK WITH STUDENTS  ===== * **/
-    public void addStudent(String name, String surname, int course, int group) {
+    public void addStudent(String name, String surname, int course, int groupNumber) {
         if (!university.getFaculties().isEmpty() &&
                 !university.getFaculties().get(0).getSpeciality().isEmpty()) {
 
             Faculty defaultFaculty = university.getFaculties().get(0);
             Speciality defaultSpec = defaultFaculty.getSpeciality().get(0);
+            Group targetGroup = null;
+            for (Group g : defaultSpec.getGroups()) {
+                if (g.getGroupNumber() == groupNumber) {
+                    targetGroup = g;
+                    break;
+                }
+            }
 
-            Student newStudent = new Student(name,surname, course, group,
+            if (targetGroup == null) {
+                targetGroup = new Group(groupNumber);
+                defaultSpec.getGroups().add(targetGroup);
+            }
+
+
+            Student newStudent = new Student(name, surname, course, groupNumber,
                     defaultFaculty.getName(),
                     defaultSpec.getName());
 
-            defaultSpec.getStudents().add(newStudent);
+            targetGroup.getStudents().add(newStudent);
+            System.out.println("Student added to group " + groupNumber);
+
         } else {
             System.out.println("Error: No department found to add student!");
         }
+
     }
 
-    public void addStudentToDepartment(Student student, Speciality speciality) {
-        speciality.getStudents().add(student);
+    public void addStudentToDepartment(Group group, Speciality speciality, int groupNumber) {
+    speciality.getGroups().add(new Group(groupNumber));
     }
+
+    public void addStudentToSpeciality(Student student, Speciality speciality, int groupNumber) {
+            Group targetGroup = null;
+            for (Group g : speciality.getGroups()) {
+                if (g.getGroupNumber() == groupNumber) {
+                    targetGroup = g;
+                    break;
+                }
+            }
+
+            if (targetGroup == null) {
+                targetGroup = new Group(groupNumber);
+                speciality.getGroups().add(targetGroup);
+            }
+
+            targetGroup.getStudents().add(student);
+    }
+
 
     /** ===== SEARCH ===== **/
     // search all students
@@ -228,12 +262,14 @@ public class UniversityService {
 
         for (Faculty faculty : university.getFaculties()) {
             for (Speciality spec : faculty.getSpeciality()) {
-                allStudents.addAll(spec.getStudents());
+                for (Group gro : spec.getGroups()) {
+                    allStudents.addAll(gro.getStudents());
+                }
             }
         }
-        if (allStudents.isEmpty()) {
-            System.out.println("No students found!");
-        }
+            if (allStudents.isEmpty()) {
+                System.out.println("No students found!");
+            }
         return allStudents;
     }
 
@@ -243,49 +279,56 @@ public class UniversityService {
 
         for (Faculty faculty : university.getFaculties()) {
             for (Speciality spec : faculty.getSpeciality()) {
-                for (Student s : spec.getStudents()) {
-                    if (s.getFullName().toLowerCase().contains(namePart.toLowerCase())) {
-                        result.add(s);
+                for (Group gro : spec.getGroups()) {
+                    for (Student s : gro.getStudents()) {
+                        if (s.getFullName().toLowerCase().contains(namePart.toLowerCase())) {
+                            result.add(s);
+                        }
                     }
                 }
             }
         }
-        if (result.isEmpty()) {
-            System.out.println("No student found by full name " + namePart);
-        }
+            if (result.isEmpty()) {
+                System.out.println("No student found by full name " + namePart);
+            }
+
         return result;
     }
 
     // Search by surname
     public List<Student> findStudentsBySurname(String surname) {
-        List<Student> result = new ArrayList<>();
-        for (Faculty faculty : university.getFaculties()) {
-            for (Speciality spec : faculty.getSpeciality()) {
-                for (Student s : spec.getStudents()) {
-                    if (s.getSurname().equalsIgnoreCase(surname)) {
-                        result.add(s);
+                List<Student> result = new ArrayList<>();
+                for (Faculty faculty : university.getFaculties()) {
+                    for (Speciality spec : faculty.getSpeciality()) {
+                        for (Group group : spec.getGroups()) {
+                            for (Student s : group.getStudents()) {
+                                if (s.getSurname().equalsIgnoreCase(surname)) {
+                                    result.add(s);
+                                }
+                            }
+                        }
                     }
                 }
+                return result;
+            }
+
+    // Search by group
+    public List<Student> findStudentsByGroup(int groupNumber) {
+        List<Student> result = new ArrayList<>();
+        for (Faculty f : university.getFaculties()) {
+            for (Speciality s : f.getSpeciality()) {
+                result.addAll(findStudentsInSpecialityByGroup(s, groupNumber));
             }
         }
         return result;
     }
 
-    // Search by group
-    public List<Student> findStudentsByGroup(int group) {
+    public List<Student> findStudentsInSpecialityByGroup(Speciality spec, int groupNumber) {
         List<Student> result = new ArrayList<>();
-
-        for (Faculty faculty : university.getFaculties()) {
-            for (Speciality spec : faculty.getSpeciality()) {
-                for (Student s : spec.getStudents()) {
-                    if (s.getGroup() == group) {
-                        result.add(s);
-                    }
-                }
+        for (Group g : spec.getGroups()) {
+            if (g.getGroupNumber() == groupNumber) {
+                result.addAll(g.getStudents());
             }
-        }
-        if (result.isEmpty()) {
-            System.out.println("No student found in group " + group);
         }
         return result;
     }
@@ -296,9 +339,10 @@ public class UniversityService {
 
         for (Faculty faculty : university.getFaculties()) {
             for (Speciality spec : faculty.getSpeciality()) {
-                for (Student s : spec.getStudents()) {
-                    if (s.getCourse() == course) {
-                        result.add(s);
+                for (Group group : spec.getGroups()) {
+                    for (Student s : group.getStudents()) {
+                        if (s.getCourse() == course) {
+                        result.add(s);}
                     }
                 }
             }
