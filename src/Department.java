@@ -16,4 +16,8 @@ public class Department {
     public void setTeachers(List<Teacher> teachers) {
         this.teachers = teachers;
     }
+
+    public void setName(String editName) {
+
+    }
 }

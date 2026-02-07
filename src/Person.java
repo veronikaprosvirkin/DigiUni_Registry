@@ -13,4 +13,8 @@ public class Person {
     public String getName() {return name;}
     public String getSurname() {return surname;}
     public String getFullName() {return fullName;}
+
+    public void setSurname(String newSurname) {
+
+    }
 }

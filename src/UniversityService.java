@@ -197,6 +197,10 @@ public class UniversityService {
     public List<Faculty> getFaculties() {
         return university.getFaculties();
     }
+    public List<Department> getDepartments(Faculty faculty) {
+        return faculty.getDepartments();
+    }
+
 
 
     /** * =====   WORK WITH STUDENTS  ===== * **/
@@ -383,5 +387,51 @@ public class UniversityService {
             System.out.println("No teacher found by name " + namePart);
         }
         return result;
+    }
+
+    //method for moving student to another group
+    public void moveStudentToGroup(Student student, int newGroup) {
+        //not finished yet
+    }
+
+    public void addNewDepartment(String newDepartmentName, Faculty selectedFaculty) {
+        boolean exists = selectedFaculty.getDepartments().stream()
+                .anyMatch(d -> d.getName().equalsIgnoreCase(newDepartmentName));
+
+        if (exists) {
+            System.out.println("Error: Department with this name already exists!");
+            return;
+        }
+        selectedFaculty.getDepartments().add(new Department(newDepartmentName));
+    }
+
+    public void editDepartmentName(Department dept, String editName, Faculty faculty) {
+        if (isNameDuplicate(faculty.getDepartments(), editName, Department::getName)) {
+            System.out.println("Error: Department with name '" + editName + "' already exists on this faculty.");
+            return;
+        }
+
+        dept.setName(editName);
+        System.out.println("Department name updated successfully to: " + editName);
+    }
+    private <T> boolean isNameDuplicate(List<T> list, String newName, java.util.function.Function<T, String> nameExtractor) {
+        return list.stream()
+                .anyMatch(item -> nameExtractor.apply(item).equalsIgnoreCase(newName));
+    }
+
+    public void addNewFaculty(String name) {
+        if (isNameDuplicate(university.getFaculties(), name, Faculty::getName)) {
+            System.out.println("Error: Faculty with name '" + name + "' already exists.");
+        }
+        university.getFaculties().add(new Faculty(name));
+        System.out.println("Faculty added successfully.");
+    }
+
+    public void deleteFaculty(Faculty selectedFacultyToDelete) {
+        university.getFaculties().remove(selectedFacultyToDelete);
+    }
+
+    public void deleteDepartment(Department selectedDept, Faculty selectedFaculty) {
+        selectedFaculty.getDepartments().remove(selectedDept);
     }
 }

@@ -21,4 +21,7 @@ public class Student extends Person {
         return getFullName() + " | Course: " + course + " | Group: " + group +
                 " | Faculty: " + faculty + " | Spec: " + speciality;
     }
+
+    public void setCourse(int newCourse) {
+    }
 }
