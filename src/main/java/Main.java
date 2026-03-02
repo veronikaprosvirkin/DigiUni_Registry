@@ -13,6 +13,7 @@ public class Main {
         DepartmentService departmentService = new DepartmentService(university);
         SpecialityService specialityService = new SpecialityService(university);
         Scanner scanner = new Scanner(System.in);
+        UserService userService = new UserService();
 
         // Creating few students
         studentService.addStudent("Zbyshek", "Tymekowskych", 1, 101);
@@ -20,6 +21,23 @@ public class Main {
         studentService.addStudent("Irzek", "Tymekowskych", 2, 15);
 
         while (true) {
+            //authorization logic
+            User currentUser = userService.getCurrentUser();
+            if (currentUser == null) {
+                System.out.println("You are not logged in. Please log in first.");
+                String login = InputUtils.readLine(scanner, "Login: ", false, true);
+                String password = InputUtils.readLine(scanner, "Password: ", false, true);
+
+                boolean isSuccess = userService.login(login, password);
+                if (isSuccess) {
+                    System.out.println("Login successful! Hello "+ login);
+                }
+                else {
+                    System.out.println("Login failed. Please try again.");
+                }
+                continue;
+            }
+
             System.out.println("\n--- DigiUni ---");
             System.out.println("1. Work with Faculties"); // finished
             System.out.println("2. Work with Departments"); //finished
