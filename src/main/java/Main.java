@@ -24,17 +24,7 @@ public class Main {
             //authorization logic
             User currentUser = userService.getCurrentUser();
             if (currentUser == null) {
-                System.out.println("You are not logged in. Please log in first.");
-                String login = InputUtils.readLine(scanner, "Login: ", false, true);
-                String password = InputUtils.readLine(scanner, "Password: ", false, true);
-
-                boolean isSuccess = userService.login(login, password);
-                if (isSuccess) {
-                    System.out.println("Login successful! Hello "+ login);
-                }
-                else {
-                    System.out.println("Login failed. Please try again.");
-                }
+                UserService.login(scanner);
                 continue;
             }
 
@@ -42,6 +32,9 @@ public class Main {
                 UserRights.showUserRights(universityService, studentService, teacherService, facultyService, departmentService, specialityService, scanner);
             } else if (currentUser.getRole()==Role.MANAGER) {
                 ManagerRights.showManagerRights(universityService, studentService, teacherService, facultyService, departmentService, specialityService, scanner);
+            } else if (currentUser.getRole()==Role.ADMIN) {
+                System.out.println("Not finished yet. Please choose another role.");
+                UserService.logout();
             }
         }
     }
