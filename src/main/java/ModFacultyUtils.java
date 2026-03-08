@@ -10,7 +10,7 @@ public class ModFacultyUtils {
         String name = InputUtils.readLine(scanner, "Enter new Faculty name: ", false, false);
         name = InputUtils.removeSpaces(name, false, true, true, true);
         facultyService.addNewFaculty(name);
-        Main.pause(scanner);
+        InputUtils.pause(scanner);
     }
 
     /**
@@ -20,7 +20,7 @@ public class ModFacultyUtils {
         String newName = InputUtils.readLine(scanner, "Enter new Faculty name: ", false, false);
         newName = InputUtils.removeSpaces(newName, false, true, true, true);
         facultyService.editFacultyName(selectedFacultyToRename, newName);
-        Main.pause(scanner);
+        InputUtils.pause(scanner);
     }
 
     /**
@@ -34,6 +34,6 @@ public class ModFacultyUtils {
         } else {
             System.out.println("Operation cancelled.");
         }
-        Main.pause(scanner);
+        InputUtils.pause(scanner);
     }
 }

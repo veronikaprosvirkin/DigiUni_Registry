@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="116d7706-b12d-4072-9455-efbedcbbc26d" name="Changes" comment="Separated ModFacultyUtils.java">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ModDepartmentUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/InputUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/InputUtils.java" afterDir="false" />
+    <list default="true" id="116d7706-b12d-4072-9455-efbedcbbc26d" name="Changes" comment="Moved selection, deleting, showing entities to ModEntitiesUtils.java">
+      <change afterPath="$PROJECT_DIR$/src/main/java/ModSpecialityUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ModDepartmentUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ModDepartmentUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -126,7 +126,15 @@
       <option name="project" value="LOCAL" />
       <updated>1773005439127</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Moved selection, deleting, showing entities to ModEntitiesUtils.java">
+      <option name="closed" value="true" />
+      <created>1773006047203</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1773006047203</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -148,6 +156,7 @@
     <MESSAGE value="Tests written for each method in StudentService" />
     <MESSAGE value="Separated ModEntitiesUtils.java" />
     <MESSAGE value="Separated ModFacultyUtils.java" />
-    <option name="LAST_COMMIT_MESSAGE" value="Separated ModFacultyUtils.java" />
+    <MESSAGE value="Moved selection, deleting, showing entities to ModEntitiesUtils.java" />
+    <option name="LAST_COMMIT_MESSAGE" value="Moved selection, deleting, showing entities to ModEntitiesUtils.java" />
   </component>
 </project>

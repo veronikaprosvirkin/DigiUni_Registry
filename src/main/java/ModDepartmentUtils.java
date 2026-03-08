@@ -9,7 +9,7 @@ public class ModDepartmentUtils {
      */
     static void departmentAddDepartment(Scanner scanner, DepartmentService departmentService, FacultyService facultyService) {
         System.out.println("Choose faculty where department will be added:");
-        Faculty selectedFaculty = selectEntity(scanner, facultyService.getFaculties(), "Faculties");
+        Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties");
         if (selectedFaculty != null) {
             String name = InputUtils.readLine(scanner, "Enter new Department name: ", false, false);
             name = InputUtils.removeSpaces(name, false, true, true, true);
@@ -17,7 +17,7 @@ public class ModDepartmentUtils {
         } else {
             System.out.println("No faculties found. Please add a new one first.");
         }
-        pause(scanner);
+        InputUtils.pause(scanner);
     }
 
     /**
@@ -28,7 +28,7 @@ public class ModDepartmentUtils {
         editName = InputUtils.removeSpaces(editName, false, true, true, true);
         departmentService.editDepartmentName(selectedDept, editName, selectedFaculty);
 
-        pause(scanner);
+        InputUtils.pause(scanner);
     }
 
     /**
@@ -56,6 +56,6 @@ public class ModDepartmentUtils {
             System.out.println("\n--- Teachers in " + selectedDept.getName() + " ---");
             teachers.forEach(System.out::println);
         }
-        pause(scanner);
+        InputUtils.pause(scanner);
     }
 }
