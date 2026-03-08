@@ -1,5 +1,9 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
+
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -77,9 +81,12 @@ class StudentServiceTest {
     }
 
     // Test findStudentsByGroup method
-    @Test
-    void testFindStudentsByGroup() {
-        List<Student> found = studentService.findStudentsByGroup(101);
+    @ParameterizedTest
+    @ValueSource(ints = {23,43,9})
+    void testFindStudentsByGroup(int groupNumber) {
+        Student testStudent = new Student("Taras", "Shevchenko", 1, groupNumber, "Faculty of Computer Science", speciality);
+        studentService.addStudentToSpeciality(testStudent, speciality, groupNumber);
+        List<Student> found = studentService.findStudentsByGroup(groupNumber);
         assertTrue(found.contains(testStudent));
     }
 

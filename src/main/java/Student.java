@@ -7,6 +7,8 @@ public class Student extends Person {
     // Update constructor to accept context
     public Student(String name, String surname, int course, int group, String faculty, Speciality speciality) {
         super(name, surname);
+        if (group <= 0)
+            throw new IllegalArgumentException("Group number must be greater than 0.");
         this.course = course;
         this.group = group;
         this.faculty = faculty;

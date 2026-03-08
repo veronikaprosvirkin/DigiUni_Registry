@@ -9,12 +9,15 @@ public class StudentService {
     }
 
     public void addStudent(String name, String surname, int course, int groupNumber) {
+        if (groupNumber <= 0)
+            throw new IllegalArgumentException("Group number must be greater than 0.");
         if (!university.getFaculties().isEmpty() &&
                 !university.getFaculties().get(0).getSpeciality().isEmpty()) {
 
             Faculty defaultFaculty = university.getFaculties().get(0);
             Speciality defaultSpec = defaultFaculty.getSpeciality().get(0);
             Group targetGroup = null;
+
             for (Group g : defaultSpec.getGroups()) {
                 if (g.getGroupNumber() == groupNumber) {
                     targetGroup = g;
