@@ -181,7 +181,7 @@ public class Main {
                     int workWithTeacher = InputUtils.readInt(scanner, "> ", 0, 4);
 
                     if (workWithTeacher == 1) { //add teacher
-                        teacherAddTeacher(scanner, facultyService, teacherService);
+                        ModTeacherUtils.teacherAddTeacher(scanner, facultyService, teacherService);
                     } else if (workWithTeacher == 2) { //delete teacher
                         int deleteTeacher= ModEntitiesUtils.chooseDeleting(scanner);
                         if (deleteTeacher == 1) {
@@ -192,15 +192,15 @@ public class Main {
 
                             ModEntitiesUtils.deleteEntity(scanner, result, "Teacher", (teacher -> teacherService.deleteTeacher(teacher, teacher.getDepartment()) ));
                         } else if (deleteTeacher == 2) {
-                            teacherDeleteById(scanner, universityService);
+                            ModTeacherUtils.teacherDeleteById(scanner, universityService);
                         }
 
                     } else if (workWithTeacher == 3) { //edit teacher
                         int editTeacher = ModEntitiesUtils.chooseEditing(scanner);
                         if (editTeacher == 1) {
-                            teacherEditByName(scanner, universityService);
+                            ModTeacherUtils.teacherEditByName(scanner, universityService);
                         } else if (editTeacher == 2) {
-                            teacherEditById(scanner, universityService);
+                            ModTeacherUtils.teacherEditById(scanner, universityService);
                         }
                     } else if (workWithTeacher == 4) {//show all
                         List<Teacher> teachers = teacherService.getAllTeachers();
@@ -270,64 +270,7 @@ public class Main {
 
 
 
-    //! ======= WORK WITH TEACHERS ===== //
 
-    /**
-     * Add new Teacher
-     */
-    private static void teacherAddTeacher(Scanner scanner, FacultyService facultyService, TeacherService teacherService) {
-        System.out.println("--- Add Teacher ---");
-        Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties");
-        if (selectedFaculty == null) return;
-
-        // Select Department
-        Department selectedDept = ModEntitiesUtils.selectEntity(scanner, selectedFaculty.getDepartments(), "Departments in " + selectedFaculty.getName());
-        if (selectedDept == null) return;
-
-
-        // Teachers's info
-        String name = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Name: ", false, false), true, false, false, false);
-        String surname = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Surname: ", false, false), true, false, false, false);
-        String position = InputUtils.readLine(scanner, "Position: ", false, true);
-        position = InputUtils.removeSpaces(position, false, true, true, true);
-
-
-        // Save
-        Teacher t = new Teacher(name, surname, position, selectedDept);
-        teacherService.addTeacher(name, surname, position, selectedDept);
-        System.out.println("Teacher " + name + " " + surname +
-                " successfully added to department: " + selectedDept.getName());
-
-        InputUtils.pause(scanner);
-    }
-
-    /**
-     * Delete the Teacher by name
-     */
-
-
-    /**
-     * Delete the Teacher by ID
-     */
-    private static void teacherDeleteById(Scanner scanner, UniversityService universityService) {
-        // NOT FINISHED METHOD
-    }
-
-    /**
-     * Edit the Teacher by name
-     */
-    private static void teacherEditByName(Scanner scanner, UniversityService universityService) {
-        String fullName = InputUtils.readLine(scanner, "Enter full name part: ", false, false);
-        fullName = InputUtils.removeSpaces(fullName,false, true, true, true);
-        //to be continued
-    }
-
-    /**
-     * Edit the Teacher by ID
-     */
-    private static void teacherEditById(Scanner scanner, UniversityService universityService) {
-        // NOT FINISHED METHOD
-    }
 
     //! ======= SEARCH ===== //
 
