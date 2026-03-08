@@ -10,13 +10,13 @@ public class ManagerRights {
         System.out.println("4. Work with Students"); //logic written, not finished realization
         System.out.println("5. Work with Teachers");
         System.out.println("6. Search");
-        System.out.println("0. Exit");
+        System.out.println("0. Log out");
         System.out.print("> ");
 
         String choice = scanner.nextLine();
 
         switch (choice) {
-            case "1" -> { // Work with faculties
+            case "1" -> { //? Work with faculties
                 System.out.println("1. Add Faculty");
                 System.out.println("2. Manage Existing Faculty");
                 System.out.println("0. Back");
@@ -40,7 +40,7 @@ public class ManagerRights {
             }
 
 
-            case "2" -> {// Work with departments
+            case "2" -> {   //? Work with departments
                 System.out.println("1. Add Department");
                 System.out.println("2. Manage existing Department");
                 System.out.println("0. Back");
@@ -100,7 +100,7 @@ public class ManagerRights {
                 }
 
             }
-            case "4" -> {// Work with students
+            case "4" -> {   //? Work with students
                 System.out.println("1. Add Student");
                 System.out.println("2. Delete Student");
                 System.out.println("3. Edit information about student");
@@ -137,7 +137,7 @@ public class ManagerRights {
                 }
 
             }
-            case "5" -> {
+            case "5" -> {   //? Work with teachers
                 System.out.println("1. Add Teacher");
                 System.out.println("2. Delete Teacher");
                 System.out.println("3. Edit information about teacher");
@@ -173,16 +173,16 @@ public class ManagerRights {
                 }
             }
 
-            case "6" -> {   //search
-                System.out.println("1. Find Student: ");
-                System.out.println("2. Find Teacher: ");
+            case "6" -> {   //? search
+                System.out.println("1. Find Student");
+                System.out.println("2. Find Teacher");
                 int searchType = InputUtils.readInt(scanner, "> ", 1, 2);
-                if (searchType == 1) { //Find Student
-                    System.out.println("1. Search by full name: ");
-                    System.out.println("2. Search by group number: ");
-                    System.out.println("3. Search by course: ");
-                    System.out.println("4. Search by speciality: ");
-                    System.out.println("0. Back: ");
+                if (searchType == 1) { //? Find Student
+                    System.out.println("1. Search by full name");
+                    System.out.println("2. Search by group number");
+                    System.out.println("3. Search by course");
+                    System.out.println("4. Search by speciality");
+                    System.out.println("0. Back");
                     int searchBy = InputUtils.readInt(scanner, "> ", 0, 4);
 
                     if (searchBy == 1) { //by full name
@@ -203,11 +203,11 @@ public class ManagerRights {
                         SearchUtils.searchStudentBySpeciality(scanner, studentService,facultyService);
                     }
 
-                } else if (searchType == 2) { //Find Teacher
-                    System.out.println("1. Search by full name: ");
-                    System.out.println("2. Search by department: ");
-                    System.out.println("3. Search by position: ");
-                    System.out.println("0. Back: ");
+                } else if (searchType == 2) { //? Find Teacher
+                    System.out.println("1. Search by full name");
+                    System.out.println("2. Search by department");
+                    System.out.println("3. Search by position");
+                    System.out.println("0. Back");
 
                     int searchBy = InputUtils.readInt(scanner, "> ", 0, 3);
                     if (searchBy == 1) {
@@ -221,8 +221,8 @@ public class ManagerRights {
 
             }
             case "0" -> {
-                return;
-            }     //? Stop the program
+                UserService.logout();
+            }     //? Log out
             default -> System.out.println("Invalid.");  //? Incorrect input
         }
     }

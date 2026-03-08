@@ -38,7 +38,11 @@ public class Main {
                 continue;
             }
 
-            ManagerRights.showManagerRights(universityService, studentService, teacherService, facultyService, departmentService, specialityService, scanner);
+            if (currentUser.getRole()==Role.USER) {
+                UserRights.showUserRights(universityService, studentService, teacherService, facultyService, departmentService, specialityService, scanner);
+            } else if (currentUser.getRole()==Role.MANAGER) {
+                ManagerRights.showManagerRights(universityService, studentService, teacherService, facultyService, departmentService, specialityService, scanner);
+            }
         }
     }
 

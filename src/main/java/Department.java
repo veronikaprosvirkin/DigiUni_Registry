@@ -21,4 +21,9 @@ public class Department implements NamedEntity {
         this.nameOfDepartment = editName;
 
     }
+
+    @Override
+    public String toString() {
+        return nameOfDepartment;
+    }
 }

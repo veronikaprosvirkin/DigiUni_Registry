@@ -3,7 +3,7 @@ import java.util.List;
 
 public class UserService {
     private List<User> users = new ArrayList<>();
-    private User currentUser = null;
+    private static User currentUser = null;
 
     public UserService() { //test users
         users.add(new User("admin", "admin", Role.ADMIN));
@@ -25,7 +25,7 @@ public class UserService {
         return currentUser;
     }
 
-    public void logout() {
+    public static void logout() {
         currentUser = null;
     }
 }

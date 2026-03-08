@@ -22,4 +22,8 @@ public class Speciality implements NamedEntity {
     public String getName() { return nameOfSpeciality; }
     public void setName(String name) { this.nameOfSpeciality = name; }
 
+    @Override
+    public String toString() {
+        return nameOfSpeciality;
+    }
 }
