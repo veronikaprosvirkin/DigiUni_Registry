@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="116d7706-b12d-4072-9455-efbedcbbc26d" name="Changes" comment="Moved selection, deleting, showing entities to ModEntitiesUtils.java">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ModSpecialityUtils.java" afterDir="false" />
+    <list default="true" id="116d7706-b12d-4072-9455-efbedcbbc26d" name="Changes" comment="Separated ModSpecialityUtils.java">
+      <change afterPath="$PROJECT_DIR$/src/main/java/ModStudentUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ModDepartmentUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ModDepartmentUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Main.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,7 +134,15 @@
       <option name="project" value="LOCAL" />
       <updated>1773006047203</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Separated ModSpecialityUtils.java">
+      <option name="closed" value="true" />
+      <created>1773006365392</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1773006365392</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -157,6 +165,7 @@
     <MESSAGE value="Separated ModEntitiesUtils.java" />
     <MESSAGE value="Separated ModFacultyUtils.java" />
     <MESSAGE value="Moved selection, deleting, showing entities to ModEntitiesUtils.java" />
-    <option name="LAST_COMMIT_MESSAGE" value="Moved selection, deleting, showing entities to ModEntitiesUtils.java" />
+    <MESSAGE value="Separated ModSpecialityUtils.java" />
+    <option name="LAST_COMMIT_MESSAGE" value="Separated ModSpecialityUtils.java" />
   </component>
 </project>
