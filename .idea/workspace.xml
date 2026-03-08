@@ -4,36 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="116d7706-b12d-4072-9455-efbedcbbc26d" name="Changes" comment="Tests written for each method in StudentService">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ModEntitiesUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="116d7706-b12d-4072-9455-efbedcbbc26d" name="Changes" comment="Separated ModFacultyUtils.java">
+      <change afterPath="$PROJECT_DIR$/src/main/java/ModDepartmentUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/InputUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/InputUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Department.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/DepartmentService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Faculty.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/FacultyService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Group.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/InputUtils.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Main.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/NamedEntity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Person.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Speciality.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/SpecialityService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Student.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/StudentService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Teacher.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/TeacherService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/University.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/UniversityService.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/StudentServiceTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-StudentServiceTest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/StudentServiceTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/university-management-1.0-SNAPSHOT.jar" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -136,7 +110,23 @@
       <option name="project" value="LOCAL" />
       <updated>1772360836591</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Separated ModEntitiesUtils.java">
+      <option name="closed" value="true" />
+      <created>1773005177293</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1773005177293</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Separated ModFacultyUtils.java">
+      <option name="closed" value="true" />
+      <created>1773005439127</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1773005439127</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -156,6 +146,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Maven rebuilt" />
     <MESSAGE value="Tests written for each method in StudentService" />
-    <option name="LAST_COMMIT_MESSAGE" value="Tests written for each method in StudentService" />
+    <MESSAGE value="Separated ModEntitiesUtils.java" />
+    <MESSAGE value="Separated ModFacultyUtils.java" />
+    <option name="LAST_COMMIT_MESSAGE" value="Separated ModFacultyUtils.java" />
   </component>
 </project>

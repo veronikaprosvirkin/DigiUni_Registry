@@ -60,7 +60,7 @@ public class Main {
                     if (action == 1) {
                         ModFacultyUtils.facultyAddFaculty(scanner, facultyService);
                     } else if (action == 2) { //manage existing faculties
-                        Faculty selectedFaculty = selectEntity(scanner, facultyService.getFaculties(), "Faculty");
+                        Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty");
                         if (selectedFaculty == null) break;
                         System.out.println("1. Edit Faculty");
                         System.out.println("2. Delete Faculty");
@@ -82,12 +82,12 @@ public class Main {
                     int action = InputUtils.readInt(scanner, "> ", 0, 2);
 
                     if (action == 1) { // add a new department
-                        departmentAddDepartment(scanner, departmentService, facultyService);
+                        ModDepartmentUtils.departmentAddDepartment(scanner, departmentService, facultyService);
                     } else if (action == 2) { // manage existing department
                         // Select Faculty and Department
-                        Faculty selectedFaculty = selectEntity(scanner, facultyService.getFaculties(), "Faculty");
+                        Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty");
                         if (selectedFaculty == null) break;
-                        Department selectedDept = selectEntity(scanner, selectedFaculty.getDepartments(), "Department");
+                        Department selectedDept = ModEntitiesUtils.selectEntity(scanner, selectedFaculty.getDepartments(), "Department");
                         if (selectedDept == null) break;
 
                         //Work with a selected department
@@ -99,11 +99,11 @@ public class Main {
                         int workWithDepartment = InputUtils.readInt(scanner, "> ", 0, 3);
 
                         if (workWithDepartment == 1) { // edit department name
-                            departmentRenameDepartment(scanner, departmentService, selectedDept, selectedFaculty);
+                            ModDepartmentUtils.departmentRenameDepartment(scanner, departmentService, selectedDept, selectedFaculty);
                         } else if (workWithDepartment == 2) { //delete department
-                            departmentDeleteDepartment(scanner, departmentService, selectedDept, selectedFaculty);
+                            ModDepartmentUtils.departmentDeleteDepartment(scanner, departmentService, selectedDept, selectedFaculty);
                         } else if (workWithDepartment == 3) { //show all teachers in the department
-                            departmentShowTeachers(teacherService, selectedDept, scanner);
+                            ModDepartmentUtils.departmentShowTeachers(teacherService, selectedDept, scanner);
                         }
                     }
                 }
@@ -117,9 +117,9 @@ public class Main {
                         specialityAddSpeciality(scanner, specialityService, facultyService);
                     } else if (action == 2) {
                         // Select Faculty and Speciality
-                        Faculty selectedFaculty = selectEntity(scanner, facultyService.getFaculties(), "Faculty");
+                        Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty");
                         if (selectedFaculty == null) break;
-                        Speciality selectedSpeciality = selectSpeciality(scanner, selectedFaculty);
+                        Speciality selectedSpeciality = ModEntitiesUtils.selectSpeciality(scanner, selectedFaculty);
                         if (selectedSpeciality == null) break;
 
                         System.out.println("1. Rename Speciality");
@@ -152,7 +152,7 @@ public class Main {
                             String fullName = InputUtils.readLine(scanner, "Full name of student: ", false, false);
                             fullName = InputUtils.removeSpaces(fullName, false, true, true, true);
                             List<Student> result = studentService.findStudentsByFullName(fullName);
-                            deleteEntity(scanner, result, "Student", (student -> studentService.deleteStudent(student, student.getSpeciality())));
+                            ModEntitiesUtils.deleteEntity(scanner, result, "Student", (student -> studentService.deleteStudent(student, student.getSpeciality())));
                         } else if (deleteStudent == 2) {
                             studentDeleteById(scanner, universityService);
                         }
@@ -168,7 +168,7 @@ public class Main {
 
                     } else if (workWithStudent == 4) {
                         List<Student> students = studentService.getAllStudents();//show all students
-                        showAllEntity(scanner, students, "Students List");
+                        ModEntitiesUtils.showAllEntity(scanner, students, "Students List");
                     }
 
                 }
@@ -190,7 +190,7 @@ public class Main {
                             fullName = InputUtils.removeSpaces(fullName, false, true, true, true);
                             List<Teacher> result = teacherService.findTeachersByFullName(fullName);
 
-                            deleteEntity(scanner, result, "Teacher", (teacher -> teacherService.deleteTeacher(teacher, teacher.getDepartment()) ));
+                            ModEntitiesUtils.deleteEntity(scanner, result, "Teacher", (teacher -> teacherService.deleteTeacher(teacher, teacher.getDepartment()) ));
                         } else if (deleteTeacher == 2) {
                             teacherDeleteById(scanner, universityService);
                         }
@@ -204,7 +204,7 @@ public class Main {
                         }
                     } else if (workWithTeacher == 4) {//show all
                         List<Teacher> teachers = teacherService.getAllTeachers();
-                        showAllEntity(scanner, teachers, "Teachers List");
+                        ModEntitiesUtils.showAllEntity(scanner, teachers, "Teachers List");
                     }
                 }
 
@@ -265,68 +265,6 @@ public class Main {
 
 
 
-
-    //! ======= WORK WITH DEPARTMENT ===== //
-
-    /**
-     * Add new Department
-     */
-    private static void departmentAddDepartment(Scanner scanner, DepartmentService departmentService, FacultyService facultyService) {
-        System.out.println("Choose faculty where department will be added:");
-        Faculty selectedFaculty = selectEntity(scanner, facultyService.getFaculties(), "Faculties");
-        if (selectedFaculty != null) {
-            String name = InputUtils.readLine(scanner, "Enter new Department name: ", false, false);
-            name = InputUtils.removeSpaces(name, false, true, true, true);
-            departmentService.addNewDepartment(name, selectedFaculty);
-        } else {
-            System.out.println("No faculties found. Please add a new one first.");
-        }
-        pause(scanner);
-    }
-
-    /**
-     * Rename the Department
-     */
-    private static void departmentRenameDepartment(Scanner scanner, DepartmentService departmentService, Department selectedDept, Faculty selectedFaculty) {
-        String editName = InputUtils.readLine(scanner, "Write new name for " + selectedDept.getName() + ": ", false, false);
-        editName = InputUtils.removeSpaces(editName, false, true, true, true);
-        departmentService.editDepartmentName(selectedDept, editName, selectedFaculty);
-
-        pause(scanner);
-    }
-
-    /**
-     * Delete the Department
-     */
-    private static void departmentDeleteDepartment(Scanner scanner, DepartmentService departmentService, Department selectedDept, Faculty selectedFaculty) {
-        System.out.print("Are you sure you want ot delete " + selectedDept.getName() + "? (y/n): ");
-        if (scanner.nextLine().toLowerCase().startsWith("y")) {
-            departmentService.deleteDepartment(selectedDept, selectedFaculty);
-            System.out.println("Department deleted successfully!");
-        } else {
-            System.out.println("Operation cancelled.");
-        }
-
-    }
-
-    void Help() {
-        System.out.println("help");
-    }
-
-    /**
-     * Show all teachers in the Department
-     */
-    private static void departmentShowTeachers(TeacherService teacherService, Department selectedDept, Scanner scanner) {
-        List<Teacher> teachers = teacherService.getTeachersByDepartment(selectedDept);
-        if (teachers.isEmpty()) {
-            System.out.println("There are no teachers assigned to " + selectedDept.getName() + " yet.");
-        } else {
-            System.out.println("\n--- Teachers in " + selectedDept.getName() + " ---");
-            teachers.forEach(System.out::println);
-        }
-        pause(scanner);
-    }
-
     //! ======= WORK WITH SPECIALITY ===== //
 
     /**
@@ -334,7 +272,7 @@ public class Main {
      */
     private static void specialityAddSpeciality(Scanner scanner, SpecialityService specialityService, FacultyService facultyService) {
         System.out.println("Choose faculty where speciality will be added:");
-        Faculty selectedFaculty = selectEntity(scanner, facultyService.getFaculties(), "Faculties");
+        Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties");
         if (selectedFaculty != null) {
             String name = InputUtils.readLine(scanner, "Enter new Speciality name: ", false, false);
             name = InputUtils.removeSpaces(name, false, true, true, true);
@@ -342,7 +280,7 @@ public class Main {
         } else {
             System.out.println("No faculties found. Please add a new one first.");
         }
-        pause(scanner);
+        InputUtils.pause(scanner);
     }
 
     /**
@@ -353,7 +291,7 @@ public class Main {
         editName = InputUtils.removeSpaces(editName, false, true, true, true);
         specialityService.editSpecialityName(selectedSpeciality, editName, selectedFaculty);
 
-        pause(scanner);
+        InputUtils.pause(scanner);
     }
 
     /**
@@ -367,7 +305,7 @@ public class Main {
         } else {
             System.out.println("Operation cancelled.");
         }
-        pause(scanner);
+        InputUtils.pause(scanner);
     }
 
     //! ======= WORK WITH STUDENTS ===== //
@@ -377,11 +315,11 @@ public class Main {
      */
     private static void studentAddStudent(Scanner scanner, FacultyService facultyService, StudentService studentService) {
         System.out.println("--- Add Student ---");
-        Faculty selectedFaculty = selectEntity(scanner, facultyService.getFaculties(), "Faculties");
+        Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties");
         if (selectedFaculty == null) return;
 
         // Select speciality
-        Speciality selectedSpeciality = selectSpeciality(scanner, selectedFaculty);
+        Speciality selectedSpeciality = ModEntitiesUtils.selectSpeciality(scanner, selectedFaculty);
         if (selectedSpeciality == null) return;
 
 
@@ -437,7 +375,7 @@ public class Main {
                 System.out.println("Operation cancelled.");
             }
         }
-        pause(scanner);
+        InputUtils.pause(scanner);
     }
 
     /**
@@ -533,11 +471,11 @@ public class Main {
      */
     private static void teacherAddTeacher(Scanner scanner, FacultyService facultyService, TeacherService teacherService) {
         System.out.println("--- Add Teacher ---");
-        Faculty selectedFaculty = selectEntity(scanner, facultyService.getFaculties(), "Faculties");
+        Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties");
         if (selectedFaculty == null) return;
 
         // Select Department
-        Department selectedDept = selectEntity(scanner, selectedFaculty.getDepartments(), "Departments in " + selectedFaculty.getName());
+        Department selectedDept = ModEntitiesUtils.selectEntity(scanner, selectedFaculty.getDepartments(), "Departments in " + selectedFaculty.getName());
         if (selectedDept == null) return;
 
 
@@ -554,7 +492,7 @@ public class Main {
         System.out.println("Teacher " + name + " " + surname +
                 " successfully added to department: " + selectedDept.getName());
 
-        pause(scanner);
+        InputUtils.pause(scanner);
     }
 
     /**
@@ -613,17 +551,17 @@ public class Main {
             System.out.println(" --- Students found by name part: " + name + " ---");
             result.forEach(System.out::println);
         }
-        pause(scanner);
+        InputUtils.pause(scanner);
     }
 
     /**
      * Search Student by group in specific Speciality
      */
     private static void searchStudentByGroupSpecific(Scanner scanner, FacultyService facultyService, StudentService studentService) {
-        Faculty selectedFaculty = selectEntity(scanner, facultyService.getFaculties(), "Faculties");
+        Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties");
         if (selectedFaculty == null) return;
 
-        Speciality selectedSpeciality = selectSpeciality(scanner, selectedFaculty);
+        Speciality selectedSpeciality = ModEntitiesUtils.selectSpeciality(scanner, selectedFaculty);
         if (selectedSpeciality == null) return;
 
         int groupNumber = InputUtils.readInt(scanner, "Enter Group number: ", 1, Integer.MAX_VALUE);
@@ -636,7 +574,7 @@ public class Main {
             System.out.println(" --- Students in group " + groupNumber + " on " + selectedSpeciality.getName() + " ---");
             results.forEach(System.out::println);
         }
-        pause(scanner);
+        InputUtils.pause(scanner);
     }
 
     /**
@@ -653,7 +591,7 @@ public class Main {
             System.out.println(" --- Students in group " + groupNumber + " ---");
             results.forEach(System.out::println);
         }
-        pause(scanner);
+        InputUtils.pause(scanner);
     }
 
     /**
@@ -668,17 +606,17 @@ public class Main {
             System.out.println(" --- Students in course " + course + " ---");
             results.forEach(System.out::println);
         }
-        pause(scanner);
+        InputUtils.pause(scanner);
     }
 
     /**
      * Search Student by speciality
      */
     private static void searchStudentBySpeciality(Scanner scanner, StudentService studentService, FacultyService facultyService) {
-        Faculty selectedFaculty = selectEntity(scanner, facultyService.getFaculties(), "Faculties");
+        Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties");
         if (selectedFaculty == null) return;
 
-        Speciality selectedSpeciality = selectSpeciality(scanner, selectedFaculty);
+        Speciality selectedSpeciality = ModEntitiesUtils.selectSpeciality(scanner, selectedFaculty);
         if (selectedSpeciality == null) return;
 
         List <Student> result = studentService.findStudentsBySpeciality(selectedSpeciality);
@@ -688,7 +626,7 @@ public class Main {
             System.out.println(" --- Students in " + selectedSpeciality.getName() + " ---");
             result.forEach(System.out::println);
         }
-        pause(scanner);
+        InputUtils.pause(scanner);
 
     }
 
@@ -716,146 +654,6 @@ public class Main {
 
     // * ===== METHODS HELPERS ===== * //
 
-    /**
-     * ? Faculty selection
-     * @param scanner provided
-     * @param service provided
-     * @return Faculty
-     */
-   /* private static Faculty selectFaculty(Scanner scanner, UniversityService universityService) {
-        List<Faculty> faculties = service.getFaculties();
-        if (faculties.isEmpty()) {
-            System.out.println("No faculties available!");
-            return null;
-        }
-        System.out.println("--- Choose Faculty ---");
-        for (int i = 0; i < faculties.size(); i++) {
-            System.out.println((i + 1) + ". " + faculties.get(i).getName());
-        }
-        System.out.println("0. Cancel");
-        int index = InputUtils.readInt(scanner, "> ", 0, faculties.size());
-        if (index == 0) {return null;}
-        return faculties.get(index-1);
-    }*/
-
-    /**
-     * ? Speciality selection
-     *
-     * @param scanner provided
-     * @param faculty provided
-     * @return Speciality
-     */
-    private static Speciality selectSpeciality(Scanner scanner, Faculty faculty) {
-        List<Speciality> specialities = faculty.getSpeciality();
-        if (specialities.isEmpty()) {
-            System.out.println("No specialities in this faculty!");
-            return null;
-        }
-        System.out.println("--- Choose Speciality ---");
-        for (int i = 0; i < specialities.size(); i++) {
-            System.out.println((i + 1) + ". " + specialities.get(i).getName());
-        }
-        System.out.println("0. Cancel");
-        int index = InputUtils.readInt(scanner, "> ", 0, specialities.size());
-        if (index == 0) {
-            return null;
-        }
-        return specialities.get(index - 1);
-    }
-
-    /**
-     * ? Department selection
-     *
-     * @param scanner   provided
-     * @param /*faculty provided
-     * @return Department
-     */
-    /*private static Department selectDepartment(Scanner scanner, Faculty faculty) {
-
-        List<Department> departments = faculty.getDepartments();
-
-        if (departments.isEmpty()) {
-            System.out.println("No departments found in faculty: " + faculty.getName());
-            return null;
-        }
-
-        System.out.println("\n--- Choose Department from " + faculty.getName() + " ---");
-        for (int i = 0; i < departments.size(); i++) {
-            System.out.println((i + 1) + ". " + departments.get(i).getName());
-        }
-        System.out.println("0. Cancel");
-
-        int index = InputUtils.readInt(scanner, "> ", 0, departments.size());
-        if (index == 0) return null;
-        return departments.get(index - 1);
-    }*/
-    private static <T extends NamedEntity> T selectEntity(Scanner scanner, List<T> entities, String entityName) {
-        if (entities.isEmpty()) {
-            System.out.println("No " + entityName + " available!");
-            return null;
-        }
-        System.out.println("--- Choose " + entityName + " ---");
-        for (int i = 0; i < entities.size(); i++) {
-            System.out.println((i + 1) + ". " + entities.get(i).getName());
-        }
-        System.out.println("0. Cancel");
-
-        int index = InputUtils.readInt(scanner, "> ", 0, entities.size());
-        return (index == 0) ? null : entities.get(index - 1);
-
-    }
-
-    private static <T extends NamedEntity> void showAllEntity(Scanner scanner, List<T> entities, String entityName) {
-        if (entities.isEmpty()) {
-            System.out.println("No entities found!");
-            return;
-        }else {
-            for (int i = 0; i < entities.size(); i++) {
-                System.out.println((i + 1) + ". " + entities.get(i));
-            }
-        }
-        pause(scanner);
-    }
-
-    private static <T extends NamedEntity> void deleteEntity(Scanner scanner, List<T> entities, String entityName, java.util.function.Consumer<T> deleteAction) {
-
-        if (entities.isEmpty()) {
-            return;
-        }
-
-        T entityToProcess;
-        if (entities.size() > 1) {
-            System.out.println("Multiple " + entityName + " found. Please select one: ");
-            for (int i = 0; i < entities.size(); i++) {
-                System.out.println((i + 1) + ". " + entities.get(i).getDisplayInfo());
-            }
-            System.out.println("0. Cancel");
-
-            int index = InputUtils.readInt(scanner, "> ", 0, entities.size());
-
-            if (index == 0) {
-                System.out.println("Operation cancelled.");
-                return;
-            }
-            entityToProcess = entities.get(index - 1);
-        } else {
-            entityToProcess = entities.get(0);
-        }
-
-        System.out.println("Are you sure you want to delete: " + entityToProcess.getName() + "? (y/n): ");
-
-        if (scanner.nextLine().toLowerCase().startsWith("y")) {
-            deleteAction.accept(entityToProcess);
-        } else {
-            System.out.println("Operation cancelled.");
-        }
-        pause(scanner);
-    }
 
 
-    // method for pause before going to the next menu
-    static void pause(Scanner scanner){
-        System.out.println("\nPress Enter to return to the menu...");
-        scanner.nextLine();
-    }
 }
