@@ -38,7 +38,7 @@ public class Main {
                 continue;
             }
 
-            System.out.println("\n--- DigiUni ---");
+            System.out.println("\n--- DigiUni (Manager access) ---");
             System.out.println("1. Work with Faculties"); // finished
             System.out.println("2. Work with Departments"); //finished
             System.out.println("3. Work with Specialities"); //finished
@@ -147,7 +147,7 @@ public class Main {
                     if (workWithStudent == 1) { //add student
                         studentAddStudent(scanner, facultyService, studentService);
                     } else if (workWithStudent == 2) { //delete student
-                        int deleteStudent = chooseDeleting(scanner);
+                        int deleteStudent = ModEntitiesUtils.chooseDeleting(scanner);
                         if (deleteStudent == 1) {
                             String fullName = InputUtils.readLine(scanner, "Full name of student: ", false, false);
                             fullName = InputUtils.removeSpaces(fullName, false, true, true, true);
@@ -158,7 +158,7 @@ public class Main {
                         }
 
                     } else if (workWithStudent == 3) { //edit student
-                        int editStudent = chooseEditing(scanner);
+                        int editStudent = ModEntitiesUtils.chooseEditing(scanner);
                         if (editStudent == 1) {
                             studentEditByName(scanner, studentService);
                         } else if (editStudent == 2) {
@@ -183,7 +183,7 @@ public class Main {
                     if (workWithTeacher == 1) { //add teacher
                         teacherAddTeacher(scanner, facultyService, teacherService);
                     } else if (workWithTeacher == 2) { //delete teacher
-                        int deleteTeacher= chooseDeleting(scanner);
+                        int deleteTeacher= ModEntitiesUtils.chooseDeleting(scanner);
                         if (deleteTeacher == 1) {
                             System.out.print("Delete teacher by full name ");
                             String fullName = InputUtils.readLine(scanner, "Full name of teacher: ", false, false);
@@ -196,7 +196,7 @@ public class Main {
                         }
 
                     } else if (workWithTeacher == 3) { //edit teacher
-                        int editTeacher = chooseEditing(scanner);
+                        int editTeacher = ModEntitiesUtils.chooseEditing(scanner);
                         if (editTeacher == 1) {
                             teacherEditByName(scanner, universityService);
                         } else if (editTeacher == 2) {
@@ -263,20 +263,7 @@ public class Main {
         }
     }
     //
-    private static int chooseEditing(Scanner scanner) {
-        System.out.print("1. Edit by full name: ");
-        System.out.println("2. Edit by ID: ");
-        System.out.print("0. Back: ");
-        return InputUtils.readInt(scanner, "> ", 0, 2);
-    }
 
-    // * ===== METHODS FOR DELETING ENTITIES ===== * //
-    private static int chooseDeleting(Scanner scanner) {
-        System.out.println("1. Delete by full name");
-        System.out.println("2. Delete by ID");
-        System.out.println("0. Cancel");
-        return InputUtils.readInt(scanner, "> ", 0, 2);
-    }
 
     // * ===== METHODS SEPARATED FOR EVERY ACTION ===== * //
 
