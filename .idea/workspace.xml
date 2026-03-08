@@ -4,10 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="116d7706-b12d-4072-9455-efbedcbbc26d" name="Changes" comment="Choose options UserRights">
+    <list default="true" id="116d7706-b12d-4072-9455-efbedcbbc26d" name="Changes" comment="Introduced different rights in Main">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ManagerRights.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ManagerRights.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SearchUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SearchUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Teacher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Teacher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/UniversityService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UniversityService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/UserRights.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UserRights.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ManagerRights.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ManagerRights.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/SearchUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/SearchUtils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserRights.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserRights.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -182,7 +188,15 @@
       <option name="project" value="LOCAL" />
       <updated>1773011769163</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Introduced different rights in Main">
+      <option name="closed" value="true" />
+      <created>1773012492193</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1773012492193</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -211,6 +225,7 @@
     <MESSAGE value="Separated SearchUtils.java" />
     <MESSAGE value="Choose options ManagerRights" />
     <MESSAGE value="Choose options UserRights" />
-    <option name="LAST_COMMIT_MESSAGE" value="Choose options UserRights" />
+    <MESSAGE value="Introduced different rights in Main" />
+    <option name="LAST_COMMIT_MESSAGE" value="Introduced different rights in Main" />
   </component>
 </project>

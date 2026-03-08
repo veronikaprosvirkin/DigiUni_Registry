@@ -12,7 +12,7 @@ class Teacher extends Person {
 
     @Override
     public String toString() {
-        return "Teacher: " + getFullName() + " | Position: " + position + " | Department: " + department.getName();
+        return getFullName() + " | Position: " + position + " | Department: " + department.getName();
     }
     @Override
     public String getDisplayInfo(){

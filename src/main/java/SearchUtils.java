@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -99,8 +100,18 @@ public class SearchUtils {
     /**
      * Search Teacher by full name
      */
-    static void searchTeacherByName(Scanner scanner, UniversityService universityService) {
-        // NOT FINISHED
+    // Find teachers by name
+    static void searchTeacherByName(Scanner scanner, TeacherService teacherService) {
+        String name = InputUtils.readLine(scanner, "Enter full name: ", false, false);
+        name = InputUtils.removeSpaces(name, false, true, true, true);
+        List<Teacher> result = teacherService.findTeachersByFullName(name);
+        if (result.isEmpty()) {
+            System.out.println("No teachers found with this name.");
+        } else {
+            System.out.println(" --- Teachers found by name part: " + name + " ---");
+            result.forEach(System.out::println);
+        }
+        InputUtils.pause(scanner);
     }
 
     /**

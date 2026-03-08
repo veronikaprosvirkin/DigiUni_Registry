@@ -75,7 +75,7 @@ public class UserRights {
 
                     int searchBy = InputUtils.readInt(scanner, "> ", 0, 4);
                     if (searchBy == 1) {
-                        SearchUtils.searchTeacherByName(scanner, universityService);
+                        SearchUtils.searchTeacherByName(scanner, teacherService);
                     } else if (searchBy == 2) {
                         SearchUtils.searchTeacherByDepartment(scanner, universityService);
                     } else if (searchBy == 3) {
