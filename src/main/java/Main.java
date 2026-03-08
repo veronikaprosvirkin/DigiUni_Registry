@@ -58,7 +58,7 @@ public class Main {
                     int action = InputUtils.readInt(scanner, "> ", 0, 2);
 
                     if (action == 1) {
-                        facultyAddFaculty(scanner, facultyService);
+                        ModFacultyUtils.facultyAddFaculty(scanner, facultyService);
                     } else if (action == 2) { //manage existing faculties
                         Faculty selectedFaculty = selectEntity(scanner, facultyService.getFaculties(), "Faculty");
                         if (selectedFaculty == null) break;
@@ -67,9 +67,9 @@ public class Main {
                         System.out.println("0. Back");
                         int workWithFaculty = InputUtils.readInt(scanner, "> ", 0, 2);
                         if (workWithFaculty == 1) { //edit faculty name
-                            facultyManageExistingFacultyRename(scanner, facultyService, selectedFaculty);
+                            ModFacultyUtils.facultyManageExistingFacultyRename(scanner, facultyService, selectedFaculty);
                         } else if (workWithFaculty == 2) { //delete faculty
-                            facultyManageExistingFacultyDelete(scanner, facultyService, selectedFaculty);
+                            ModFacultyUtils.facultyManageExistingFacultyDelete(scanner, facultyService, selectedFaculty);
                         }
                     }
                 }
@@ -262,46 +262,8 @@ public class Main {
             }
         }
     }
-    //
 
 
-    // * ===== METHODS SEPARATED FOR EVERY ACTION ===== * //
-
-    //! ======= WORK WITH FACULTY ===== //
-
-    /**
-     * Add new Faculty
-     */
-    private static void facultyAddFaculty(Scanner scanner, FacultyService facultyService) {
-        String name = InputUtils.readLine(scanner, "Enter new Faculty name: ", false, false);
-        name = InputUtils.removeSpaces(name, false, true, true, true);
-        facultyService.addNewFaculty(name);
-        pause(scanner);
-    }
-
-    /**
-     * Rename Faculty
-     */
-    private static void facultyManageExistingFacultyRename(Scanner scanner, FacultyService facultyService, Faculty selectedFacultyToRename) {
-        String newName = InputUtils.readLine(scanner, "Enter new Faculty name: ", false, false);
-        newName = InputUtils.removeSpaces(newName, false, true, true, true);
-        facultyService.editFacultyName(selectedFacultyToRename, newName);
-        pause(scanner);
-    }
-
-    /**
-     * Delete Faculty
-     */
-    private static void facultyManageExistingFacultyDelete(Scanner scanner, FacultyService facultyService, Faculty selectedFacultyToDelete) {
-        System.out.print("Are you sure you want to delete " + selectedFacultyToDelete.getName() + "? (y/n): ");
-        if (scanner.nextLine().toLowerCase().startsWith("y")) {
-            facultyService.deleteFaculty(selectedFacultyToDelete);
-            System.out.println("Faculty deleted successfully!");
-        } else {
-            System.out.println("Operation cancelled.");
-        }
-        pause(scanner);
-    }
 
 
     //! ======= WORK WITH DEPARTMENT ===== //
@@ -892,7 +854,7 @@ public class Main {
 
 
     // method for pause before going to the next menu
-    private static void pause(Scanner scanner){
+    static void pause(Scanner scanner){
         System.out.println("\nPress Enter to return to the menu...");
         scanner.nextLine();
     }
