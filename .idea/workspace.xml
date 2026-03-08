@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="116d7706-b12d-4072-9455-efbedcbbc26d" name="Changes" comment="Separated ModStudentUtils.java">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ModTeacherUtils.java" afterDir="false" />
+    <list default="true" id="116d7706-b12d-4072-9455-efbedcbbc26d" name="Changes" comment="Separated SearchUtils.java">
+      <change afterPath="$PROJECT_DIR$/src/main/java/ManagerRights.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -149,7 +149,23 @@
       <option name="project" value="LOCAL" />
       <updated>1773006778269</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Separated ModTeacherUtils.java">
+      <option name="closed" value="true" />
+      <created>1773006854199</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1773006854199</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Separated SearchUtils.java">
+      <option name="closed" value="true" />
+      <created>1773007048048</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1773007048048</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -174,6 +190,8 @@
     <MESSAGE value="Moved selection, deleting, showing entities to ModEntitiesUtils.java" />
     <MESSAGE value="Separated ModSpecialityUtils.java" />
     <MESSAGE value="Separated ModStudentUtils.java" />
-    <option name="LAST_COMMIT_MESSAGE" value="Separated ModStudentUtils.java" />
+    <MESSAGE value="Separated ModTeacherUtils.java" />
+    <MESSAGE value="Separated SearchUtils.java" />
+    <option name="LAST_COMMIT_MESSAGE" value="Separated SearchUtils.java" />
   </component>
 </project>
