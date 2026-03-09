@@ -25,8 +25,9 @@ public class ManagerRights {
                 if (action == 1) {
                     ModFacultyUtils.facultyAddFaculty(scanner, facultyService);
                 } else if (action == 2) { //manage existing faculties
-                    Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty");
-                    if (selectedFaculty == null) break;
+                    Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty")
+                            .orElseThrow(() -> new EntityNotFoundException("Faculty wasn't chosen or found"));
+
                     System.out.println("1. Edit Faculty");
                     System.out.println("2. Delete Faculty");
                     System.out.println("0. Back");
@@ -50,10 +51,12 @@ public class ManagerRights {
                     ModDepartmentUtils.departmentAddDepartment(scanner, departmentService, facultyService);
                 } else if (action == 2) { // manage existing department
                     // Select Faculty and Department
-                    Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty");
-                    if (selectedFaculty == null) break;
-                    Department selectedDept = ModEntitiesUtils.selectEntity(scanner, selectedFaculty.getDepartments(), "Department");
-                    if (selectedDept == null) break;
+                    Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty")
+                            .orElseThrow(() -> new EntityNotFoundException("Faculty wasn't chosen or found"));
+
+                    Department selectedDept = ModEntitiesUtils.selectEntity(scanner, selectedFaculty.getDepartments(), "Department")
+                            .orElseThrow(()-> new EntityNotFoundException("Department wasn't chosen or found"));
+
 
                     //Work with a selected department
                     System.out.println("\nDepartment: " + selectedDept.getName());
@@ -82,10 +85,12 @@ public class ManagerRights {
                     ModSpecialityUtils.specialityAddSpeciality(scanner, specialityService, facultyService);
                 } else if (action == 2) {
                     // Select Faculty and Speciality
-                    Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty");
-                    if (selectedFaculty == null) break;
-                    Speciality selectedSpeciality = ModEntitiesUtils.selectSpeciality(scanner, selectedFaculty);
-                    if (selectedSpeciality == null) break;
+                    Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty")
+                            .orElseThrow(()-> new EntityNotFoundException("Faculty wasn't chosen or found"));
+
+                    Speciality selectedSpeciality = ModEntitiesUtils.selectSpeciality(scanner, selectedFaculty)
+                            .orElseThrow(()-> new EntityNotFoundException("Speciality wasn't chosen or found"));
+
 
                     System.out.println("1. Rename Speciality");
                     System.out.println("2. Delete Speciality");

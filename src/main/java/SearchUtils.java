@@ -25,11 +25,13 @@ public class SearchUtils {
      * Search Student by group in specific Speciality
      */
     static void searchStudentByGroupSpecific(Scanner scanner, FacultyService facultyService, StudentService studentService) {
-        Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties");
-        if (selectedFaculty == null) return;
+        Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties")
+                .orElseThrow(()-> new EntityNotFoundException("Faculty wasn't selected ot found"));
 
-        Speciality selectedSpeciality = ModEntitiesUtils.selectSpeciality(scanner, selectedFaculty);
-        if (selectedSpeciality == null) return;
+
+        Speciality selectedSpeciality = ModEntitiesUtils.selectSpeciality(scanner, selectedFaculty)
+                .orElseThrow(()-> new EntityNotFoundException("Speciality wasn't selected ot found"));
+
 
         int groupNumber = InputUtils.readInt(scanner, "Enter Group number: ", 1, Integer.MAX_VALUE);
 
@@ -80,11 +82,12 @@ public class SearchUtils {
      * Search Student by speciality
      */
     static void searchStudentBySpeciality(Scanner scanner, StudentService studentService, FacultyService facultyService) {
-        Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties");
-        if (selectedFaculty == null) return;
+        Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties")
+                .orElseThrow(()-> new EntityNotFoundException("Faculty wasn't selected ot found"));
 
-        Speciality selectedSpeciality = ModEntitiesUtils.selectSpeciality(scanner, selectedFaculty);
-        if (selectedSpeciality == null) return;
+
+        Speciality selectedSpeciality = ModEntitiesUtils.selectSpeciality(scanner, selectedFaculty)
+                .orElseThrow(()-> new EntityNotFoundException("Speciality wasn't selected ot found"));
 
         List <Student> result = studentService.findStudentsBySpeciality(selectedSpeciality);
         if (result.isEmpty()) {

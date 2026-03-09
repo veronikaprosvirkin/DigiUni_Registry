@@ -9,14 +9,12 @@ public class ModDepartmentUtils {
      */
     static void departmentAddDepartment(Scanner scanner, DepartmentService departmentService, FacultyService facultyService) {
         System.out.println("Choose faculty where department will be added:");
-        Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties");
-        if (selectedFaculty != null) {
-            String name = InputUtils.readLine(scanner, "Enter new Department name: ", false, false);
-            name = InputUtils.removeSpaces(name, false, true, true, true);
-            departmentService.addNewDepartment(name, selectedFaculty);
-        } else {
-            System.out.println("No faculties found. Please add a new one first.");
-        }
+        Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties")
+                .orElseThrow(()-> new EntityNotFoundException("Faculty wasn't selected or found"));
+        String name = InputUtils.readLine(scanner, "Enter new Department name: ", false, false);
+        name = InputUtils.removeSpaces(name, false, true, true, true);
+        departmentService.addNewDepartment(name, selectedFaculty);
+
         InputUtils.pause(scanner);
     }
 
@@ -35,7 +33,7 @@ public class ModDepartmentUtils {
      * Delete the Department
      */
     static void departmentDeleteDepartment(Scanner scanner, DepartmentService departmentService, Department selectedDept, Faculty selectedFaculty) {
-        System.out.print("Are you sure you want ot delete " + selectedDept.getName() + "? (y/n): ");
+        System.out.print("Are you sure you want or delete " + selectedDept.getName() + "? (y/n): ");
         if (scanner.nextLine().toLowerCase().startsWith("y")) {
             departmentService.deleteDepartment(selectedDept, selectedFaculty);
             System.out.println("Department deleted successfully!");

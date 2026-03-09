@@ -20,14 +20,15 @@ public class UserRights {
 
 
             case "2" -> {   //? Show departments
-                Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty");
-                if (selectedFaculty == null) break;
+                Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty")
+                        .orElseThrow(()-> new EntityNotFoundException("Faculty wasn't chosen or found"));
+
                 ModEntitiesUtils.showAllEntity(scanner, selectedFaculty.getDepartments(), "Department");
 
             }
             case "3" -> {   //? Show specialities
-                Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty");
-                if (selectedFaculty == null) break;
+                Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty")
+                        .orElseThrow(()-> new EntityNotFoundException("Faculty wasn't chosen or found"));
                 ModEntitiesUtils.showAllEntity(scanner, selectedFaculty.getSpeciality(), "Speciality" );
 
             }

@@ -10,18 +10,20 @@ public class ModStudentUtils {
      */
     static void studentAddStudent(Scanner scanner, FacultyService facultyService, StudentService studentService) {
         System.out.println("--- Add Student ---");
-        Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties");
-        if (selectedFaculty == null) return;
+        Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties")
+                .orElseThrow(()-> new EntityNotFoundException("Faculty wasn't selected ot found"));
+
 
         // Select speciality
-        Speciality selectedSpeciality = ModEntitiesUtils.selectSpeciality(scanner, selectedFaculty);
-        if (selectedSpeciality == null) return;
+        Speciality selectedSpeciality = ModEntitiesUtils.selectSpeciality(scanner, selectedFaculty)
+                .orElseThrow(()-> new EntityNotFoundException("Speciality wasn't selected ot found"));
+
 
 
         // Student's info
         String name = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Name: ", false, false), true, false, false, false);
         String surname = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Surname: ", false, false), true, false, false, false);
-        int enrollmentYear = InputUtils.readInt(scanner, "Enter the year of enrollment", 1990, 2026);
+        int enrollmentYear = InputUtils.readInt(scanner, "Enter the year of enrollment: ", 1990, 2026);
         LocalDate enrollmentDate = LocalDate.of(enrollmentYear, 9, 1);
         int groupNumber = InputUtils.readInt(scanner, "Enter Group: ", 1, Integer.MAX_VALUE);
 

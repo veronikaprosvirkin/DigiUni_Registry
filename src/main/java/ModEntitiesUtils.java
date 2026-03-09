@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class ModEntitiesUtils {
@@ -25,11 +26,11 @@ public class ModEntitiesUtils {
      * @param faculty provided
      * @return Speciality
      */
-    static Speciality selectSpeciality(Scanner scanner, Faculty faculty) {
+    static Optional<Speciality> selectSpeciality(Scanner scanner, Faculty faculty) {
         List<Speciality> specialities = faculty.getSpeciality();
         if (specialities.isEmpty()) {
             System.out.println("No specialities in this faculty!");
-            return null;
+            return Optional.empty();
         }
         System.out.println("--- Choose Speciality ---");
         for (int i = 0; i < specialities.size(); i++) {
@@ -38,16 +39,16 @@ public class ModEntitiesUtils {
         System.out.println("0. Cancel");
         int index = InputUtils.readInt(scanner, "> ", 0, specialities.size());
         if (index == 0) {
-            return null;
+            return Optional.empty();
         }
-        return specialities.get(index - 1);
+        return Optional.of(specialities.get(index - 1));
     }
 
 
-    static <T extends NamedEntity> T selectEntity(Scanner scanner, List<T> entities, String entityName) {
+    static <T extends NamedEntity> Optional<T> selectEntity(Scanner scanner, List<T> entities, String entityName) {
         if (entities.isEmpty()) {
             System.out.println("No " + entityName + " available!");
-            return null;
+            return Optional.empty();
         }
         System.out.println("--- Choose " + entityName + " ---");
         for (int i = 0; i < entities.size(); i++) {
@@ -56,7 +57,7 @@ public class ModEntitiesUtils {
         System.out.println("0. Cancel");
 
         int index = InputUtils.readInt(scanner, "> ", 0, entities.size());
-        return (index == 0) ? null : entities.get(index - 1);
+        return (index == 0) ? Optional.empty() : Optional.of(entities.get(index - 1));
 
     }
 

@@ -8,14 +8,11 @@ public class ModSpecialityUtils {
      */
     static void specialityAddSpeciality(Scanner scanner, SpecialityService specialityService, FacultyService facultyService) {
         System.out.println("Choose faculty where speciality will be added:");
-        Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties");
-        if (selectedFaculty != null) {
-            String name = InputUtils.readLine(scanner, "Enter new Speciality name: ", false, false);
-            name = InputUtils.removeSpaces(name, false, true, true, true);
-            specialityService.addNewSpeciality(name, selectedFaculty);
-        } else {
-            System.out.println("No faculties found. Please add a new one first.");
-        }
+        Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties")
+                .orElseThrow(()-> new EntityNotFoundException("Faculty wasn't selected ot found"));
+        String name = InputUtils.readLine(scanner, "Enter new Speciality name: ", false, false);
+        name = InputUtils.removeSpaces(name, false, true, true, true);
+        specialityService.addNewSpeciality(name, selectedFaculty);
         InputUtils.pause(scanner);
     }
 
