@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
@@ -20,12 +21,13 @@ public class ModStudentUtils {
         // Student's info
         String name = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Name: ", false, false), true, false, false, false);
         String surname = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Surname: ", false, false), true, false, false, false);
-        int course = InputUtils.readInt(scanner, "Enter Course (1-6): ", 1, 6);
+        int enrollmentYear = InputUtils.readInt(scanner, "Enter the year of enrollment", 1990, 2026);
+        LocalDate enrollmentDate = LocalDate.of(enrollmentYear, 9, 1);
         int groupNumber = InputUtils.readInt(scanner, "Enter Group: ", 1, Integer.MAX_VALUE);
 
 
         // Save
-        Student s = new Student(name, surname, course, groupNumber,
+        Student s = new Student(name, surname, enrollmentDate, groupNumber,
                 selectedFaculty.getName(),
                 selectedSpeciality);
         studentService.addStudentToSpeciality(s, selectedSpeciality, groupNumber);
@@ -127,7 +129,9 @@ public class ModStudentUtils {
                 }
                 case 3 -> {
                     int newCourse = InputUtils.readInt(scanner, "Enter new course (1-6): ", 1, 6);
-                    studentToProcess.setCourse(newCourse);
+                    int currentYear = LocalDate.now().getYear();
+                    int newEnrollmentYear = currentYear - newCourse + 1;
+                    studentToProcess.setEnrollmentDate(LocalDate.of(newEnrollmentYear, 9, 1));
                     System.out.println("Course updated!");
                 }
                 case 4 -> {

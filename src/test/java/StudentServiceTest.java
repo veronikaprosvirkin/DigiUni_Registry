@@ -4,6 +4,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.time.LocalDate;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -14,7 +15,7 @@ class StudentServiceTest {
     private Faculty faculty;
     private Student testStudent;
 
-    // Set up test environment
+    // Set up a test environment
     @BeforeEach
     void setUp() {
         university = new University();
@@ -24,14 +25,14 @@ class StudentServiceTest {
         faculty.getSpeciality().add(speciality);
         university.getFaculties().add(faculty);
 
-        testStudent = new Student("Taras", "Shevchenko", 1, 101, "Faculty of Computer Science", speciality);
+        testStudent = new Student("Taras", "Shevchenko", LocalDate.of(2026, 9, 1), 101, "Faculty of Computer Science", speciality);
         studentService.addStudentToSpeciality(testStudent, speciality, 101);
     }
 
     // Test addStudent method
     @Test
     void testAddStudent() {
-        studentService.addStudent("Ivan", "Sirko", 2, 102);
+        studentService.addStudent("Ivan", "Sirko", LocalDate.of(2023, 9, 1), 102);
         List<Student> students = studentService.getAllStudents();
         assertEquals(2, students.size());
     }
@@ -39,7 +40,7 @@ class StudentServiceTest {
     // Test addStudentToSpeciality method
     @Test
     void testAddStudentToSpeciality() {
-        Student newStudent = new Student("Lesya", "Ukrainka", 1, 101, "Faculty of Computer Science", speciality);
+        Student newStudent = new Student("Lesya", "Ukrainka", LocalDate.of(2018, 9, 1), 101, "Faculty of Computer Science", speciality);
         studentService.addStudentToSpeciality(newStudent, speciality, 101);
         assertTrue(studentService.getAllStudents().contains(newStudent));
     }
@@ -84,7 +85,7 @@ class StudentServiceTest {
     @ParameterizedTest
     @ValueSource(ints = {23,43,9})
     void testFindStudentsByGroup(int groupNumber) {
-        Student testStudent = new Student("Taras", "Shevchenko", 1, groupNumber, "Faculty of Computer Science", speciality);
+        Student testStudent = new Student("Taras", "Shevchenko", LocalDate.of(2005, 9, 1), groupNumber, "Faculty of Computer Science", speciality);
         studentService.addStudentToSpeciality(testStudent, speciality, groupNumber);
         List<Student> found = studentService.findStudentsByGroup(groupNumber);
         assertTrue(found.contains(testStudent));

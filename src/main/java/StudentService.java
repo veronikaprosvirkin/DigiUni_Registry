@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +9,7 @@ public class StudentService {
         this.university = university;
     }
 
-    public void addStudent(String name, String surname, int course, int groupNumber) {
+    public void addStudent(String name, String surname, LocalDate enrollmentDate, int groupNumber) {
         if (groupNumber <= 0)
             throw new IllegalArgumentException("Group number must be greater than 0.");
         if (!university.getFaculties().isEmpty() &&
@@ -31,7 +32,7 @@ public class StudentService {
             }
 
 
-            Student newStudent = new Student(name, surname, course, groupNumber,
+            Student newStudent = new Student(name, surname, enrollmentDate, groupNumber,
                     defaultFaculty.getName(),
                     defaultSpec);
 

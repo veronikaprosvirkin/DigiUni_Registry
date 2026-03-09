@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
@@ -16,9 +17,9 @@ public class Main {
         UserService userService = new UserService();
 
         // Creating few students
-        studentService.addStudent("Zbyshek", "Tymekowskych", 1, 101);
-        studentService.addStudent("Irzek", "Zlotych", 1, 101);
-        studentService.addStudent("Irzek", "Tymekowskych", 2, 15);
+        studentService.addStudent("Zbyshek", "Tymekowskych", LocalDate.of(2025, 9, 1), 101);
+        studentService.addStudent("Irzek", "Zlotych", LocalDate.of(2024, 9, 1), 101);
+        studentService.addStudent("Irzek", "Tymekowskych", LocalDate.of(2023, 9, 1), 15);
 
         while (true) {
             //authorization logic
