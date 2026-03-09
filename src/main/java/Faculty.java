@@ -31,4 +31,9 @@ public class Faculty implements NamedEntity{
     public void setName(String newName) {
         this.nameOfFaculty = newName;
     }
+
+    @Override
+    public String toString() {
+        return nameOfFaculty;
+    }
 }

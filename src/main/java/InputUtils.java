@@ -3,6 +3,13 @@ import java.util.Scanner;
 public class InputUtils {
     private InputUtils() {};
 
+
+    // method for pause before going to the next menu
+    static void pause(Scanner scanner){
+        System.out.println("\nPress Enter to return to the menu...");
+        scanner.nextLine();
+    }
+
     /**
      * ? Method that checks if the line is an Integer between min and max values
      * @param scanner that reads a line
