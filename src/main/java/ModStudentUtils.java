@@ -5,6 +5,71 @@ import java.util.Scanner;
 public class ModStudentUtils {
     //! ======= WORK WITH STUDENTS ===== //
 
+    //show menu for student
+    static void showStudentMenu(Scanner scanner, StudentService studentService, FacultyService facultyService, UniversityService universityService) {
+        System.out.println("1. Add Student");
+        System.out.println("2. Delete Student");
+        System.out.println("3. Edit information about student");
+        System.out.println("4. Show all");
+        System.out.println("0. Back");
+
+        int workWithStudent = InputUtils.readInt(scanner, "> ", 0, 4);
+
+        if (workWithStudent == 1) { //add student
+            ModStudentUtils.studentAddStudent(scanner, facultyService, studentService);
+        } else if (workWithStudent == 2) { //delete student
+            int deleteStudent = ModEntitiesUtils.chooseDeleting(scanner);
+            if (deleteStudent == 1) {
+                String fullName = InputUtils.readLine(scanner, "Full name of student: ", false, false);
+                fullName = InputUtils.removeSpaces(fullName, false, true, true, true);
+                List<Student> result = studentService.findStudentsByFullName(fullName);
+                ModEntitiesUtils.deleteEntity(scanner, result, "Student", (student -> studentService.deleteStudent(student, student.getSpeciality())));
+            } else if (deleteStudent == 2) {
+                ModStudentUtils.studentDeleteById(scanner, universityService);
+            }
+
+        } else if (workWithStudent == 3) { //edit student
+            int editStudent = ModEntitiesUtils.chooseEditing(scanner);
+            if (editStudent == 1) {
+                ModStudentUtils.studentEditByName(scanner, studentService);
+            } else if (editStudent == 2) {
+                ModStudentUtils.studentEditById(scanner, universityService);
+            }
+
+
+        } else if (workWithStudent == 4) {
+            List<Student> students = studentService.getAllStudents();//show all students
+            ModEntitiesUtils.showAllEntity(scanner, students, "Students List");
+        }
+    }
+
+    //search menu for student
+    static void searchStudentMenu(Scanner scanner, StudentService studentService, FacultyService facultyService, UniversityService universityService) {
+        System.out.println("1. Search by full name");
+        System.out.println("2. Search by group number");
+        System.out.println("3. Search by course");
+        System.out.println("4. Search by speciality");
+        System.out.println("0. Back");
+        int searchBy = InputUtils.readInt(scanner, "> ", 0, 4);
+
+        if (searchBy == 1) { //by full name
+            SearchUtils.searchStudentByName(scanner, studentService);
+        } else if (searchBy == 2) { //by group number
+            System.out.println("1. Find in specific speciality");
+            System.out.println("2. Find in all university");
+            int type = InputUtils.readInt(scanner, "> ", 1, 2);
+
+            if (type == 1) {    // Search in specific speciality
+                SearchUtils.searchStudentByGroupSpecific(scanner, facultyService, studentService);
+            } else {      // Search in all university
+                SearchUtils.searchStudentByGroupEverywhere(scanner, studentService);
+            }
+        } else if (searchBy == 3) { //by course
+            SearchUtils.searchStudentByCourse(scanner, studentService);
+        } else if (searchBy == 4) { // by speciality
+            SearchUtils.searchStudentBySpeciality(scanner, studentService,facultyService);
+        }
+    }
     /**
      * Add new Student
      */

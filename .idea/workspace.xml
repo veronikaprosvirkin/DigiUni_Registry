@@ -5,23 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="52d3ca8c-2ad0-4cd7-b956-8e8f79936ff7" name="Changes" comment="Added dynamic calculating of a student's course based on the enrollment Date">
-      <change afterPath="$PROJECT_DIR$/src/main/java/EntityNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/AdminRights.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ModUserUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ManagerRights.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ManagerRights.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ModDepartmentUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ModDepartmentUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ModEntitiesUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ModEntitiesUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ModFacultyUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ModFacultyUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ModSpecialityUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ModSpecialityUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ModStudentUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ModStudentUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ModTeacherUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ModTeacherUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SearchUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SearchUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ManagerRights.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ModDepartmentUtils.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ModEntitiesUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ModEntitiesUtils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/UserRights.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UserRights.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ManagerRights.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ManagerRights.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ModDepartmentUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ModDepartmentUtils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ModFacultyUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ModFacultyUtils.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/ModSpecialityUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ModSpecialityUtils.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ModStudentUtils.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ModStudentUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ModStudentUtils.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/ModTeacherUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ModTeacherUtils.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/SearchUtils.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/UserRights.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserRights.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserRights.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserService.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,6 +124,6 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="added User, UserService, and Role enum; integrated authentication logic into Main" />
     <MESSAGE value="Added dynamic calculating of a student's course based on the enrollment Date" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added dynamic calculating of a student's course based on the enrollment Date" />
+    <option name="LAST_COMMIT_MESSAGE" value="" />
   </component>
 </project>

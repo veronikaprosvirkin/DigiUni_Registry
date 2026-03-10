@@ -3,6 +3,31 @@ import java.util.Scanner;
 public class ModFacultyUtils {
     //! ======= WORK WITH FACULTY ===== //
 
+    static void showFacultiesMenu(Scanner scanner, FacultyService facultyService){
+        System.out.println("1. Add Faculty");
+        System.out.println("2. Manage Existing Faculty");
+        System.out.println("0. Back");
+        int action = InputUtils.readInt(scanner, "> ", 0, 2);
+
+        if (action == 1) {
+            ModFacultyUtils.facultyAddFaculty(scanner, facultyService);
+        } else if (action == 2) { //manage existing faculties
+            Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty")
+                    .orElseThrow(() -> new EntityNotFoundException("Faculty wasn't chosen or found"));
+
+            System.out.println("1. Edit Faculty");
+            System.out.println("2. Delete Faculty");
+            System.out.println("0. Back");
+            int workWithFaculty = InputUtils.readInt(scanner, "> ", 0, 2);
+            if (workWithFaculty == 1) { //edit faculty name
+                ModFacultyUtils.facultyManageExistingFacultyRename(scanner, facultyService, selectedFaculty);
+            } else if (workWithFaculty == 2) { //delete faculty
+                ModFacultyUtils.facultyManageExistingFacultyDelete(scanner, facultyService, selectedFaculty);
+            }
+        }
+    }
+
+
     /**
      * Add new Faculty
      */

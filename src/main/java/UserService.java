@@ -11,6 +11,7 @@ public class UserService {
         users.add(new User("user", "user", Role.USER));
         users.add(new User("manager", "manager", Role.MANAGER));
     }
+
     // logging in process
     public static void login(Scanner scanner) {
         System.out.println("You are not logged in. Please log in first.");
@@ -19,9 +20,8 @@ public class UserService {
 
         boolean isSuccess = loginSuccess(login, password);
         if (isSuccess) {
-            System.out.println("Login successful! Hello "+ login);
-        }
-        else {
+            System.out.println("Login successful! Hello " + login);
+        } else {
             System.out.println("Login failed. Please try again.");
         }
     }
@@ -36,12 +36,30 @@ public class UserService {
         }
         return false;
     }
+
+    public static List<User> getAllUsers() {
+        return users;
+    }
+
     //return current user to main
-    public User getCurrentUser(){
+    public User getCurrentUser() {
         return currentUser;
     }
 
     public static void logout() {
         currentUser = null;
+    }
+
+    //====WORK WITH USERS===
+    public static void registerNewUser(String username, String password, Role selectedRole) {
+        for (User user : users) {
+            if (user.getUsername().equals(username)) {
+                System.out.println("Username already exists. Please choose another one.");
+                return;
+            }
+        }
+        User newUser = new User(username, password, selectedRole);
+        users.add(newUser);
+        System.out.println("User registered successfully!");
     }
 }

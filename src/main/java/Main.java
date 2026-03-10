@@ -33,15 +33,9 @@ public class Main {
                 UserRights.showUserRights(universityService, studentService, teacherService, facultyService, departmentService, specialityService, scanner);
             } else if (currentUser.getRole()==Role.MANAGER) {
                 ManagerRights.showManagerRights(universityService, studentService, teacherService, facultyService, departmentService, specialityService, scanner);
-            } else if (currentUser.getRole()==Role.ADMIN) {
-                System.out.println("Not finished yet. Please choose another role.");
-                UserService.logout();
+            } else if (currentUser.getRole() == Role.ADMIN) {
+                AdminRights.showAdminRights(universityService, studentService, teacherService, facultyService, departmentService, specialityService, scanner);
             }
         }
     }
-
-
-
-
-
 }

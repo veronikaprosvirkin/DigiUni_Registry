@@ -2,7 +2,36 @@ import java.util.Scanner;
 
 public class ModSpecialityUtils {
     //! ======= WORK WITH SPECIALITY ===== //
+    //show menu for speciality
+    static void showSpecialityMenu(Scanner scanner, SpecialityService specialityService, FacultyService facultyService) {
+        System.out.println("1. Add Speciality");
+        System.out.println("2. Manage existing Speciality");
+        System.out.println("0. Back");
+        int action = InputUtils.readInt(scanner, "> ", 0, 2);
 
+        if (action == 1) {
+            ModSpecialityUtils.specialityAddSpeciality(scanner, specialityService, facultyService);
+        } else if (action == 2) {
+            // Select Faculty and Speciality
+            Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty")
+                    .orElseThrow(()-> new EntityNotFoundException("Faculty wasn't chosen or found"));
+
+            Speciality selectedSpeciality = ModEntitiesUtils.selectSpeciality(scanner, selectedFaculty)
+                    .orElseThrow(()-> new EntityNotFoundException("Speciality wasn't chosen or found"));
+
+
+            System.out.println("1. Rename Speciality");
+            System.out.println("2. Delete Speciality");
+            System.out.println("0. Back");
+
+            int workWithSpeciality = InputUtils.readInt(scanner, "> ", 0, 2);
+            if (workWithSpeciality == 1) {
+                ModSpecialityUtils.specialityRenameSpeciality(scanner, specialityService, selectedSpeciality, selectedFaculty);
+            } else if (workWithSpeciality == 2) {
+                ModSpecialityUtils.specialityDeleteSpeciality(scanner, specialityService, selectedSpeciality, selectedFaculty);
+            }
+        }
+    }
     /**
      * Add new Speciality
      */

@@ -17,8 +17,6 @@ public class UserRights {
             case "1" -> {    //? Show faculties
                 ModEntitiesUtils.showAllEntity(scanner, facultyService.getFaculties(), "Faculty");
             }
-
-
             case "2" -> {   //? Show departments
                 Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty")
                         .orElseThrow(()-> new EntityNotFoundException("Faculty wasn't chosen or found"));
@@ -34,59 +32,14 @@ public class UserRights {
             }
 
             case "4" -> {   //? search
-                System.out.println("1. Find Student: ");
-                System.out.println("2. Find Teacher: ");
+                System.out.println("1. Find Student");
+                System.out.println("2. Find Teacher");
                 int searchType = InputUtils.readInt(scanner, "> ", 1, 2);
                 if (searchType == 1) { //? Find Student
-                    System.out.println("1. Search by full name");
-                    System.out.println("2. Search by group number");
-                    System.out.println("3. Search by course");
-                    System.out.println("4. Search by speciality");
-                    System.out.println("5. Show all students");
-                    System.out.println("0. Back: ");
-                    int searchBy = InputUtils.readInt(scanner, "> ", 0, 5);
-
-                    if (searchBy == 1) { //by full name
-                        SearchUtils.searchStudentByName(scanner, studentService);
-                    } else if (searchBy == 2) { //by group number
-                        System.out.println("1. Find in specific speciality");
-                        System.out.println("2. Find in all university");
-                        int type = InputUtils.readInt(scanner, "> ", 1, 2);
-
-                        if (type == 1) {    // Search in specific speciality
-                            SearchUtils.searchStudentByGroupSpecific(scanner, facultyService, studentService);
-                        } else {      // Search in all university
-                            SearchUtils.searchStudentByGroupEverywhere(scanner, studentService);
-                        }
-                    } else if (searchBy == 3) { //by course
-                        SearchUtils.searchStudentByCourse(scanner, studentService);
-                    } else if (searchBy == 4) { // by speciality
-                        SearchUtils.searchStudentBySpeciality(scanner, studentService,facultyService);
-                    } else if (searchBy == 5) {
-                        List<Student> students = studentService.getAllStudents();
-                        ModEntitiesUtils.showAllEntity(scanner, students, "Students List");
-                    }
-
+                    ModStudentUtils.searchStudentMenu(scanner,studentService,facultyService,universityService);
                 } else if (searchType == 2) { //? Find Teacher
-                    System.out.println("1. Search by full name");
-                    System.out.println("2. Search by department");
-                    System.out.println("3. Search by position");
-                    System.out.println("4. Show all teachers");
-                    System.out.println("0. Back: ");
-
-                    int searchBy = InputUtils.readInt(scanner, "> ", 0, 4);
-                    if (searchBy == 1) {
-                        SearchUtils.searchTeacherByName(scanner, teacherService);
-                    } else if (searchBy == 2) {
-                        SearchUtils.searchTeacherByDepartment(scanner, universityService);
-                    } else if (searchBy == 3) {
-                        SearchUtils.searchTeacherByPosition(scanner, universityService);
-                    } else if (searchBy == 4) {
-                        List<Teacher> teachers = teacherService.getAllTeachers();
-                        ModEntitiesUtils.showAllEntity(scanner, teachers, "Teachers List");
-                    }
+                    ModTeacherUtils.searchTeacherMenu(scanner,teacherService,facultyService,universityService);
                 }
-
             }
             case "0" -> {
                 UserService.logout();

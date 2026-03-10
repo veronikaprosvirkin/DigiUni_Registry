@@ -4,6 +4,41 @@ import java.util.Scanner;
 public class ModDepartmentUtils {
     //! ======= WORK WITH DEPARTMENT ===== //
 
+    //show menu for department
+    static void showDepartmentMenu(Scanner scanner, DepartmentService departmentService, FacultyService facultyService, TeacherService teacherService) {
+        System.out.println("1. Add Department");
+        System.out.println("2. Manage existing Department");
+        System.out.println("0. Back");
+        int action = InputUtils.readInt(scanner, "> ", 0, 2);
+
+        if (action == 1) { // add a new department
+            ModDepartmentUtils.departmentAddDepartment(scanner, departmentService, facultyService);
+        } else if (action == 2) { // manage existing department
+            // Select Faculty and Department
+            Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty")
+                    .orElseThrow(() -> new EntityNotFoundException("Faculty wasn't chosen or found"));
+
+            Department selectedDept = ModEntitiesUtils.selectEntity(scanner, selectedFaculty.getDepartments(), "Department")
+                    .orElseThrow(()-> new EntityNotFoundException("Department wasn't chosen or found"));
+
+
+            //Work with a selected department
+            System.out.println("\nDepartment: " + selectedDept.getName());
+            System.out.println("1. Edit name of the Department");
+            System.out.println("2. Delete Department");
+            System.out.println("3. Show all Teachers in the Department");
+            System.out.println("0. Back");
+            int workWithDepartment = InputUtils.readInt(scanner, "> ", 0, 3);
+
+            if (workWithDepartment == 1) { // edit department name
+                ModDepartmentUtils.departmentRenameDepartment(scanner, departmentService, selectedDept, selectedFaculty);
+            } else if (workWithDepartment == 2) { //delete department
+                ModDepartmentUtils.departmentDeleteDepartment(scanner, departmentService, selectedDept, selectedFaculty);
+            } else if (workWithDepartment == 3) { //show all teachers in the department
+                ModDepartmentUtils.departmentShowTeachers(teacherService, selectedDept, scanner);
+            }
+        }
+    }
     /**
      * Add new Department
      */
