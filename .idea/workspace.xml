@@ -4,27 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="52d3ca8c-2ad0-4cd7-b956-8e8f79936ff7" name="Changes" comment="Added dynamic calculating of a student's course based on the enrollment Date">
-      <change afterPath="$PROJECT_DIR$/src/main/java/AdminRights.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ModUserUtils.java" afterDir="false" />
+    <list default="true" id="52d3ca8c-2ad0-4cd7-b956-8e8f79936ff7" name="Changes" comment="Add file with admin rights: create, show all, and validate unique usernames">
+      <change afterPath="$PROJECT_DIR$/src/test/java/AdminRightsTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ManagerRights.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ManagerRights.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ModDepartmentUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ModDepartmentUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ModFacultyUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ModFacultyUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ModSpecialityUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ModSpecialityUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ModStudentUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ModStudentUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ModTeacherUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ModTeacherUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/UserRights.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UserRights.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ModUserUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ModUserUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ManagerRights.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ManagerRights.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ModDepartmentUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ModDepartmentUtils.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ModFacultyUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ModFacultyUtils.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ModSpecialityUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ModSpecialityUtils.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ModStudentUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ModStudentUtils.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ModTeacherUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ModTeacherUtils.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/UserRights.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserRights.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserService.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -68,16 +52,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.StudentServiceTest.testFindStudentsByGroup.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "JUnit.AdminRightsTest.executor": "Run",
+    "JUnit.StudentServiceTest.testFindStudentsByGroup.executor": "Run",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true"
   }
-}</component>
-  <component name="RunManager">
+}]]></component>
+  <component name="RunManager" selected="JUnit.AdminRightsTest">
+    <configuration name="AdminRightsTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="DigiUni_Registry" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="AdminRightsTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="StudentServiceTest.testFindStudentsByGroup" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="DigiUni_Registry" />
       <option name="PACKAGE_NAME" value="" />
@@ -90,6 +84,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.AdminRightsTest" />
         <item itemvalue="JUnit.StudentServiceTest.testFindStudentsByGroup" />
       </list>
     </recent_temporary>
@@ -118,12 +113,21 @@
       <option name="project" value="LOCAL" />
       <updated>1773093362883</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Add file with admin rights: create, show all, and validate unique usernames">
+      <option name="closed" value="true" />
+      <created>1773152984680</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1773152984680</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="added User, UserService, and Role enum; integrated authentication logic into Main" />
     <MESSAGE value="Added dynamic calculating of a student's course based on the enrollment Date" />
-    <option name="LAST_COMMIT_MESSAGE" value="" />
+    <MESSAGE value="Add file with admin rights: create, show all, and validate unique usernames" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add file with admin rights: create, show all, and validate unique usernames" />
   </component>
 </project>

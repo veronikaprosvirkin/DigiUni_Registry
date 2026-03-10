@@ -50,9 +50,15 @@ public class ModUserUtils {
     }
     //delete user
     private static void deleteUser(Scanner scanner) {
+        String username = InputUtils.readLine(scanner, "Enter username of user you want to delete: ", true, true);
+        UserService.deleteUser(username);
     }
+
     //edit user role
     private static void editUserRole(Scanner scanner) {
+        String username = InputUtils.readLine(scanner, "Enter username of user you want to edit: ", true, true);
+        Role selectedRole = ModUserUtils.chooseRole(scanner);
+        UserService.editUser(username, selectedRole);
     }
     //show all users
     private static void showAllUsers(Scanner scanner) {

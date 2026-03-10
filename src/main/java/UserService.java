@@ -51,6 +51,7 @@ public class UserService {
     }
 
     //====WORK WITH USERS===
+    //add user
     public static void registerNewUser(String username, String password, Role selectedRole) {
         for (User user : users) {
             if (user.getUsername().equals(username)) {
@@ -61,5 +62,33 @@ public class UserService {
         User newUser = new User(username, password, selectedRole);
         users.add(newUser);
         System.out.println("User registered successfully!");
+    }
+
+    //delete user
+    public static void deleteUser(String username) {
+        for (User user : users) {
+            if (user.getUsername().equals(username) && user.getRole() != Role.ADMIN) {
+                users.remove(user);
+                System.out.println("User deleted successfully!");
+                return;
+            }
+        }
+        System.out.println("User not found!");
+    }
+
+    //edit user
+    public static void editUser(String username, Role selectedRole) {
+        for (User user : users) {
+            if (user.getUsername().equals(username)) {
+                if (selectedRole == user.getRole()) {
+                    System.out.println("User's role is already " + selectedRole.toString());
+                    return;
+                }
+                user.setRole(selectedRole);
+                System.out.println("User's role updated successfully!");
+                return;
+            }
+        }
+        System.out.println("User not found!");
     }
 }
