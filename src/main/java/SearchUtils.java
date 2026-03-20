@@ -130,6 +130,10 @@ public class SearchUtils {
         if (result.isEmpty()) {
             System.out.println("No teachers found with this name.");
         } else {
+            if (result.size() > 1) {
+                System.out.println("Multiple teachers found. Please select sorting method: ");
+                result = SortUtils.sortTeachers(result, scanner);
+            }
             System.out.println(" --- Teachers found by name part: " + name + " ---");
             result.forEach(System.out::println);
         }

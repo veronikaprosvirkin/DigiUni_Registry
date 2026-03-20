@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="52d3ca8c-2ad0-4cd7-b956-8e8f79936ff7" name="Changes" comment="feat: Implemented sort in SearchUtils.searchStudentByName">
+    <list default="true" id="52d3ca8c-2ad0-4cd7-b956-8e8f79936ff7" name="Changes" comment="feat: added sorting options to all student search methods in SearchUtils">
       <change beforePath="$PROJECT_DIR$/src/main/java/SortUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SortUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -129,7 +129,23 @@
       <option name="project" value="LOCAL" />
       <updated>1774041019260</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="fix: added secondary sorting by full name in SortUtils">
+      <option name="closed" value="true" />
+      <created>1774041342790</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1774041342790</updated>
+    </task>
+    <task id="LOCAL-00006" summary="feat: added sorting options to all student search methods in SearchUtils">
+      <option name="closed" value="true" />
+      <created>1774041507238</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1774041507238</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -137,6 +153,8 @@
     <MESSAGE value="Added dynamic calculating of a student's course based on the enrollment Date" />
     <MESSAGE value="Add file with admin rights: create, show all, and validate unique usernames" />
     <MESSAGE value="feat: Implemented sort in SearchUtils.searchStudentByName" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: Implemented sort in SearchUtils.searchStudentByName" />
+    <MESSAGE value="fix: added secondary sorting by full name in SortUtils" />
+    <MESSAGE value="feat: added sorting options to all student search methods in SearchUtils" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: added sorting options to all student search methods in SearchUtils" />
   </component>
 </project>

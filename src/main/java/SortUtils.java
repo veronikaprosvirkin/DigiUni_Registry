@@ -25,4 +25,22 @@ public class SortUtils {
         }
         return students;
     }
+
+    public static List<Teacher> sortTeachers(List<Teacher> teachers, Scanner scanner) {
+        System.out.println("1. Sort by full name");
+        System.out.println("2. Sort by position");
+        System.out.println("3. Sort by department");
+
+        int choice = InputUtils.readInt(scanner, "> ", 1, 3);
+
+        switch (choice) {
+            case 1 -> teachers.sort(Comparator.comparing(Teacher::getFullName));
+            case 2 -> teachers.sort(Comparator.comparing(Teacher::getPosition)
+                    .thenComparing(Teacher::getFullName));
+            case 3 -> teachers.sort(Comparator.comparing((Teacher t) -> t.getDepartment().getName())
+                    .thenComparing(Teacher::getFullName));
+        }
+
+        return teachers;
+    }
 }
