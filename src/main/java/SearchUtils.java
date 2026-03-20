@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,6 +14,10 @@ public class SearchUtils {
         if (result.isEmpty()) {
             System.out.println("No students found with this name.");
         } else {
+            if (result.size() > 1) {
+                System.out.println("Multiple students found. Please select sorting method: ");
+                result = SortUtils.sortStudents(result, scanner);
+            }
             System.out.println(" --- Students found by name part: " + name + " ---");
             result.forEach(System.out::println);
         }
@@ -35,13 +38,17 @@ public class SearchUtils {
 
         int groupNumber = InputUtils.readInt(scanner, "Enter Group number: ", 1, Integer.MAX_VALUE);
 
-        List<Student> results = studentService.findStudentsInSpecialityByGroup(selectedSpeciality, groupNumber);
+        List<Student> result = studentService.findStudentsInSpecialityByGroup(selectedSpeciality, groupNumber);
 
-        if (results.isEmpty()) {
+        if (result.isEmpty()) {
             System.out.println("No students found in group " + groupNumber + " within " + selectedSpeciality.getName());
         } else {
+            if (result.size() > 1) {
+                System.out.println("Multiple students found. Please select sorting method: ");
+                result = SortUtils.sortStudents(result, scanner);
+            }
             System.out.println(" --- Students in group " + groupNumber + " on " + selectedSpeciality.getName() + " ---");
-            results.forEach(System.out::println);
+            result.forEach(System.out::println);
         }
         InputUtils.pause(scanner);
     }
@@ -52,13 +59,17 @@ public class SearchUtils {
     static void searchStudentByGroupEverywhere(Scanner scanner, StudentService studentService) {
         int groupNumber = InputUtils.readInt(scanner, "Enter Group number: ", 1, Integer.MAX_VALUE);
 
-        List<Student> results = studentService.findStudentsByGroup(groupNumber);
+        List<Student> result = studentService.findStudentsByGroup(groupNumber);
 
-        if (results.isEmpty()) {
+        if (result.isEmpty()) {
             System.out.println("No students found in group " + groupNumber + " in the whole university.");
         } else {
+            if (result.size() > 1) {
+                System.out.println("Multiple students found. Please select sorting method: ");
+                result = SortUtils.sortStudents(result, scanner);
+            }
             System.out.println(" --- Students in group " + groupNumber + " ---");
-            results.forEach(System.out::println);
+            result.forEach(System.out::println);
         }
         InputUtils.pause(scanner);
     }
@@ -68,12 +79,16 @@ public class SearchUtils {
      */
     static void searchStudentByCourse(Scanner scanner, StudentService studentService) {
         int course = InputUtils.readInt(scanner, "Enter course number: ", 1, 6);
-        List<Student> results = studentService.findStudentsByCourse(course);
-        if (results.isEmpty()) {
+        List<Student> result = studentService.findStudentsByCourse(course);
+        if (result.isEmpty()) {
             System.out.println("No students found in course " + course + ".");
         } else {
+            if (result.size() > 1) {
+                System.out.println("Multiple students found. Please select sorting method: ");
+                result = SortUtils.sortStudents(result, scanner);
+            }
             System.out.println(" --- Students in course " + course + " ---");
-            results.forEach(System.out::println);
+            result.forEach(System.out::println);
         }
         InputUtils.pause(scanner);
     }
@@ -93,6 +108,10 @@ public class SearchUtils {
         if (result.isEmpty()) {
             System.out.println("No students found in " + selectedSpeciality.getName() + ".");
         } else {
+            if (result.size() > 1) {
+                System.out.println("Multiple students found. Please select sorting method: ");
+                result = SortUtils.sortStudents(result, scanner);
+            }
             System.out.println(" --- Students in " + selectedSpeciality.getName() + " ---");
             result.forEach(System.out::println);
         }
@@ -111,6 +130,10 @@ public class SearchUtils {
         if (result.isEmpty()) {
             System.out.println("No teachers found with this name.");
         } else {
+            if (result.size() > 1) {
+                System.out.println("Multiple teachers found. Please select sorting method: ");
+                result = SortUtils.sortTeachers(result, scanner);
+            }
             System.out.println(" --- Teachers found by name part: " + name + " ---");
             result.forEach(System.out::println);
         }

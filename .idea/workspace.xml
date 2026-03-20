@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="52d3ca8c-2ad0-4cd7-b956-8e8f79936ff7" name="Changes" comment="Add file with admin rights: create, show all, and validate unique usernames">
-      <change afterPath="$PROJECT_DIR$/src/test/java/AdminRightsTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ModUserUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ModUserUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserService.class" afterDir="false" />
+    <list default="true" id="52d3ca8c-2ad0-4cd7-b956-8e8f79936ff7" name="Changes" comment="feat: added sorting options to all student search methods in SearchUtils">
+      <change beforePath="$PROJECT_DIR$/src/main/java/SortUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SortUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,7 +23,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="authorization" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -58,11 +54,15 @@
     "JUnit.AdminRightsTest.executor": "Run",
     "JUnit.StudentServiceTest.testFindStudentsByGroup.executor": "Run",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true"
+    "git-widget-placeholder": "sorting",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)"
   }
 }]]></component>
-  <component name="RunManager" selected="JUnit.AdminRightsTest">
+  <component name="RunManager">
     <configuration name="AdminRightsTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="DigiUni_Registry" />
       <option name="PACKAGE_NAME" value="" />
@@ -121,13 +121,40 @@
       <option name="project" value="LOCAL" />
       <updated>1773152984680</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="feat: Implemented sort in SearchUtils.searchStudentByName">
+      <option name="closed" value="true" />
+      <created>1774041019260</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1774041019260</updated>
+    </task>
+    <task id="LOCAL-00005" summary="fix: added secondary sorting by full name in SortUtils">
+      <option name="closed" value="true" />
+      <created>1774041342790</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1774041342790</updated>
+    </task>
+    <task id="LOCAL-00006" summary="feat: added sorting options to all student search methods in SearchUtils">
+      <option name="closed" value="true" />
+      <created>1774041507238</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1774041507238</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="added User, UserService, and Role enum; integrated authentication logic into Main" />
     <MESSAGE value="Added dynamic calculating of a student's course based on the enrollment Date" />
     <MESSAGE value="Add file with admin rights: create, show all, and validate unique usernames" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add file with admin rights: create, show all, and validate unique usernames" />
+    <MESSAGE value="feat: Implemented sort in SearchUtils.searchStudentByName" />
+    <MESSAGE value="fix: added secondary sorting by full name in SortUtils" />
+    <MESSAGE value="feat: added sorting options to all student search methods in SearchUtils" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: added sorting options to all student search methods in SearchUtils" />
   </component>
 </project>
