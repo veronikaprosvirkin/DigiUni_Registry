@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="52d3ca8c-2ad0-4cd7-b956-8e8f79936ff7" name="Changes" comment="feat: finished searchTeacherByPosition in SearchUtils">
+    <list default="true" id="52d3ca8c-2ad0-4cd7-b956-8e8f79936ff7" name="Changes" comment="feat: added sorting for viewing all students">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ModStudentUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ModStudentUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ModStudentUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ModStudentUtils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ModTeacherUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ModTeacherUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -136,7 +136,15 @@
       <option name="project" value="LOCAL" />
       <updated>1774043864675</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="feat: added sorting for viewing all students">
+      <option name="closed" value="true" />
+      <created>1774044566388</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1774044566388</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -145,6 +153,7 @@
     <MESSAGE value="Add file with admin rights: create, show all, and validate unique usernames" />
     <MESSAGE value="feat: finished searchTeacherByDepartment in SearchUtils" />
     <MESSAGE value="feat: finished searchTeacherByPosition in SearchUtils" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: finished searchTeacherByPosition in SearchUtils" />
+    <MESSAGE value="feat: added sorting for viewing all students" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: added sorting for viewing all students" />
   </component>
 </project>

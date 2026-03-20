@@ -53,7 +53,7 @@ public class ModStudentUtils {
         System.out.println("2. Search by group number");
         System.out.println("3. Search by course");
         System.out.println("4. Search by speciality");
-        System.out.println("5. Show all students");
+        System.out.println("5. Show all");
         System.out.println("0. Back");
         int searchBy = InputUtils.readInt(scanner, "> ", 0, 5);
 

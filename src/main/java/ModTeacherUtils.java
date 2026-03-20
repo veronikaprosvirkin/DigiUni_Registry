@@ -37,6 +37,10 @@ public class ModTeacherUtils {
             }
         } else if (workWithTeacher == 4) {//show all
             List<Teacher> teachers = teacherService.getAllTeachers();
+            if (teachers.size()>1){
+                System.out.println("Multiple teachers found. Please select sorting method: ");
+                teachers = SortUtils.sortTeachers(teachers, scanner);
+            }
             ModEntitiesUtils.showAllEntity(scanner, teachers, "Teachers List");
         }
     }
@@ -46,15 +50,23 @@ public class ModTeacherUtils {
         System.out.println("1. Search by full name");
         System.out.println("2. Search by department");
         System.out.println("3. Search by position");
+        System.out.println("4. Show all");
         System.out.println("0. Back");
 
-        int searchBy = InputUtils.readInt(scanner, "> ", 0, 3);
+        int searchBy = InputUtils.readInt(scanner, "> ", 0, 4);
         if (searchBy == 1) {
             SearchUtils.searchTeacherByName(scanner, teacherService);
         } else if (searchBy == 2) {
             SearchUtils.searchTeacherByDepartment(scanner, facultyService, teacherService);
         } else if (searchBy == 3) {
             SearchUtils.searchTeacherByPosition(scanner, teacherService);
+        } else  if (searchBy == 4) {
+            List<Teacher> teachers = teacherService.getAllTeachers();
+            if (teachers.size()>1){
+                System.out.println("Multiple teachers found. Please select sorting method: ");
+                teachers = SortUtils.sortTeachers(teachers, scanner);
+            }
+            ModEntitiesUtils.showAllEntity(scanner, teachers, "Teachers List");
         }
     }
     /**
