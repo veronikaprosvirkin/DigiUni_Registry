@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="52d3ca8c-2ad0-4cd7-b956-8e8f79936ff7" name="Changes" comment="Add file with admin rights: create, show all, and validate unique usernames">
-      <change afterPath="$PROJECT_DIR$/src/main/java/SortUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SearchUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SearchUtils.java" afterDir="false" />
+    <list default="true" id="52d3ca8c-2ad0-4cd7-b956-8e8f79936ff7" name="Changes" comment="feat: Implemented sort in SearchUtils.searchStudentByName">
+      <change beforePath="$PROJECT_DIR$/src/main/java/SortUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SortUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,13 +121,22 @@
       <option name="project" value="LOCAL" />
       <updated>1773152984680</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="feat: Implemented sort in SearchUtils.searchStudentByName">
+      <option name="closed" value="true" />
+      <created>1774041019260</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1774041019260</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="added User, UserService, and Role enum; integrated authentication logic into Main" />
     <MESSAGE value="Added dynamic calculating of a student's course based on the enrollment Date" />
     <MESSAGE value="Add file with admin rights: create, show all, and validate unique usernames" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add file with admin rights: create, show all, and validate unique usernames" />
+    <MESSAGE value="feat: Implemented sort in SearchUtils.searchStudentByName" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: Implemented sort in SearchUtils.searchStudentByName" />
   </component>
 </project>
