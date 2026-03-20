@@ -39,6 +39,10 @@ public class ModStudentUtils {
 
         } else if (workWithStudent == 4) {
             List<Student> students = studentService.getAllStudents();//show all students
+            if (students.size()>1){
+                System.out.println("Multiple students found. Please select sorting method: ");
+                students = SortUtils.sortStudents(students, scanner);
+            }
             ModEntitiesUtils.showAllEntity(scanner, students, "Students List");
         }
     }
@@ -49,8 +53,9 @@ public class ModStudentUtils {
         System.out.println("2. Search by group number");
         System.out.println("3. Search by course");
         System.out.println("4. Search by speciality");
+        System.out.println("5. Show all students");
         System.out.println("0. Back");
-        int searchBy = InputUtils.readInt(scanner, "> ", 0, 4);
+        int searchBy = InputUtils.readInt(scanner, "> ", 0, 5);
 
         if (searchBy == 1) { //by full name
             SearchUtils.searchStudentByName(scanner, studentService);
@@ -68,6 +73,13 @@ public class ModStudentUtils {
             SearchUtils.searchStudentByCourse(scanner, studentService);
         } else if (searchBy == 4) { // by speciality
             SearchUtils.searchStudentBySpeciality(scanner, studentService,facultyService);
+        } else  if (searchBy == 5) {
+            List<Student> students = studentService.getAllStudents(); // show all students
+            if (students.size()>1){
+                System.out.println("Multiple students found. Please select sorting method: ");
+                students = SortUtils.sortStudents(students, scanner);
+            }
+            ModEntitiesUtils.showAllEntity(scanner, students, "Students List");
         }
     }
     /**
