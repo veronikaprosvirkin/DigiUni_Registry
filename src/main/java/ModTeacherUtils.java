@@ -54,7 +54,7 @@ public class ModTeacherUtils {
         } else if (searchBy == 2) {
             SearchUtils.searchTeacherByDepartment(scanner, facultyService, teacherService);
         } else if (searchBy == 3) {
-            SearchUtils.searchTeacherByPosition(scanner, universityService);
+            SearchUtils.searchTeacherByPosition(scanner, teacherService);
         }
     }
     /**

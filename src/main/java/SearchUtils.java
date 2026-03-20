@@ -158,6 +158,7 @@ public class SearchUtils {
             System.out.println("No teachers found.");
         } else {
             if (result.size() > 1) {
+                System.out.println("Multiple teachers found. Please select sorting method: ");
                 result = SortUtils.sortTeachers(result, scanner);
             }
             System.out.println(" --- Teachers in " + selectedDepartment.getName() + " ---");
@@ -170,7 +171,26 @@ public class SearchUtils {
     /**
      * Search Teacher by position
      */
-    static void searchTeacherByPosition(Scanner scanner, UniversityService universityService) {
-        // NOT FINISHED
+    static void searchTeacherByPosition(Scanner scanner, TeacherService teacherService) {
+        String rawPosition = InputUtils.readLine(scanner, "Enter position: ", false, false);
+        String position = InputUtils.removeSpaces(rawPosition, false, true, true, true);
+
+        // Filter teachers
+        List<Teacher> result = teacherService.getAllTeachers().stream()
+                .filter(t -> t.getPosition().toLowerCase().contains(position.toLowerCase()))
+                .collect(java.util.stream.Collectors.toList());
+
+        if (result.isEmpty()) {
+            System.out.println("No teachers found.");
+        } else {
+            // Sort
+            if (result.size() > 1) {
+                System.out.println("Multiple teachers found. Please select sorting method: ");
+                result = SortUtils.sortTeachers(result, scanner);
+            }
+            System.out.println(" --- Teachers by position: " + position + " ---");
+            result.forEach(System.out::println);
+        }
+        InputUtils.pause(scanner);
     }
 }
