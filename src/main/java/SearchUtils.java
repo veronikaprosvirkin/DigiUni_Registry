@@ -143,9 +143,29 @@ public class SearchUtils {
     /**
      * Search Teacher by department
      */
-    static void searchTeacherByDepartment(Scanner scanner, UniversityService universityService) {
-        // NOT FINISHED
+    static void searchTeacherByDepartment(Scanner scanner, FacultyService facultyService, TeacherService teacherService) {
+        // Select faculty
+        Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties")
+                .orElseThrow(() -> new EntityNotFoundException("Faculty not found"));
+
+        // Select department
+        Department selectedDepartment = ModEntitiesUtils.selectEntity(scanner, selectedFaculty.getDepartments(), "Departments")
+                .orElseThrow(() -> new EntityNotFoundException("Department not found"));
+
+        List<Teacher> result = teacherService.getTeachersByDepartment(selectedDepartment);
+
+        if (result.isEmpty()) {
+            System.out.println("No teachers found.");
+        } else {
+            if (result.size() > 1) {
+                result = SortUtils.sortTeachers(result, scanner);
+            }
+            System.out.println(" --- Teachers in " + selectedDepartment.getName() + " ---");
+            result.forEach(System.out::println);
+        }
+        InputUtils.pause(scanner);
     }
+
 
     /**
      * Search Teacher by position

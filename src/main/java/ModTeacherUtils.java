@@ -52,7 +52,7 @@ public class ModTeacherUtils {
         if (searchBy == 1) {
             SearchUtils.searchTeacherByName(scanner, teacherService);
         } else if (searchBy == 2) {
-            SearchUtils.searchTeacherByDepartment(scanner, universityService);
+            SearchUtils.searchTeacherByDepartment(scanner, facultyService, teacherService);
         } else if (searchBy == 3) {
             SearchUtils.searchTeacherByPosition(scanner, universityService);
         }
