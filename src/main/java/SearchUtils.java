@@ -15,6 +15,10 @@ public class SearchUtils {
         if (result.isEmpty()) {
             System.out.println("No students found with this name.");
         } else {
+            if (result.size() > 1) {
+                System.out.println("Multiple students found. Please select sorting method: ");
+                result = SortUtils.sortStudents(result, scanner);
+            }
             System.out.println(" --- Students found by name part: " + name + " ---");
             result.forEach(System.out::println);
         }

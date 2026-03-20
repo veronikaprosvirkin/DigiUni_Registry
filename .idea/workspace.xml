@@ -5,11 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="52d3ca8c-2ad0-4cd7-b956-8e8f79936ff7" name="Changes" comment="Add file with admin rights: create, show all, and validate unique usernames">
-      <change afterPath="$PROJECT_DIR$/src/test/java/AdminRightsTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SortUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ModUserUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ModUserUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UserService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SearchUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SearchUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,7 +25,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="authorization" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -58,11 +56,15 @@
     "JUnit.AdminRightsTest.executor": "Run",
     "JUnit.StudentServiceTest.testFindStudentsByGroup.executor": "Run",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true"
+    "git-widget-placeholder": "sorting",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)"
   }
 }]]></component>
-  <component name="RunManager" selected="JUnit.AdminRightsTest">
+  <component name="RunManager">
     <configuration name="AdminRightsTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="DigiUni_Registry" />
       <option name="PACKAGE_NAME" value="" />
