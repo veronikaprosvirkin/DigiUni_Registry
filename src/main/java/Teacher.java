@@ -9,6 +9,7 @@ class Teacher extends Person {
     }
 
     public String getPosition() {return position;}
+    public void setPosition(String position) {this.position = position;}
 
     @Override
     public String toString() {

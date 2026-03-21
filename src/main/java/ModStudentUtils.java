@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -174,6 +175,8 @@ public class ModStudentUtils {
             Student studentToProcess;
             if (result.size() > 1) {
                 System.out.println("Multiple students found. Please select one: ");
+                // Sort alphabetically
+                result.sort(Comparator.comparing(Student::getFullName));
                 for (int i = 0; i < result.size(); i++) {
                     System.out.println((i + 1) + ". " + result.get(i).getFullName() +
                             " (Group: " + result.get(i).getGroup() + ", Course: " + result.get(i).getCourse() + ")");

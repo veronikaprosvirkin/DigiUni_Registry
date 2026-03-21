@@ -1,3 +1,4 @@
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -31,7 +32,7 @@ public class ModTeacherUtils {
         } else if (workWithTeacher == 3) { //edit teacher
             int editTeacher = ModEntitiesUtils.chooseEditing(scanner);
             if (editTeacher == 1) {
-                ModTeacherUtils.teacherEditByName(scanner, universityService);
+                ModTeacherUtils.teacherEditByName(scanner, teacherService);
             } else if (editTeacher == 2) {
                 ModTeacherUtils.teacherEditById(scanner, universityService);
             }
@@ -112,10 +113,62 @@ public class ModTeacherUtils {
     /**
      * Edit the Teacher by name
      */
-    static void teacherEditByName(Scanner scanner, UniversityService universityService) {
+    static void teacherEditByName(Scanner scanner, TeacherService teacherService) {
         String fullName = InputUtils.readLine(scanner, "Enter full name part: ", false, false);
-        fullName = InputUtils.removeSpaces(fullName,false, true, true, true);
-        //to be continued
+        fullName = InputUtils.removeSpaces(fullName, false, true, true, true);
+
+        // Find teachers
+        List<Teacher> result = teacherService.findTeachersByFullName(fullName);
+
+        if (result.isEmpty()) {
+            System.out.println("No teachers found with this name.");
+        } else {
+            Teacher teacherToProcess;
+            // Select if multiple
+            if (result.size() > 1) {
+                System.out.println("Multiple teachers found. Please select one: ");
+                // Sort alphabetically
+                result.sort(Comparator.comparing(Teacher::getFullName));
+                for (int i = 0; i < result.size(); i++) {
+                    System.out.println((i + 1) + ". " + result.get(i).getFullName() +
+                            " (" + result.get(i).getPosition() + ")");
+                }
+                int index = InputUtils.readInt(scanner, "> ", 1, result.size());
+                teacherToProcess = result.get(index - 1);
+            } else {
+                teacherToProcess = result.get(0);
+            }
+
+            System.out.println("\nEditing teacher: " + teacherToProcess.getFullName());
+            System.out.println("1. Change Surname");
+            System.out.println("2. Change Name");
+            System.out.println("3. Change Position");
+            System.out.println("0. Cancel");
+
+            int fieldChoice = InputUtils.readInt(scanner, "> ", 0, 3);
+
+            switch (fieldChoice) {
+                case 1 -> {
+                    //? Update surname
+                    String newSurname = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Enter new surname: ", false, false), true, false, false, false);
+                    teacherToProcess.setSurname(newSurname);
+                    System.out.println("Surname updated!");
+                }
+                case 2 -> {
+                    //? Update name
+                    String newName = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Enter new name: ", false, false), true, false, false, false);
+                    teacherToProcess.setName(newName);
+                    System.out.println("Name updated!");
+                }
+                case 3 -> {
+                    //? Update position
+                    String newPosition = InputUtils.readLine(scanner, "Enter new position: ", false, true);
+                    newPosition = InputUtils.removeSpaces(newPosition, false, true, true, true);
+                    teacherToProcess.setPosition(newPosition); // Requires setter in Teacher class
+                    System.out.println("Position updated!");
+                }
+            }
+        }
     }
 
     /**
