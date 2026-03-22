@@ -15,19 +15,19 @@ public class UserRights {
 
         switch (choice) {
             case "1" -> {    //? Show faculties
-                ModEntitiesUtils.showAllEntity(scanner, facultyService.getFaculties(), "Faculty");
+                ModEntitiesUtils.showAllEntity(scanner, facultyService.getFaculties(), "Faculty", false);
             }
             case "2" -> {   //? Show departments
                 Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty")
                         .orElseThrow(()-> new EntityNotFoundException("Faculty wasn't chosen or found"));
 
-                ModEntitiesUtils.showAllEntity(scanner, selectedFaculty.getDepartments(), "Department");
+                ModEntitiesUtils.showAllEntity(scanner, selectedFaculty.getDepartments(), "Department", false);
 
             }
             case "3" -> {   //? Show specialities
                 Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty")
                         .orElseThrow(()-> new EntityNotFoundException("Faculty wasn't chosen or found"));
-                ModEntitiesUtils.showAllEntity(scanner, selectedFaculty.getSpeciality(), "Speciality" );
+                ModEntitiesUtils.showAllEntity(scanner, selectedFaculty.getSpeciality(), "Speciality", false);
 
             }
 
@@ -36,9 +36,9 @@ public class UserRights {
                 System.out.println("2. Find Teacher");
                 int searchType = InputUtils.readInt(scanner, "> ", 1, 2);
                 if (searchType == 1) { //? Find Student
-                    ModStudentUtils.searchStudentMenu(scanner,studentService,facultyService,universityService);
+                    ModStudentUtils.searchStudentMenu(scanner,studentService,facultyService,universityService, false);
                 } else if (searchType == 2) { //? Find Teacher
-                    ModTeacherUtils.searchTeacherMenu(scanner,teacherService,facultyService,universityService);
+                    ModTeacherUtils.searchTeacherMenu(scanner,teacherService,facultyService,universityService, false);
                 }
             }
             case "0" -> {

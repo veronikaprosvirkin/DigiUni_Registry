@@ -27,11 +27,6 @@ public class UniversityService {
         Department dep_acitr = new Department("Department of Automation, Computer-Integrated Technologies, and Robotics");
         Department dep_math = new Department("Department of Mathematics"); // AM and SA are here
 
-        Teacher t1 = new Teacher("Andrii", "Glybovets", "Dekan", dep_cs);
-        dep_cs.getTeachers().add(t1);
-        Teacher t2 = new Teacher("Andrii", "Makarets", "teacher", dep_math);
-        dep_math.getTeachers().add(t2);
-
 
         //Specialities of Faculty FI
         fi.getSpeciality().add(se);

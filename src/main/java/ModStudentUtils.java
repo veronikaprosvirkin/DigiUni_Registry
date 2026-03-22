@@ -7,7 +7,7 @@ public class ModStudentUtils {
     //! ======= WORK WITH STUDENTS ===== //
 
     //show menu for student
-    static void showStudentMenu(Scanner scanner, StudentService studentService, FacultyService facultyService, UniversityService universityService) {
+    static void showStudentMenu(Scanner scanner, StudentService studentService, FacultyService facultyService, UniversityService universityService, boolean showId) {
         System.out.println("1. Add Student");
         System.out.println("2. Delete Student");
         System.out.println("3. Edit information about student");
@@ -44,12 +44,12 @@ public class ModStudentUtils {
                 System.out.println("Multiple students found. Please select sorting method: ");
                 students = SortUtils.sortStudents(students, scanner);
             }
-            ModEntitiesUtils.showAllEntity(scanner, students, "Students List");
+            ModEntitiesUtils.showAllEntity(scanner, students, "Students List", showId);
         }
     }
 
     //search menu for student
-    static void searchStudentMenu(Scanner scanner, StudentService studentService, FacultyService facultyService, UniversityService universityService) {
+    static void searchStudentMenu(Scanner scanner, StudentService studentService, FacultyService facultyService, UniversityService universityService, boolean showId) {
         System.out.println("1. Search by full name");
         System.out.println("2. Search by group number");
         System.out.println("3. Search by course");
@@ -80,7 +80,7 @@ public class ModStudentUtils {
                 System.out.println("Multiple students found. Please select sorting method: ");
                 students = SortUtils.sortStudents(students, scanner);
             }
-            ModEntitiesUtils.showAllEntity(scanner, students, "Students List");
+            ModEntitiesUtils.showAllEntity(scanner, students, "Students List", showId);
         }
     }
     /**
@@ -107,7 +107,8 @@ public class ModStudentUtils {
 
 
         // Save
-        Student s = new Student(name, surname, enrollmentDate, groupNumber,
+        String newId = IdGenerator.generateStudentId(enrollmentDate.getYear());
+        Student s = new Student(newId,name, surname, enrollmentDate, groupNumber,
                 selectedFaculty.getName(),
                 selectedSpeciality);
         studentService.addStudentToSpeciality(s, selectedSpeciality, groupNumber);

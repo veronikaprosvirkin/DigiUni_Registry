@@ -25,7 +25,7 @@ class StudentServiceTest {
         faculty.getSpeciality().add(speciality);
         university.getFaculties().add(faculty);
 
-        testStudent = new Student("Taras", "Shevchenko", LocalDate.of(2026, 9, 1), 101, "Faculty of Computer Science", speciality);
+        testStudent = new Student("st001", "Taras", "Shevchenko", LocalDate.of(2026, 9, 1), 101, "Faculty of Computer Science", speciality);
         studentService.addStudentToSpeciality(testStudent, speciality, 101);
     }
 
@@ -40,7 +40,7 @@ class StudentServiceTest {
     // Test addStudentToSpeciality method
     @Test
     void testAddStudentToSpeciality() {
-        Student newStudent = new Student("Lesya", "Ukrainka", LocalDate.of(2018, 9, 1), 101, "Faculty of Computer Science", speciality);
+        Student newStudent = new Student("st002", "Lesya", "Ukrainka", LocalDate.of(2018, 9, 1), 101, "Faculty of Computer Science", speciality);
         studentService.addStudentToSpeciality(newStudent, speciality, 101);
         assertTrue(studentService.getAllStudents().contains(newStudent));
     }
@@ -85,7 +85,7 @@ class StudentServiceTest {
     @ParameterizedTest
     @ValueSource(ints = {23,43,9})
     void testFindStudentsByGroup(int groupNumber) {
-        Student testStudent = new Student("Taras", "Shevchenko", LocalDate.of(2005, 9, 1), groupNumber, "Faculty of Computer Science", speciality);
+        Student testStudent = new Student("st003","Taras", "Shevchenko", LocalDate.of(2005, 9, 1), groupNumber, "Faculty of Computer Science", speciality);
         studentService.addStudentToSpeciality(testStudent, speciality, groupNumber);
         List<Student> found = studentService.findStudentsByGroup(groupNumber);
         assertTrue(found.contains(testStudent));

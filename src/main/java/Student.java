@@ -5,9 +5,10 @@ public class Student extends Person {
     private int group;
     private String faculty;
     private Speciality speciality;
+    private String id;
 
     // Update constructor to accept context
-    public Student(String name, String surname, LocalDate enrollmentDate, int group, String faculty, Speciality speciality) {
+    public Student(String id,String name, String surname, LocalDate enrollmentDate, int group, String faculty, Speciality speciality) {
         super(name, surname);
         if (group <= 0)
             throw new IllegalArgumentException("Group number must be greater than 0.");
@@ -15,6 +16,7 @@ public class Student extends Person {
         this.group = group;
         this.faculty = faculty;
         this.speciality = speciality;
+        this.id = id;
 
     }
     //count course based on enrollment date
@@ -56,4 +58,6 @@ public class Student extends Person {
     public int getEnrollmentDate(){
         return enrollmentDate.getYear();
     }
+
+    public String getId() { return id; }
 }

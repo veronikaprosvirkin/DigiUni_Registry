@@ -26,19 +26,19 @@ public class ManagerRights {
                 ModSpecialityUtils.showSpecialityMenu(scanner, specialityService, facultyService);
             }
             case "4" -> {   //? Work with students
-                ModStudentUtils.showStudentMenu(scanner,studentService,facultyService,universityService);
+                ModStudentUtils.showStudentMenu(scanner,studentService,facultyService,universityService, true);
             }
             case "5" -> {   //? Work with teachers
-                ModTeacherUtils.showTeacherMenu(scanner,teacherService,facultyService,universityService);
+                ModTeacherUtils.showTeacherMenu(scanner,teacherService,facultyService,universityService, true);
             }
             case "6" -> {   //? search
                 System.out.println("1. Find Student");
                 System.out.println("2. Find Teacher");
                 int searchType = InputUtils.readInt(scanner, "> ", 1, 2);
                 if (searchType == 1) { //? Find Student
-                    ModStudentUtils.searchStudentMenu(scanner,studentService,facultyService,universityService);
+                    ModStudentUtils.searchStudentMenu(scanner,studentService,facultyService,universityService, true);
                 } else if (searchType == 2) { //? Find Teacher
-                    ModTeacherUtils.searchTeacherMenu(scanner,teacherService,facultyService,universityService);
+                    ModTeacherUtils.searchTeacherMenu(scanner,teacherService,facultyService,universityService, true);
                 }
             }
             case "0" -> {

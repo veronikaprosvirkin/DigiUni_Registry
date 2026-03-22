@@ -21,6 +21,12 @@ public class Main {
         studentService.addStudent("Irzek", "Zlotych", LocalDate.of(2024, 9, 1), 101);
         studentService.addStudent("Irzek", "Tymekowskych", LocalDate.of(2023, 9, 1), 15);
 
+        Department defaultDept = university.getFaculties().get(0).getDepartments().get(0);
+
+        // Creating few teachers
+        teacherService.addTeacher("Andrii", "Glybovets", "Dekan", defaultDept);
+        teacherService.addTeacher("Andrii", "Makarets", "Docent", defaultDept);
+
         while (true) {
             //authorization logic
             User currentUser = userService.getCurrentUser();

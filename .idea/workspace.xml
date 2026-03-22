@@ -5,8 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="52d3ca8c-2ad0-4cd7-b956-8e8f79936ff7" name="Changes" comment="test: SortUtilsTest for testing all student's and teacher's sort">
-      <change afterPath="$PROJECT_DIR$/src/test/java/SearchUtilsTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/IdGenerator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/AdminRights.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/AdminRights.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ManagerRights.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ManagerRights.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ModEntitiesUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ModEntitiesUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ModStudentUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ModStudentUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ModTeacherUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ModTeacherUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Student.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Student.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/StudentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/StudentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Teacher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Teacher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/TeacherService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TeacherService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/UniversityService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UniversityService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/UserRights.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UserRights.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/SortUtilsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/SortUtilsTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/StudentServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/StudentServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/AdminRights.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/AdminRights.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ModStudentUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ModStudentUtils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ModTeacherUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ModTeacherUtils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Teacher.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Teacher.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,26 +67,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Main.executor": "Run",
-    "JUnit.AdminRightsTest.executor": "Run",
-    "JUnit.SearchUtilsTest.executor": "Run",
-    "JUnit.SortUtilsTest.executor": "Run",
-    "JUnit.StudentServiceTest.testFindStudentsByGroup.executor": "Run",
-    "RunOnceActivity.git.unshallow": "true",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "main",
-    "junie.onboarding.icon.badge.shown": "true",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "to.speed.mode.migration.done": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.AdminRightsTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.SearchUtilsTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.SortUtilsTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.StudentServiceTest.testFindStudentsByGroup.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="AdminRightsTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="DigiUni_Registry" />

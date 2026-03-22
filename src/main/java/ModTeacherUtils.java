@@ -6,7 +6,7 @@ public class ModTeacherUtils {
     //! ======= WORK WITH TEACHERS ===== //
 
     //show menu for teacher
-    static void showTeacherMenu(Scanner scanner, TeacherService teacherService, FacultyService facultyService, UniversityService universityService) {
+    static void showTeacherMenu(Scanner scanner, TeacherService teacherService, FacultyService facultyService, UniversityService universityService, boolean showId) {
         System.out.println("1. Add Teacher");
         System.out.println("2. Delete Teacher");
         System.out.println("3. Edit information about teacher");
@@ -42,12 +42,12 @@ public class ModTeacherUtils {
                 System.out.println("Multiple teachers found. Please select sorting method: ");
                 teachers = SortUtils.sortTeachers(teachers, scanner);
             }
-            ModEntitiesUtils.showAllEntity(scanner, teachers, "Teachers List");
+            ModEntitiesUtils.showAllEntity(scanner, teachers, "Teachers List", showId);
         }
     }
 
     //search menu for teacher
-    static void searchTeacherMenu(Scanner scanner, TeacherService teacherService, FacultyService facultyService, UniversityService universityService) {
+    static void searchTeacherMenu(Scanner scanner, TeacherService teacherService, FacultyService facultyService, UniversityService universityService, boolean showId) {
         System.out.println("1. Search by full name");
         System.out.println("2. Search by department");
         System.out.println("3. Search by position");
@@ -67,7 +67,7 @@ public class ModTeacherUtils {
                 System.out.println("Multiple teachers found. Please select sorting method: ");
                 teachers = SortUtils.sortTeachers(teachers, scanner);
             }
-            ModEntitiesUtils.showAllEntity(scanner, teachers, "Teachers List");
+            ModEntitiesUtils.showAllEntity(scanner, teachers, "Teachers List", showId);
         }
     }
     /**
@@ -90,7 +90,8 @@ public class ModTeacherUtils {
 
 
         // Save
-        Teacher t = new Teacher(name, surname, position, selectedDept);
+        String newId = IdGenerator.generateTeacherId();
+        Teacher t = new Teacher(newId,name, surname, position, selectedDept);
         teacherService.addTeacher(name, surname, position, selectedDept);
         System.out.println("Teacher " + name + " " + surname +
                 " successfully added to department: " + selectedDept.getName());

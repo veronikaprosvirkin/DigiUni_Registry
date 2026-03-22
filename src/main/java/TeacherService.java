@@ -14,7 +14,7 @@ public class TeacherService {
             // Deciding where to sign (first Faculty and first Department)
             university.getFaculties().get(0)
                     .getDepartments().get(0)
-                    .getTeachers().add(new Teacher(name, surname, position, selectedDept));
+                    .getTeachers().add(new Teacher(IdGenerator.generateTeacherId(),name, surname, position, selectedDept));
         }
     }
 

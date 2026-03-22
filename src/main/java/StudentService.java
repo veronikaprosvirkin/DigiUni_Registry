@@ -32,7 +32,7 @@ public class StudentService {
             }
 
 
-            Student newStudent = new Student(name, surname, enrollmentDate, groupNumber,
+            Student newStudent = new Student(IdGenerator.generateStudentId(enrollmentDate.getYear()),name, surname, enrollmentDate, groupNumber,
                     defaultFaculty.getName(),
                     defaultSpec);
 

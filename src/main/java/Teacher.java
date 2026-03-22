@@ -1,12 +1,16 @@
 class Teacher extends Person {
     private String position;
     private Department department;
+    private String id;
 
-    public Teacher(String name, String surname, String position, Department department) {
+    public Teacher(String id, String name, String surname, String position, Department department) {
         super(name, surname);
         this.position = position;
         this.department = department;
+        this.id = id;
     }
+    public String getId(){return id;}
+
 
     public String getPosition() {return position;}
     public void setPosition(String position) {this.position = position;}

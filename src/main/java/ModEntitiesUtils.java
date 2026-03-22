@@ -61,13 +61,24 @@ public class ModEntitiesUtils {
 
     }
 
-    static <T extends NamedEntity> void showAllEntity(Scanner scanner, List<T> entities, String entityName) {
+    static <T extends NamedEntity> void showAllEntity(Scanner scanner, List<T> entities, String entityName, boolean showId) {
         if (entities.isEmpty()) {
-            System.out.println("No entities found!");
+            System.out.println("No " + entityName + " found!");
             return;
         }else {
             for (int i = 0; i < entities.size(); i++) {
-                System.out.println((i + 1) + ". " + entities.get(i));
+                T entity = entities.get(i);
+                String idPrefix = "";
+                if (showId) {
+                    if (entity instanceof Student){
+                        Student student = (Student) entity;
+                        idPrefix = "[ID: " + student.getId() + "]  ";
+                    } else if (entity instanceof Teacher) {
+                        Teacher teacher = (Teacher) entity;
+                        idPrefix = "[ID: " + teacher.getId() + "]  ";
+                    }
+                }
+                System.out.println((i + 1) + ". " + idPrefix + entity.getDisplayInfo());
             }
         }
         InputUtils.pause(scanner);

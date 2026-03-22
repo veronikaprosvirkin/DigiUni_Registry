@@ -20,17 +20,17 @@ public class SortUtilsTest {
         Faculty f = new Faculty("FI");
         Speciality s = new Speciality("SE");
 
-        students.add(new Student("Jan", "Kowalski", LocalDate.of(2025, 9, 1), 102, "FI", s));
-        students.add(new Student("Anna", "Nowak", LocalDate.of(2024, 9, 1), 101, "FI", s));
-        students.add(new Student("Anna", "Kaczmarek", LocalDate.of(2024, 9, 1), 101, "FI", s));
+        students.add(new Student("st001", "Jan", "Kowalski", LocalDate.of(2025, 9, 1), 102, "FI", s));
+        students.add(new Student("st002", "Anna", "Nowak", LocalDate.of(2024, 9, 1), 101, "FI", s));
+        students.add(new Student("st003", "Anna", "Kaczmarek", LocalDate.of(2024, 9, 1), 101, "FI", s));
 
         teachers = new ArrayList<>();
         dept1 = new Department("CS");
         dept2 = new Department("Math");
 
-        teachers.add(new Teacher("Marek", "Wiśniewski", "Prof", dept2));
-        teachers.add(new Teacher("Ewa", "Wójcik", "Docent", dept1));
-        teachers.add(new Teacher("Adam", "Dąbrowski", "Docent", dept1));
+        teachers.add(new Teacher("th1000","Marek", "Wiśniewski", "Prof", dept2));
+        teachers.add(new Teacher("th1001","Ewa", "Wójcik", "Docent", dept1));
+        teachers.add(new Teacher("th1002","Adam", "Dąbrowski", "Docent", dept1));
     }
 
     // Test student sort by name
