@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="52d3ca8c-2ad0-4cd7-b956-8e8f79936ff7" name="Changes" comment="feat: finished ModTeacherUtils.teacherEditByName logic">
-      <change afterPath="$PROJECT_DIR$/src/test/java/SortUtilsTest.java" afterDir="false" />
+    <list default="true" id="52d3ca8c-2ad0-4cd7-b956-8e8f79936ff7" name="Changes" comment="test: SortUtilsTest for testing all student's and teacher's sort">
+      <change afterPath="$PROJECT_DIR$/src/test/java/SearchUtilsTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -53,6 +53,7 @@
   "keyToString": {
     "Application.Main.executor": "Run",
     "JUnit.AdminRightsTest.executor": "Run",
+    "JUnit.SearchUtilsTest.executor": "Run",
     "JUnit.SortUtilsTest.executor": "Run",
     "JUnit.StudentServiceTest.testFindStudentsByGroup.executor": "Run",
     "RunOnceActivity.git.unshallow": "true",
@@ -120,7 +121,7 @@
       <updated>1773005855992</updated>
       <workItem from="1774099280164" duration="1853000" />
       <workItem from="1774128068395" duration="2000" />
-      <workItem from="1774178507243" duration="313000" />
+      <workItem from="1774178507243" duration="916000" />
     </task>
     <task id="LOCAL-00002" summary="Added dynamic calculating of a student's course based on the enrollment Date">
       <option name="closed" value="true" />
@@ -178,7 +179,15 @@
       <option name="project" value="LOCAL" />
       <updated>1774100421664</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="test: SortUtilsTest for testing all student's and teacher's sort">
+      <option name="closed" value="true" />
+      <created>1774178945312</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1774178945312</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -204,6 +213,7 @@
     <MESSAGE value="feat: added sorting for viewing all students" />
     <MESSAGE value="feat: added sorting for viewing all teachers" />
     <MESSAGE value="feat: finished ModTeacherUtils.teacherEditByName logic" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: finished ModTeacherUtils.teacherEditByName logic" />
+    <MESSAGE value="test: SortUtilsTest for testing all student's and teacher's sort" />
+    <option name="LAST_COMMIT_MESSAGE" value="test: SortUtilsTest for testing all student's and teacher's sort" />
   </component>
 </project>
