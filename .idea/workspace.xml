@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="52d3ca8c-2ad0-4cd7-b956-8e8f79936ff7" name="Changes" comment="feat: added sorting for viewing all teachers">
+    <list default="true" id="52d3ca8c-2ad0-4cd7-b956-8e8f79936ff7" name="Changes" comment="feat: finished ModTeacherUtils.teacherEditByName logic">
+      <change afterPath="$PROJECT_DIR$/src/test/java/SortUtilsTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ModStudentUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ModStudentUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ModTeacherUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ModTeacherUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Teacher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Teacher.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,12 +35,12 @@
     &quot;assignee&quot;: &quot;veronikaprosvirkin&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/veronikaprosvirkin/DigiUni_Registry.git",
-    "accountId": "5b98b4ad-ef8d-4e1a-aeb1-83b516e6a398"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/veronikaprosvirkin/DigiUni_Registry.git&quot;,
+    &quot;accountId&quot;: &quot;5b98b4ad-ef8d-4e1a-aeb1-83b516e6a398&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
 }</component>
@@ -55,6 +53,7 @@
   "keyToString": {
     "Application.Main.executor": "Run",
     "JUnit.AdminRightsTest.executor": "Run",
+    "JUnit.SortUtilsTest.executor": "Run",
     "JUnit.StudentServiceTest.testFindStudentsByGroup.executor": "Run",
     "RunOnceActivity.git.unshallow": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
@@ -64,6 +63,7 @@
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
     "to.speed.mode.migration.done": "true",
     "vue.rearranger.settings.migration": "true"
   }
@@ -118,7 +118,9 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1773005855992</updated>
-      <workItem from="1774099280164" duration="794000" />
+      <workItem from="1774099280164" duration="1853000" />
+      <workItem from="1774128068395" duration="2000" />
+      <workItem from="1774178507243" duration="313000" />
     </task>
     <task id="LOCAL-00002" summary="Added dynamic calculating of a student's course based on the enrollment Date">
       <option name="closed" value="true" />
@@ -168,11 +170,30 @@
       <option name="project" value="LOCAL" />
       <updated>1774044774412</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="feat: finished ModTeacherUtils.teacherEditByName logic">
+      <option name="closed" value="true" />
+      <created>1774100421664</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1774100421664</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="added User, UserService, and Role enum; integrated authentication logic into Main" />
@@ -182,6 +203,7 @@
     <MESSAGE value="feat: finished searchTeacherByPosition in SearchUtils" />
     <MESSAGE value="feat: added sorting for viewing all students" />
     <MESSAGE value="feat: added sorting for viewing all teachers" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: added sorting for viewing all teachers" />
+    <MESSAGE value="feat: finished ModTeacherUtils.teacherEditByName logic" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: finished ModTeacherUtils.teacherEditByName logic" />
   </component>
 </project>
