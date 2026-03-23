@@ -5,8 +5,11 @@ public class Faculty implements NamedEntity{
     private String nameOfFaculty;
     private List<Speciality> speciality = new ArrayList<>();
     private List<Department> departments = new ArrayList<>();
+    private String id;
 
-    public Faculty(String nameOfFaculty) {
+
+    public Faculty(String id, String nameOfFaculty) {
+        this.id=id;
         this.nameOfFaculty = nameOfFaculty;
     }
 

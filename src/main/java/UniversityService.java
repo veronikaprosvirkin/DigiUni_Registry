@@ -12,7 +12,7 @@ public class UniversityService {
 
     // Creating base structure: Faculty-Speciality-Department
     private void initializeStructure() {
-        Faculty fi = new Faculty("Faculty of Informatics");
+        Faculty fi = new Faculty(IdGenerator.generateFacultyId(), "Faculty of Informatics");
 
         //Specialities
         Speciality se = new Speciality(IdGenerator.generateSpecialityId(), "Software Engineering");
@@ -22,10 +22,10 @@ public class UniversityService {
         Speciality sa = new Speciality(IdGenerator.generateSpecialityId(), "Systems Analysis");
 
         //Departments
-        Department dep_cs = new Department("Department of Computer Science");
-        Department dep_ms = new Department("Department of Multimedia Systems");
-        Department dep_acitr = new Department("Department of Automation, Computer-Integrated Technologies, and Robotics");
-        Department dep_math = new Department("Department of Mathematics"); // AM and SA are here
+        Department dep_cs = new Department(IdGenerator.generateDepartmentId(), "Department of Computer Science");
+        Department dep_ms = new Department(IdGenerator.generateDepartmentId(), "Department of Multimedia Systems");
+        Department dep_acitr = new Department(IdGenerator.generateDepartmentId(), "Department of Automation, Computer-Integrated Technologies, and Robotics");
+        Department dep_math = new Department(IdGenerator.generateDepartmentId(), "Department of Mathematics"); // AM and SA are here
 
 
         //Specialities of Faculty FI
@@ -45,7 +45,7 @@ public class UniversityService {
         university.getFaculties().add(fi);
 
         // === FACULTY OF ECONOMICS (FE) ===
-        Faculty fen = new Faculty("Faculty of Economics");
+        Faculty fen = new Faculty(IdGenerator.generateFacultyId(), "Faculty of Economics");
 
         //Specialities
         Speciality ma = new Speciality(IdGenerator.generateSpecialityId(), "Marketing");
@@ -54,9 +54,9 @@ public class UniversityService {
         Speciality mng = new Speciality(IdGenerator.generateSpecialityId(), "Management");
 
         //Departments
-        Department dep_et = new Department("Department of Economic Theory");
-        Department dep_fin = new Department("Department of Finance");
-        Department dep_mbm = new Department("Department of Marketing and Business Management");
+        Department dep_et = new Department(IdGenerator.generateDepartmentId(), "Department of Economic Theory");
+        Department dep_fin = new Department(IdGenerator.generateDepartmentId(), "Department of Finance");
+        Department dep_mbm = new Department(IdGenerator.generateDepartmentId(), "Department of Marketing and Business Management");
 
         //Specialities of Faculty FE
         fen.getSpeciality().add(ma);
@@ -72,7 +72,7 @@ public class UniversityService {
         university.getFaculties().add(fen);
 
         // === FACULTY OF HUMANITIES (FH) ===
-        Faculty fh = new Faculty("Faculty of Humanities");
+        Faculty fh = new Faculty(IdGenerator.generateFacultyId(), "Faculty of Humanities");
 
         //Specialities
         Speciality hist = new Speciality(IdGenerator.generateSpecialityId(), "History and Archaeology");
@@ -81,12 +81,12 @@ public class UniversityService {
         Speciality ling = new Speciality(IdGenerator.generateSpecialityId(), "Philology");
 
         //Departments
-        Department dep_hist = new Department("Department of History");
-        Department dep_arch = new Department("Department of Archaeology");
-        Department dep_phil = new Department("Department of Philosophy and Religious Studies");
-        Department dep_cult = new Department("Department of Cultural Studies");
-        Department dep_lit = new Department("Department of Literature");
-        Department dep_engl = new Department("Department of English Language");
+        Department dep_hist = new Department(IdGenerator.generateDepartmentId(), "Department of History");
+        Department dep_arch = new Department(IdGenerator.generateDepartmentId(), "Department of Archaeology");
+        Department dep_phil = new Department(IdGenerator.generateDepartmentId(), "Department of Philosophy and Religious Studies");
+        Department dep_cult = new Department(IdGenerator.generateDepartmentId(), "Department of Cultural Studies");
+        Department dep_lit = new Department(IdGenerator.generateDepartmentId(), "Department of Literature");
+        Department dep_engl = new Department(IdGenerator.generateDepartmentId(), "Department of English Language");
 
         //Specialities of Faculty FH
         fh.getSpeciality().add(hist);
@@ -105,17 +105,17 @@ public class UniversityService {
         university.getFaculties().add(fh);
 
         // === FACULTY OF LAW (FL) ===
-        Faculty fl = new Faculty("Faculty of Law");
+        Faculty fl = new Faculty(IdGenerator.generateFacultyId(), "Faculty of Law");
 
         //Specialities
         Speciality law = new Speciality(IdGenerator.generateSpecialityId(), "Law");
         Speciality pma = new Speciality(IdGenerator.generateSpecialityId(), "Public Management and Administration");
 
         //Departments
-        Department dep_gjd = new Department("Department of General Juridical Disciplines");
-        Department dep_iel = new Department("Department of International and European Law");
-        Department dep_pl = new Department("Department of Public Law");
-        Department dep_prl = new Department("Department of Private Law");
+        Department dep_gjd = new Department(IdGenerator.generateDepartmentId(), "Department of General Juridical Disciplines");
+        Department dep_iel = new Department(IdGenerator.generateDepartmentId(), "Department of International and European Law");
+        Department dep_pl = new Department(IdGenerator.generateDepartmentId(), "Department of Public Law");
+        Department dep_prl = new Department(IdGenerator.generateDepartmentId(), "Department of Private Law");
 
         //Specialities of Faculty FL
         fl.getSpeciality().add(law);
@@ -130,7 +130,7 @@ public class UniversityService {
         university.getFaculties().add(fl);
 
         // === FACULTY OF NATURAL SCIENCES (FNS) ===
-        Faculty fns = new Faculty("Faculty of Natural Sciences");
+        Faculty fns = new Faculty(IdGenerator.generateFacultyId(), "Faculty of Natural Sciences");
 
         //Specialities
         Speciality bio = new Speciality(IdGenerator.generateSpecialityId(), "Biology and Biotechnology");
@@ -139,10 +139,10 @@ public class UniversityService {
         Speciality phys = new Speciality(IdGenerator.generateSpecialityId(), "Physics and Astronomy");
 
         //Departments
-        Department dep_bio = new Department("Department of Biology");
-        Department dep_eco = new Department("Department of Environmental Studies");
-        Department dep_chem = new Department("Department of Chemistry");
-        Department dep_pms = new Department("Department of Physical and Mathematical Sciences");
+        Department dep_bio = new Department(IdGenerator.generateDepartmentId(), "Department of Biology");
+        Department dep_eco = new Department(IdGenerator.generateDepartmentId(), "Department of Environmental Studies");
+        Department dep_chem = new Department(IdGenerator.generateDepartmentId(), "Department of Chemistry");
+        Department dep_pms = new Department(IdGenerator.generateDepartmentId(), "Department of Physical and Mathematical Sciences");
 
         //Specialities of Faculty FNS
         fns.getSpeciality().add(bio);
@@ -159,7 +159,7 @@ public class UniversityService {
         university.getFaculties().add(fns);
 
         // === FACULTY OF SOCIAL SCIENCES AND SOCIAL TECHNOLOGIES (FSSST) ===
-        Faculty fssst = new Faculty("Faculty of Social Sciences and Social Technologies");
+        Faculty fssst = new Faculty(IdGenerator.generateFacultyId(), "Faculty of Social Sciences and Social Technologies");
 
         //Specialities
         Speciality soc = new Speciality(IdGenerator.generateSpecialityId(), "Sociology");
@@ -170,12 +170,12 @@ public class UniversityService {
         Speciality ir = new Speciality(IdGenerator.generateSpecialityId(), "International Relations");
 
         //Departments
-        Department dep_soc = new Department("Department of Sociology");
-        Department dep_pol = new Department("Department of Political Science");
-        Department dep_psy = new Department("Department of Psychology and Pedagogy");
-        Department school_sw = new Department("School of Social Work");
-        Department school_jour = new Department("Mohyla School of Journalism");
-        Department school_ph = new Department("School of Public Health");
+        Department dep_soc = new Department(IdGenerator.generateDepartmentId(), "Department of Sociology");
+        Department dep_pol = new Department(IdGenerator.generateDepartmentId(), "Department of Political Science");
+        Department dep_psy = new Department(IdGenerator.generateDepartmentId(), "Department of Psychology and Pedagogy");
+        Department school_sw = new Department(IdGenerator.generateDepartmentId(), "School of Social Work");
+        Department school_jour = new Department(IdGenerator.generateDepartmentId(), "Mohyla School of Journalism");
+        Department school_ph = new Department(IdGenerator.generateDepartmentId(), "School of Public Health");
 
         //Specialities of Faculty FSSST
         fssst.getSpeciality().add(soc);

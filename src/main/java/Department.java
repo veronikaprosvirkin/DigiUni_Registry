@@ -4,8 +4,11 @@ import java.util.List;
 public class Department implements NamedEntity {
     private String nameOfDepartment;
     private List<Teacher> teachers= new ArrayList<>();
+    private String id;
 
-    public Department(String nameOfDepartment) {
+
+    public Department(String id,String nameOfDepartment) {
+        this.id=id;
         this.nameOfDepartment = nameOfDepartment;
     }
     public String getName() { return nameOfDepartment; }
