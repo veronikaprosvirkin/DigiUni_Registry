@@ -53,6 +53,22 @@ public class TeacherService {
         return result;
     }
 
+    // Find teachers by ID
+    public List<Teacher> findTeacherById(String id) {
+        List<Teacher> result = new ArrayList<>();
+
+        for (Teacher t : getAllTeachers()){
+            if (t.getId().equalsIgnoreCase(id)){
+                result.add(t);
+                break;
+            }
+        }
+        if (result.isEmpty()){
+            System.out.println("No teacher found by id " + id);
+        }
+        return result;
+    }
+
     public List<Teacher> getTeachersByDepartment(Department department) {
         return department.getTeachers();
     }

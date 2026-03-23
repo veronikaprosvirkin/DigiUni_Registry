@@ -4,27 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="52d3ca8c-2ad0-4cd7-b956-8e8f79936ff7" name="Changes" comment="test: SortUtilsTest for testing all student's and teacher's sort">
-      <change afterPath="$PROJECT_DIR$/src/main/java/IdGenerator.java" afterDir="false" />
+    <list default="true" id="52d3ca8c-2ad0-4cd7-b956-8e8f79936ff7" name="Changes" comment="feat: added id generator for teachers and students">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/AdminRights.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/AdminRights.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ManagerRights.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ManagerRights.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ModEntitiesUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ModEntitiesUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ModStudentUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ModStudentUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ModTeacherUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ModTeacherUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Student.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Student.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/StudentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/StudentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Teacher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Teacher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/TeacherService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/TeacherService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/UniversityService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UniversityService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/UserRights.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/UserRights.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/SortUtilsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/SortUtilsTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/StudentServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/StudentServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/AdminRights.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/AdminRights.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ModStudentUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ModStudentUtils.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ModTeacherUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ModTeacherUtils.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Teacher.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Teacher.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ModEntitiesUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ModEntitiesUtils.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -205,7 +188,15 @@
       <option name="project" value="LOCAL" />
       <updated>1774178945312</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="feat: added id generator for teachers and students">
+      <option name="closed" value="true" />
+      <created>1774201695436</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1774201695436</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -232,6 +223,7 @@
     <MESSAGE value="feat: added sorting for viewing all teachers" />
     <MESSAGE value="feat: finished ModTeacherUtils.teacherEditByName logic" />
     <MESSAGE value="test: SortUtilsTest for testing all student's and teacher's sort" />
-    <option name="LAST_COMMIT_MESSAGE" value="test: SortUtilsTest for testing all student's and teacher's sort" />
+    <MESSAGE value="feat: added id generator for teachers and students" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: added id generator for teachers and students" />
   </component>
 </project>

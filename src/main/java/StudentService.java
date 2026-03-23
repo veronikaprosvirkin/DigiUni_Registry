@@ -245,4 +245,19 @@ public class StudentService {
         }
         return result;
     }
+
+    // Find students by ID
+    public List<Student> findStudentById(String id, Speciality selectedSpeciality) {
+        List<Student> result = new ArrayList<>();
+        for(Student s: getAllStudents()){
+            if (s.getId().equalsIgnoreCase(id)){
+                result.add(s);
+                break;
+            }
+        }
+        if (result.isEmpty()){
+            System.out.println("No student found by id " + id);
+        }
+        return result;
+    }
 }
