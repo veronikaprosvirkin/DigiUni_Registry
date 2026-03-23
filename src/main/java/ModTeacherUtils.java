@@ -164,7 +164,7 @@ public class ModTeacherUtils {
         System.out.println("1. Change Surname");
         System.out.println("2. Change Name");
         System.out.println("3. Change Position");
-        System.out.println("0. Cancel");
+        System.out.println("0. Finish editing");
 
         int fieldChoice = InputUtils.readInt(scanner, "> ", 0, 3);
         if (fieldChoice == 0) { break;}

@@ -4,13 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="52d3ca8c-2ad0-4cd7-b956-8e8f79936ff7" name="Changes" comment="feat: added methods for deleting by id for teachers and students">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ModTeacherUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ModTeacherUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ModStudentUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ModStudentUtils.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ModTeacherUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ModTeacherUtils.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/StudentService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/StudentService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/TeacherService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/TeacherService.class" afterDir="false" />
+    <list default="true" id="52d3ca8c-2ad0-4cd7-b956-8e8f79936ff7" name="Changes" comment="feat: added method for editing teachers by id">
+      <change beforePath="$PROJECT_DIR$/src/main/java/ModStudentUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ModStudentUtils.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -215,7 +210,15 @@
       <option name="project" value="LOCAL" />
       <updated>1774279733998</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="feat: added method for editing teachers by id">
+      <option name="closed" value="true" />
+      <created>1774281057227</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1774281057227</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -245,6 +248,7 @@
     <MESSAGE value="feat: added id generator for teachers and students" />
     <MESSAGE value="feat: added methods for searching by id for teachers and students" />
     <MESSAGE value="feat: added methods for deleting by id for teachers and students" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: added methods for deleting by id for teachers and students" />
+    <MESSAGE value="feat: added method for editing teachers by id" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: added method for editing teachers by id" />
   </component>
 </project>

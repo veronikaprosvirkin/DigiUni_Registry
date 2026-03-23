@@ -34,7 +34,7 @@ public class ModStudentUtils {
             if (editStudent == 1) {
                 ModStudentUtils.studentEditByName(scanner, studentService);
             } else if (editStudent == 2) {
-                ModStudentUtils.studentEditById(scanner, universityService);
+                ModStudentUtils.studentEditById(scanner, studentService);
             }
 
 
@@ -193,15 +193,37 @@ public class ModStudentUtils {
             } else {
                 studentToProcess = result.get(0);
             }
+            editStudentDetails(scanner, studentToProcess, studentService);
+        }
+    }
 
+    /**
+     * Edit the Student by ID
+     */
+    static void studentEditById(Scanner scanner, StudentService studentService) {
+        String id = InputUtils.readLine(scanner, "Enter ID of student: ", false, false);
+        List<Student> result = studentService.findStudentById(id);
+        if (result.isEmpty()){
+            System.out.println("No student found by id " + id);
+        } else {
+            Student studentToProcess = result.get(0);
+            editStudentDetails(scanner, studentToProcess, studentService);
+        }
+    }
+
+    public static void editStudentDetails(Scanner scanner, Student studentToProcess, StudentService studentService) {
+        while (true) {
             System.out.println("\nEditing student: " + studentToProcess.getFullName());
             System.out.println("1. Change Surname");
             System.out.println("2. Change Name");
             System.out.println("3. Change Course");
             System.out.println("4. Change Group");
-            System.out.println("0. Cancel");
+            System.out.println("0. Finish editing");
 
             int fieldChoice = InputUtils.readInt(scanner, "> ", 0, 4);
+            if (fieldChoice == 0) {
+                break;
+            }
 
             switch (fieldChoice) {
                 case 1 -> {
@@ -227,12 +249,6 @@ public class ModStudentUtils {
                 }
             }
         }
-    }
 
-    /**
-     * Edit the Student by ID
-     */
-    static void studentEditById(Scanner scanner, UniversityService universityService) {
-        // NOT FINISHED METHOD
     }
 }
