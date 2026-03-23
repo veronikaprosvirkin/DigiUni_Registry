@@ -5,6 +5,7 @@ import java.util.List;
 public class Speciality implements NamedEntity {
     private String nameOfSpeciality;
     private List<Group> groups = new ArrayList<>();
+    private String id;
 
 
     public List<Group> getGroups() {
@@ -14,8 +15,12 @@ public class Speciality implements NamedEntity {
         this.groups = groups;
     }
 
-    public Speciality(String nameOfSpeciality) {
+    public Speciality(String id,String nameOfSpeciality) {
         this.nameOfSpeciality = nameOfSpeciality;
+        this.id = id;
+    }
+    public String getId() {
+        return id;
     }
 
 

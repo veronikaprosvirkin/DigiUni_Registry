@@ -15,11 +15,11 @@ public class UniversityService {
         Faculty fi = new Faculty("Faculty of Informatics");
 
         //Specialities
-        Speciality se = new Speciality("Software Engineering");
-        Speciality cs = new Speciality("Computer Science");
-        Speciality acitr = new Speciality("Automation, Computer-Integrated Technologies, and Robotics");
-        Speciality ap = new Speciality("Applied Mathematics");
-        Speciality sa = new Speciality("Systems Analysis");
+        Speciality se = new Speciality(IdGenerator.generateSpecialityId(), "Software Engineering");
+        Speciality cs = new Speciality(IdGenerator.generateSpecialityId(), "Computer Science");
+        Speciality acitr = new Speciality(IdGenerator.generateSpecialityId(), "Automation, Computer-Integrated Technologies, and Robotics");
+        Speciality ap = new Speciality(IdGenerator.generateSpecialityId(), "Applied Mathematics");
+        Speciality sa = new Speciality(IdGenerator.generateSpecialityId(), "Systems Analysis");
 
         //Departments
         Department dep_cs = new Department("Department of Computer Science");
@@ -48,10 +48,10 @@ public class UniversityService {
         Faculty fen = new Faculty("Faculty of Economics");
 
         //Specialities
-        Speciality ma = new Speciality("Marketing");
-        Speciality econ = new Speciality("Economics");
-        Speciality fin = new Speciality("Finance, Banking and Insurance");
-        Speciality mng = new Speciality("Management");
+        Speciality ma = new Speciality(IdGenerator.generateSpecialityId(), "Marketing");
+        Speciality econ = new Speciality(IdGenerator.generateSpecialityId(), "Economics");
+        Speciality fin = new Speciality(IdGenerator.generateSpecialityId(), "Finance, Banking and Insurance");
+        Speciality mng = new Speciality(IdGenerator.generateSpecialityId(), "Management");
 
         //Departments
         Department dep_et = new Department("Department of Economic Theory");
@@ -75,10 +75,10 @@ public class UniversityService {
         Faculty fh = new Faculty("Faculty of Humanities");
 
         //Specialities
-        Speciality hist = new Speciality("History and Archaeology");
-        Speciality phil = new Speciality("Philosophy");
-        Speciality cult = new Speciality("Cultural Studies");
-        Speciality ling = new Speciality("Philology");
+        Speciality hist = new Speciality(IdGenerator.generateSpecialityId(), "History and Archaeology");
+        Speciality phil = new Speciality(IdGenerator.generateSpecialityId(), "Philosophy");
+        Speciality cult = new Speciality(IdGenerator.generateSpecialityId(), "Cultural Studies");
+        Speciality ling = new Speciality(IdGenerator.generateSpecialityId(), "Philology");
 
         //Departments
         Department dep_hist = new Department("Department of History");
@@ -108,8 +108,8 @@ public class UniversityService {
         Faculty fl = new Faculty("Faculty of Law");
 
         //Specialities
-        Speciality law = new Speciality("Law");
-        Speciality pma = new Speciality("Public Management and Administration");
+        Speciality law = new Speciality(IdGenerator.generateSpecialityId(), "Law");
+        Speciality pma = new Speciality(IdGenerator.generateSpecialityId(), "Public Management and Administration");
 
         //Departments
         Department dep_gjd = new Department("Department of General Juridical Disciplines");
@@ -133,10 +133,10 @@ public class UniversityService {
         Faculty fns = new Faculty("Faculty of Natural Sciences");
 
         //Specialities
-        Speciality bio = new Speciality("Biology and Biotechnology");
-        Speciality eco = new Speciality("Ecology");
-        Speciality chem = new Speciality("Chemistry");
-        Speciality phys = new Speciality("Physics and Astronomy");
+        Speciality bio = new Speciality(IdGenerator.generateSpecialityId(), "Biology and Biotechnology");
+        Speciality eco = new Speciality(IdGenerator.generateSpecialityId(), "Ecology");
+        Speciality chem = new Speciality(IdGenerator.generateSpecialityId(), "Chemistry");
+        Speciality phys = new Speciality(IdGenerator.generateSpecialityId(), "Physics and Astronomy");
 
         //Departments
         Department dep_bio = new Department("Department of Biology");
@@ -162,12 +162,12 @@ public class UniversityService {
         Faculty fssst = new Faculty("Faculty of Social Sciences and Social Technologies");
 
         //Specialities
-        Speciality soc = new Speciality("Sociology");
-        Speciality pol = new Speciality("Political Science");
-        Speciality psy = new Speciality("Psychology");
-        Speciality sw = new Speciality("Social Work");
-        Speciality jour = new Speciality("Journalism");
-        Speciality ir = new Speciality("International Relations");
+        Speciality soc = new Speciality(IdGenerator.generateSpecialityId(), "Sociology");
+        Speciality pol = new Speciality(IdGenerator.generateSpecialityId(), "Political Science");
+        Speciality psy = new Speciality(IdGenerator.generateSpecialityId(), "Psychology");
+        Speciality sw = new Speciality(IdGenerator.generateSpecialityId(), "Social Work");
+        Speciality jour = new Speciality(IdGenerator.generateSpecialityId(), "Journalism");
+        Speciality ir = new Speciality(IdGenerator.generateSpecialityId(), "International Relations");
 
         //Departments
         Department dep_soc = new Department("Department of Sociology");
