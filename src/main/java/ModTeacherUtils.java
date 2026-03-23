@@ -34,7 +34,7 @@ public class ModTeacherUtils {
             if (editTeacher == 1) {
                 ModTeacherUtils.teacherEditByName(scanner, teacherService);
             } else if (editTeacher == 2) {
-                ModTeacherUtils.teacherEditById(scanner, universityService);
+                ModTeacherUtils.teacherEditById(scanner, teacherService);
             }
         } else if (workWithTeacher == 4) {//show all
             List<Teacher> teachers = teacherService.getAllTeachers();
@@ -175,7 +175,9 @@ public class ModTeacherUtils {
     /**
      * Edit the Teacher by ID
      */
-    static void teacherEditById(Scanner scanner, UniversityService universityService) {
-        // NOT FINISHED METHOD
+    static void teacherEditById(Scanner scanner, TeacherService teacherService) {
+        String id = InputUtils.readLine(scanner, "Enter ID of teacher: ", false, false);
+        List<Teacher> result = teacherService.findTeacherById(id);
+        ModEntitiesUtils.deleteEntity(scanner, result, "Teacher", (teacher -> teacherService.deleteTeacher(teacher, teacher.getDepartment())));
     }
 }

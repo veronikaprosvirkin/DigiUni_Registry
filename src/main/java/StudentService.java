@@ -247,7 +247,7 @@ public class StudentService {
     }
 
     // Find students by ID
-    public List<Student> findStudentById(String id, Speciality selectedSpeciality) {
+    public List<Student> findStudentById(String id) {
         List<Student> result = new ArrayList<>();
         for(Student s: getAllStudents()){
             if (s.getId().equalsIgnoreCase(id)){

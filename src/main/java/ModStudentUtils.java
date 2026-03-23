@@ -26,7 +26,7 @@ public class ModStudentUtils {
                 List<Student> result = studentService.findStudentsByFullName(fullName);
                 ModEntitiesUtils.deleteEntity(scanner, result, "Student", (student -> studentService.deleteStudent(student, student.getSpeciality())));
             } else if (deleteStudent == 2) {
-                ModStudentUtils.studentDeleteById(scanner, universityService);
+                ModStudentUtils.studentDeleteById(scanner, studentService);
             }
 
         } else if (workWithStudent == 3) { //edit student
@@ -158,8 +158,12 @@ public class ModStudentUtils {
     /**
      * Delete the Student by ID
      */
-    static void studentDeleteById(Scanner scanner, UniversityService universityService) {
-        // NOT FINISHED METHOD
+    static void studentDeleteById(Scanner scanner, StudentService studentService) {
+        String id = InputUtils.readLine(scanner, "Enter ID of student: ", false, false);
+
+        List<Student> result = studentService.findStudentById(id);
+        ModEntitiesUtils.deleteEntity(scanner, result, "Student", (student -> studentService.deleteStudent(student, student.getSpeciality())));
+
     }
 
     /**
