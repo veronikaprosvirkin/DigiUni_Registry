@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="52d3ca8c-2ad0-4cd7-b956-8e8f79936ff7" name="Changes" comment="feat: added method for editing students by id">
-      <change beforePath="$PROJECT_DIR$/src/main/java/IdGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/IdGenerator.java" afterDir="false" />
+    <list default="true" id="52d3ca8c-2ad0-4cd7-b956-8e8f79936ff7" name="Changes" comment="feat: added id for faculties and departments">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Department.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Department.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Faculty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Faculty.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Speciality.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Speciality.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -227,7 +229,23 @@
       <option name="project" value="LOCAL" />
       <updated>1774281567637</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="feat: added id for specialities">
+      <option name="closed" value="true" />
+      <created>1774282444602</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1774282444602</updated>
+    </task>
+    <task id="LOCAL-00016" summary="feat: added id for faculties and departments">
+      <option name="closed" value="true" />
+      <created>1774282680997</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1774282680997</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -259,6 +277,8 @@
     <MESSAGE value="feat: added methods for deleting by id for teachers and students" />
     <MESSAGE value="feat: added method for editing teachers by id" />
     <MESSAGE value="feat: added method for editing students by id" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: added method for editing students by id" />
+    <MESSAGE value="feat: added id for specialities" />
+    <MESSAGE value="feat: added id for faculties and departments" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: added id for faculties and departments" />
   </component>
 </project>

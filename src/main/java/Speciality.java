@@ -31,4 +31,9 @@ public class Speciality implements NamedEntity {
     public String toString() {
         return nameOfSpeciality;
     }
+
+    @Override
+    public String getDisplayInfo() {
+        return "[Code: " + this.id + "] " + this.nameOfSpeciality;
+    }
 }

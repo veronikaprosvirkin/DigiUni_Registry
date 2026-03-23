@@ -29,4 +29,9 @@ public class Department implements NamedEntity {
     public String toString() {
         return nameOfDepartment;
     }
+
+    @Override
+    public String getDisplayInfo() {
+        return "[Code: " + this.id + "] " + this.nameOfDepartment;
+    }
 }

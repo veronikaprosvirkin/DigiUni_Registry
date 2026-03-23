@@ -39,4 +39,9 @@ public class Faculty implements NamedEntity{
     public String toString() {
         return nameOfFaculty;
     }
+
+    @Override
+    public String getDisplayInfo() {
+        return "[Code: " + this.id + "] " + this.nameOfFaculty;
+    }
 }
