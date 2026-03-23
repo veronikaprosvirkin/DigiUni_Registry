@@ -26,7 +26,7 @@ public class ModTeacherUtils {
 
                 ModEntitiesUtils.deleteEntity(scanner, result, "Teacher", (teacher -> teacherService.deleteTeacher(teacher, teacher.getDepartment()) ));
             } else if (deleteTeacher == 2) {
-                ModTeacherUtils.teacherDeleteById(scanner, universityService);
+                ModTeacherUtils.teacherDeleteById(scanner, teacherService);
             }
 
         } else if (workWithTeacher == 3) { //edit teacher
@@ -90,8 +90,6 @@ public class ModTeacherUtils {
 
 
         // Save
-        String newId = IdGenerator.generateTeacherId();
-        Teacher t = new Teacher(newId,name, surname, position, selectedDept);
         teacherService.addTeacher(name, surname, position, selectedDept);
         System.out.println("Teacher " + name + " " + surname +
                 " successfully added to department: " + selectedDept.getName());
@@ -107,8 +105,10 @@ public class ModTeacherUtils {
     /**
      * Delete the Teacher by ID
      */
-    static void teacherDeleteById(Scanner scanner, UniversityService universityService) {
-        // NOT FINISHED METHOD
+    static void teacherDeleteById(Scanner scanner, TeacherService teacherService) {
+        String id = InputUtils.readLine(scanner, "Enter ID of teacher: ", false, false);
+        List<Teacher> result = teacherService.findTeacherById(id);
+        ModEntitiesUtils.deleteEntity(scanner, result, "Teacher", (teacher -> teacherService.deleteTeacher(teacher, teacher.getDepartment())));
     }
 
     /**
@@ -139,36 +139,7 @@ public class ModTeacherUtils {
             } else {
                 teacherToProcess = result.get(0);
             }
-
-            System.out.println("\nEditing teacher: " + teacherToProcess.getFullName());
-            System.out.println("1. Change Surname");
-            System.out.println("2. Change Name");
-            System.out.println("3. Change Position");
-            System.out.println("0. Cancel");
-
-            int fieldChoice = InputUtils.readInt(scanner, "> ", 0, 3);
-
-            switch (fieldChoice) {
-                case 1 -> {
-                    //? Update surname
-                    String newSurname = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Enter new surname: ", false, false), true, false, false, false);
-                    teacherToProcess.setSurname(newSurname);
-                    System.out.println("Surname updated!");
-                }
-                case 2 -> {
-                    //? Update name
-                    String newName = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Enter new name: ", false, false), true, false, false, false);
-                    teacherToProcess.setName(newName);
-                    System.out.println("Name updated!");
-                }
-                case 3 -> {
-                    //? Update position
-                    String newPosition = InputUtils.readLine(scanner, "Enter new position: ", false, true);
-                    newPosition = InputUtils.removeSpaces(newPosition, false, true, true, true);
-                    teacherToProcess.setPosition(newPosition); // Requires setter in Teacher class
-                    System.out.println("Position updated!");
-                }
-            }
+            editTeacherDetails(scanner, teacherToProcess);
         }
     }
 
@@ -178,6 +149,47 @@ public class ModTeacherUtils {
     static void teacherEditById(Scanner scanner, TeacherService teacherService) {
         String id = InputUtils.readLine(scanner, "Enter ID of teacher: ", false, false);
         List<Teacher> result = teacherService.findTeacherById(id);
-        ModEntitiesUtils.deleteEntity(scanner, result, "Teacher", (teacher -> teacherService.deleteTeacher(teacher, teacher.getDepartment())));
+        if (result.isEmpty()){
+            System.out.println("No teacher found by id " + id);
+        } else {
+            Teacher teacherToProcess = result.get(0);
+            editTeacherDetails(scanner, teacherToProcess);
+
+        }
+    }
+
+    private static void editTeacherDetails(Scanner scanner, Teacher teacherToProcess){
+        while(true){
+        System.out.println("\nEditing teacher: " + teacherToProcess.getFullName());
+        System.out.println("1. Change Surname");
+        System.out.println("2. Change Name");
+        System.out.println("3. Change Position");
+        System.out.println("0. Cancel");
+
+        int fieldChoice = InputUtils.readInt(scanner, "> ", 0, 3);
+        if (fieldChoice == 0) { break;}
+
+        switch (fieldChoice) {
+            case 1 -> {
+                //? Update surname
+                String newSurname = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Enter new surname: ", false, false), true, false, false, false);
+                teacherToProcess.setSurname(newSurname);
+                System.out.println("Surname updated!");
+            }
+            case 2 -> {
+                //? Update name
+                String newName = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Enter new name: ", false, false), true, false, false, false);
+                teacherToProcess.setName(newName);
+                System.out.println("Name updated!");
+            }
+            case 3 -> {
+                //? Update position
+                String newPosition = InputUtils.readLine(scanner, "Enter new position: ", false, true);
+                newPosition = InputUtils.removeSpaces(newPosition, false, true, true, true);
+                teacherToProcess.setPosition(newPosition);
+                System.out.println("Position updated!");
+            }
+        }
+        }
     }
 }
