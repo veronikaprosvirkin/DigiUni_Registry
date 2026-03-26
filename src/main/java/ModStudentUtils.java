@@ -104,13 +104,20 @@ public class ModStudentUtils {
         int enrollmentYear = InputUtils.readInt(scanner, "Enter the year of enrollment: ", 1990, 2026);
         LocalDate enrollmentDate = LocalDate.of(enrollmentYear, 9, 1);
         int groupNumber = InputUtils.readInt(scanner, "Enter Group: ", 1, Integer.MAX_VALUE);
-
+        int studyForm = InputUtils.readInt(scanner, "Enter study form (1 - BUDGET, 2 - CONTRACT): ", 1, 2);
+        StudyForm newStudyForm;
+        if (studyForm == 1) {
+            newStudyForm = StudyForm.BUDGET;
+        }
+        else{
+            newStudyForm = StudyForm.CONTRACT;
+        }
 
         // Save
         String newId = IdGenerator.generateStudentId(enrollmentDate.getYear());
         Student s = new Student(newId,name, surname, enrollmentDate, groupNumber,
                 selectedFaculty.getName(),
-                selectedSpeciality);
+                selectedSpeciality,newStudyForm);
         studentService.addStudentToSpeciality(s, selectedSpeciality, groupNumber);
 
         System.out.println("Student " + s.getFullName() + " added to group " + groupNumber +

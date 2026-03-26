@@ -19,8 +19,8 @@ public class SearchUtilsTest {
         teacherService = new TeacherService(university);
         facultyService = new FacultyService(university);
 
-        studentService.addStudent("Piotr", "Kamiński", LocalDate.of(2024, 9, 1), 101);
-        studentService.addStudent("Piotr", "Lewandowski", LocalDate.of(2025, 9, 1), 102);
+        studentService.addStudent("Piotr", "Kamiński", LocalDate.of(2024, 9, 1), 101, StudyForm.BUDGET);
+        studentService.addStudent("Piotr", "Lewandowski", LocalDate.of(2025, 9, 1), 102, StudyForm.CONTRACT);
 
         Faculty f = university.getFaculties().get(0);
         Department d = f.getDepartments().get(0);

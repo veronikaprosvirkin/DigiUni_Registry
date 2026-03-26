@@ -6,11 +6,11 @@ public class Student extends Person {
     private String faculty;
     private Speciality speciality;
     private String id;
-    private StudyForm studyForm = StudyForm.BUDGET;
+    private StudyForm studyForm;
     private StudentStatus status = StudentStatus.ACTIVE;
 
     // Update constructor to accept context
-    public Student(String id,String name, String surname, LocalDate enrollmentDate, int group, String faculty, Speciality speciality) {
+    public Student(String id,String name, String surname, LocalDate enrollmentDate, int group, String faculty, Speciality speciality, StudyForm studyForm) {
         super(name, surname);
         if (group <= 0)
             throw new IllegalArgumentException("Group number must be greater than 0.");
@@ -19,6 +19,7 @@ public class Student extends Person {
         this.faculty = faculty;
         this.speciality = speciality;
         this.id = id;
+        this.studyForm = studyForm;
 
     }
     //count course based on enrollment date

@@ -4,15 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="52d3ca8c-2ad0-4cd7-b956-8e8f79936ff7" name="Changes" comment="added showing id for faculties? departments and specialities">
-      <change afterPath="$PROJECT_DIR$/src/main/java/StudentStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/StudyForm.java" afterDir="false" />
+    <list default="true" id="52d3ca8c-2ad0-4cd7-b956-8e8f79936ff7" name="Changes" comment="feat: add study form and status to Student entity">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DepartmentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DepartmentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/FacultyService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/FacultyService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ModStudentUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ModStudentUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SpecialityService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SpecialityService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Student.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Student.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/StudentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/StudentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/SortUtilsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/SortUtilsTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/StudentServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/StudentServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ModStudentUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ModStudentUtils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/ModTeacherUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ModTeacherUtils.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Student.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Student.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/StudentService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/UniversityService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/UniversityService.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,26 +58,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.AdminRightsTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.SearchUtilsTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.SortUtilsTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.StudentServiceTest.testFindStudentsByGroup.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "JUnit.AdminRightsTest.executor": "Debug",
+    "JUnit.SearchUtilsTest.executor": "Run",
+    "JUnit.SortUtilsTest.executor": "Run",
+    "JUnit.StudentServiceTest.testFindStudentsByGroup.executor": "Run",
+    "RunOnceActivity.git.unshallow": "true",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "main",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="JUnit.AdminRightsTest">
     <configuration name="AdminRightsTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="DigiUni_Registry" />
@@ -249,7 +252,15 @@
       <option name="project" value="LOCAL" />
       <updated>1774283171965</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="feat: add study form and status to Student entity">
+      <option name="closed" value="true" />
+      <created>1774565307756</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1774565307756</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -284,6 +295,7 @@
     <MESSAGE value="feat: added id for specialities" />
     <MESSAGE value="feat: added id for faculties and departments" />
     <MESSAGE value="added showing id for faculties? departments and specialities" />
-    <option name="LAST_COMMIT_MESSAGE" value="added showing id for faculties? departments and specialities" />
+    <MESSAGE value="feat: add study form and status to Student entity" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add study form and status to Student entity" />
   </component>
 </project>
