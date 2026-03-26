@@ -20,7 +20,7 @@ public class SpecialityService {
             System.out.println("Error: Speciality with this name already exists!");
             return;
         }
-        selectedFaculty.getSpeciality().add(new Speciality(newSpecialityName));
+        selectedFaculty.getSpeciality().add(new Speciality(IdGenerator.generateSpecialityId(),newSpecialityName));
         System.out.println("Speciality created successfully!");
     }
 

@@ -6,6 +6,8 @@ public class Student extends Person {
     private String faculty;
     private Speciality speciality;
     private String id;
+    private StudyForm studyForm = StudyForm.BUDGET;
+    private StudentStatus status = StudentStatus.ACTIVE;
 
     // Update constructor to accept context
     public Student(String id,String name, String surname, LocalDate enrollmentDate, int group, String faculty, Speciality speciality) {
@@ -32,11 +34,14 @@ public class Student extends Person {
 
 
     public String getCourseDisplay() {
-        int course = getCourse();
-        if (course>6){
-            return "Student graduated";
+        if(getStatus() == StudentStatus.GRADUATED) {
+            return "Graduated";
+        } else if (getStatus() == StudentStatus.EXPELLED) {
+            return "Expelled";
+        } else if (getStatus() == StudentStatus.ACADEMIC_LEAVE) {
+            return "Academic Leave";
         }
-        return String.valueOf(course);
+            return String.valueOf(getCourse());
     }
 
     public int getGroup() { return group; }
@@ -46,7 +51,7 @@ public class Student extends Person {
 
     @Override
     public String toString() {
-        return getFullName() + " | Course: " + getCourseDisplay() + " | Group: " + group +
+        return getFullName() + " | Course: " + getCourseDisplay() + " | Study form: " + studyForm + " | Group: " + group +
                 " | Faculty: " + faculty + " | Spec: " + speciality.getName();
     }
 
@@ -60,4 +65,17 @@ public class Student extends Person {
     }
 
     public String getId() { return id; }
+
+    public StudyForm getStudyForm() { return studyForm; }
+    
+    public void setStudyForm(StudyForm studyForm) { this.studyForm = studyForm; }
+    
+    public StudentStatus getStatus() {
+        if (this.status == StudentStatus.ACTIVE && getCourse() >6 ){
+            return StudentStatus.GRADUATED;
+        }
+        return status;
+    }
+    
+    public void setStatus(StudentStatus status) { this.status = status; }
 }

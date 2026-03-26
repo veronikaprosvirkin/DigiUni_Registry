@@ -19,7 +19,7 @@ public class DepartmentService {
             System.out.println("Error: Department with this name already exists!");
             return;
         }
-        selectedFaculty.getDepartments().add(new Department(newDepartmentName));
+        selectedFaculty.getDepartments().add(new Department(IdGenerator.generateDepartmentId(),newDepartmentName));
         System.out.println("Department created successfully!");
     }
 

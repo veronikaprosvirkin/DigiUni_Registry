@@ -218,9 +218,11 @@ public class ModStudentUtils {
             System.out.println("2. Change Name");
             System.out.println("3. Change Course");
             System.out.println("4. Change Group");
+            System.out.println("5. Change Study Form");
+            System.out.println("6. Change Status");
             System.out.println("0. Finish editing");
 
-            int fieldChoice = InputUtils.readInt(scanner, "> ", 0, 4);
+            int fieldChoice = InputUtils.readInt(scanner, "> ", 0, 6);
             if (fieldChoice == 0) {
                 break;
             }
@@ -247,7 +249,43 @@ public class ModStudentUtils {
                     int newGroup = InputUtils.readInt(scanner, "Enter new group number: ", 1, Integer.MAX_VALUE);
                     studentService.moveStudentToGroup(studentToProcess, newGroup);
                 }
-            }
+                case 5 -> {
+                    int formChoice = InputUtils.readInt(scanner, "Enter new study form (1 - BUDGET, 2 - CONTRACT): ", 1, 2);
+                    StudyForm newStudyForm;
+                    if (formChoice == 1) {
+                        newStudyForm = StudyForm.BUDGET;
+                    }else{
+                        newStudyForm = StudyForm.CONTRACT;
+                    }
+                    if(studentToProcess.getStudyForm() == newStudyForm){
+                        System.out.println("Error: Student is already on this study form!");
+                    } else {
+                        studentToProcess.setStudyForm(newStudyForm);
+                        System.out.println("Study form updated!");
+                    }
+
+                }
+                case 6 -> {
+                    int statusChoice = InputUtils.readInt(scanner, "Enter new status (1 - ACTIVE, 2 - ACADEMIC LEAVE, 3-EXPELLED, 4-GRADUATED: ", 1, 4);
+                    StudentStatus newStatus = null;
+                    if (statusChoice == 1) {
+                        newStatus = StudentStatus.ACTIVE;
+                    } else if (statusChoice == 2) {
+                        newStatus = StudentStatus.ACADEMIC_LEAVE;
+                    } else if (statusChoice == 3) {
+                        newStatus = StudentStatus.EXPELLED;
+                    } else if (statusChoice == 4) {
+                        newStatus = StudentStatus.GRADUATED;
+                    }
+                    if(studentToProcess.getStatus() == newStatus){
+                        System.out.println("Error: Student is already has this status!");
+                    } else {
+                        studentToProcess.setStatus(newStatus);
+                        System.out.println("Status updated!");
+                    }
+
+                }
+                }
         }
 
     }

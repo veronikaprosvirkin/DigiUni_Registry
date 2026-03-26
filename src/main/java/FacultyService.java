@@ -23,7 +23,7 @@ public class FacultyService {
             System.out.println("Error: Faculty with name '" + name + "' already exists.");
             return;
         }
-        university.getFaculties().add(new Faculty(name));
+        university.getFaculties().add(new Faculty(IdGenerator.generateFacultyId(),name));
         System.out.println("Faculty added successfully.");
     }
 
