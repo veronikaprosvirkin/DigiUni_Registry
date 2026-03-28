@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Faculty implements NamedEntity{
     private String nameOfFaculty;
@@ -43,5 +44,17 @@ public class Faculty implements NamedEntity{
     @Override
     public String getDisplayInfo() {
         return "[Code: " + this.id + "] " + this.nameOfFaculty;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Faculty faculty = (Faculty) o;
+        return Objects.equals(id, faculty.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }

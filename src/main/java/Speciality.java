@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 public class Speciality implements NamedEntity {
     private String nameOfSpeciality;
@@ -35,5 +36,17 @@ public class Speciality implements NamedEntity {
     @Override
     public String getDisplayInfo() {
         return "[Code: " + this.id + "] " + this.nameOfSpeciality;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Speciality that = (Speciality) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }

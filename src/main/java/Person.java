@@ -1,7 +1,10 @@
+import java.util.Objects;
 
 public class Person implements NamedEntity {
     private String name;
     private String surname;
+    private String id;
+
 
     public Person(String name, String surname) {
         this.name = name;
@@ -26,5 +29,17 @@ public class Person implements NamedEntity {
 
     public void setName(String newName) {
         this.name = newName;
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Person person = (Person) obj;
+        return Objects.equals(id, person.id);
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
