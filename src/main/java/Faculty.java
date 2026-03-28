@@ -7,6 +7,8 @@ public class Faculty implements NamedEntity{
     private List<Speciality> speciality = new ArrayList<>();
     private List<Department> departments = new ArrayList<>();
     private String id;
+    private String contacts;
+    private Teacher dean;
 
 
     public Faculty(String id, String nameOfFaculty) {
@@ -38,7 +40,13 @@ public class Faculty implements NamedEntity{
 
     @Override
     public String toString() {
-        return nameOfFaculty;
+        String deanName;
+        if (dean != null) {
+            deanName = dean.getFullName();
+        } else {
+            deanName = "Не призначено";
+        }
+        return "[" + id + "] " + nameOfFaculty + " | Контакти: " + contacts + " | Декан: " + deanName;
     }
 
     @Override
@@ -57,4 +65,11 @@ public class Faculty implements NamedEntity{
     public int hashCode() {
         return Objects.hashCode(id);
     }
+
+    public String getContacts() { return contacts;}
+    public void setContacts(String contacts) {this.contacts = contacts;}
+
+    public Teacher getDean() { return dean; }
+    public void setDean(Teacher dean) { this.dean = dean; }
+    public String getId() { return id; }
 }

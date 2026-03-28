@@ -10,6 +10,7 @@ build/
 *.iml
 *.iws
 *.ipr
+*.xml
 
 
 .DS_Store
