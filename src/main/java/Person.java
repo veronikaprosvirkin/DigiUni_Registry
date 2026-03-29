@@ -4,11 +4,13 @@ public class Person implements NamedEntity {
     private String name;
     private String surname;
     private String id;
+    private String patronymic;
 
 
-    public Person(String name, String surname) {
+    public Person(String name, String surname, String patronymic) {
         this.name = name;
         this.surname = surname;
+        this.patronymic = patronymic;
     }
 
     /**
@@ -17,11 +19,15 @@ public class Person implements NamedEntity {
      */
     @Override
     public String getName() {
-        return this.surname+" "+ this.name;
+        return this.surname + " " + this.name + " " + this.patronymic;
     }
     public String getSurname() {return surname;}
     public String getOnlyName() {return this.name;}
-    public String getFullName() {return this.surname+" "+ this.name;}
+    public String getFullName() { return this.surname + " " + this.name + " " + this.patronymic;}
+
+    public String getPatronymic() {return patronymic;}
+
+    public void setPatronymic(String patronymic) { this.patronymic = patronymic;}
 
     public void setSurname(String newSurname) {
         this.surname = newSurname;

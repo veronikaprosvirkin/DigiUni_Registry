@@ -11,9 +11,11 @@ public class Faculty implements NamedEntity{
     private Teacher dean;
 
 
-    public Faculty(String id, String nameOfFaculty) {
+    public Faculty(String id, String nameOfFaculty, String contacts, Teacher dean) {
         this.id=id;
         this.nameOfFaculty = nameOfFaculty;
+        this.contacts = contacts;
+        this.dean = dean;
     }
 
     public List<Speciality> getSpeciality() {

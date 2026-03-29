@@ -85,12 +85,13 @@ public class ModTeacherUtils {
         // Teachers's info
         String name = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Name: ", false, false), true, false, false, false);
         String surname = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Surname: ", false, false), true, false, false, false);
+        String patronymic = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Patronymic: ", false, false), true, false, false, false);
         String position = InputUtils.readLine(scanner, "Position: ", false, true);
         position = InputUtils.removeSpaces(position, false, true, true, true);
 
 
         // Save
-        teacherService.addTeacher(name, surname, position, selectedDept);
+        teacherService.addTeacher(name, surname, patronymic, position, selectedDept);
         System.out.println("Teacher " + name + " " + surname +
                 " successfully added to department: " + selectedDept.getName());
 

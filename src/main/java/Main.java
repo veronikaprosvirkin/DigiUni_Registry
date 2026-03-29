@@ -17,15 +17,12 @@ public class Main {
         UserService userService = new UserService();
 
         // Creating few students
-        studentService.addStudent("Zbyshek", "Tymekowskych", LocalDate.of(2025, 9, 1), 101, StudyForm.BUDGET);
-        studentService.addStudent("Irzek", "Zlotych", LocalDate.of(2024, 9, 1), 101, StudyForm.BUDGET);
-        studentService.addStudent("Irzek", "Tymekowskych", LocalDate.of(2023, 9, 1), 15,StudyForm.CONTRACT);
+        studentService.addStudent("Zbyshek", "Tymekowskych", "sm", LocalDate.of(2025, 9, 1), 101, StudyForm.BUDGET);
+        studentService.addStudent("Irzek", "Zlotych", "sm", LocalDate.of(2024, 9, 1), 101, StudyForm.BUDGET);
+        studentService.addStudent("Irzek", "Tymekowskych", "sm", LocalDate.of(2023, 9, 1), 15,StudyForm.CONTRACT);
 
         Department defaultDept = university.getFaculties().get(0).getDepartments().get(0);
 
-        // Creating few teachers
-        teacherService.addTeacher("Andrii", "Glybovets", "Dekan", defaultDept);
-        teacherService.addTeacher("Andrii", "Makarets", "Docent", defaultDept);
 
         while (true) {
             //authorization logic

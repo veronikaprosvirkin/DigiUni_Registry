@@ -17,7 +17,7 @@ public class ManagerRights {
 
         switch (choice) {
             case "1" -> { //? Work with faculties
-               ModFacultyUtils.showFacultiesMenu(scanner, facultyService);
+               ModFacultyUtils.showFacultiesMenu(scanner, facultyService, teacherService);
             }
             case "2" -> {   //? Work with departments
                 ModDepartmentUtils.showDepartmentMenu(scanner,departmentService,facultyService, teacherService);

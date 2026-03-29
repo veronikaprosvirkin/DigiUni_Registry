@@ -19,13 +19,13 @@ public class SearchUtilsTest {
         teacherService = new TeacherService(university);
         facultyService = new FacultyService(university);
 
-        studentService.addStudent("Piotr", "Kamiński", LocalDate.of(2024, 9, 1), 101, StudyForm.BUDGET);
-        studentService.addStudent("Piotr", "Lewandowski", LocalDate.of(2025, 9, 1), 102, StudyForm.CONTRACT);
+        studentService.addStudent("Piotr", "Kamiński", "sm", LocalDate.of(2024, 9, 1), 101, StudyForm.BUDGET);
+        studentService.addStudent("Piotr", "Lewandowski","sm", LocalDate.of(2025, 9, 1), 102, StudyForm.CONTRACT);
 
         Faculty f = university.getFaculties().get(0);
         Department d = f.getDepartments().get(0);
-        teacherService.addTeacher("Tomasz", "Zieliński", "Docent", d);
-        teacherService.addTeacher("Tomasz", "Szymański", "Prof", d);
+        teacherService.addTeacher("Tomasz", "Zieliński","sm", "Docent", d);
+        teacherService.addTeacher("Tomasz", "Szymański","sm", "Prof", d);
     }
 
     // Mock scanner input

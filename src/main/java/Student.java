@@ -10,8 +10,8 @@ public class Student extends Person {
     private StudentStatus status = StudentStatus.ACTIVE;
 
     // Update constructor to accept context
-    public Student(String id,String name, String surname, LocalDate enrollmentDate, int group, String faculty, Speciality speciality, StudyForm studyForm) {
-        super(name, surname);
+    public Student(String id,String name, String surname,String patronymic, LocalDate enrollmentDate, int group, String faculty, Speciality speciality, StudyForm studyForm) {
+        super(name, surname, patronymic);
         if (group <= 0)
             throw new IllegalArgumentException("Group number must be greater than 0.");
         this.enrollmentDate = enrollmentDate;

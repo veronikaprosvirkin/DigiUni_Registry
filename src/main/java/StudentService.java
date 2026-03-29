@@ -9,7 +9,7 @@ public class StudentService {
         this.university = university;
     }
 
-    public void addStudent(String name, String surname, LocalDate enrollmentDate, int groupNumber, StudyForm studyForm) {
+    public void addStudent(String name, String surname,String patronymic, LocalDate enrollmentDate, int groupNumber, StudyForm studyForm) {
         if (groupNumber <= 0)
             throw new IllegalArgumentException("Group number must be greater than 0.");
         if (!university.getFaculties().isEmpty() &&
@@ -32,7 +32,7 @@ public class StudentService {
             }
 
 
-            Student newStudent = new Student(IdGenerator.generateStudentId(enrollmentDate.getYear()),name, surname, enrollmentDate, groupNumber,
+            Student newStudent = new Student(IdGenerator.generateStudentId(enrollmentDate.getYear()),name, surname, patronymic, enrollmentDate, groupNumber,
                     defaultFaculty.getName(),
                     defaultSpec, studyForm);
 

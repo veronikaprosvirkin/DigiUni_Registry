@@ -101,6 +101,7 @@ public class ModStudentUtils {
         // Student's info
         String name = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Name: ", false, false), true, false, false, false);
         String surname = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Surname: ", false, false), true, false, false, false);
+        String patronymic = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Patronymic: ", false, false), true, false, false, false);
         int enrollmentYear = InputUtils.readInt(scanner, "Enter the year of enrollment: ", 1990, 2026);
         LocalDate enrollmentDate = LocalDate.of(enrollmentYear, 9, 1);
         int groupNumber = InputUtils.readInt(scanner, "Enter Group: ", 1, Integer.MAX_VALUE);
@@ -115,7 +116,7 @@ public class ModStudentUtils {
 
         // Save
         String newId = IdGenerator.generateStudentId(enrollmentDate.getYear());
-        Student s = new Student(newId,name, surname, enrollmentDate, groupNumber,
+        Student s = new Student(newId,name, surname, patronymic, enrollmentDate, groupNumber,
                 selectedFaculty.getName(),
                 selectedSpeciality,newStudyForm);
         studentService.addStudentToSpeciality(s, selectedSpeciality, groupNumber);

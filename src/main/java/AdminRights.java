@@ -18,7 +18,7 @@ public class AdminRights {
 
                 switch (choice) {
                     case "1" -> { //? Work with faculties
-                        ModFacultyUtils.showFacultiesMenu(scanner, facultyService);
+                        ModFacultyUtils.showFacultiesMenu(scanner, facultyService, teacherService);
                     }
 
                     case "2" -> {   //? Work with departments

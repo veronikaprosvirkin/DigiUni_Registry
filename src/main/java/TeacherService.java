@@ -8,13 +8,23 @@ public class TeacherService {
         this.university = university;
     }
     // Adding a teacher
-    public void addTeacher(String name, String surname, String position, Department selectedDept) {
+    public void addTeacher(String name, String surname, String patronymic, String position, Department selectedDept) {
         if (!university.getFaculties().isEmpty() &&
                 !university.getFaculties().get(0).getDepartments().isEmpty()) {
-            // Deciding where to sign (first Faculty and first Department)
+
             university.getFaculties().get(0)
                     .getDepartments().get(0)
-                    .getTeachers().add(new Teacher(IdGenerator.generateTeacherId(),name, surname, position, selectedDept));
+                    .getTeachers().add(new Teacher(IdGenerator.generateTeacherId(),name, surname, patronymic, position, selectedDept));
+        }
+    }
+
+    public void addTeacher(Teacher teacher) {
+        if (!university.getFaculties().isEmpty() &&
+                !university.getFaculties().get(0).getDepartments().isEmpty()) {
+
+            university.getFaculties().get(0)
+                    .getDepartments().get(0)
+                    .getTeachers().add(teacher);
         }
     }
 
@@ -83,5 +93,4 @@ public class TeacherService {
             System.out.println("Error: Teacher not found in this department.");
         }
     }
-
 }

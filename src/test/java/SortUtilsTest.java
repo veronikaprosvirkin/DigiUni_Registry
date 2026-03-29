@@ -17,20 +17,21 @@ public class SortUtilsTest {
     @BeforeEach
     void setUp() {
         students = new ArrayList<>();
-        Faculty f = new Faculty("fc01","FI");
+        Teacher testDean = new Teacher(IdGenerator.generateTeacherId(), "Ivan", "Ivanov", "Ivanovych", "Dean", null);
+        Faculty f = new Faculty("fc01","FI", "contacts1",testDean );
         Speciality s = new Speciality("sp01","SE");
 
-        students.add(new Student("st001", "Jan", "Kowalski", LocalDate.of(2025, 9, 1), 102, "FI", s,StudyForm.BUDGET));
-        students.add(new Student("st002", "Anna", "Nowak", LocalDate.of(2024, 9, 1), 101, "FI", s, StudyForm.CONTRACT));
-        students.add(new Student("st003", "Anna", "Kaczmarek", LocalDate.of(2024, 9, 1), 101, "FI", s, StudyForm.BUDGET));
+        students.add(new Student("st001", "Jan", "Kowalski", "sm", LocalDate.of(2025, 9, 1), 102, "FI", s,StudyForm.BUDGET));
+        students.add(new Student("st002", "Anna", "Nowak", "sm", LocalDate.of(2024, 9, 1), 101, "FI", s, StudyForm.CONTRACT));
+        students.add(new Student("st003", "Anna", "Kaczmarek","sm", LocalDate.of(2024, 9, 1), 101, "FI", s, StudyForm.BUDGET));
 
         teachers = new ArrayList<>();
         dept1 = new Department("dp01","CS");
         dept2 = new Department("dp02","Math");
 
-        teachers.add(new Teacher("th1000","Marek", "Wiśniewski", "Prof", dept2));
-        teachers.add(new Teacher("th1001","Ewa", "Wójcik", "Docent", dept1));
-        teachers.add(new Teacher("th1002","Adam", "Dąbrowski", "Docent", dept1));
+        teachers.add(new Teacher("th1000","Marek", "Wiśniewski", "sm","Prof", dept2));
+        teachers.add(new Teacher("th1001","Ewa", "Wójcik", "sm", "Docent", dept1));
+        teachers.add(new Teacher("th1002","Adam", "Dąbrowski","sm", "Docent", dept1));
     }
 
     // Test student sort by name
