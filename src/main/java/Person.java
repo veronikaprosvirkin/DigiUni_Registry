@@ -1,51 +1,39 @@
-import java.util.Objects;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
-public class Person implements NamedEntity {
-    private String name;
-    private String surname;
-    private String id;
-    private String patronymic;
+// Base Person entity
+@Data
+@NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+public abstract class Person implements NamedEntity {
+    @EqualsAndHashCode.Include
+    protected String id;
+    protected String name;
+    protected String surname;
+    protected String patronymic;
 
-
-    public Person(String name, String surname, String patronymic) {
+    public Person(String id, String name, String surname, String patronymic) {
+        this.id = id;
         this.name = name;
         this.surname = surname;
         this.patronymic = patronymic;
     }
 
-    /**
-     * Builds the fullName of Person: surname + name
-     * @return full person's name
-     */
     @Override
     public String getName() {
         return this.surname + " " + this.name + " " + this.patronymic;
     }
-    public String getSurname() {return surname;}
-    public String getOnlyName() {return this.name;}
-    public String getFullName() { return this.surname + " " + this.name + " " + this.patronymic;}
 
-    public String getPatronymic() {return patronymic;}
-
-    public void setPatronymic(String patronymic) { this.patronymic = patronymic;}
-
-    public void setSurname(String newSurname) {
-        this.surname = newSurname;
+    // Get only name
+    public String getOnlyName() {
+        return this.name;
     }
 
-    public void setName(String newName) {
-        this.name = newName;
+    // Get full name
+    public String getFullName() {
+        return getName();
     }
 
-    @Override
-    public boolean equals(Object obj){
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        Person person = (Person) obj;
-        return Objects.equals(id, person.id);
-    }
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
+    public abstract String getDisplayInfo();
 }
