@@ -1,29 +1,30 @@
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
+// Department entity
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Department implements NamedEntity {
-    private String nameOfDepartment;
-    private List<Teacher> teachers= new ArrayList<>();
+    @EqualsAndHashCode.Include
     private String id;
+    private String nameOfDepartment;
+    private List<Teacher> teachers = new ArrayList<>();
 
-
-    public Department(String id,String nameOfDepartment) {
-        this.id=id;
+    public Department(String id, String nameOfDepartment) {
+        this.id = id;
         this.nameOfDepartment = nameOfDepartment;
     }
-    public String getName() { return nameOfDepartment; }
-    public List<Teacher> getTeachers() {
-        return teachers;
+
+    @Override
+    public String getName() {
+        return nameOfDepartment;
     }
 
-    public void setTeachers(List<Teacher> teachers) {
-        this.teachers = teachers;
-    }
-
+    // Override for NamedEntity logic
     public void setName(String editName) {
         this.nameOfDepartment = editName;
-
     }
 
     @Override
@@ -34,17 +35,5 @@ public class Department implements NamedEntity {
     @Override
     public String getDisplayInfo() {
         return "[Code: " + this.id + "] " + this.nameOfDepartment;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Department that = (Department) o;
-        return Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
     }
 }

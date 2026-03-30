@@ -16,7 +16,7 @@ public class SortUtils {
         switch (choice) {
             case 1 -> students.sort(Comparator.comparing(Student::getFullName));
 
-            case 2 -> students.sort(Comparator.comparingInt(Student::getEnrollmentDate)
+            case 2 -> students.sort(Comparator.comparing(Student::getEnrollmentDate)
                     .thenComparing(Student::getFullName));
             case 3 -> students.sort(Comparator.comparingInt(Student::getCourse)
                     .thenComparing(Student::getFullName));

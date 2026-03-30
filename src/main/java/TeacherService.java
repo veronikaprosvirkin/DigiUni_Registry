@@ -9,22 +9,15 @@ public class TeacherService {
     }
     // Adding a teacher
     public void addTeacher(String name, String surname, String patronymic, String position, Department selectedDept) {
-        if (!university.getFaculties().isEmpty() &&
-                !university.getFaculties().get(0).getDepartments().isEmpty()) {
-
-            university.getFaculties().get(0)
-                    .getDepartments().get(0)
-                    .getTeachers().add(new Teacher(IdGenerator.generateTeacherId(),name, surname, patronymic, position, selectedDept));
+        if (selectedDept != null) {
+            Teacher newTeacher = new Teacher(IdGenerator.generateTeacherId(), name, surname, patronymic, position, selectedDept);
+            selectedDept.getTeachers().add(newTeacher);
         }
     }
 
     public void addTeacher(Teacher teacher) {
-        if (!university.getFaculties().isEmpty() &&
-                !university.getFaculties().get(0).getDepartments().isEmpty()) {
-
-            university.getFaculties().get(0)
-                    .getDepartments().get(0)
-                    .getTeachers().add(teacher);
+        if (teacher != null && teacher.getDepartment() != null) {
+            teacher.getDepartment().getTeachers().add(teacher);
         }
     }
 
