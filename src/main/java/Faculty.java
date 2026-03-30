@@ -46,9 +46,9 @@ public class Faculty implements NamedEntity{
         if (dean != null) {
             deanName = dean.getFullName();
         } else {
-            deanName = "Не призначено";
+            deanName = "Not assigned";
         }
-        return "[" + id + "] " + nameOfFaculty + " | Контакти: " + contacts + " | Декан: " + deanName;
+        return "[" + id + "] " + nameOfFaculty + " | Contacts: " + contacts + " | Dean: " + deanName;
     }
 
     @Override
