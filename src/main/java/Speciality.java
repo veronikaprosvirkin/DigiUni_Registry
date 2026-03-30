@@ -1,32 +1,31 @@
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 
+// Speciality entity
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Speciality implements NamedEntity {
+    @EqualsAndHashCode.Include
+    private String id;
     private String nameOfSpeciality;
     private List<Group> groups = new ArrayList<>();
-    private String id;
 
-
-    public List<Group> getGroups() {
-        return groups;
-    }
-    public void setGroups(List<Group> groups) {
-        this.groups = groups;
-    }
-
-    public Speciality(String id,String nameOfSpeciality) {
-        this.nameOfSpeciality = nameOfSpeciality;
+    public Speciality(String id, String nameOfSpeciality) {
         this.id = id;
-    }
-    public String getId() {
-        return id;
+        this.nameOfSpeciality = nameOfSpeciality;
     }
 
+    @Override
+    public String getName() {
+        return nameOfSpeciality;
+    }
 
-    public String getName() { return nameOfSpeciality; }
-    public void setName(String name) { this.nameOfSpeciality = name; }
+    // Override for NamedEntity logic
+    public void setName(String name) {
+        this.nameOfSpeciality = name;
+    }
 
     @Override
     public String toString() {
@@ -36,17 +35,5 @@ public class Speciality implements NamedEntity {
     @Override
     public String getDisplayInfo() {
         return "[Code: " + this.id + "] " + this.nameOfSpeciality;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Speciality that = (Speciality) o;
-        return Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
     }
 }
