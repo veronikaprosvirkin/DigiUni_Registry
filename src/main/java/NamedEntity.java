@@ -1,4 +1,4 @@
-public interface NamedEntity {
+public sealed interface NamedEntity permits Person, Department, Faculty, Speciality {
     String getName();
     void setName(String newName);
 

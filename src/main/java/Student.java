@@ -5,7 +5,7 @@ import java.time.LocalDate;
 // Student entity
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Student extends Person {
+public final class Student extends Person {
     private LocalDate enrollmentDate;
     private int group;
     private String faculty;

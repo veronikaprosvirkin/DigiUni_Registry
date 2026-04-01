@@ -6,7 +6,7 @@ import java.util.List;
 // Speciality entity
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Speciality implements NamedEntity {
+public final class Speciality implements NamedEntity {
     @EqualsAndHashCode.Include
     private String id;
     private String nameOfSpeciality;

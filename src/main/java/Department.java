@@ -6,7 +6,7 @@ import java.util.List;
 // Department entity
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Department implements NamedEntity {
+public final class Department implements NamedEntity {
     @EqualsAndHashCode.Include
     private String id;
     private String nameOfDepartment;

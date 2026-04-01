@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public abstract class Person implements NamedEntity {
+public abstract sealed class Person implements NamedEntity permits Student, Teacher {
     @EqualsAndHashCode.Include
     protected String id;
     protected String name;

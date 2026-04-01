@@ -4,7 +4,7 @@ import lombok.EqualsAndHashCode;
 // Teacher entity
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Teacher extends Person {
+public final class Teacher extends Person {
     private String position;
     private Department department;
 
