@@ -84,6 +84,25 @@ public class ModFacultyUtils {
         System.out.println("Contacts for " + selectedFaculty.getName() + " updated successfully!");
     }
 
+    private static String generateShortName(String name) {
+        if (name == null || name.trim().isEmpty()) return "F";
+        String[] words = name.trim().split("\\s+");
+        StringBuilder sb = new StringBuilder();
+        for (String word : words) {
+            String lower = word.toLowerCase();
+            if (lower.equals("of") || lower.equals("and") || lower.equals("the") || lower.equals("for")) {
+                continue;
+            }
+            if (!word.isEmpty()) {
+                sb.append(Character.toUpperCase(word.charAt(0)));
+            }
+        }
+        String res = sb.toString();
+        if (res.isEmpty() || res.charAt(0) != 'F') {
+            res = "F" + res;
+        }
+        return res;
+    }
 
     /**
      * Add new Faculty
@@ -92,8 +111,13 @@ public class ModFacultyUtils {
         String name = InputUtils.readLine(scanner, "Enter new Faculty name: ", false, false);
         name = InputUtils.removeSpaces(name, false, true, true, true);
 
-        String shortName = InputUtils.readLine(scanner, "Enter new Faculty short name (MANDATORY): ", false, false);
+        String generatedShort = generateShortName(name);
+        String shortMsg = "Enter new Faculty short name (leave blank to use suggested: " + generatedShort + "): ";
+        String shortName = InputUtils.readLine(scanner, shortMsg, true, false);
         shortName = InputUtils.removeSpaces(shortName, false, true, true, true);
+        if (shortName.isEmpty()) {
+            shortName = generatedShort;
+        }
 
         String contact = InputUtils.readLine(scanner, "Enter contact information: ", false, false);
 
