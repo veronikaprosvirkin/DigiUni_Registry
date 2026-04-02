@@ -18,12 +18,12 @@ public class FacultyService {
                 .anyMatch(item -> nameExtractor.apply(item).equalsIgnoreCase(newName));
     }
 
-    public void addNewFaculty(String name, String contact, Teacher dean) {
+    public void addNewFaculty(String name, String shortName, String contact, Teacher dean) {
         if (isNameDuplicate(university.getFaculties(), name, null, Faculty::getName)) {
             System.out.println("Error: Faculty with name '" + name + "' already exists.");
             return;
         }
-        university.getFaculties().add(new Faculty(IdGenerator.generateFacultyId(),name, contact, dean));
+        university.getFaculties().add(new Faculty(IdGenerator.generateFacultyId(),name, shortName, contact, dean));
         System.out.println("Faculty added successfully.");
     }
 

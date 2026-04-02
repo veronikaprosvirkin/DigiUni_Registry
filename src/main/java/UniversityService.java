@@ -26,7 +26,7 @@ public class UniversityService {
         // ==========================================
         // 1. FACULTY OF INFORMATICS (FI)
         // ==========================================
-        Faculty fi = new Faculty(IdGenerator.generateFacultyId(), "Faculty of Informatics", "+38(044) 425-60-64", deanFI);
+        Faculty fi = new Faculty(IdGenerator.generateFacultyId(), "Faculty of Informatics", "FI", "+38(044) 425-60-64", deanFI);
 
         //Specialities
         Speciality se = new Speciality(IdGenerator.generateSpecialityId(), "Software Engineering");
@@ -59,7 +59,7 @@ public class UniversityService {
         // ==========================================
         // 2. FACULTY OF ECONOMICS (FE)
         // ==========================================
-        Faculty fen = new Faculty(IdGenerator.generateFacultyId(), "Faculty of Economics", "+38(044) 425-60-59", deanFE);
+        Faculty fen = new Faculty(IdGenerator.generateFacultyId(), "Faculty of Economics", "FE", "+38(044) 425-60-59", deanFE);
 
         //Specialities
         Speciality ma = new Speciality(IdGenerator.generateSpecialityId(), "Marketing");
@@ -88,7 +88,7 @@ public class UniversityService {
         // ==========================================
         // 3. FACULTY OF HUMANITIES (FH)
         // ==========================================
-        Faculty fh = new Faculty(IdGenerator.generateFacultyId(), "Faculty of Humanities", "+38(044) 425-14-20", deanFH);
+        Faculty fh = new Faculty(IdGenerator.generateFacultyId(), "Faculty of Humanities", "FH", "+38(044) 425-14-20", deanFH);
 
         //Specialities
         Speciality hist = new Speciality(IdGenerator.generateSpecialityId(), "History and Archaeology");
@@ -123,7 +123,7 @@ public class UniversityService {
         // ==========================================
         // 4. FACULTY OF LAW (FL)
         // ==========================================
-        Faculty fl = new Faculty(IdGenerator.generateFacultyId(), "Faculty of Law", "+38(044) 425-60-73", deanFL);
+        Faculty fl = new Faculty(IdGenerator.generateFacultyId(), "Faculty of Law", "FL", "+38(044) 425-60-73", deanFL);
 
         //Specialities
         Speciality law = new Speciality(IdGenerator.generateSpecialityId(), "Law");
@@ -150,7 +150,7 @@ public class UniversityService {
         // ==========================================
         // 5. FACULTY OF NATURAL SCIENCES (FNS)
         // ==========================================
-        Faculty fns = new Faculty(IdGenerator.generateFacultyId(), "Faculty of Natural Sciences", "+38(044) 425-60-57", deanFNS);
+        Faculty fns = new Faculty(IdGenerator.generateFacultyId(), "Faculty of Natural Sciences", "FNS", "+38(044) 425-60-57", deanFNS);
 
         //Specialities
         Speciality bio = new Speciality(IdGenerator.generateSpecialityId(), "Biology and Biotechnology");
@@ -181,7 +181,7 @@ public class UniversityService {
         // ==========================================
         // 6. FACULTY OF SOCIAL SCIENCES AND SOCIAL TECHNOLOGIES (FSSST)
         // ==========================================
-        Faculty fssst = new Faculty(IdGenerator.generateFacultyId(), "Faculty of Social Sciences and Social Technologies", "+38(044) 425-60-47", deanFSSST);
+        Faculty fssst = new Faculty(IdGenerator.generateFacultyId(), "Faculty of Social Sciences and Social Technologies", "FSSST", "+38(044) 425-60-47", deanFSSST);
 
         //Specialities
         Speciality soc = new Speciality(IdGenerator.generateSpecialityId(), "Sociology");
