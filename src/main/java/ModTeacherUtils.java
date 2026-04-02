@@ -1,6 +1,7 @@
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.time.LocalDate;
 
 public class ModTeacherUtils {
     //! ======= WORK WITH TEACHERS ===== //
@@ -91,11 +92,31 @@ public class ModTeacherUtils {
         
         String email = InputUtils.readLine(scanner, "Enter email (optional, press Enter to skip): ", true, true);
         String phone = InputUtils.readLine(scanner, "Enter phone number (optional, press Enter to skip): ", true, true);
+        String academicDegree = InputUtils.readLine(scanner, "Enter academic degree (optional, press Enter to skip): ", true, true);
+        String academicTitle = InputUtils.readLine(scanner, "Enter academic title (optional, press Enter to skip): ", true, true);
+        String empDateStr = InputUtils.readLine(scanner, "Enter employment date (YYYY-MM-DD, optional, press Enter to skip): ", true, true);
+        String workloadStr = InputUtils.readLine(scanner, "Enter workload (e.g. 1.0, optional, press Enter to skip): ", true, true);
 
         // Save
         Teacher newTeacher = new Teacher(IdGenerator.generateTeacherId(), name, surname, patronymic, position, selectedDept);
         if (!email.trim().isEmpty()) newTeacher.setEmail(email.trim());
         if (!phone.trim().isEmpty()) newTeacher.setPhone(phone.trim());
+        if (!academicDegree.trim().isEmpty()) newTeacher.setAcademicDegree(academicDegree.trim());
+        if (!academicTitle.trim().isEmpty()) newTeacher.setAcademicTitle(academicTitle.trim());
+        if (!empDateStr.trim().isEmpty()) {
+            try {
+                newTeacher.setEmploymentDate(LocalDate.parse(empDateStr.trim()));
+            } catch (Exception e) {
+                System.out.println("Invalid date format. Skipping employment date.");
+            }
+        }
+        if (!workloadStr.trim().isEmpty()) {
+            try {
+                newTeacher.setWorkload(Double.parseDouble(workloadStr.trim()));
+            } catch (Exception e) {
+                System.out.println("Invalid workload format. Skipping workload.");
+            }
+        }
         
         teacherService.addTeacher(newTeacher);
         
@@ -105,9 +126,6 @@ public class ModTeacherUtils {
         InputUtils.pause(scanner);
     }
 
-    /**
-     * Delete the Teacher by name
-     */
 
 
     /**
@@ -174,9 +192,13 @@ public class ModTeacherUtils {
         System.out.println("3. Change Position");
         System.out.println("4. Change Email");
         System.out.println("5. Change Phone Number");
+        System.out.println("6. Change Academic Degree");
+        System.out.println("7. Change Academic Title");
+        System.out.println("8. Change Employment Date");
+        System.out.println("9. Change Workload");
         System.out.println("0. Finish editing");
 
-        int fieldChoice = InputUtils.readInt(scanner, "> ", 0, 5);
+        int fieldChoice = InputUtils.readInt(scanner, "> ", 0, 9);
         if (fieldChoice == 0) { break;}
 
         switch (fieldChoice) {
@@ -208,6 +230,34 @@ public class ModTeacherUtils {
                 String newPhone = InputUtils.readLine(scanner, "Enter new phone number: ", false, true);
                 teacherToProcess.setPhone(newPhone);
                 System.out.println("Phone number updated!");
+            }
+            case 6 -> {
+                String newDegree = InputUtils.readLine(scanner, "Enter new academic degree: ", false, true);
+                teacherToProcess.setAcademicDegree(newDegree);
+                System.out.println("Academic degree updated!");
+            }
+            case 7 -> {
+                String newTitle = InputUtils.readLine(scanner, "Enter new academic title: ", false, true);
+                teacherToProcess.setAcademicTitle(newTitle);
+                System.out.println("Academic title updated!");
+            }
+            case 8 -> {
+                String newDate = InputUtils.readLine(scanner, "Enter new employment date (YYYY-MM-DD): ", false, true);
+                try {
+                    teacherToProcess.setEmploymentDate(LocalDate.parse(newDate.trim()));
+                    System.out.println("Employment date updated!");
+                } catch (Exception e) {
+                    System.out.println("Invalid date format.");
+                }
+            }
+            case 9 -> {
+                String newWorkload = InputUtils.readLine(scanner, "Enter new workload (e.g. 1.0): ", false, true);
+                try {
+                    teacherToProcess.setWorkload(Double.parseDouble(newWorkload.trim()));
+                    System.out.println("Workload updated!");
+                } catch (Exception e) {
+                    System.out.println("Invalid workload format.");
+                }
             }
         }
         }
