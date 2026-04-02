@@ -12,6 +12,10 @@ public class DepartmentService {
     }
 
     public void addNewDepartment(String newDepartmentName, Faculty selectedFaculty) {
+        addNewDepartment(newDepartmentName, selectedFaculty, null, null);
+    }
+    
+    public void addNewDepartment(String newDepartmentName, Faculty selectedFaculty, Teacher head, String location) {
         boolean exists = selectedFaculty.getDepartments().stream()
                 .anyMatch(d -> d.getName().equalsIgnoreCase(newDepartmentName));
 
@@ -19,7 +23,14 @@ public class DepartmentService {
             System.out.println("Error: Department with this name already exists!");
             return;
         }
-        selectedFaculty.getDepartments().add(new Department(IdGenerator.generateDepartmentId(),newDepartmentName));
+        Department d = new Department(IdGenerator.generateDepartmentId(),newDepartmentName);
+        if (head != null) {
+            d.setHead(head);
+        }
+        if (location != null && !location.trim().isEmpty()) {
+            d.setLocation(location);
+        }
+        selectedFaculty.getDepartments().add(d);
         System.out.println("Department created successfully!");
     }
 
@@ -32,9 +43,20 @@ public class DepartmentService {
         dept.setName(editName);
         System.out.println(oldName+" name updated successfully to: " + dept.getName());
     }
-    private <T> boolean isNameDuplicate(Collection<T> list, String newName, java.util.function.Function<T, String> nameExtractor) {
+
+    public void editDepartmentHead(Department dept, Teacher head) {
+        dept.setHead(head);
+        System.out.println("Head of department set to " + (head == null ? "None" : head.getDisplayInfo()));
+    }
+
+    public void editDepartmentLocation(Department dept, String location) {
+        dept.setLocation(location);
+        System.out.println("Location updated.");
+    }
+
+    private <T> boolean isNameDuplicate(Collection<T> list, String newName, java.util.function.Function<T, String> nameGetter) {
         return list.stream()
-                .anyMatch(item -> nameExtractor.apply(item).equalsIgnoreCase(newName));
+                .anyMatch(item -> nameGetter.apply(item).equalsIgnoreCase(newName));
     }
 
     public void deleteDepartment(Department selectedDept, Faculty selectedFaculty) {
