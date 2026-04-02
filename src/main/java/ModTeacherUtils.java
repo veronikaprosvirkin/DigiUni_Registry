@@ -91,28 +91,34 @@ public class ModTeacherUtils {
         position = InputUtils.removeSpaces(position, false, true, true, true);
         
         String email = InputUtils.readLine(scanner, "Enter email (optional, press Enter to skip): ", true, true);
+        email = InputUtils.removeSpaces(email, false, true, true, true);
         String phone = InputUtils.readLine(scanner, "Enter phone number (optional, press Enter to skip): ", true, true);
+        phone = InputUtils.removeSpaces(phone, false, true, true, true);
         String academicDegree = InputUtils.readLine(scanner, "Enter academic degree (optional, press Enter to skip): ", true, true);
+        academicDegree = InputUtils.removeSpaces(academicDegree, false, true, true, true);
         String academicTitle = InputUtils.readLine(scanner, "Enter academic title (optional, press Enter to skip): ", true, true);
+        academicTitle = InputUtils.removeSpaces(academicTitle, false, true, true, true);
         String empDateStr = InputUtils.readLine(scanner, "Enter employment date (YYYY-MM-DD, optional, press Enter to skip): ", true, true);
+        empDateStr = InputUtils.removeSpaces(empDateStr, false, true, true, true);
         String workloadStr = InputUtils.readLine(scanner, "Enter workload (e.g. 1.0, optional, press Enter to skip): ", true, true);
+        workloadStr = InputUtils.removeSpaces(workloadStr, false, true, true, true);
 
         // Save
         Teacher newTeacher = new Teacher(IdGenerator.generateTeacherId(), name, surname, patronymic, position, selectedDept);
-        if (!email.trim().isEmpty()) newTeacher.setEmail(email.trim());
-        if (!phone.trim().isEmpty()) newTeacher.setPhone(phone.trim());
-        if (!academicDegree.trim().isEmpty()) newTeacher.setAcademicDegree(academicDegree.trim());
-        if (!academicTitle.trim().isEmpty()) newTeacher.setAcademicTitle(academicTitle.trim());
-        if (!empDateStr.trim().isEmpty()) {
+        if (!email.isEmpty()) newTeacher.setEmail(email);
+        if (!phone.isEmpty()) newTeacher.setPhone(phone);
+        if (!academicDegree.isEmpty()) newTeacher.setAcademicDegree(academicDegree);
+        if (!academicTitle.isEmpty()) newTeacher.setAcademicTitle(academicTitle);
+        if (!empDateStr.isEmpty()) {
             try {
-                newTeacher.setEmploymentDate(LocalDate.parse(empDateStr.trim()));
+                newTeacher.setEmploymentDate(LocalDate.parse(empDateStr));
             } catch (Exception e) {
                 System.out.println("Invalid date format. Skipping employment date.");
             }
         }
-        if (!workloadStr.trim().isEmpty()) {
+        if (!workloadStr.isEmpty()) {
             try {
-                newTeacher.setWorkload(Double.parseDouble(workloadStr.trim()));
+                newTeacher.setWorkload(Double.parseDouble(workloadStr));
             } catch (Exception e) {
                 System.out.println("Invalid workload format. Skipping workload.");
             }
@@ -223,28 +229,33 @@ public class ModTeacherUtils {
             }
             case 4 -> {
                 String newEmail = InputUtils.readLine(scanner, "Enter new email: ", false, true);
+                newEmail = InputUtils.removeSpaces(newEmail, false, true, true, true);
                 teacherToProcess.setEmail(newEmail);
                 System.out.println("Email updated!");
             }
             case 5 -> {
                 String newPhone = InputUtils.readLine(scanner, "Enter new phone number: ", false, true);
+                newPhone = InputUtils.removeSpaces(newPhone, false, true, true, true);
                 teacherToProcess.setPhone(newPhone);
                 System.out.println("Phone number updated!");
             }
             case 6 -> {
                 String newDegree = InputUtils.readLine(scanner, "Enter new academic degree: ", false, true);
+                newDegree = InputUtils.removeSpaces(newDegree, false, true, true, true);
                 teacherToProcess.setAcademicDegree(newDegree);
                 System.out.println("Academic degree updated!");
             }
             case 7 -> {
                 String newTitle = InputUtils.readLine(scanner, "Enter new academic title: ", false, true);
+                newTitle = InputUtils.removeSpaces(newTitle, false, true, true, true);
                 teacherToProcess.setAcademicTitle(newTitle);
                 System.out.println("Academic title updated!");
             }
             case 8 -> {
                 String newDate = InputUtils.readLine(scanner, "Enter new employment date (YYYY-MM-DD): ", false, true);
+                newDate = InputUtils.removeSpaces(newDate, false, true, true, true);
                 try {
-                    teacherToProcess.setEmploymentDate(LocalDate.parse(newDate.trim()));
+                    teacherToProcess.setEmploymentDate(LocalDate.parse(newDate));
                     System.out.println("Employment date updated!");
                 } catch (Exception e) {
                     System.out.println("Invalid date format.");
@@ -252,8 +263,9 @@ public class ModTeacherUtils {
             }
             case 9 -> {
                 String newWorkload = InputUtils.readLine(scanner, "Enter new workload (e.g. 1.0): ", false, true);
+                newWorkload = InputUtils.removeSpaces(newWorkload, false, true, true, true);
                 try {
-                    teacherToProcess.setWorkload(Double.parseDouble(newWorkload.trim()));
+                    teacherToProcess.setWorkload(Double.parseDouble(newWorkload));
                     System.out.println("Workload updated!");
                 } catch (Exception e) {
                     System.out.println("Invalid workload format.");
