@@ -88,10 +88,17 @@ public class ModTeacherUtils {
         String patronymic = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Patronymic: ", false, false), true, false, false, false);
         String position = InputUtils.readLine(scanner, "Position: ", false, true);
         position = InputUtils.removeSpaces(position, false, true, true, true);
-
+        
+        String email = InputUtils.readLine(scanner, "Enter email (optional, press Enter to skip): ", true, true);
+        String phone = InputUtils.readLine(scanner, "Enter phone number (optional, press Enter to skip): ", true, true);
 
         // Save
-        teacherService.addTeacher(name, surname, patronymic, position, selectedDept);
+        Teacher newTeacher = new Teacher(IdGenerator.generateTeacherId(), name, surname, patronymic, position, selectedDept);
+        if (!email.trim().isEmpty()) newTeacher.setEmail(email.trim());
+        if (!phone.trim().isEmpty()) newTeacher.setPhone(phone.trim());
+        
+        teacherService.addTeacher(newTeacher);
+        
         System.out.println("Teacher " + name + " " + surname +
                 " successfully added to department: " + selectedDept.getName());
 
@@ -165,9 +172,11 @@ public class ModTeacherUtils {
         System.out.println("1. Change Surname");
         System.out.println("2. Change Name");
         System.out.println("3. Change Position");
+        System.out.println("4. Change Email");
+        System.out.println("5. Change Phone Number");
         System.out.println("0. Finish editing");
 
-        int fieldChoice = InputUtils.readInt(scanner, "> ", 0, 3);
+        int fieldChoice = InputUtils.readInt(scanner, "> ", 0, 5);
         if (fieldChoice == 0) { break;}
 
         switch (fieldChoice) {
@@ -189,6 +198,16 @@ public class ModTeacherUtils {
                 newPosition = InputUtils.removeSpaces(newPosition, false, true, true, true);
                 teacherToProcess.setPosition(newPosition);
                 System.out.println("Position updated!");
+            }
+            case 4 -> {
+                String newEmail = InputUtils.readLine(scanner, "Enter new email: ", false, true);
+                teacherToProcess.setEmail(newEmail);
+                System.out.println("Email updated!");
+            }
+            case 5 -> {
+                String newPhone = InputUtils.readLine(scanner, "Enter new phone number: ", false, true);
+                teacherToProcess.setPhone(newPhone);
+                System.out.println("Phone number updated!");
             }
         }
         }

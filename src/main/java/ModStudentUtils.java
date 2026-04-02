@@ -114,11 +114,18 @@ public class ModStudentUtils {
             newStudyForm = StudyForm.CONTRACT;
         }
 
+        String email = InputUtils.readLine(scanner, "Enter email (optional, press Enter to skip): ", true, true);
+        String phone = InputUtils.readLine(scanner, "Enter phone number (optional, press Enter to skip): ", true, true);
+
         // Save
         String newId = IdGenerator.generateStudentId(enrollmentDate.getYear());
         Student s = new Student(newId,name, surname, patronymic, enrollmentDate, groupNumber,
                 selectedFaculty.getName(),
                 selectedSpeciality,newStudyForm);
+        
+        if (!email.trim().isEmpty()) s.setEmail(email.trim());
+        if (!phone.trim().isEmpty()) s.setPhone(phone.trim());
+
         studentService.addStudentToSpeciality(s, selectedSpeciality, groupNumber);
 
         System.out.println("Student " + s.getFullName() + " added to group " + groupNumber +
@@ -228,9 +235,11 @@ public class ModStudentUtils {
             System.out.println("4. Change Group");
             System.out.println("5. Change Study Form");
             System.out.println("6. Change Status");
+            System.out.println("7. Change Email");
+            System.out.println("8. Change Phone Number");
             System.out.println("0. Finish editing");
 
-            int fieldChoice = InputUtils.readInt(scanner, "> ", 0, 6);
+            int fieldChoice = InputUtils.readInt(scanner, "> ", 0, 8);
             if (fieldChoice == 0) {
                 break;
             }
@@ -292,6 +301,16 @@ public class ModStudentUtils {
                         System.out.println("Status updated!");
                     }
 
+                }
+                case 7 -> {
+                    String newEmail = InputUtils.readLine(scanner, "Enter new email: ", false, true);
+                    studentToProcess.setEmail(newEmail);
+                    System.out.println("Email updated!");
+                }
+                case 8 -> {
+                    String newPhone = InputUtils.readLine(scanner, "Enter new phone number: ", false, true);
+                    studentToProcess.setPhone(newPhone);
+                    System.out.println("Phone number updated!");
                 }
                 }
         }
