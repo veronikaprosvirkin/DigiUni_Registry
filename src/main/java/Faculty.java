@@ -10,6 +10,7 @@ public final class Faculty implements NamedEntity {
     @EqualsAndHashCode.Include
     private String id;
     private String nameOfFaculty;
+    private String shortName;
     private String contacts;
     private Teacher dean;
     private List<Speciality> speciality = new ArrayList<>();

@@ -12,6 +12,8 @@ public abstract sealed class Person implements NamedEntity permits Student, Teac
     protected String name;
     protected String surname;
     protected String patronymic;
+    protected String email;
+    protected String phone;
 
     public Person(String id, String name, String surname, String patronymic) {
         this.id = id;

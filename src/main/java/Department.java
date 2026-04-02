@@ -10,6 +10,8 @@ public final class Department implements NamedEntity {
     @EqualsAndHashCode.Include
     private String id;
     private String nameOfDepartment;
+    private Teacher head;
+    private String location;
     private List<Teacher> teachers = new ArrayList<>();
 
     public Department(String id, String nameOfDepartment) {
