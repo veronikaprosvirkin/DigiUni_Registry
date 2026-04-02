@@ -20,8 +20,9 @@ public class ModFacultyUtils {
             System.out.println("2. Delete Faculty");
             System.out.println("3. Edit contacts");
             System.out.println("4. Assign Dean");
+            System.out.println("5. Edit Short Name");
             System.out.println("0. Back");
-            int workWithFaculty = InputUtils.readInt(scanner, "> ", 0, 4);
+            int workWithFaculty = InputUtils.readInt(scanner, "> ", 0, 5);
             if (workWithFaculty == 1) { //edit faculty name
                 ModFacultyUtils.facultyManageExistingFacultyRename(scanner, facultyService, selectedFaculty);
             } else if (workWithFaculty == 2) { //delete faculty
@@ -34,6 +35,8 @@ public class ModFacultyUtils {
                     selectedFaculty.setDean(dean);
                     System.out.println("Success! " + dean.getFullName() + " is now the Dean.");
                 }
+            } else if (workWithFaculty == 5) {
+                ModFacultyUtils.facultyManageExistingFacultyRenameShort(scanner, facultyService, selectedFaculty);
             }
         }
     }
@@ -89,14 +92,16 @@ public class ModFacultyUtils {
         String name = InputUtils.readLine(scanner, "Enter new Faculty name: ", false, false);
         name = InputUtils.removeSpaces(name, false, true, true, true);
 
+        String shortName = InputUtils.readLine(scanner, "Enter new Faculty short name (MANDATORY): ", false, false);
+        shortName = InputUtils.removeSpaces(shortName, false, true, true, true);
+
         String contact = InputUtils.readLine(scanner, "Enter contact information: ", false, false);
 
         System.out.println("Assign a Dean:");
-        // Тепер teacherService доступний тут
         Teacher dean = selectTeacherFlow(scanner, teacherService);
 
         if (dean != null) {
-            facultyService.addNewFaculty(name, contact, dean);
+            facultyService.addNewFaculty(name, shortName, contact, dean);
         } else {
             System.out.println("Error: Faculty cannot be created without a Dean!");
         }
@@ -110,6 +115,18 @@ public class ModFacultyUtils {
         String newName = InputUtils.readLine(scanner, "Enter new Faculty name: ", false, false);
         newName = InputUtils.removeSpaces(newName, false, true, true, true);
         facultyService.editFacultyName(selectedFacultyToRename, newName);
+        InputUtils.pause(scanner);
+    }
+
+    /**
+     * Rename Faculty Short Name
+     */
+    static void facultyManageExistingFacultyRenameShort(Scanner scanner, FacultyService facultyService, Faculty selectedFacultyToRename) {
+        System.out.println("Current short name: " + selectedFacultyToRename.getShortName());
+        String newName = InputUtils.readLine(scanner, "Enter new Faculty short name: ", false, false);
+        newName = InputUtils.removeSpaces(newName, false, true, true, true);
+        selectedFacultyToRename.setShortName(newName);
+        System.out.println("Short name updated successfully!");
         InputUtils.pause(scanner);
     }
 

@@ -16,9 +16,10 @@ public final class Faculty implements NamedEntity {
     private List<Speciality> speciality = new ArrayList<>();
     private List<Department> departments = new ArrayList<>();
 
-    public Faculty(String id, String nameOfFaculty, String contacts, Teacher dean) {
+    public Faculty(String id, String nameOfFaculty, String shortName, String contacts, Teacher dean) {
         this.id = id;
         this.nameOfFaculty = nameOfFaculty;
+        this.shortName = shortName;
         this.contacts = contacts;
         this.dean = dean;
     }
