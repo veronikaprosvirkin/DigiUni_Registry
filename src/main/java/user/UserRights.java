@@ -18,7 +18,7 @@ import department.Department;
 import speciality.Speciality;
 
 public class UserRights {
-    public static void showUserRights(UniversityService universityService, StudentService studentService, TeacherService teacherService, FacultyService facultyService, DepartmentService departmentService, SpecialityService specialityService, Scanner scanner) {
+    public static void showUserRights(UniversityService universityService, StudentService studentService, TeacherService teacherService, FacultyService facultyService, DepartmentService departmentService, SpecialityService specialityService, UserService userService, Scanner scanner) {
         System.out.println("\n--- DigiUni (User access) ---");
         System.out.println("1. Show Faculties"); // finished
         System.out.println("2. Show Departments"); //finished
@@ -58,7 +58,7 @@ public class UserRights {
                 }
             }
             case "0" -> {
-                UserService.logout();
+                userService.logout();
             }     //? Log out
             default -> System.out.println("Invalid.");  //? Incorrect input
         }

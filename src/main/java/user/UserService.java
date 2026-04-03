@@ -8,9 +8,9 @@ import java.util.Scanner;
 import utils.input.InputUtils;
 
 public class UserService {
-    private static List<User> users = new ArrayList<>();
-    private static User currentUser = null;
-    private static boolean initialized = false;
+    private List<User> users = new ArrayList<>();
+    private User currentUser = null;
+    private boolean initialized = false;
 
     public UserService() { //test users
         if (!initialized) {
@@ -22,7 +22,7 @@ public class UserService {
     }
 
     // logging in process
-    public static void login(Scanner scanner) {
+    public void login(Scanner scanner) {
         System.out.println("You are not logged in. Please log in first.");
         String login = InputUtils.readLine(scanner, "Login: ", false, true);
         String password = InputUtils.readLine(scanner, "Password: ", false, true);
@@ -36,7 +36,7 @@ public class UserService {
     }
 
     // method for login
-    public static boolean loginSuccess(String username, String password) {
+    public boolean loginSuccess(String username, String password) {
         for (User user : users) {
             if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
                 currentUser = user;
@@ -46,7 +46,7 @@ public class UserService {
         return false;
     }
 
-    public static List<User> getAllUsers() {
+    public List<User> getAllUsers() {
         return Collections.unmodifiableList(users);
     }
 
@@ -55,13 +55,13 @@ public class UserService {
         return currentUser;
     }
 
-    public static void logout() {
+    public void logout() {
         currentUser = null;
     }
 
     //====WORK WITH USERS===
     //add user
-    public static void registerNewUser(String username, String password, Role selectedRole) {
+    public void registerNewUser(String username, String password, Role selectedRole) {
         for (User user : users) {
             if (user.getUsername().equals(username)) {
                 System.out.println("Username already exists. Please choose another one.");
@@ -74,7 +74,7 @@ public class UserService {
     }
 
     //delete user
-    public static void deleteUser(String username) {
+    public void deleteUser(String username) {
         boolean removed = users.removeIf(user -> user.getUsername().equals(username) && user.getRole() != Role.ADMIN);
         if (removed) {
             System.out.println("User deleted successfully!");
@@ -84,7 +84,7 @@ public class UserService {
     }
 
     //edit user
-    public static void editUser(String username, Role selectedRole) {
+    public void editUser(String username, Role selectedRole) {
         for (User user : users) {
             if (user.getUsername().equals(username)) {
                 if (selectedRole == user.getRole()) {

@@ -9,8 +9,8 @@ import user.User;
 
 public class ModUserUtils {
 
-    //show menu for user
-    static void showUserMenu(Scanner scanner) {
+    // show menu for user
+    public static void showUserMenu(Scanner scanner, UserService userService) {
         System.out.println("1. Add User");
         System.out.println("2. Delete User");
         System.out.println("3. Edit User's role");
@@ -18,16 +18,16 @@ public class ModUserUtils {
         System.out.println("0. Back");
         int workWithUser = InputUtils.readInt(scanner, "> ", 0, 4);
         if (workWithUser == 1) {
-            addUser(scanner);
+            addUser(scanner, userService);
         }
         else if (workWithUser == 2){
-            deleteUser(scanner);
+            deleteUser(scanner, userService);
         }
         else if (workWithUser == 3){
-            editUserRole(scanner);
+            editUserRole(scanner, userService);
         }
         else if (workWithUser == 4){
-            showAllUsers(scanner);
+            showAllUsers(scanner, userService);
         }
     }
 
@@ -48,27 +48,27 @@ public class ModUserUtils {
 
     //=====WORK WITH USERS=====
     //add user
-    private static void addUser(Scanner scanner) {
+    private static void addUser(Scanner scanner, UserService userService) {
         String username = InputUtils.readLine(scanner, "Enter username: ", true, true);
         String password = InputUtils.readLine(scanner, "Enter password: ", true, true);
         Role selectedRole = chooseRole(scanner);
-        UserService.registerNewUser(username, password, selectedRole);
+        userService.registerNewUser(username, password, selectedRole);
     }
     //delete user
-    private static void deleteUser(Scanner scanner) {
+    private static void deleteUser(Scanner scanner, UserService userService) {
         String username = InputUtils.readLine(scanner, "Enter username of user you want to delete: ", true, true);
-        UserService.deleteUser(username);
+        userService.deleteUser(username);
     }
 
     //edit user role
-    private static void editUserRole(Scanner scanner) {
+    private static void editUserRole(Scanner scanner, UserService userService) {
         String username = InputUtils.readLine(scanner, "Enter username of user you want to edit: ", true, true);
         Role selectedRole = ModUserUtils.chooseRole(scanner);
-        UserService.editUser(username, selectedRole);
+        userService.editUser(username, selectedRole);
     }
     //show all users
-    private static void showAllUsers(Scanner scanner) {
-        List<User> users = UserService.getAllUsers();
+    private static void showAllUsers(Scanner scanner, UserService userService) {
+        List<User> users = userService.getAllUsers();
         if (users.isEmpty()) {
             System.out.println("No users found!");
         } else {

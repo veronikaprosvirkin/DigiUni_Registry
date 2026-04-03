@@ -18,7 +18,7 @@ import department.ModDepartmentUtils;
 import utils.sort.SortUtils;
 
 public class ManagerRights {
-    public static void showManagerRights(UniversityService universityService, StudentService studentService, TeacherService teacherService, FacultyService facultyService, DepartmentService departmentService, SpecialityService specialityService, Scanner scanner) {
+    public static void showManagerRights(UniversityService universityService, StudentService studentService, TeacherService teacherService, FacultyService facultyService, DepartmentService departmentService, SpecialityService specialityService, UserService userService, Scanner scanner) {
         System.out.println("\n--- DigiUni (Manager access) ---");
         System.out.println("1. Work with Faculties"); // finished
         System.out.println("2. Work with Departments"); //finished
@@ -58,7 +58,7 @@ public class ManagerRights {
                 }
             }
             case "0" -> {
-                UserService.logout();
+                userService.logout();
             }     //? Log out
             default -> System.out.println("Invalid.");  //? Incorrect input
         }

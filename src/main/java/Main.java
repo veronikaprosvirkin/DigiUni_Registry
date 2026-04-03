@@ -45,16 +45,16 @@ public class Main {
                 //authorization logic
                 User currentUser = userService.getCurrentUser();
                 if (currentUser == null) {
-                    UserService.login(scanner);
+                    userService.login(scanner);
                     continue;
                 }
 
                 if (currentUser.getRole()==Role.USER) {
-                    UserRights.showUserRights(universityService, studentService, teacherService, facultyService, departmentService, specialityService, scanner);
+                    UserRights.showUserRights(universityService, studentService, teacherService, facultyService, departmentService, specialityService, userService, scanner);
                 } else if (currentUser.getRole()==Role.MANAGER) {
-                    ManagerRights.showManagerRights(universityService, studentService, teacherService, facultyService, departmentService, specialityService, scanner);
+                    ManagerRights.showManagerRights(universityService, studentService, teacherService, facultyService, departmentService, specialityService, userService, scanner);
                 } else if (currentUser.getRole() == Role.ADMIN) {
-                    AdminRights.showAdminRights(universityService, studentService, teacherService, facultyService, departmentService, specialityService, scanner);
+                    AdminRights.showAdminRights(universityService, studentService, teacherService, facultyService, departmentService, specialityService, userService, scanner);
                 }
             } catch (utils.EntityNotFoundException e) {
                 System.out.println(e.getMessage());

@@ -20,7 +20,7 @@ import utils.EntityNotFoundException;
 import user.UserService;
 
 public class AdminRights {
-    public static void showAdminRights(UniversityService universityService, StudentService studentService, TeacherService teacherService, FacultyService facultyService, DepartmentService departmentService, SpecialityService specialityService, Scanner scanner) {
+    public static void showAdminRights(UniversityService universityService, StudentService studentService, TeacherService teacherService, FacultyService facultyService, DepartmentService departmentService, SpecialityService specialityService, UserService userService, Scanner scanner) {
                 System.out.println("\n--- DigiUni (Admin access) ---");
                 System.out.println("1. Work with Faculties"); // finished
                 System.out.println("2. Work with Departments"); //finished
@@ -63,10 +63,10 @@ public class AdminRights {
                         }
                     }
                     case  "7" -> {
-                       ModUserUtils.showUserMenu(scanner);
+                       ModUserUtils.showUserMenu(scanner, userService);
                     }
                     case "0" -> {
-                        UserService.logout();
+                        userService.logout();
                     }     //? Log out
                     default -> System.out.println("Invalid.");  //? Incorrect input
                 }
