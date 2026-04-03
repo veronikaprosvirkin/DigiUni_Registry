@@ -25,6 +25,11 @@ public class UserServiceTest {
         currentUserField.setAccessible(true);
         currentUserField.set(null, null);
 
+        // Clear static initialized
+        Field initField = UserService.class.getDeclaredField("initialized");
+        initField.setAccessible(true);
+        initField.set(null, false);
+
         // Init UserService (adds admin, user, manager)
         userService = new UserService();
     }

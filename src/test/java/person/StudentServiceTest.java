@@ -120,4 +120,20 @@ class StudentServiceTest {
         List<Student> found = studentService.findStudentsBySpeciality(speciality);
         assertTrue(found.contains(testStudent));
     }
+
+    // Test faculty rename impact on student
+    @Test
+    void testFacultyRenameDoesNotBreakStudent() {
+        assertEquals("Faculty of Computer Science", testStudent.getFaculty().getName());
+
+        // Rename faculty
+        faculty.setName("New Faculty Name");
+
+        // Student should see the new name
+        assertEquals("New Faculty Name", testStudent.getFaculty().getName());
+
+        // moveStudentToGroup should still work
+        studentService.moveStudentToGroup(testStudent, 200);
+        assertEquals(200, testStudent.getGroup());
+    }
 }

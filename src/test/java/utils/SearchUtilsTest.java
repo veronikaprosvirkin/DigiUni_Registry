@@ -24,7 +24,7 @@ public class SearchUtilsTest {
     @BeforeEach
     void setUp() {
         university = new University();
-        UniversityService us = new UniversityService(university);
+        new UniversityService(university);
         studentService = new StudentService(university);
         teacherService = new TeacherService(university);
         facultyService = new FacultyService(university);
@@ -105,5 +105,28 @@ public class SearchUtilsTest {
         // "1" -> Faculty FI, "1" -> CS Dept, "1" -> Sort, "\n" -> Pause
         Scanner scanner = getScanner("1\n1\n1\n\n");
         SearchUtils.searchTeacherByDepartment(scanner, facultyService, teacherService);
+    }
+
+    // Test search cancel actions (0)
+    @Test
+    void testSearchCanceled() {
+        Scanner scanner = getScanner("0\n");
+        try {
+            SearchUtils.searchStudentBySpeciality(scanner, studentService, facultyService);
+        } catch (utils.EntityNotFoundException e) {
+            // expected
+        }
+    }
+
+    // Test null position safety
+    @Test
+    void testSearchTeacherWithNullPosition() {
+        Faculty f = university.getFaculties().get(0);
+        Department d = f.getDepartments().get(0);
+        teacherService.addTeacher("Null", "Pos", "Patr", null, d);
+        
+        Scanner scanner = getScanner("SomePos\n1\n\n");
+        SearchUtils.searchTeacherByPosition(scanner, teacherService);
+        // Should not throw NPE
     }
 }
