@@ -115,6 +115,8 @@ public class ModTeacherUtils {
             } catch (Exception e) {
                 System.out.println("Invalid date format. Skipping employment date.");
             }
+        } else {
+            newTeacher.setEmploymentDate(LocalDate.now());
         }
         if (!workloadStr.isEmpty()) {
             try {
@@ -138,7 +140,7 @@ public class ModTeacherUtils {
      * Delete the Teacher by ID
      */
     static void teacherDeleteById(Scanner scanner, TeacherService teacherService) {
-        String id = InputUtils.readLine(scanner, "Enter ID of teacher: ", false, false);
+        String id = InputUtils.readLine(scanner, "Enter ID of teacher: ", false, true);
         List<Teacher> result = teacherService.findTeacherById(id);
         ModEntitiesUtils.deleteEntity(scanner, result, "Teacher", (teacher -> teacherService.deleteTeacher(teacher, teacher.getDepartment())));
     }
@@ -179,7 +181,7 @@ public class ModTeacherUtils {
      * Edit the Teacher by ID
      */
     static void teacherEditById(Scanner scanner, TeacherService teacherService) {
-        String id = InputUtils.readLine(scanner, "Enter ID of teacher: ", false, false);
+        String id = InputUtils.readLine(scanner, "Enter ID of teacher: ", false, true);
         List<Teacher> result = teacherService.findTeacherById(id);
         if (result.isEmpty()){
             System.out.println("No teacher found by id " + id);

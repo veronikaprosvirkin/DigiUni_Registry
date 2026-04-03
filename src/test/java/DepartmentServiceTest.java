@@ -17,7 +17,7 @@ public class DepartmentServiceTest {
         university = new University();
         departmentService = new DepartmentService(university);
 
-        faculty = new Faculty("1", "Faculty of Informatics", "123", null);
+        faculty = new Faculty("1", "Faculty of Informatics", "FI", "123", null);
         dept1 = new Department("1", "Computer Science");
         dept2 = new Department("2", "Mathematics");
 

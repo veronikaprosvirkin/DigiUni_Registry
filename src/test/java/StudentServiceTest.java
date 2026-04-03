@@ -23,7 +23,7 @@ class StudentServiceTest {
         university = new University();
         studentService = new StudentService(university);
         Teacher testDean = new Teacher(IdGenerator.generateTeacherId(), "Ivan", "Ivanov", "Ivanovych", "Dean", null);
-        faculty = new Faculty("fc001","Faculty of Computer Science", "contacts", testDean);
+        faculty = new Faculty("fc001", "Faculty of Computer Science", "FCS", "contacts", testDean);
         speciality = new Speciality("sp001","Software Engineering");
         faculty.getSpeciality().add(speciality);
         university.getFaculties().add(faculty);

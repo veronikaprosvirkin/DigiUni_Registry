@@ -15,7 +15,7 @@ public class SpecialityServiceTest {
         university = new University();
         specialityService = new SpecialityService(university);
 
-        faculty = new Faculty("1", "Faculty of Informatics", "123", null);
+        faculty = new Faculty("1", "Faculty of Informatics", "FI", "123", null);
         spec1 = new Speciality("1", "Software Engineering");
         spec2 = new Speciality("2", "Computer Science");
 

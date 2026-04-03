@@ -18,7 +18,7 @@ public class SortUtilsTest {
     void setUp() {
         students = new ArrayList<>();
         Teacher testDean = new Teacher(IdGenerator.generateTeacherId(), "Ivan", "Ivanov", "Ivanovych", "Dean", null);
-        Faculty f = new Faculty("fc01","FI", "contacts1",testDean );
+        Faculty f = new Faculty("fc01", "Faculty of Informatics", "FI", "contacts1", testDean);
         Speciality s = new Speciality("sp01","SE");
 
         students.add(new Student("st001", "Jan", "Kowalski", "sm", LocalDate.of(2025, 9, 1), 102, "FI", s,StudyForm.BUDGET));
