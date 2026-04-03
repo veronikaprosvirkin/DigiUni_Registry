@@ -34,16 +34,24 @@ public class UserRights {
                 ModEntitiesUtils.showAllEntity(scanner, facultyService.getFaculties(), "Faculty", false);
             }
             case "2" -> {   //? Show departments
-                Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty")
-                        .orElseThrow(()-> new EntityNotFoundException("Faculty wasn't chosen or found"));
+                java.util.Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty");
+                if (optFaculty.isEmpty()) {
+                    System.out.println("Faculty wasn't chosen or found");
+                    return;
+                }
+                Faculty selectedFaculty = optFaculty.get();
 
                 ModEntitiesUtils.showAllEntity(scanner, selectedFaculty.getDepartments(), "Department", false);
 
             }
             case "3" -> {   //? Show specialities
-                Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty")
-                        .orElseThrow(()-> new EntityNotFoundException("Faculty wasn't chosen or found"));
-                ModEntitiesUtils.showAllEntity(scanner, selectedFaculty.getSpeciality(), "Speciality", false);
+                java.util.Optional<Faculty> optFaculty2 = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty");
+                if (optFaculty2.isEmpty()) {
+                    System.out.println("Faculty wasn't chosen or found");
+                    return;
+                }
+                Faculty selectedFaculty2 = optFaculty2.get();
+                ModEntitiesUtils.showAllEntity(scanner, selectedFaculty2.getSpeciality(), "Speciality", false);
 
             }
 

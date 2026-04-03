@@ -22,8 +22,12 @@ public class ModFacultyUtils {
         if (action == 1) {
             ModFacultyUtils.facultyAddFaculty(scanner, facultyService, teacherService);
         } else if (action == 2) { //manage existing faculties
-            Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty")
-                    .orElseThrow(() -> new EntityNotFoundException("Faculty wasn't chosen or found"));
+            java.util.Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty");
+            if (optFaculty.isEmpty()) {
+                System.out.println("Faculty wasn't chosen or found");
+                return;
+            }
+            Faculty selectedFaculty = optFaculty.get();
 
             System.out.println("1. Edit Faculty");
             System.out.println("2. Delete Faculty");

@@ -88,12 +88,20 @@ public class ModTeacherUtils {
      */
     static void teacherAddTeacher(Scanner scanner, FacultyService facultyService, TeacherService teacherService) {
         System.out.println("--- Add Teacher ---");
-        Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties")
-                .orElseThrow(()-> new EntityNotFoundException("Faculty wasn't selected ot found"));
+        java.util.Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties");
+        if (optFaculty.isEmpty()) {
+            System.out.println("Faculty wasn't selected ot found");
+            return;
+        }
+        Faculty selectedFaculty = optFaculty.get();
 
         // Select Department
-        Department selectedDept = ModEntitiesUtils.selectEntity(scanner, selectedFaculty.getDepartments(), "Departments in " + selectedFaculty.getName())
-                .orElseThrow(()-> new EntityNotFoundException("Department wasn't selected ot found"));
+        java.util.Optional<Department> optDept = ModEntitiesUtils.selectEntity(scanner, selectedFaculty.getDepartments(), "Departments in " + selectedFaculty.getName());
+        if (optDept.isEmpty()) {
+            System.out.println("Department wasn't selected ot found");
+            return;
+        }
+        Department selectedDept = optDept.get();
 
         // Teachers's info
         String name = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Name: ", false, false), true, false, false, false);

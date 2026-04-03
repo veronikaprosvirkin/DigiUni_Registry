@@ -26,11 +26,19 @@ public class ModDepartmentUtils {
             ModDepartmentUtils.departmentAddDepartment(scanner, departmentService, facultyService, teacherService);
         } else if (action == 2) { // manage existing department
             // Select Faculty and Department
-            Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty")
-                    .orElseThrow(() -> new EntityNotFoundException("Faculty wasn't chosen or found"));
+            java.util.Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty");
+            if (optFaculty.isEmpty()) {
+                System.out.println("Faculty wasn't chosen or found");
+                return;
+            }
+            Faculty selectedFaculty = optFaculty.get();
 
-            Department selectedDept = ModEntitiesUtils.selectEntity(scanner, selectedFaculty.getDepartments(), "Department")
-                    .orElseThrow(()-> new EntityNotFoundException("Department wasn't chosen or found"));
+            java.util.Optional<Department> optDept = ModEntitiesUtils.selectEntity(scanner, selectedFaculty.getDepartments(), "Department");
+            if (optDept.isEmpty()) {
+                System.out.println("Department wasn't chosen or found");
+                return;
+            }
+            Department selectedDept = optDept.get();
 
 
             //Work with a selected department
@@ -72,8 +80,12 @@ public class ModDepartmentUtils {
      */
     static void departmentAddDepartment(Scanner scanner, DepartmentService departmentService, FacultyService facultyService, TeacherService teacherService) {
         System.out.println("Choose faculty where department will be added:");
-        Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties")
-                .orElseThrow(()-> new EntityNotFoundException("Faculty wasn't selected or found"));
+        java.util.Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties");
+        if (optFaculty.isEmpty()) {
+            System.out.println("Faculty wasn't selected or found");
+            return;
+        }
+        Faculty selectedFaculty = optFaculty.get();
         String name = InputUtils.readLine(scanner, "Enter new Department name: ", false, false);
         name = InputUtils.removeSpaces(name, false, true, true, true);
         

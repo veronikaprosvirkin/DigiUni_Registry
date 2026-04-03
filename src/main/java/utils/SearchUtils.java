@@ -44,12 +44,20 @@ public class SearchUtils {
      * Search Student by group in specific Speciality
      */
     public static void searchStudentByGroupSpecific(Scanner scanner, FacultyService facultyService, StudentService studentService) {
-        Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties")
-                .orElseThrow(()-> new EntityNotFoundException("Faculty wasn't selected ot found"));
+        java.util.Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties");
+        if (optFaculty.isEmpty()) {
+            System.out.println("Faculty wasn't selected ot found");
+            return;
+        }
+        Faculty selectedFaculty = optFaculty.get();
 
 
-        Speciality selectedSpeciality = ModEntitiesUtils.selectSpeciality(scanner, selectedFaculty)
-                .orElseThrow(()-> new EntityNotFoundException("Speciality wasn't selected ot found"));
+        java.util.Optional<Speciality> optSpec = ModEntitiesUtils.selectSpeciality(scanner, selectedFaculty);
+        if (optSpec.isEmpty()) {
+            System.out.println("Speciality wasn't selected ot found");
+            return;
+        }
+        Speciality selectedSpeciality = optSpec.get();
 
 
         int groupNumber = InputUtils.readInt(scanner, "Enter Group number: ", 1, Integer.MAX_VALUE);
@@ -113,22 +121,30 @@ public class SearchUtils {
      * Search Student by speciality
      */
     public static void searchStudentBySpeciality(Scanner scanner, StudentService studentService, FacultyService facultyService) {
-        Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties")
-                .orElseThrow(()-> new EntityNotFoundException("Faculty wasn't selected ot found"));
+        java.util.Optional<Faculty> optFaculty2 = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties");
+        if (optFaculty2.isEmpty()) {
+            System.out.println("Faculty wasn't selected ot found");
+            return;
+        }
+        Faculty selectedFaculty2 = optFaculty2.get();
 
 
-        Speciality selectedSpeciality = ModEntitiesUtils.selectSpeciality(scanner, selectedFaculty)
-                .orElseThrow(()-> new EntityNotFoundException("Speciality wasn't selected ot found"));
+        java.util.Optional<Speciality> optSpec2 = ModEntitiesUtils.selectSpeciality(scanner, selectedFaculty2);
+        if (optSpec2.isEmpty()) {
+            System.out.println("Speciality wasn't selected ot found");
+            return;
+        }
+        Speciality selectedSpeciality2 = optSpec2.get();
 
-        List <Student> result = studentService.findStudentsBySpeciality(selectedSpeciality);
+        List <Student> result = studentService.findStudentsBySpeciality(selectedSpeciality2);
         if (result.isEmpty()) {
-            System.out.println("No students found in " + selectedSpeciality.getName() + ".");
+            System.out.println("No students found in " + selectedSpeciality2.getName() + ".");
         } else {
             if (result.size() > 1) {
                 System.out.println("Multiple students found. Please select sorting method: ");
                 result = SortUtils.sortStudents(result, scanner);
             }
-            System.out.println(" --- Students in " + selectedSpeciality.getName() + " ---");
+            System.out.println(" --- Students in " + selectedSpeciality2.getName() + " ---");
             result.forEach(System.out::println);
         }
         InputUtils.pause(scanner);
@@ -161,12 +177,20 @@ public class SearchUtils {
      */
     public static void searchTeacherByDepartment(Scanner scanner, FacultyService facultyService, TeacherService teacherService) {
         // Select faculty
-        Faculty selectedFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties")
-                .orElseThrow(() -> new EntityNotFoundException("Faculty not found"));
+        java.util.Optional<Faculty> optFaculty3 = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties");
+        if (optFaculty3.isEmpty()) {
+            System.out.println("Faculty not found");
+            return;
+        }
+        Faculty selectedFaculty3 = optFaculty3.get();
 
         // Select department
-        Department selectedDepartment = ModEntitiesUtils.selectEntity(scanner, selectedFaculty.getDepartments(), "Departments")
-                .orElseThrow(() -> new EntityNotFoundException("Department not found"));
+        java.util.Optional<Department> optDept = ModEntitiesUtils.selectEntity(scanner, selectedFaculty3.getDepartments(), "Departments");
+        if (optDept.isEmpty()) {
+            System.out.println("Department not found");
+            return;
+        }
+        Department selectedDepartment = optDept.get();
 
         List<Teacher> result = teacherService.getTeachersByDepartment(selectedDepartment);
 
