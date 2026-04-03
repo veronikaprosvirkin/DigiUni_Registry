@@ -1,11 +1,11 @@
 import java.util.Scanner;
 
 public class InputUtils {
-    private InputUtils() {};
+    public InputUtils() {};
 
 
     // method for pause before going to the next menu
-    static void pause(Scanner scanner){
+    public static void pause(Scanner scanner){
         System.out.println("\nPress Enter to return to the menu...");
         scanner.nextLine();
     }
