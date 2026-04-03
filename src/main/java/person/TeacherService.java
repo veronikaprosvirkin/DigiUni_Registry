@@ -2,6 +2,7 @@ package person;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import university.University;
 import department.Department;
 import faculty.Faculty;
@@ -15,6 +16,7 @@ public class TeacherService {
     }
     // Adding a teacher
     public void addTeacher(String name, String surname, String patronymic, String position, Department selectedDept) {
+        Objects.requireNonNull(selectedDept, "Department cannot be null");
         if (selectedDept != null) {
             Teacher newTeacher = new Teacher(IdGenerator.generateTeacherId(), name, surname, patronymic, position, selectedDept);
             selectedDept.getTeachers().add(newTeacher);
@@ -22,6 +24,7 @@ public class TeacherService {
     }
 
     public void addTeacher(Teacher teacher) {
+        Objects.requireNonNull(teacher, "Teacher cannot be null");
         if (teacher != null && teacher.getDepartment() != null) {
             teacher.getDepartment().getTeachers().add(teacher);
         }
@@ -79,10 +82,13 @@ public class TeacherService {
     }
 
     public List<Teacher> getTeachersByDepartment(Department department) {
+        Objects.requireNonNull(department, "Department cannot be null");
         return department.getTeachers();
     }
 
     public void deleteTeacher(Teacher teacher, Department department) {
+        Objects.requireNonNull(teacher, "Teacher cannot be null");
+        Objects.requireNonNull(department, "Department cannot be null");
 
         boolean removed = department.getTeachers().remove(teacher);
 

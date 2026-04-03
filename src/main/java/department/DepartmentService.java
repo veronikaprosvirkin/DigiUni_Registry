@@ -2,6 +2,7 @@ package department;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import university.University;
 import utils.IdGenerator;
 import person.Teacher;
@@ -14,14 +15,18 @@ public class DepartmentService {
         this.university = university;
     }
     public List<Department> getDepartments(Faculty faculty) {
+        Objects.requireNonNull(faculty, "Faculty cannot be null");
         return faculty.getDepartments();
     }
 
     public void addNewDepartment(String newDepartmentName, Faculty selectedFaculty) {
+        Objects.requireNonNull(selectedFaculty, "Faculty cannot be null");
         addNewDepartment(newDepartmentName, selectedFaculty, null, null);
     }
     
     public void addNewDepartment(String newDepartmentName, Faculty selectedFaculty, Teacher head, String location) {
+        Objects.requireNonNull(selectedFaculty, "Faculty cannot be null");
+        Objects.requireNonNull(newDepartmentName, "Department name cannot be null");
         boolean exists = selectedFaculty.getDepartments().stream()
                 .anyMatch(d -> d.getName().equalsIgnoreCase(newDepartmentName));
 
@@ -41,6 +46,9 @@ public class DepartmentService {
     }
 
     public void editDepartmentName(Department dept, String editName, Faculty faculty) {
+        Objects.requireNonNull(dept, "Department cannot be null");
+        Objects.requireNonNull(faculty, "Faculty cannot be null");
+        Objects.requireNonNull(editName, "New name cannot be null");
         if (isNameDuplicate(faculty.getDepartments(), editName, dept, Department::getName)) {
             System.out.println("Error: Department with name '" + editName + "' already exists on this faculty.");
             return;
@@ -51,11 +59,13 @@ public class DepartmentService {
     }
 
     public void editDepartmentHead(Department dept, Teacher head) {
+        Objects.requireNonNull(dept, "Department cannot be null");
         dept.setHead(head);
         System.out.println("Head of department set to " + (head == null ? "None" : head.getDisplayInfo()));
     }
 
     public void editDepartmentLocation(Department dept, String location) {
+        Objects.requireNonNull(dept, "Department cannot be null");
         dept.setLocation(location);
         System.out.println("Location updated.");
     }
@@ -67,6 +77,8 @@ public class DepartmentService {
     }
 
     public void deleteDepartment(Department selectedDept, Faculty selectedFaculty) {
+        Objects.requireNonNull(selectedFaculty, "Faculty cannot be null");
+        Objects.requireNonNull(selectedDept, "Department cannot be null");
         selectedFaculty.getDepartments().remove(selectedDept);
     }
 }

@@ -1,6 +1,7 @@
 package speciality;
 
 import java.util.Collection;
+import java.util.Objects;
 import university.University;
 import faculty.Faculty;
 import utils.IdGenerator;
@@ -19,6 +20,8 @@ public class SpecialityService {
     }
 
     public void addNewSpeciality(String newSpecialityName, Faculty selectedFaculty) {
+        Objects.requireNonNull(selectedFaculty, "Faculty cannot be null");
+        Objects.requireNonNull(newSpecialityName, "Speciality name cannot be null");
         boolean exists = selectedFaculty.getSpeciality().stream()
                 .anyMatch(d -> d.getName().equalsIgnoreCase(newSpecialityName));
 
@@ -31,6 +34,9 @@ public class SpecialityService {
     }
 
     public void editSpecialityName(Speciality speciality, String editName, Faculty faculty) {
+        Objects.requireNonNull(speciality, "Speciality cannot be null");
+        Objects.requireNonNull(faculty, "Faculty cannot be null");
+        Objects.requireNonNull(editName, "New name cannot be null");
         if (isNameDuplicate(faculty.getSpeciality(), editName, speciality, Speciality::getName)) {
             System.out.println("Error: Speciality with name '" + editName + "' already exists on this faculty.");
             return;
@@ -42,6 +48,8 @@ public class SpecialityService {
 
 
     public void deleteSpeciality(Speciality selectedSpeciality, Faculty selectedFaculty) {
+        Objects.requireNonNull(selectedFaculty, "Faculty cannot be null");
+        Objects.requireNonNull(selectedSpeciality, "Speciality cannot be null");
         selectedFaculty.getSpeciality().remove(selectedSpeciality);
     }
 }
