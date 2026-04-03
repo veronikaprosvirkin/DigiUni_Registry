@@ -10,8 +10,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class AdminRightsTest {
     //set up test environment
     @BeforeEach
-    void setUp() {
-        UserService.getAllUsers().clear();
+    void setUp() throws Exception {
+        java.lang.reflect.Field usersField = UserService.class.getDeclaredField("users");
+        usersField.setAccessible(true);
+        java.util.List<User> internalUsers = (java.util.List<User>) usersField.get(null);
+        internalUsers.clear();
         UserService.registerNewUser("testUser", "1234", Role.USER);
     }
 

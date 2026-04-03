@@ -1,6 +1,7 @@
 package user;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import user.User;
 import java.util.Scanner;
@@ -9,11 +10,15 @@ import utils.input.InputUtils;
 public class UserService {
     private static List<User> users = new ArrayList<>();
     private static User currentUser = null;
+    private static boolean initialized = false;
 
     public UserService() { //test users
-        users.add(new User("admin", "admin", Role.ADMIN));
-        users.add(new User("user", "user", Role.USER));
-        users.add(new User("manager", "manager", Role.MANAGER));
+        if (!initialized) {
+            users.add(new User("admin", "admin", Role.ADMIN));
+            users.add(new User("user", "user", Role.USER));
+            users.add(new User("manager", "manager", Role.MANAGER));
+            initialized = true;
+        }
     }
 
     // logging in process
@@ -42,7 +47,7 @@ public class UserService {
     }
 
     public static List<User> getAllUsers() {
-        return users;
+        return Collections.unmodifiableList(users);
     }
 
     //return current user to main
@@ -70,14 +75,12 @@ public class UserService {
 
     //delete user
     public static void deleteUser(String username) {
-        for (User user : users) {
-            if (user.getUsername().equals(username) && user.getRole() != Role.ADMIN) {
-                users.remove(user);
-                System.out.println("User deleted successfully!");
-                return;
-            }
+        boolean removed = users.removeIf(user -> user.getUsername().equals(username) && user.getRole() != Role.ADMIN);
+        if (removed) {
+            System.out.println("User deleted successfully!");
+        } else {
+            System.out.println("User not found or is ADMIN!");
         }
-        System.out.println("User not found!");
     }
 
     //edit user
