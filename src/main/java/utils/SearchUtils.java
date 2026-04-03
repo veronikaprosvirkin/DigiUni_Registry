@@ -193,7 +193,7 @@ public class SearchUtils {
 
         // Filter teachers
         List<Teacher> result = teacherService.getAllTeachers().stream()
-                .filter(t -> t.getPosition().toLowerCase().contains(position.toLowerCase()))
+                .filter(t -> t.getPosition() != null && t.getPosition().toLowerCase().contains(position.toLowerCase()))
                 .collect(java.util.stream.Collectors.toList());
 
         if (result.isEmpty()) {
