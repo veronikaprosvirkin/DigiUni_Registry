@@ -30,9 +30,9 @@ public class SortUtilsTest {
         Faculty f = new Faculty("fc01", "Faculty of Informatics", "FI", "contacts1", testDean);
         Speciality s = new Speciality("sp01","SE");
 
-        students.add(new Student("st001", "Jan", "Kowalski", "sm", LocalDate.of(2025, 9, 1), 102, "FI", s,StudyForm.BUDGET));
-        students.add(new Student("st002", "Anna", "Nowak", "sm", LocalDate.of(2024, 9, 1), 101, "FI", s, StudyForm.CONTRACT));
-        students.add(new Student("st003", "Anna", "Kaczmarek","sm", LocalDate.of(2024, 9, 1), 101, "FI", s, StudyForm.BUDGET));
+        students.add(new Student("st001", "Jan", "Kowalski", "sm", LocalDate.of(2025, 9, 1), 102, f, s,StudyForm.BUDGET));
+        students.add(new Student("st002", "Anna", "Nowak", "sm", LocalDate.of(2024, 9, 1), 101, f, s, StudyForm.CONTRACT));
+        students.add(new Student("st003", "Anna", "Kaczmarek","sm", LocalDate.of(2024, 9, 1), 101, f, s, StudyForm.BUDGET));
 
         teachers = new ArrayList<>();
         dept1 = new Department("dp01","CS");

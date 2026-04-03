@@ -34,7 +34,7 @@ class StudentServiceTest {
         faculty.getSpeciality().add(speciality);
         university.getFaculties().add(faculty);
 
-        testStudent = new Student("st001", "Taras", "Shevchenko","sm", LocalDate.of(2026, 9, 1), 101, "Faculty of Computer Science", speciality,StudyForm.BUDGET);
+        testStudent = new Student("st001", "Taras", "Shevchenko","sm", LocalDate.of(2026, 9, 1), 101, faculty, speciality,StudyForm.BUDGET);
         studentService.addStudentToSpeciality(testStudent, speciality, 101);
     }
 
@@ -49,7 +49,7 @@ class StudentServiceTest {
     // Test addStudentToSpeciality method
     @Test
     void testAddStudentToSpeciality() {
-        Student newStudent = new Student("st002", "Lesya", "Ukrainka","sm", LocalDate.of(2018, 9, 1), 101, "Faculty of Computer Science", speciality,StudyForm.BUDGET);
+        Student newStudent = new Student("st002", "Lesya", "Ukrainka","sm", LocalDate.of(2018, 9, 1), 101, faculty, speciality,StudyForm.BUDGET);
         studentService.addStudentToSpeciality(newStudent, speciality, 101);
         assertTrue(studentService.getAllStudents().contains(newStudent));
     }
@@ -94,7 +94,7 @@ class StudentServiceTest {
     @ParameterizedTest
     @ValueSource(ints = {23,43,9})
     void testFindStudentsByGroup(int groupNumber) {
-        Student testStudent = new Student("st003","Taras", "Shevchenko", "sm",LocalDate.of(2005, 9, 1), groupNumber, "Faculty of Computer Science", speciality,StudyForm.BUDGET);
+        Student testStudent = new Student("st003","Taras", "Shevchenko", "sm",LocalDate.of(2005, 9, 1), groupNumber, faculty, speciality,StudyForm.BUDGET);
         studentService.addStudentToSpeciality(testStudent, speciality, groupNumber);
         List<Student> found = studentService.findStudentsByGroup(groupNumber);
         assertTrue(found.contains(testStudent));

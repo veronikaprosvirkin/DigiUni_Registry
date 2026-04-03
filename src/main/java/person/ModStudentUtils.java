@@ -135,7 +135,7 @@ public class ModStudentUtils {
         // Save
         String newId = IdGenerator.generateStudentId(enrollmentDate.getYear());
         Student s = new Student(newId,name, surname, patronymic, enrollmentDate, groupNumber,
-                selectedFaculty.getName(),
+                selectedFaculty,
                 selectedSpeciality,newStudyForm);
         
         if (!email.isEmpty()) s.setEmail(email);

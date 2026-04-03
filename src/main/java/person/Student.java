@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import java.time.LocalDate;
 import speciality.Speciality;
+import faculty.Faculty;
 
 // Student entity
 @Data
@@ -11,12 +12,12 @@ import speciality.Speciality;
 public final class Student extends Person {
     private LocalDate enrollmentDate;
     private int group;
-    private String faculty;
+    private Faculty faculty;
     private Speciality speciality;
     private StudyForm studyForm;
     private StudentStatus status = StudentStatus.ACTIVE;
 
-    public Student(String id, String name, String surname, String patronymic, LocalDate enrollmentDate, int group, String faculty, Speciality speciality, StudyForm studyForm) {
+    public Student(String id, String name, String surname, String patronymic, LocalDate enrollmentDate, int group, Faculty faculty, Speciality speciality, StudyForm studyForm) {
         super(id, name, surname, patronymic);
         if (group <= 0) throw new IllegalArgumentException("Group number must be greater than 0.");
         this.enrollmentDate = enrollmentDate;
@@ -49,7 +50,7 @@ public final class Student extends Person {
 
     @Override
     public String toString() {
-        return getFullName() + " | Course: " + getCourseDisplay() + " | Study form: " + studyForm + " | Group: " + group + " | Faculty: " + faculty + " | Spec: " + speciality.getName();
+        return getFullName() + " | Course: " + getCourseDisplay() + " | Study form: " + studyForm + " | Group: " + group + " | Faculty: " + faculty.getName() + " | Spec: " + speciality.getName();
     }
 
     @Override
