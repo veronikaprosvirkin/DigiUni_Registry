@@ -41,7 +41,7 @@ public class DepartmentService {
     }
 
     public void editDepartmentName(Department dept, String editName, Faculty faculty) {
-        if (isNameDuplicate(faculty.getDepartments(), editName, Department::getName)) {
+        if (isNameDuplicate(faculty.getDepartments(), editName, dept, Department::getName)) {
             System.out.println("Error: Department with name '" + editName + "' already exists on this faculty.");
             return;
         }
@@ -60,9 +60,10 @@ public class DepartmentService {
         System.out.println("Location updated.");
     }
 
-    private <T> boolean isNameDuplicate(Collection<T> list, String newName, java.util.function.Function<T, String> nameGetter) {
+    private <T> boolean isNameDuplicate(Collection<T> list, String newName, T entityToExclude, java.util.function.Function<T, String> nameExtractor) {
         return list.stream()
-                .anyMatch(item -> nameGetter.apply(item).equalsIgnoreCase(newName));
+                .filter(item -> item != entityToExclude)
+                .anyMatch(item -> nameExtractor.apply(item).equalsIgnoreCase(newName));
     }
 
     public void deleteDepartment(Department selectedDept, Faculty selectedFaculty) {

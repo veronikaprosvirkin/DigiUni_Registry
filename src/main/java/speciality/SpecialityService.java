@@ -12,8 +12,9 @@ public class SpecialityService {
         this.university = university;
     }
 
-    private <T> boolean isNameDuplicate(Collection<T> list, String newName, java.util.function.Function<T, String> nameExtractor) {
+    private <T> boolean isNameDuplicate(Collection<T> list, String newName, T entityToExclude, java.util.function.Function<T, String> nameExtractor) {
         return list.stream()
+                .filter(item -> item != entityToExclude)
                 .anyMatch(item -> nameExtractor.apply(item).equalsIgnoreCase(newName));
     }
 
@@ -30,7 +31,7 @@ public class SpecialityService {
     }
 
     public void editSpecialityName(Speciality speciality, String editName, Faculty faculty) {
-        if (isNameDuplicate(faculty.getSpeciality(), editName, Speciality::getName)) {
+        if (isNameDuplicate(faculty.getSpeciality(), editName, speciality, Speciality::getName)) {
             System.out.println("Error: Speciality with name '" + editName + "' already exists on this faculty.");
             return;
         }
