@@ -19,22 +19,6 @@ public final class Department implements NamedEntity {
         this.nameOfDepartment = nameOfDepartment;
     }
 
-    public Teacher getHead() {
-        return head;
-    }
-
-    public void setHead(Teacher head) {
-        this.head = head;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
     @Override
     public String getName() {
         return nameOfDepartment;
