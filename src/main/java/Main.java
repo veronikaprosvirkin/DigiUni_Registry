@@ -2,6 +2,22 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
+import university.University;
+import university.UniversityService;
+import person.StudentService;
+import person.TeacherService;
+import faculty.FacultyService;
+import department.DepartmentService;
+import speciality.SpecialityService;
+import user.UserService;
+import user.User;
+import user.Role;
+import user.UserRights;
+import user.ManagerRights;
+import user.AdminRights;
+import person.StudyForm;
+import department.Department;
+
 
 
 public class Main {
@@ -25,19 +41,23 @@ public class Main {
 
 
         while (true) {
-            //authorization logic
-            User currentUser = userService.getCurrentUser();
-            if (currentUser == null) {
-                UserService.login(scanner);
-                continue;
-            }
+            try {
+                //authorization logic
+                User currentUser = userService.getCurrentUser();
+                if (currentUser == null) {
+                    UserService.login(scanner);
+                    continue;
+                }
 
-            if (currentUser.getRole()==Role.USER) {
-                UserRights.showUserRights(universityService, studentService, teacherService, facultyService, departmentService, specialityService, scanner);
-            } else if (currentUser.getRole()==Role.MANAGER) {
-                ManagerRights.showManagerRights(universityService, studentService, teacherService, facultyService, departmentService, specialityService, scanner);
-            } else if (currentUser.getRole() == Role.ADMIN) {
-                AdminRights.showAdminRights(universityService, studentService, teacherService, facultyService, departmentService, specialityService, scanner);
+                if (currentUser.getRole()==Role.USER) {
+                    UserRights.showUserRights(universityService, studentService, teacherService, facultyService, departmentService, specialityService, scanner);
+                } else if (currentUser.getRole()==Role.MANAGER) {
+                    ManagerRights.showManagerRights(universityService, studentService, teacherService, facultyService, departmentService, specialityService, scanner);
+                } else if (currentUser.getRole() == Role.ADMIN) {
+                    AdminRights.showAdminRights(universityService, studentService, teacherService, facultyService, departmentService, specialityService, scanner);
+                }
+            } catch (utils.EntityNotFoundException e) {
+                System.out.println(e.getMessage());
             }
         }
     }
