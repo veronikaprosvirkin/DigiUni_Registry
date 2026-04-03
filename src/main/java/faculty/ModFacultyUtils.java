@@ -88,7 +88,7 @@ public class ModFacultyUtils {
     private static void facultyManageExistingFacultyEditContacts(Scanner scanner, FacultyService facultyService, Faculty selectedFaculty) {
         System.out.println("Current contacts: " + selectedFaculty.getContacts());
 
-        String newContacts = InputUtils.readLine(scanner, "Enter new contact information", false, false);
+        String newContacts = InputUtils.readLine(scanner, "Enter new contact information", false, true);
         selectedFaculty.setContacts(newContacts);
         System.out.println("Contacts for " + selectedFaculty.getName() + " updated successfully!");
     }
@@ -128,7 +128,7 @@ public class ModFacultyUtils {
             shortName = generatedShort;
         }
 
-        String contact = InputUtils.readLine(scanner, "Enter contact information: ", false, false);
+        String contact = InputUtils.readLine(scanner, "Enter contact information: ", false, true);
 
         System.out.println("Assign a Dean:");
         Teacher dean = selectTeacherFlow(scanner, teacherService);
