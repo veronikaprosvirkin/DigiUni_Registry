@@ -4,40 +4,22 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserServiceTest {
 
     private UserService userService;
 
-    // Reset static fields before each test to prevent cross-test contamination
     @BeforeEach
-    void setUp() throws Exception {
-        // Clear static users list
-        Field usersField = UserService.class.getDeclaredField("users");
-        usersField.setAccessible(true);
-        usersField.set(null, new ArrayList<>());
-
-        // Clear static currentUser
-        Field currentUserField = UserService.class.getDeclaredField("currentUser");
-        currentUserField.setAccessible(true);
-        currentUserField.set(null, null);
-
-        // Clear static initialized
-        Field initField = UserService.class.getDeclaredField("initialized");
-        initField.setAccessible(true);
-        initField.set(null, false);
-
-        // Init UserService (adds admin, user, manager)
+    void setUp() {
+        // Fresh service instance per test keeps state isolated.
         userService = new UserService();
     }
 
     // Test successful login
     @Test
     void testLoginSuccess() {
-        boolean result = UserService.loginSuccess("admin", "admin");
+        boolean result = userService.loginSuccess("admin", "admin");
         assertTrue(result);
         assertNotNull(userService.getCurrentUser());
         assertEquals("admin", userService.getCurrentUser().getUsername());
@@ -46,7 +28,7 @@ public class UserServiceTest {
     // Test failed login
     @Test
     void testLoginFail() {
-        boolean result = UserService.loginSuccess("admin", "wrongpass");
+        boolean result = userService.loginSuccess("admin", "wrongpass");
         assertFalse(result);
         assertNull(userService.getCurrentUser());
     }
@@ -54,16 +36,16 @@ public class UserServiceTest {
     // Test logout
     @Test
     void testLogout() {
-        UserService.loginSuccess("user", "user");
-        UserService.logout();
+        userService.loginSuccess("user", "user");
+        userService.logout();
         assertNull(userService.getCurrentUser());
     }
 
     // Test register new user
     @Test
     void testRegisterNewUserSuccess() {
-        UserService.registerNewUser("Kowalski", "haslo123", Role.USER);
-        List<User> users = UserService.getAllUsers();
+        userService.registerNewUser("Kowalski", "haslo123", Role.USER);
+        List<User> users = userService.getAllUsers();
 
         assertEquals(4, users.size());
         assertEquals("Kowalski", users.get(3).getUsername());
@@ -72,8 +54,8 @@ public class UserServiceTest {
     // Test register duplicate user
     @Test
     void testRegisterNewUserDuplicate() {
-        UserService.registerNewUser("user", "newpass", Role.MANAGER);
-        List<User> users = UserService.getAllUsers();
+        userService.registerNewUser("user", "newpass", Role.MANAGER);
+        List<User> users = userService.getAllUsers();
 
         assertEquals(3, users.size()); // Size remains the same
     }
@@ -81,8 +63,8 @@ public class UserServiceTest {
     // Test delete regular user
     @Test
     void testDeleteUserSuccess() {
-        UserService.deleteUser("user");
-        List<User> users = UserService.getAllUsers();
+        userService.deleteUser("user");
+        List<User> users = userService.getAllUsers();
 
         assertEquals(2, users.size());
         assertFalse(users.stream().anyMatch(u -> u.getUsername().equals("user")));
@@ -91,8 +73,8 @@ public class UserServiceTest {
     // Test delete admin restriction
     @Test
     void testDeleteAdmin() {
-        UserService.deleteUser("admin");
-        List<User> users = UserService.getAllUsers();
+        userService.deleteUser("admin");
+        List<User> users = userService.getAllUsers();
 
         assertEquals(3, users.size()); // Admin cannot be deleted
         assertTrue(users.stream().anyMatch(u -> u.getUsername().equals("admin")));
@@ -101,8 +83,8 @@ public class UserServiceTest {
     // Test edit user role
     @Test
     void testEditUserRoleSuccess() {
-        UserService.editUser("user", Role.MANAGER);
-        User editedUser = UserService.getAllUsers().stream()
+        userService.editUser("user", Role.MANAGER);
+        User editedUser = userService.getAllUsers().stream()
                 .filter(u -> u.getUsername().equals("user"))
                 .findFirst()
                 .orElse(null);
@@ -114,8 +96,8 @@ public class UserServiceTest {
     // Test edit non-existent user
     @Test
     void testEditUserNotFound() {
-        UserService.editUser("Nowak", Role.ADMIN);
-        List<User> users = UserService.getAllUsers();
+        userService.editUser("Nowak", Role.ADMIN);
+        List<User> users = userService.getAllUsers();
 
         assertEquals(3, users.size()); // Nothing changes
     }

@@ -90,15 +90,14 @@ public class ModTeacherUtils {
         System.out.println("--- Add Teacher ---");
         java.util.Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties");
         if (optFaculty.isEmpty()) {
-            System.out.println("Faculty wasn't selected ot found");
-            return;
+            throw new EntityNotFoundException("Faculty wasn't selected or found");
         }
         Faculty selectedFaculty = optFaculty.get();
 
         // Select Department
         java.util.Optional<Department> optDept = ModEntitiesUtils.selectEntity(scanner, selectedFaculty.getDepartments(), "Departments in " + selectedFaculty.getName());
         if (optDept.isEmpty()) {
-            System.out.println("Department wasn't selected ot found");
+            System.out.println("Department wasn't selected or found");
             return;
         }
         Department selectedDept = optDept.get();

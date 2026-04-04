@@ -6,40 +6,55 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class AdminRightsTest {
-    //set up test environment
+    private UserService userService;
+
+    // set up test environment
     @BeforeEach
-    void setUp() throws Exception {
-        java.lang.reflect.Field usersField = UserService.class.getDeclaredField("users");
-        usersField.setAccessible(true);
-        java.util.List<User> internalUsers = (java.util.List<User>) usersField.get(null);
-        internalUsers.clear();
-        UserService.registerNewUser("testUser", "1234", Role.USER);
+    void setUp() {
+        userService = new UserService();
+        userService.registerNewUser("testUser", "1234", Role.USER);
     }
 
-    //test edit user role (success)
+    // test edit user role (success)
     @Test
-    void testEditUser_RoleUpdatedSuccessfully(){
-        UserService.editUser("testUser", Role.MANAGER);
-        List<User> users = UserService.getAllUsers();
-        assertEquals(Role.MANAGER, users.get(0).getRole(), "Role should be updated to MANAGER");
+    void testEditUser_RoleUpdatedSuccessfully() {
+        userService.editUser("testUser", Role.MANAGER);
+        User testUser = userService.getAllUsers().stream()
+                .filter(u -> u.getUsername().equals("testUser"))
+                .findFirst()
+                .orElse(null);
+
+        assertNotNull(testUser);
+        assertEquals(Role.MANAGER, testUser.getRole(), "Role should be updated to MANAGER");
     }
 
-    //test edit user role (failure, same role)
+    // test edit user role (failure, same role)
     @Test
-    void testEditUser_RoleNotUpdated(){
-        UserService.editUser("testUser", Role.USER);
-        List<User> users = UserService.getAllUsers();
-        assertEquals(Role.USER, users.get(0).getRole(), "Role should not be updated");
+    void testEditUser_RoleNotUpdated() {
+        userService.editUser("testUser", Role.USER);
+        User testUser = userService.getAllUsers().stream()
+                .filter(u -> u.getUsername().equals("testUser"))
+                .findFirst()
+                .orElse(null);
+
+        assertNotNull(testUser);
+        assertEquals(Role.USER, testUser.getRole(), "Role should not be updated");
     }
 
-    //test edit user role (failure, user not found)
+    // test edit user role (failure, user not found)
     @Test
-    void testEditUser_UserNotFound(){
-        UserService.editUser("nonExistentUser", Role.MANAGER);
-        List<User> users = UserService.getAllUsers();
-        assertEquals(1, users.size(), "Only one user should be found");
-        assertEquals(Role.USER, users.get(0).getRole(), "Role should not be updated");
+    void testEditUser_UserNotFound() {
+        userService.editUser("nonExistentUser", Role.MANAGER);
+        List<User> users = userService.getAllUsers();
+        User testUser = users.stream()
+                .filter(u -> u.getUsername().equals("testUser"))
+                .findFirst()
+                .orElse(null);
+
+        assertNotNull(testUser);
+        assertEquals(Role.USER, testUser.getRole(), "Role should not be updated");
     }
 }
