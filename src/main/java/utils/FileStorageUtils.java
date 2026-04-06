@@ -19,6 +19,29 @@ public class FileStorageUtils {
     private static final Path SPECIALITIES_FILE = Path.of("data", "specialities.csv");
     private static final Path DEPARTMENTS_FILE = Path.of("data", "departments.csv");
 
+    // Save all structure
+    public static void saveAll(University university) {
+        try {
+            Files.createDirectories(FACULTIES_FILE.getParent());
+            saveFaculties(university.getFaculties());
+            saveSpecialities(university.getFaculties());
+            saveDepartments(university.getFaculties());
+        } catch (IOException e) {
+            System.err.println("Save error");
+        }
+    }
+
+    // Load all structure
+    public static void loadAll(University university) {
+        try {
+            if (Files.exists(FACULTIES_FILE)) loadFaculties(university);
+            if (Files.exists(SPECIALITIES_FILE)) loadSpecialities(university);
+            if (Files.exists(DEPARTMENTS_FILE)) loadDepartments(university);
+        } catch (IOException e) {
+            System.err.println("Load error");
+        }
+    }
+
     // Save faculties
     private static void saveFaculties(List<Faculty> faculties) throws IOException {
         try (BufferedWriter w = Files.newBufferedWriter(FACULTIES_FILE, StandardCharsets.UTF_8)) {
