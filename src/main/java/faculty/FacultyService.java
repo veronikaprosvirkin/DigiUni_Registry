@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import university.University;
 import utils.IdGenerator;
+import utils.FileStorageUtils;
 import person.Teacher;
 
 public class FacultyService {
@@ -29,11 +30,14 @@ public class FacultyService {
             return;
         }
         university.getFaculties().add(new Faculty(IdGenerator.generateFacultyId(),name, shortName, contact, dean));
+        FileStorageUtils.saveAll(university);
         System.out.println("Faculty added successfully.");
     }
 
     public void deleteFaculty(Faculty selectedFacultyToDelete) {
-        university.getFaculties().remove(selectedFacultyToDelete);
+        if (university.getFaculties().remove(selectedFacultyToDelete)) {
+            FileStorageUtils.saveAll(university);
+        }
     }
 
     public void editFacultyName(Faculty faculty, String newName) {
@@ -43,6 +47,7 @@ public class FacultyService {
         }
         String oldName = faculty.getName();
         faculty.setName(newName);
+        FileStorageUtils.saveAll(university);
         System.out.println(oldName+" name updated successfully to: " + faculty.getName());
     }
 }

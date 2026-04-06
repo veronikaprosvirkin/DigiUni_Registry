@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import university.University;
 import utils.IdGenerator;
+import utils.FileStorageUtils;
 import person.Teacher;
 import faculty.Faculty;
 
@@ -42,6 +43,7 @@ public class DepartmentService {
             d.setLocation(location);
         }
         selectedFaculty.getDepartments().add(d);
+        FileStorageUtils.saveAll(university);
         System.out.println("Department created successfully!");
     }
 
@@ -55,18 +57,21 @@ public class DepartmentService {
         }
         String oldName = dept.getName();
         dept.setName(editName);
+        FileStorageUtils.saveAll(university);
         System.out.println(oldName+" name updated successfully to: " + dept.getName());
     }
 
     public void editDepartmentHead(Department dept, Teacher head) {
         Objects.requireNonNull(dept, "Department cannot be null");
         dept.setHead(head);
+        FileStorageUtils.saveAll(university);
         System.out.println("Head of department set to " + (head == null ? "None" : head.getDisplayInfo()));
     }
 
     public void editDepartmentLocation(Department dept, String location) {
         Objects.requireNonNull(dept, "Department cannot be null");
         dept.setLocation(location);
+        FileStorageUtils.saveAll(university);
         System.out.println("Location updated.");
     }
 
@@ -79,6 +84,8 @@ public class DepartmentService {
     public void deleteDepartment(Department selectedDept, Faculty selectedFaculty) {
         Objects.requireNonNull(selectedFaculty, "Faculty cannot be null");
         Objects.requireNonNull(selectedDept, "Department cannot be null");
-        selectedFaculty.getDepartments().remove(selectedDept);
+        if (selectedFaculty.getDepartments().remove(selectedDept)) {
+            FileStorageUtils.saveAll(university);
+        }
     }
 }

@@ -5,6 +5,7 @@ import java.util.Objects;
 import university.University;
 import faculty.Faculty;
 import utils.IdGenerator;
+import utils.FileStorageUtils;
 
 public class SpecialityService {
     private University university;
@@ -30,6 +31,7 @@ public class SpecialityService {
             return;
         }
         selectedFaculty.getSpeciality().add(new Speciality(IdGenerator.generateSpecialityId(),newSpecialityName));
+        FileStorageUtils.saveAll(university);
         System.out.println("Speciality created successfully!");
     }
 
@@ -43,6 +45,7 @@ public class SpecialityService {
         }
         String oldName = speciality.getName();
         speciality.setName(editName);
+        FileStorageUtils.saveAll(university);
         System.out.println(oldName+" speciality name updated successfully to: " + speciality.getName());
     }
 
@@ -50,6 +53,8 @@ public class SpecialityService {
     public void deleteSpeciality(Speciality selectedSpeciality, Faculty selectedFaculty) {
         Objects.requireNonNull(selectedFaculty, "Faculty cannot be null");
         Objects.requireNonNull(selectedSpeciality, "Speciality cannot be null");
-        selectedFaculty.getSpeciality().remove(selectedSpeciality);
+        if (selectedFaculty.getSpeciality().remove(selectedSpeciality)) {
+            FileStorageUtils.saveAll(university);
+        }
     }
 }
