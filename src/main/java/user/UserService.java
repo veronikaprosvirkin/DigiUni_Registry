@@ -1,11 +1,13 @@
 package user;
 
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import user.User;
 import java.util.Scanner;
 import utils.input.InputUtils;
+
+import static user.Permission.*;
 
 public class UserService {
     private List<User> users = new ArrayList<>();
@@ -14,9 +16,9 @@ public class UserService {
 
     public UserService() { //test users
         if (!initialized) {
-            users.add(new User("admin", "admin", Role.ADMIN));
-            users.add(new User("user", "user", Role.USER));
-            users.add(new User("manager", "manager", Role.MANAGER));
+            users.add(new User("admin", "admin", Role.ADMIN, Permission.getDefaultMaskForRole(Role.ADMIN)));
+            users.add(new User("user", "user", Role.USER, Permission.getDefaultMaskForRole(Role.USER)));
+            users.add(new User("manager", "manager", Role.MANAGER, Permission.getDefaultMaskForRole(Role.MANAGER)));
             initialized = true;
         }
     }
@@ -68,7 +70,7 @@ public class UserService {
                 return;
             }
         }
-        User newUser = new User(username, password, selectedRole);
+        User newUser = new User(username, password, selectedRole, Permission.getDefaultMaskForRole(selectedRole));
         users.add(newUser);
         System.out.println("User registered successfully!");
     }

@@ -2,6 +2,9 @@ package faculty;
 
 import java.util.List;
 import java.util.Scanner;
+
+import user.Permission;
+import user.User;
 import utils.input.InputUtils;
 import faculty.Faculty;
 import faculty.FacultyService;
@@ -13,7 +16,7 @@ import person.Teacher;
 public class ModFacultyUtils {
     //! ======= WORK WITH FACULTY ===== //
 
-    public static void showFacultiesMenu(Scanner scanner, FacultyService facultyService, TeacherService teacherService){
+    public static void showFacultiesMenu(Scanner scanner, FacultyService facultyService, TeacherService teacherService, User currentUser){
         System.out.println("1. Add Faculty");
         System.out.println("2. Manage Existing Faculty");
         System.out.println("0. Back");

@@ -1,0 +1,130 @@
+package user;
+
+import java.util.Scanner;
+import university.UniversityService;
+import person.StudentService;
+import person.TeacherService;
+import faculty.FacultyService;
+import department.DepartmentService;
+import speciality.SpecialityService;
+import utils.input.InputUtils;
+import utils.ModEntitiesUtils;
+import person.ModStudentUtils;
+import person.ModTeacherUtils;
+import faculty.ModFacultyUtils;
+import speciality.ModSpecialityUtils;
+import department.ModDepartmentUtils;
+import faculty.Faculty;
+
+public class MainMenu {
+
+    public static void showMenu(UniversityService universityService, StudentService studentService, TeacherService teacherService, FacultyService facultyService, DepartmentService departmentService, SpecialityService specialityService, UserService userService, Scanner scanner, User currentUser) {
+
+        boolean canWrite = currentUser.hasPermission(Permission.WRITE);
+        boolean isAdmin = currentUser.hasPermission(Permission.ADMIN);
+
+        System.out.println("\n--- DigiUni (Main Menu) ---");
+        System.out.println("Role: " + currentUser.getRole() + " | Username: " + currentUser.getUsername());
+
+        System.out.println("1. " + (canWrite ? "Work with Faculties" : "Show Faculties"));
+        System.out.println("2. " + (canWrite ? "Work with Departments" : "Show Departments"));
+        System.out.println("3. " + (canWrite ? "Work with Specialities" : "Show Specialities"));
+
+        if (canWrite) {
+            System.out.println("4. Work with Students");
+            System.out.println("5. Work with Teachers");
+            System.out.println("6. Search");
+        } else {
+            System.out.println("4. Search Students and Teachers");
+        }
+
+        if (isAdmin) {
+            System.out.println("7. Work with Users");
+        }
+
+        System.out.println("0. Log out");
+        System.out.print("> ");
+
+        String choice = scanner.nextLine();
+
+        switch (choice) {
+            case "1" -> {
+                if (canWrite) {
+                    ModFacultyUtils.showFacultiesMenu(scanner, facultyService, teacherService, currentUser);
+                } else {
+                    ModEntitiesUtils.showAllEntity(scanner, facultyService.getFaculties(), "Faculty", false);
+                }
+            }
+            case "2" -> {
+                if (canWrite) {
+                    ModDepartmentUtils.showDepartmentMenu(scanner, departmentService, facultyService, teacherService);
+                } else {
+                    java.util.Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty");
+                    if (optFaculty.isEmpty()) {
+                        System.out.println("Faculty wasn't chosen or found");
+                        return;
+                    }
+                    ModEntitiesUtils.showAllEntity(scanner, optFaculty.get().getDepartments(), "Department", false);
+                }
+            }
+            case "3" -> {
+                if (canWrite) {
+                    ModSpecialityUtils.showSpecialityMenu(scanner, specialityService, facultyService);
+                } else {
+                    java.util.Optional<Faculty> optFaculty2 = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty");
+                    if (optFaculty2.isEmpty()) {
+                        System.out.println("Faculty wasn't chosen or found");
+                        return;
+                    }
+                    ModEntitiesUtils.showAllEntity(scanner, optFaculty2.get().getSpeciality(), "Speciality", false);
+                }
+            }
+            case "4" -> {
+                if (canWrite) {
+                    ModStudentUtils.showStudentMenu(scanner, studentService, facultyService, universityService, true);
+                } else {
+                    System.out.println("1. Find Student");
+                    System.out.println("2. Find Teacher");
+                    int searchType = InputUtils.readInt(scanner, "> ", 1, 2);
+                    if (searchType == 1) {
+                        ModStudentUtils.searchStudentMenu(scanner, studentService, facultyService, universityService, false);
+                    } else if (searchType == 2) {
+                        ModTeacherUtils.searchTeacherMenu(scanner, teacherService, facultyService, universityService, false);
+                    }
+                }
+            }
+            case "5" -> {
+                if (canWrite) {
+                    ModTeacherUtils.showTeacherMenu(scanner, teacherService, facultyService, universityService, true);
+                } else {
+                    System.out.println("Invalid choice.");
+                }
+            }
+            case "6" -> {
+                if (canWrite) {
+                    System.out.println("1. Find Student");
+                    System.out.println("2. Find Teacher");
+                    int searchType = InputUtils.readInt(scanner, "> ", 1, 2);
+                    if (searchType == 1) {
+                        ModStudentUtils.searchStudentMenu(scanner, studentService, facultyService, universityService, true);
+                    } else if (searchType == 2) {
+                        ModTeacherUtils.searchTeacherMenu(scanner, teacherService, facultyService, universityService, true);
+                    }
+                } else {
+                    System.out.println("Invalid choice.");
+                }
+            }
+            case "7" -> {
+                if (isAdmin) {
+                    ModUserUtils.showUserMenu(scanner, userService);
+                } else {
+                    System.out.println("Invalid choice.");
+                }
+            }
+            case "0" -> {
+                userService.logout();
+            }
+            default -> System.out.println("Invalid.");
+        }
+    }
+}

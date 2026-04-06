@@ -10,10 +10,6 @@ import department.DepartmentService;
 import speciality.SpecialityService;
 import user.UserService;
 import user.User;
-import user.Role;
-import user.UserRights;
-import user.ManagerRights;
-import user.AdminRights;
 import person.StudyForm;
 import department.Department;
 import utils.FileStorageUtils;
@@ -48,16 +44,21 @@ public class Main {
                     userService.login(scanner);
                     continue;
                 }
+                user.MainMenu.showMenu(
+                        universityService,
+                        studentService,
+                        teacherService,
+                        facultyService,
+                        departmentService,
+                        specialityService,
+                        userService,
+                        scanner,
+                        currentUser);
 
-                if (currentUser.getRole()==Role.USER) {
-                    UserRights.showUserRights(universityService, studentService, teacherService, facultyService, departmentService, specialityService, userService, scanner);
-                } else if (currentUser.getRole()==Role.MANAGER) {
-                    ManagerRights.showManagerRights(universityService, studentService, teacherService, facultyService, departmentService, specialityService, userService, scanner);
-                } else if (currentUser.getRole() == Role.ADMIN) {
-                    AdminRights.showAdminRights(universityService, studentService, teacherService, facultyService, departmentService, specialityService, userService, scanner);
-                }
             } catch (utils.EntityNotFoundException e) {
                 System.out.println(e.getMessage());
+            } catch (Exception e) {
+                System.out.println("An error occurred: " + e.getMessage());
             }
         }
     }
