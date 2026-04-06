@@ -26,4 +26,37 @@ public class IdGenerator {
         return String.format("sp%03d", specialityCounter++);
     }
 
+    public static void updateFacultyCounter(String id) {
+        int numericPart = extractNumericPart(id, "f");
+        if (numericPart >= facultyCounter) {
+            facultyCounter = numericPart + 1;
+        }
+    }
+
+    public static void updateDepartmentCounter(String id) {
+        int numericPart = extractNumericPart(id, "d");
+        if (numericPart >= departmentCounter) {
+            departmentCounter = numericPart + 1;
+        }
+    }
+
+    public static void updateSpecialityCounter(String id) {
+        int numericPart = extractNumericPart(id, "sp");
+        if (numericPart >= specialityCounter) {
+            specialityCounter = numericPart + 1;
+        }
+    }
+
+    private static int extractNumericPart(String id, String prefix) {
+        if (id == null || !id.startsWith(prefix)) {
+            return -1;
+        }
+
+        try {
+            return Integer.parseInt(id.substring(prefix.length()));
+        } catch (NumberFormatException ignored) {
+            return -1;
+        }
+    }
+
 }

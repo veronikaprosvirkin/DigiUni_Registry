@@ -34,6 +34,7 @@ public class FileStorageUtils {
     // Load all structure
     public static void loadAll(University university) {
         try {
+            university.getFaculties().clear();
             if (Files.exists(FACULTIES_FILE)) loadFaculties(university);
             if (Files.exists(SPECIALITIES_FILE)) loadSpecialities(university);
             if (Files.exists(DEPARTMENTS_FILE)) loadDepartments(university);
@@ -65,6 +66,7 @@ public class FileStorageUtils {
                     String shortName = parts[2];
                     String contact = parts[3];
                     u.getFaculties().add(new Faculty(id, name, shortName, contact, null));
+                    IdGenerator.updateFacultyCounter(id);
                 }
             }
         }
@@ -93,6 +95,7 @@ public class FileStorageUtils {
                     String name = parts[1];
                     String facultyId = parts[2];
                     Speciality s = new Speciality(id, name);
+                    IdGenerator.updateSpecialityCounter(id);
 
                     // Find parent faculty and add
                     u.getFaculties().stream()
@@ -127,6 +130,7 @@ public class FileStorageUtils {
                     String name = parts[1];
                     String facultyId = parts[2];
                     Department d = new Department(id, name);
+                    IdGenerator.updateDepartmentCounter(id);
 
                     // Find parent faculty and add
                     u.getFaculties().stream()
