@@ -1,5 +1,4 @@
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Scanner;
 
 import university.University;
@@ -17,12 +16,13 @@ import user.ManagerRights;
 import user.AdminRights;
 import person.StudyForm;
 import department.Department;
-
+import utils.FileStorageUtils;
 
 
 public class Main {
     public static void main(String[] args) {
         University university = new University();
+        FileStorageUtils.loadAll(university);
         UniversityService universityService = new UniversityService(university);
         StudentService studentService = new StudentService(university);
         TeacherService teacherService = new TeacherService(university);

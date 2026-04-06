@@ -8,6 +8,7 @@ import utils.IdGenerator;
 import faculty.Faculty;
 import speciality.Speciality;
 import department.Department;
+import utils.FileStorageUtils;
 
 public class UniversityService {
     private University university;
@@ -19,7 +20,9 @@ public class UniversityService {
 
     // Creating base structure: Faculty-Speciality-Department
     private void initializeStructure() {
-
+        if (!university.getFaculties().isEmpty()) {
+            return; // Data already loaded
+        }
         // ==========================================
         // 0. CREATING DEANS
 
@@ -223,5 +226,8 @@ public class UniversityService {
         fssst.getDepartments().add(school_ph);
 
         university.getFaculties().add(fssst);
+
+        // Save all initialized data to the file database
+        FileStorageUtils.saveAll(university);
     }
 }
