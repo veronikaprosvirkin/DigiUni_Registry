@@ -95,13 +95,15 @@ public class FileStorageUtils {
                     String name = parts[1];
                     String facultyId = parts[2];
                     Speciality s = new Speciality(id, name);
-                    IdGenerator.updateSpecialityCounter(id);
 
                     // Find parent faculty and add
                     u.getFaculties().stream()
                             .filter(f -> f.getId().equals(facultyId))
                             .findFirst()
-                            .ifPresent(f -> f.getSpeciality().add(s));
+                            .ifPresent(f -> {
+                                f.getSpeciality().add(s);
+                                IdGenerator.updateSpecialityCounter(id);
+                            });
                 }
             }
         }
@@ -130,13 +132,15 @@ public class FileStorageUtils {
                     String name = parts[1];
                     String facultyId = parts[2];
                     Department d = new Department(id, name);
-                    IdGenerator.updateDepartmentCounter(id);
 
                     // Find parent faculty and add
                     u.getFaculties().stream()
                             .filter(f -> f.getId().equals(facultyId))
                             .findFirst()
-                            .ifPresent(f -> f.getDepartments().add(d));
+                            .ifPresent(f -> {
+                                f.getDepartments().add(d);
+                                IdGenerator.updateDepartmentCounter(id);
+                            });
                 }
             }
         }
