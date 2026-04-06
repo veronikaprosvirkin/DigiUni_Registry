@@ -47,7 +47,7 @@ public class FileStorageUtils {
         try (BufferedWriter w = Files.newBufferedWriter(FACULTIES_FILE, StandardCharsets.UTF_8)) {
             for (Faculty f : faculties) {
                 // Ignore dean for simplicity in this example
-                w.write(f.getId() + "," + f.getNameOfFaculty() + "," + f.getShortName() + "," + f.getContacts());
+                w.write(f.getId() + ";" + f.getNameOfFaculty() + ";" + f.getShortName() + ";" + f.getContacts());
                 w.newLine();
             }
         }
@@ -58,9 +58,13 @@ public class FileStorageUtils {
         try (BufferedReader r = Files.newBufferedReader(FACULTIES_FILE, StandardCharsets.UTF_8)) {
             String line;
             while ((line = r.readLine()) != null) {
-                String[] parts = line.split(",");
+                String[] parts = line.split(";");
                 if (parts.length >= 4) {
-                    u.getFaculties().add(new Faculty(parts[0], parts[1], parts[2], parts[3], null));
+                    String id = parts[0];
+                    String name = parts[1];
+                    String shortName = parts[2];
+                    String contact = parts[3];
+                    u.getFaculties().add(new Faculty(id, name, shortName, contact, null));
                 }
             }
         }
@@ -71,7 +75,7 @@ public class FileStorageUtils {
         try (BufferedWriter w = Files.newBufferedWriter(SPECIALITIES_FILE, StandardCharsets.UTF_8)) {
             for (Faculty f : faculties) {
                 for (Speciality s : f.getSpeciality()) {
-                    w.write(s.getId() + "," + s.getNameOfSpeciality() + "," + f.getId());
+                    w.write(s.getId() + ";" + s.getNameOfSpeciality() + ";" + f.getId());
                     w.newLine();
                 }
             }
@@ -83,10 +87,12 @@ public class FileStorageUtils {
         try (BufferedReader r = Files.newBufferedReader(SPECIALITIES_FILE, StandardCharsets.UTF_8)) {
             String line;
             while ((line = r.readLine()) != null) {
-                String[] parts = line.split(",");
+                String[] parts = line.split(";");
                 if (parts.length >= 3) {
-                    Speciality s = new Speciality(parts[0], parts[1]);
+                    String id = parts[0];
+                    String name = parts[1];
                     String facultyId = parts[2];
+                    Speciality s = new Speciality(id, name);
 
                     // Find parent faculty and add
                     u.getFaculties().stream()
@@ -103,7 +109,7 @@ public class FileStorageUtils {
         try (BufferedWriter w = Files.newBufferedWriter(DEPARTMENTS_FILE, StandardCharsets.UTF_8)) {
             for (Faculty f : faculties) {
                 for (Department d : f.getDepartments()) {
-                    w.write(d.getId() + "," + d.getNameOfDepartment() + "," + f.getId());
+                    w.write(d.getId() + ";" + d.getNameOfDepartment() + ";" + f.getId());
                     w.newLine();
                 }
             }
@@ -115,10 +121,12 @@ public class FileStorageUtils {
         try (BufferedReader r = Files.newBufferedReader(DEPARTMENTS_FILE, StandardCharsets.UTF_8)) {
             String line;
             while ((line = r.readLine()) != null) {
-                String[] parts = line.split(",");
+                String[] parts = line.split(";");
                 if (parts.length >= 3) {
-                    Department d = new Department(parts[0], parts[1]);
+                    String id = parts[0];
+                    String name = parts[1];
                     String facultyId = parts[2];
+                    Department d = new Department(id, name);
 
                     // Find parent faculty and add
                     u.getFaculties().stream()
