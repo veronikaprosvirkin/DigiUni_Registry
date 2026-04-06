@@ -26,6 +26,7 @@ public class FileStorageUtils {
             saveFaculties(university.getFaculties());
             saveSpecialities(university.getFaculties());
             saveDepartments(university.getFaculties());
+            System.out.println("DEBUG: Saved " + university.getFaculties().size() + " faculties");
         } catch (IOException e) {
             System.err.println("Save error");
         }
@@ -34,9 +35,14 @@ public class FileStorageUtils {
     // Load all structure
     public static void loadAll(University university) {
         try {
-            if (Files.exists(FACULTIES_FILE)) loadFaculties(university);
-            if (Files.exists(SPECIALITIES_FILE)) loadSpecialities(university);
-            if (Files.exists(DEPARTMENTS_FILE)) loadDepartments(university);
+            if (Files.exists(FACULTIES_FILE)) {
+                loadFaculties(university);
+                if (Files.exists(SPECIALITIES_FILE)) loadSpecialities(university);
+                if (Files.exists(DEPARTMENTS_FILE)) loadDepartments(university);
+                System.out.println("DEBUG: Loaded " + university.getFaculties().size() + " faculties from files");
+            } else {
+                System.out.println("DEBUG: No saved data files found");
+            }
         } catch (IOException e) {
             System.err.println("Load error");
         }
@@ -65,6 +71,7 @@ public class FileStorageUtils {
                     String shortName = parts[2];
                     String contact = parts[3];
                     u.getFaculties().add(new Faculty(id, name, shortName, contact, null));
+                    IdGenerator.updateFacultyCounter(id);
                 }
             }
         }
@@ -99,6 +106,7 @@ public class FileStorageUtils {
                             .filter(f -> f.getId().equals(facultyId))
                             .findFirst()
                             .ifPresent(f -> f.getSpeciality().add(s));
+                    IdGenerator.updateSpecialityCounter(id);
                 }
             }
         }
@@ -133,6 +141,7 @@ public class FileStorageUtils {
                             .filter(f -> f.getId().equals(facultyId))
                             .findFirst()
                             .ifPresent(f -> f.getDepartments().add(d));
+                    IdGenerator.updateDepartmentCounter(id);
                 }
             }
         }
