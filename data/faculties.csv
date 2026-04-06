@@ -1,6 +1,6 @@
-f001;Faculty of Informatics;FI;+38(044) 425-60-64
-f002;Faculty of Economics;FE;+38(044) 425-60-59
-f003;Faculty of Humanities;FH;+38(044) 425-14-20
-f004;Faculty of Law;FL;+38(044) 425-60-73
-f005;Faculty of Natural Sciences;FNS;+38(044) 425-60-57
-f006;Faculty of Social Sciences and Social Technologies;FSSST;+38(044) 425-60-47
+f001;Faculty of Informatics;FI;+38(044) 425-60-64;t0001;Andrii;Hlybovets;Mykolaiovych;Dean;;;;0.0;;
+f002;Faculty of Economics;FE;+38(044) 425-60-59;t0002;Oleksandra;Humenna;Vitaliivna;Dean;;;;0.0;;
+f003;Faculty of Humanities;FH;+38(044) 425-14-20;t0003;Dmytro;Mazin;Mykhailovych;Dean;;;;0.0;;
+f004;Faculty of Law;FL;+38(044) 425-60-73;t0004;Volodymyr;Venher;Mykolaiovych;Dean;;;;0.0;;
+f005;Faculty of Natural Sciences;FNS;+38(044) 425-60-57;t0005;Anatolii;Bilous;Markovych;Dean;;;;0.0;;
+f006;Faculty of Social Sciences and Social Technologies;FSSST;+38(044) 425-60-47;t0006;Svitlana;Oksamytna;Mykolaivna;Dean;;;;0.0;;

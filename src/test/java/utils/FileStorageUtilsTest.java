@@ -5,11 +5,13 @@ import faculty.Faculty;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import person.Teacher;
 import speciality.Speciality;
 import university.University;
 
 import java.lang.reflect.Field;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -50,9 +52,28 @@ class FileStorageUtilsTest {
     @Test
     void saveAllPersistsFacultiesSpecialitiesAndDepartments() throws Exception {
         University university = new University();
-        Faculty faculty = new Faculty("f010", "Faculty A", "FA", "123", null);
+        Teacher dean = new Teacher("t1111", "Anna", "Dean", "A", "Professor", null);
+        dean.setAcademicDegree("PhD");
+        dean.setAcademicTitle("Docent");
+        dean.setEmploymentDate(LocalDate.of(2020, 1, 10));
+        dean.setWorkload(1.0);
+        dean.setEmail("dean@uni.test");
+        dean.setPhone("+380111111111");
+
+        Teacher head = new Teacher("t2222", "Bob", "Head", "B", "Head", null);
+        head.setAcademicDegree("MSc");
+        head.setAcademicTitle("Senior Lecturer");
+        head.setEmploymentDate(LocalDate.of(2021, 3, 12));
+        head.setWorkload(0.75);
+        head.setEmail("head@uni.test");
+        head.setPhone("+380222222222");
+
+        Faculty faculty = new Faculty("f010", "Faculty A", "FA", "123", dean);
         faculty.getSpeciality().add(new Speciality("sp120", "Cybersecurity"));
-        faculty.getDepartments().add(new Department("d042", "AI Department"));
+        Department department = new Department("d042", "AI Department");
+        department.setLocation("Building B");
+        department.setHead(head);
+        faculty.getDepartments().add(department);
         university.getFaculties().add(faculty);
 
         FileStorageUtils.saveAll(university);
@@ -66,8 +87,9 @@ class FileStorageUtilsTest {
         String departmentsCsv = Files.readString(DEPARTMENTS_FILE, StandardCharsets.UTF_8);
 
         assertTrue(facultiesCsv.contains("f010;Faculty A;FA;123"));
+        assertTrue(facultiesCsv.contains(";t1111;Anna;Dean;A;Professor;PhD;Docent;2020-01-10;1.0;dean@uni.test;+380111111111"));
         assertTrue(specialitiesCsv.contains("sp120;Cybersecurity;f010"));
-        assertTrue(departmentsCsv.contains("d042;AI Department;f010"));
+        assertTrue(departmentsCsv.contains("d042;AI Department;f010;Building B;t2222;Bob;Head;B;Head;MSc;Senior Lecturer;2021-03-12;0.75;head@uni.test;+380222222222"));
     }
 
     @Test
@@ -113,8 +135,8 @@ class FileStorageUtilsTest {
     @Test
     void loadAllRestoresHierarchyClearsOldStateAndUpdatesCounters() throws Exception {
         write(FACULTIES_FILE, """
-                f002;Faculty B;FB;111
-                f010;Faculty A;FA;222
+                f002;Faculty B;FB;111;t0100;Ira;Dean;P;Professor;PhD;Docent;2018-02-03;1.0;dean.b@uni.test;+380000000001
+                f010;Faculty A;FA;222;;;;;;;;;;;
                 """);
 
         write(SPECIALITIES_FILE, """
@@ -124,8 +146,8 @@ class FileStorageUtilsTest {
                 """);
 
         write(DEPARTMENTS_FILE, """
-                d005;Economics Department;f002
-                d042;AI Department;f010
+                d005;Economics Department;f002;Block A;t0200;Nazar;Head;Q;Head;MSc;Senior Lecturer;2019-05-06;0.75;head.b@uni.test;+380000000002
+                d042;AI Department;f010;;;;;;;;;;;;
                 d999;Orphan Department;f999
                 """);
 
@@ -148,9 +170,16 @@ class FileStorageUtilsTest {
 
         assertEquals(1, f002.getDepartments().size());
         assertEquals("d005", f002.getDepartments().get(0).getId());
+        assertEquals("Block A", f002.getDepartments().get(0).getLocation());
+        assertEquals("t0200", f002.getDepartments().get(0).getHead().getId());
 
         assertEquals(1, f010.getDepartments().size());
         assertEquals("d042", f010.getDepartments().get(0).getId());
+        assertEquals(null, f010.getDepartments().get(0).getHead());
+
+        assertEquals("t0100", f002.getDean().getId());
+        assertEquals("Ira", f002.getDean().getOnlyName());
+        assertEquals(null, f010.getDean());
 
         assertEquals("f011", IdGenerator.generateFacultyId());
         assertEquals("sp121", IdGenerator.generateSpecialityId());
