@@ -20,20 +20,9 @@ public class UniversityService {
 
     // Creating base structure: Faculty-Speciality-Department
     private void initializeStructure() {
-        // Check if structure is properly initialized
-        // If we have faculties but they're incomplete, reinitialize
-        int expectedFaculties = 6;
-        if (!university.getFaculties().isEmpty() && university.getFaculties().size() >= expectedFaculties) {
-            System.out.println("DEBUG: Structure already loaded with " + university.getFaculties().size() + " faculties");
-            return; // Data already loaded properly
-        }
-        
         if (!university.getFaculties().isEmpty()) {
-            System.out.println("DEBUG: Found incomplete data (" + university.getFaculties().size() + " faculties < " + expectedFaculties + "). Reinitializing...");
-            university.getFaculties().clear();
+            return; // Data already loaded
         }
-        
-        System.out.println("DEBUG: Initializing structure...");
         // ==========================================
         // 0. CREATING DEANS
 
