@@ -36,6 +36,8 @@ public final class Speciality implements NamedEntity {
         return nameOfSpeciality;
     }
 
+    public String getId() {return id;}
+
     @Override
     public String getDisplayInfo() {
         return "[Code: " + this.id + "] " + this.nameOfSpeciality;

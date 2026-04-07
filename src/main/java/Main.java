@@ -18,7 +18,7 @@ import utils.FileStorageUtils;
 public class Main {
     public static void main(String[] args) {
         University university = new University();
-        FileStorageUtils.loadAll(university);
+
         UniversityService universityService = new UniversityService(university);
         StudentService studentService = new StudentService(university);
         TeacherService teacherService = new TeacherService(university);
@@ -27,6 +27,7 @@ public class Main {
         SpecialityService specialityService = new SpecialityService(university);
         Scanner scanner = new Scanner(System.in);
         UserService userService = new UserService();
+        FileStorageUtils.loadAll(university, facultyService, specialityService);
 
         // Creating few students
         studentService.addStudent("Zbyshek", "Tymekowskych", "sm", LocalDate.of(2025, 9, 1), 101, StudyForm.BUDGET);

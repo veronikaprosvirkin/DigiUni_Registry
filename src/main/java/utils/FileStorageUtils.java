@@ -1,9 +1,12 @@
 package utils;
 
 import faculty.Faculty;
+import faculty.FacultyService;
+import person.*;
+import speciality.Group;
 import speciality.Speciality;
 import department.Department;
-import person.Teacher;
+import speciality.SpecialityService;
 import university.University;
 
 import java.io.BufferedReader;
@@ -20,6 +23,8 @@ public class FileStorageUtils {
     private static final Path FACULTIES_FILE = Path.of("data", "faculties.csv");
     private static final Path SPECIALITIES_FILE = Path.of("data", "specialities.csv");
     private static final Path DEPARTMENTS_FILE = Path.of("data", "departments.csv");
+    private static final Path TEACHERS_FILE = Path.of("data", "teachers.csv");
+    private static final Path STUDENTS_FILE = Path.of("data", "students.csv");
     private static final String DELIMITER = ";";
 
     // Save all structure
@@ -29,21 +34,27 @@ public class FileStorageUtils {
             saveFaculties(university.getFaculties());
             saveSpecialities(university.getFaculties());
             saveDepartments(university.getFaculties());
+            saveStudents(university.getFaculties().);
         } catch (IOException e) {
             System.err.println("Save error");
         }
     }
 
     // Load all structure
-    public static void loadAll(University university) {
+    public static void loadAll(University university, FacultyService facultyService, SpecialityService specialityService) {
         try {
             university.getFaculties().clear();
             if (Files.exists(FACULTIES_FILE)) loadFaculties(university);
             if (Files.exists(SPECIALITIES_FILE)) loadSpecialities(university);
             if (Files.exists(DEPARTMENTS_FILE)) loadDepartments(university);
+            if (Files.exists(TEACHERS_FILE)) loadTeachers(university);
+            if (Files.exists(STUDENTS_FILE)) loadStudents(university, facultyService, specialityService);
         } catch (IOException e) {
             System.err.println("Load error");
         }
+    }
+
+    private static void loadTeachers(University university) {
     }
 
     // Save faculties
@@ -189,6 +200,105 @@ public class FileStorageUtils {
             }
         }
     }
+    //safe students
+    private static void saveStudents(List<Student> students) throws IOException {
+        try (BufferedWriter w = Files.newBufferedWriter(STUDENTS_FILE, StandardCharsets.UTF_8)) {
+            for (Student s : students){
+                w.write(String.join(DELIMITER,
+                        value(s.getId()),
+                        value(s.getName()),
+                        value(s.getSurname()),
+                        value(s.getPatronymic()),
+                        value(s.getCourseDisplay()),
+
+                        value(s.getEnrollmentDate() != null ? s.getEnrollmentDate().toString() : ""),
+                        value(s.getGroup() != 0 ? String.valueOf(s.getGroup()) : ""),
+                        value(s.getFaculty() != null ? s.getFaculty().getId() : ""),
+                        value(s.getSpeciality() != null ? s.getSpeciality().getId() : ""),
+
+                        value(s.getStudyForm().toString()),
+                        value(s.getStatus().toString())
+                        ));
+                        w.newLine();
+            }
+        }
+    }
+    //load students
+    private static void loadStudents(University u, FacultyService facultyService, SpecialityService specialityService) throws IOException {
+        try (BufferedReader r = Files.newBufferedReader(STUDENTS_FILE, StandardCharsets.UTF_8)) {
+            String line;
+            while ((line = r.readLine()) != null) {
+                if (line.isBlank()) continue;
+
+                String[] parts = line.split(DELIMITER, -1);
+
+                if (parts.length >= 11) {
+                    String id = parts[0];
+                    String name = parts[1];
+                    String surname = parts[2];
+                    String patronymic = parts[3];
+
+                    LocalDate enrollmentDate = null;
+                    if (!parts[5].isEmpty() && !parts[5].equals("null")) {
+                        enrollmentDate = LocalDate.parse(parts[5]);
+                    }
+
+                    int group = 1;
+                    if (!parts[6].isEmpty() && !parts[6].equals("null")) {
+                        group = Integer.parseInt(parts[6]);
+                    }
+
+                    String facultyId = parts[7];
+                    String specialityId = parts[8];
+                    String studyFormStr = parts[9];
+                    String statusStr = parts[10];
+
+                    StudyForm form = null;
+                    if (!studyFormStr.isEmpty() && !studyFormStr.equals("null")) {
+                        form = StudyForm.valueOf(studyFormStr);
+                    }
+
+                    StudentStatus status = null;
+                    if (!statusStr.isEmpty() && !statusStr.equals("null")) {
+                        status = StudentStatus.valueOf(statusStr);
+                    }
+
+                    Faculty faculty = null;
+                    if (!facultyId.isEmpty() && !facultyId.equals("null")) {
+                        faculty = facultyService.findById(facultyId);
+                    }
+
+                    Speciality speciality = null;
+                    if (!specialityId.isEmpty() && !specialityId.equals("null")) {
+                        speciality = specialityService.findById(specialityId);
+                    }
+
+
+                    Student student = new Student(id, name, surname, patronymic, enrollmentDate, group, faculty, speciality, form);
+
+
+                    if (status != null) {
+                        student.setStatus(status);
+                    }
+
+
+                    if (speciality != null) {
+                        final int finalGroupNum = group;
+                        Group targetGroup = speciality.getGroups().stream()
+                                .filter(g -> g.getGroupNumber() == finalGroupNum)
+                                .findFirst()
+                                .orElse(null);
+
+                        if (targetGroup != null) {
+                            targetGroup.getStudents().add(student);
+                        } else {
+                            System.out.println("Warning: Group " + group + " not found in speciality " + speciality.getName());
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     private static String value(String raw) {
         return raw == null ? "" : raw;
@@ -238,5 +348,25 @@ public class FileStorageUtils {
 
     private static String blankToNull(String value) {
         return value == null || value.isBlank() ? null : value;
+    }
+
+    private static List<Student> gatherAllStudents(University university) {
+        List<Student> allStudents = new java.util.ArrayList<>();
+        if (university.getFaculties() != null) {
+            for (Faculty faculty : university.getFaculties()) {
+                if (faculty.getSpeciality() != null) {
+                    for (Speciality speciality : faculty.getSpeciality()) {
+                        if (speciality.getGroups() != null) {
+                            for (Group group : speciality.getGroups()) {
+                                if (group.getStudents() != null) {
+                                    allStudents.addAll(group.getStudents());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return allStudents;
     }
 }

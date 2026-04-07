@@ -57,4 +57,16 @@ public class SpecialityService {
             FileStorageUtils.saveAll(university);
         }
     }
+
+    public Speciality findById(String id) {
+        for (Faculty faculty : university.getFaculties()){
+            if (faculty.getSpeciality()!= null ){
+                Speciality found = faculty.getSpeciality().stream()
+                        .filter(s -> s.getId().equals(id)).findFirst().orElse(null);
+                if (found != null) return found;
+            }
+        }
+        return null;
+    }
+
 }
