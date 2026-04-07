@@ -36,7 +36,7 @@ public class ModTeacherUtils {
                 fullName = InputUtils.removeSpaces(fullName, false, true, true, true);
                 List<Teacher> result = teacherService.findTeachersByFullName(fullName);
 
-                ModEntitiesUtils.deleteEntity(scanner, result, "Teacher", (teacher -> teacherService.deleteTeacher(teacher, teacher.getDepartment()) ));
+                ModEntitiesUtils.deleteEntity(scanner, result, "Teacher", teacherService::deleteTeacher);
                 FileStorageUtils.saveAll(university);
             } else if (deleteTeacher == 2) {
                 ModTeacherUtils.teacherDeleteById(scanner, teacherService, university);
@@ -162,7 +162,7 @@ public class ModTeacherUtils {
     static void teacherDeleteById(Scanner scanner, TeacherService teacherService, University university) {
         String id = InputUtils.readLine(scanner, "Enter ID of teacher: ", false, true);
         List<Teacher> result = teacherService.findTeacherById(id);
-        ModEntitiesUtils.deleteEntity(scanner, result, "Teacher", (teacher -> teacherService.deleteTeacher(teacher, teacher.getDepartment())));
+        ModEntitiesUtils.deleteEntity(scanner, result, "Teacher", teacherService::deleteTeacher);
         FileStorageUtils.saveAll(university);
     }
 

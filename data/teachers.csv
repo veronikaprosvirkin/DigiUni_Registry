@@ -1,0 +1,4 @@
+id;name;surname;patronymic;position;academicDegree;academicTitle;employmentDate;workload;email;phone;department
+t0001;Andrii;Hlybovets;Mykolaiovych;Dean;;;;0.0;;;DEAN:f001
+t0004;Volodymyr;Venher;Mykolaiovych;Dean;;;;0.0;;;DEAN:f004
+t0006;Svitlana;Oksamytna;Mykolaivna;Dean;;;;0.0;;;DEAN:f006

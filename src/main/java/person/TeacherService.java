@@ -36,6 +36,10 @@ public class TeacherService {
         List<Teacher> allTeachers = new ArrayList<>();
 
         for (Faculty faculty : university.getFaculties()) {
+            // Add Dean if present
+            if (faculty.getDean() != null) {
+                allTeachers.add(faculty.getDean());
+            }
             for (Department dept : faculty.getDepartments()) {
                 allTeachers.addAll(dept.getTeachers());
             }
@@ -51,6 +55,9 @@ public class TeacherService {
         List<Teacher> result = new ArrayList<>();
 
         for (Faculty f : university.getFaculties()) {
+            if (f.getDean() != null && f.getDean().getFullName().toLowerCase().contains(namePart.toLowerCase())) {
+                result.add(f.getDean());
+            }
             for (Department d : f.getDepartments()) {
                 for (Teacher t : d.getTeachers()) {
                     if (t.getFullName().toLowerCase().contains(namePart.toLowerCase())) {
@@ -86,16 +93,42 @@ public class TeacherService {
         return department.getTeachers();
     }
 
-    public void deleteTeacher(Teacher teacher, Department department) {
+    public void deleteTeacher(Teacher teacher) {
         Objects.requireNonNull(teacher, "Teacher cannot be null");
-        Objects.requireNonNull(department, "Department cannot be null");
 
-        boolean removed = department.getTeachers().remove(teacher);
+        boolean removed = false;
+
+        for (Faculty faculty : university.getFaculties()) {
+            if (sameTeacher(faculty.getDean(), teacher)) {
+                faculty.setDean(null);
+                removed = true;
+            }
+
+            for (Department department : faculty.getDepartments()) {
+                if (sameTeacher(department.getHead(), teacher)) {
+                    department.setHead(null);
+                    removed = true;
+                }
+
+                if (department.getTeachers().removeIf(t -> sameTeacher(t, teacher))) {
+                    removed = true;
+                }
+            }
+        }
 
         if (removed) {
-            System.out.println("Teacher " + teacher.getFullName() + " removed from " + department.getName());
+            teacher.setDepartment(null);
+            System.out.println("Teacher " + teacher.getFullName() + " deleted.");
         } else {
-            System.out.println("Error: Teacher not found in this department.");
+            System.out.println("Error: Teacher not found.");
         }
+    }
+
+    public void deleteTeacher(Teacher teacher, Department department) {
+        deleteTeacher(teacher);
+    }
+
+    private boolean sameTeacher(Teacher first, Teacher second) {
+        return first != null && second != null && first.getId().equalsIgnoreCase(second.getId());
     }
 }

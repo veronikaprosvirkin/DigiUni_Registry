@@ -81,4 +81,15 @@ public class TeacherServiceTest {
         assertEquals(1, mathTeachers.size());
         assertEquals("Kowalski", mathTeachers.get(0).getSurname());
     }
+
+    @Test
+    void testDeleteDeanWithoutDepartment() {
+        Faculty faculty = university.getFaculties().get(0);
+        Teacher dean = new Teacher("t9999", "Dean", "Test", "X", "Dean", null);
+        faculty.setDean(dean);
+
+        teacherService.deleteTeacher(dean);
+
+        assertNull(faculty.getDean());
+    }
 }
