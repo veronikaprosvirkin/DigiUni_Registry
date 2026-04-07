@@ -34,7 +34,7 @@ public class FileStorageUtils {
             saveFaculties(university.getFaculties());
             saveSpecialities(university.getFaculties());
             saveDepartments(university.getFaculties());
-            saveStudents(university.getFaculties().);
+            saveStudents(gatherAllStudents(university));
         } catch (IOException e) {
             System.err.println("Save error");
         }

@@ -5,6 +5,7 @@ import faculty.Faculty;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import person.StudyForm;
 import person.Teacher;
 import speciality.Speciality;
 import university.University;
@@ -27,10 +28,14 @@ class FileStorageUtilsTest {
     private static final Path FACULTIES_FILE = Path.of("data", "faculties.csv");
     private static final Path SPECIALITIES_FILE = Path.of("data", "specialities.csv");
     private static final Path DEPARTMENTS_FILE = Path.of("data", "departments.csv");
+    private static final Path TEACHERS_FILE = Path.of("data", "teachers.csv");
+    private static final Path STUDENTS_FILE = Path.of("data", "students.csv");
+
 
     private byte[] facultiesBackup;
     private byte[] specialitiesBackup;
     private byte[] departmentsBackup;
+    private byte[] studentsBackup;
 
     @BeforeEach
     void setUp() throws Exception {
@@ -38,6 +43,8 @@ class FileStorageUtilsTest {
         facultiesBackup = backup(FACULTIES_FILE);
         specialitiesBackup = backup(SPECIALITIES_FILE);
         departmentsBackup = backup(DEPARTMENTS_FILE);
+        studentsBackup = backup(STUDENTS_FILE);
+
         resetCounters();
     }
 
@@ -46,6 +53,7 @@ class FileStorageUtilsTest {
         restore(FACULTIES_FILE, facultiesBackup);
         restore(SPECIALITIES_FILE, specialitiesBackup);
         restore(DEPARTMENTS_FILE, departmentsBackup);
+        restore(STUDENTS_FILE, studentsBackup);
         resetCounters();
     }
 
@@ -81,6 +89,7 @@ class FileStorageUtilsTest {
         assertTrue(Files.exists(FACULTIES_FILE));
         assertTrue(Files.exists(SPECIALITIES_FILE));
         assertTrue(Files.exists(DEPARTMENTS_FILE));
+
 
         String facultiesCsv = Files.readString(FACULTIES_FILE, StandardCharsets.UTF_8);
         String specialitiesCsv = Files.readString(SPECIALITIES_FILE, StandardCharsets.UTF_8);
@@ -154,7 +163,7 @@ class FileStorageUtilsTest {
         University university = new University();
         university.getFaculties().add(new Faculty("f777", "Old Faculty", "OF", "old", null));
 
-        FileStorageUtils.loadAll(university);
+        FileStorageUtils.loadAll(university, new faculty.FacultyService(university), new speciality.SpecialityService(university));
 
         assertEquals(2, university.getFaculties().size());
         assertFalse(university.getFaculties().stream().anyMatch(f -> f.getId().equals("f777")));
@@ -209,7 +218,7 @@ class FileStorageUtilsTest {
                 """);
 
         University university = new University();
-        FileStorageUtils.loadAll(university);
+        FileStorageUtils.loadAll(university, new faculty.FacultyService(university), new speciality.SpecialityService(university));
 
         assertEquals(2, university.getFaculties().size());
         Faculty f001 = university.getFaculties().stream().filter(f -> f.getId().equals("f001")).findFirst().orElseThrow();
@@ -233,7 +242,7 @@ class FileStorageUtilsTest {
         write(DEPARTMENTS_FILE, "d005;Economics Department;f002\n");
 
         University university = new University();
-        FileStorageUtils.loadAll(university);
+        FileStorageUtils.loadAll(university, new faculty.FacultyService(university), new speciality.SpecialityService(university));
 
         assertEquals(1, university.getFaculties().size());
         Faculty loaded = university.getFaculties().get(0);
@@ -251,7 +260,7 @@ class FileStorageUtilsTest {
 
         University university = new University();
 
-        assertDoesNotThrow(() -> FileStorageUtils.loadAll(university));
+        assertDoesNotThrow(() -> FileStorageUtils.loadAll(university, new faculty.FacultyService(university), new speciality.SpecialityService(university)));
         assertTrue(university.getFaculties().isEmpty());
     }
 
@@ -273,7 +282,35 @@ class FileStorageUtilsTest {
 
         University university = new University();
 
-        assertDoesNotThrow(() -> FileStorageUtils.loadAll(university));
+        assertDoesNotThrow(() -> FileStorageUtils.loadAll(university, new faculty.FacultyService(university), new speciality.SpecialityService(university)));
+    }
+    @Test
+    void saveAllPersistsStudentsInGroups() throws Exception {
+        University university = new University();
+        Faculty faculty = new Faculty("f999", "IT Faculty", "IT", "123", null);
+        Speciality speciality = new Speciality("sp999", "Software Engineering");
+
+        speciality.Group group = new speciality.Group(1);
+
+        person.Student student = new person.Student("st001", "Ivan", "Ivanov", "I", LocalDate.of(2023, 9, 1), 1, faculty, speciality, StudyForm.CONTRACT);
+
+        if (group.getStudents() == null) group.setStudents(new java.util.ArrayList<>());
+        group.getStudents().add(student);
+
+        if (speciality.getGroups() == null) speciality.setGroups(new java.util.ArrayList<>());
+        speciality.getGroups().add(group);
+
+        faculty.getSpeciality().add(speciality);
+        university.getFaculties().add(faculty);
+
+        FileStorageUtils.saveAll(university);
+
+        assertTrue(Files.exists(STUDENTS_FILE));
+        String studentsCsv = Files.readString(STUDENTS_FILE, StandardCharsets.UTF_8);
+
+        assertTrue(studentsCsv.contains("st001"));
+        assertTrue(studentsCsv.contains("Ivanov"));
+        assertTrue(studentsCsv.contains("Ivan"));
     }
 
     private byte[] backup(Path file) throws Exception {
@@ -327,4 +364,3 @@ class FileStorageUtilsTest {
         field.setInt(null, value);
     }
 }
-
