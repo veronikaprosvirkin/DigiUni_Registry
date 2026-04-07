@@ -16,7 +16,11 @@ import java.time.LocalDate;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class FileStorageUtils {
 
@@ -351,19 +355,30 @@ public class FileStorageUtils {
         try (BufferedWriter w = Files.newBufferedWriter(TEACHERS_FILE, StandardCharsets.UTF_8)) {
             w.write(TEACHERS_HEADER);
             w.newLine();
+            Set<String> savedTeacherIds = new HashSet<>();
             for (Faculty f : faculties) {
                 if (f.getDean() != null) {
-                    writeTeacherRow(w, f.getDean(), "DEAN:" + f.getId());
+                    writeTeacherRowIfNeeded(w, f.getDean(), "DEAN:" + f.getId(), savedTeacherIds);
                 }
                 for (Department d : f.getDepartments()) {
                     if (d.getTeachers() != null) {
                         for (Teacher t : d.getTeachers()) {
-                            writeTeacherRow(w, t, d.getId());
+                            writeTeacherRowIfNeeded(w, t, d.getId(), savedTeacherIds);
                         }
                     }
                 }
             }
         }
+    }
+
+    private static void writeTeacherRowIfNeeded(BufferedWriter w, Teacher t, String ownerId, Set<String> savedTeacherIds) throws IOException {
+        if (t == null || t.getId() == null || t.getId().isBlank()) {
+            return;
+        }
+        if (!savedTeacherIds.add(t.getId())) {
+            return;
+        }
+        writeTeacherRow(w, t, ownerId);
     }
 
     private static void writeTeacherRow(BufferedWriter w, Teacher t, String ownerId) throws IOException {
@@ -388,6 +403,7 @@ public class FileStorageUtils {
     private static void loadTeachers(University u) throws IOException {
         try (BufferedReader r = Files.newBufferedReader(TEACHERS_FILE, StandardCharsets.UTF_8)) {
             String line;
+            Map<String, Teacher> teachersById = new HashMap<>();
             while ((line = r.readLine()) != null) {
                 if (line.isBlank()) continue;
                 String[] parts = line.split(DELIMITER, -1);
@@ -396,6 +412,7 @@ public class FileStorageUtils {
                 Teacher teacher = restoreTeacher(parts, 0);
 
                 if (teacher != null && parts.length >= 12) {
+                    Teacher canonicalTeacher = teachersById.computeIfAbsent(teacher.getId(), key -> teacher);
                     String ownerId = parts[11];
                     boolean found = false;
 
@@ -403,7 +420,7 @@ public class FileStorageUtils {
                         String facultyId = ownerId.substring("DEAN:".length());
                         for (Faculty f : u.getFaculties()) {
                             if (f.getId().equals(facultyId)) {
-                                f.setDean(teacher);
+                                f.setDean(canonicalTeacher);
                                 found = true;
                                 break;
                             }
@@ -414,7 +431,8 @@ public class FileStorageUtils {
                         for (Faculty f : u.getFaculties()) {
                             for (Department d : f.getDepartments()) {
                                 if (d.getId().equals(ownerId)) {
-                                    d.getTeachers().add(teacher);
+                                    canonicalTeacher.setDepartment(d);
+                                    d.getTeachers().add(canonicalTeacher);
                                     found = true;
                                     break;
                                 }
@@ -422,7 +440,7 @@ public class FileStorageUtils {
                             if (found) break;
                         }
                     }
-                    IdGenerator.updateTeacherCounter(teacher.getId());
+                    IdGenerator.updateTeacherCounter(canonicalTeacher.getId());
                 }
             }
         }

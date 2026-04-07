@@ -480,6 +480,27 @@ class FileStorageUtilsTest {
         assertEquals("Professor", loadedProf.getPosition());
     }
 
+    @Test
+    void saveAllDoesNotDuplicateTeacherWhenSamePersonIsDeanAndDepartmentTeacher() throws Exception {
+        University university = new University();
+        Department department = new Department("d10", "CS Department");
+        Teacher sameTeacher = new Teacher("t7777", "Ivan", "Petrenko", "Oleh", "Professor", department);
+
+        Faculty faculty = new Faculty("f10", "Faculty 10", "F10", "contacts", sameTeacher);
+        faculty.getDepartments().add(department);
+        department.getTeachers().add(sameTeacher);
+        university.getFaculties().add(faculty);
+
+        FileStorageUtils.saveAll(university);
+
+        String teachersCsv = Files.readString(TEACHERS_FILE, StandardCharsets.UTF_8);
+        long count = teachersCsv.lines()
+                .filter(line -> line.startsWith("t7777;"))
+                .count();
+
+        assertEquals(1, count);
+    }
+
     private byte[] backup(Path file) throws Exception {
         if (!Files.exists(file)) {
             return null;

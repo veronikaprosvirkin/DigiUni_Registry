@@ -92,4 +92,26 @@ public class TeacherServiceTest {
 
         assertNull(faculty.getDean());
     }
+
+    @Test
+    void testGetAllTeachersDoesNotDuplicateDeanAlsoPresentInDepartment() {
+        Faculty faculty = university.getFaculties().get(0);
+        Teacher sharedTeacher = deptCS.getTeachers().get(0);
+        faculty.setDean(sharedTeacher);
+
+        List<Teacher> allTeachers = teacherService.getAllTeachers();
+
+        assertEquals(3, allTeachers.size());
+    }
+
+    @Test
+    void testFindTeachersByFullNameDoesNotDuplicateDeanAlsoPresentInDepartment() {
+        Faculty faculty = university.getFaculties().get(0);
+        Teacher sharedTeacher = deptCS.getTeachers().get(0);
+        faculty.setDean(sharedTeacher);
+
+        List<Teacher> found = teacherService.findTeachersByFullName(sharedTeacher.getOnlyName());
+
+        assertEquals(1, found.size());
+    }
 }

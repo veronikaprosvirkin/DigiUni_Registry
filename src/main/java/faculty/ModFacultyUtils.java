@@ -48,7 +48,7 @@ public class ModFacultyUtils {
             } else if (workWithFaculty == 4) {
                 Teacher dean = selectTeacherFlow(scanner, teacherService);
                 if (dean != null) {
-                    selectedFaculty.setDean(dean);
+                    facultyService.assignDean(selectedFaculty, dean);
                     System.out.println("Success! " + dean.getFullName() + " is now the Dean.");
                 }
             } else if (workWithFaculty == 5) {

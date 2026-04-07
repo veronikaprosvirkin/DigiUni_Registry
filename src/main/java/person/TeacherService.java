@@ -1,7 +1,9 @@
 package person;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import university.University;
 import department.Department;
@@ -33,17 +35,7 @@ public class TeacherService {
     //** ===== SEARCH ===== **/
     // find all teachers
     public List<Teacher> getAllTeachers() {
-        List<Teacher> allTeachers = new ArrayList<>();
-
-        for (Faculty faculty : university.getFaculties()) {
-            // Add Dean if present
-            if (faculty.getDean() != null) {
-                allTeachers.add(faculty.getDean());
-            }
-            for (Department dept : faculty.getDepartments()) {
-                allTeachers.addAll(dept.getTeachers());
-            }
-        }
+        List<Teacher> allTeachers = new ArrayList<>(collectUniqueTeachers().values());
         if (allTeachers.isEmpty()) {
             System.out.println("No teachers found!");
         }
@@ -54,16 +46,9 @@ public class TeacherService {
     public List<Teacher> findTeachersByFullName(String namePart) {
         List<Teacher> result = new ArrayList<>();
 
-        for (Faculty f : university.getFaculties()) {
-            if (f.getDean() != null && f.getDean().getFullName().toLowerCase().contains(namePart.toLowerCase())) {
-                result.add(f.getDean());
-            }
-            for (Department d : f.getDepartments()) {
-                for (Teacher t : d.getTeachers()) {
-                    if (t.getFullName().toLowerCase().contains(namePart.toLowerCase())) {
-                        result.add(t);
-                    }
-                }
+        for (Teacher teacher : collectUniqueTeachers().values()) {
+            if (teacher.getFullName().toLowerCase().contains(namePart.toLowerCase())) {
+                result.add(teacher);
             }
         }
         if (result.isEmpty()) {
@@ -130,5 +115,26 @@ public class TeacherService {
 
     private boolean sameTeacher(Teacher first, Teacher second) {
         return first != null && second != null && first.getId().equalsIgnoreCase(second.getId());
+    }
+
+    private Map<String, Teacher> collectUniqueTeachers() {
+        Map<String, Teacher> teachersById = new LinkedHashMap<>();
+
+        for (Faculty faculty : university.getFaculties()) {
+            Teacher dean = faculty.getDean();
+            if (dean != null && dean.getId() != null && !dean.getId().isBlank()) {
+                teachersById.putIfAbsent(dean.getId().toLowerCase(), dean);
+            }
+
+            for (Department department : faculty.getDepartments()) {
+                for (Teacher teacher : department.getTeachers()) {
+                    if (teacher != null && teacher.getId() != null && !teacher.getId().isBlank()) {
+                        teachersById.putIfAbsent(teacher.getId().toLowerCase(), teacher);
+                    }
+                }
+            }
+        }
+
+        return teachersById;
     }
 }

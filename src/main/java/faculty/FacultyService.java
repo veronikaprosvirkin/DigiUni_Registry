@@ -50,6 +50,15 @@ public class FacultyService {
         FileStorageUtils.saveAll(university);
         System.out.println(oldName+" name updated successfully to: " + faculty.getName());
     }
+
+    public void assignDean(Faculty faculty, Teacher dean) {
+        if (faculty == null || dean == null) {
+            return;
+        }
+        faculty.setDean(dean);
+        FileStorageUtils.saveAll(university);
+    }
+
     public Faculty findById(String id){
         return university.getFaculties().stream()
                 .filter(f -> f.getId().equals(id))
