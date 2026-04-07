@@ -339,29 +339,36 @@ public class FileStorageUtils {
     private static void saveTeachers(List<Faculty> faculties) throws IOException {
         try (BufferedWriter w = Files.newBufferedWriter(TEACHERS_FILE, StandardCharsets.UTF_8)) {
             for (Faculty f : faculties) {
+                if (f.getDean() != null) {
+                    writeTeacherRow(w, f.getDean(), "DEAN:" + f.getId());
+                }
                 for (Department d : f.getDepartments()) {
                     if (d.getTeachers() != null) {
                         for (Teacher t : d.getTeachers()) {
-                            w.write(String.join(DELIMITER,
-                                    value(t.getId()),
-                                    value(t.getOnlyName()),
-                                    value(t.getSurname()),
-                                    value(t.getPatronymic()),
-                                    value(t.getPosition()),
-                                    value(t.getAcademicDegree()),
-                                    value(t.getAcademicTitle()),
-                                    value(t.getEmploymentDate() != null ? t.getEmploymentDate().toString() : ""),
-                                    value(String.valueOf(t.getWorkload())),
-                                    value(t.getEmail()),
-                                    value(t.getPhone()),
-                                    value(d.getId())
-                            ));
-                            w.newLine();
+                            writeTeacherRow(w, t, d.getId());
                         }
                     }
                 }
             }
         }
+    }
+
+    private static void writeTeacherRow(BufferedWriter w, Teacher t, String ownerId) throws IOException {
+        w.write(String.join(DELIMITER,
+                value(t.getId()),
+                value(t.getOnlyName()),
+                value(t.getSurname()),
+                value(t.getPatronymic()),
+                value(t.getPosition()),
+                value(t.getAcademicDegree()),
+                value(t.getAcademicTitle()),
+                value(t.getEmploymentDate() != null ? t.getEmploymentDate().toString() : ""),
+                value(String.valueOf(t.getWorkload())),
+                value(t.getEmail()),
+                value(t.getPhone()),
+                value(ownerId)
+        ));
+        w.newLine();
     }
 
     // Load teachers
@@ -375,18 +382,31 @@ public class FileStorageUtils {
                 Teacher teacher = restoreTeacher(parts, 0);
 
                 if (teacher != null && parts.length >= 12) {
-                    String departmentId = parts[11];
+                    String ownerId = parts[11];
                     boolean found = false;
 
-                    for (Faculty f : u.getFaculties()) {
-                        for (Department d : f.getDepartments()) {
-                            if (d.getId().equals(departmentId)) {
-                                d.getTeachers().add(teacher);
+                    if (ownerId != null && ownerId.startsWith("DEAN:")) {
+                        String facultyId = ownerId.substring("DEAN:".length());
+                        for (Faculty f : u.getFaculties()) {
+                            if (f.getId().equals(facultyId)) {
+                                f.setDean(teacher);
                                 found = true;
                                 break;
                             }
                         }
-                        if (found) break;
+                    }
+
+                    if (!found) {
+                        for (Faculty f : u.getFaculties()) {
+                            for (Department d : f.getDepartments()) {
+                                if (d.getId().equals(ownerId)) {
+                                    d.getTeachers().add(teacher);
+                                    found = true;
+                                    break;
+                                }
+                            }
+                            if (found) break;
+                        }
                     }
                     IdGenerator.updateTeacherCounter(teacher.getId());
                 }
