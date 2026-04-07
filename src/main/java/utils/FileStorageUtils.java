@@ -26,6 +26,8 @@ public class FileStorageUtils {
     private static final Path TEACHERS_FILE = Path.of("data", "teachers.csv");
     private static final Path STUDENTS_FILE = Path.of("data", "students.csv");
     private static final String DELIMITER = ";";
+    private static final String STUDENTS_HEADER = "id;name;surname;patronymic;course;enrollmentDate;group;faculty;speciality;studyForm;status;email;phone";
+    private static final String TEACHERS_HEADER = "id;name;surname;patronymic;position;academicDegree;academicTitle;employmentDate;workload;email;phone;department";
 
     // Save all structure
     public static void saveAll(University university) {
@@ -221,10 +223,12 @@ public class FileStorageUtils {
     //safe students
     private static void saveStudents(List<Student> students) throws IOException {
         try (BufferedWriter w = Files.newBufferedWriter(STUDENTS_FILE, StandardCharsets.UTF_8)) {
+            w.write(STUDENTS_HEADER);
+            w.newLine();
             for (Student s : students){
                 w.write(String.join(DELIMITER,
                         value(s.getId()),
-                        value(s.getName()),
+                        value(s.getOnlyName()),
                         value(s.getSurname()),
                         value(s.getPatronymic()),
                         value(s.getCourseDisplay()),
@@ -236,7 +240,9 @@ public class FileStorageUtils {
 
 
                         value(s.getStudyForm() != null ? s.getStudyForm().toString() : ""),
-                        value(s.getStatus() != null ? s.getStatus().toString() : "")
+                        value(s.getStatus() != null ? s.getStatus().toString() : ""),
+                        value(s.getEmail()),
+                        value(s.getPhone())
                 ));
                 w.newLine();
             }
@@ -250,6 +256,7 @@ public class FileStorageUtils {
                 if (line.isBlank()) continue;
 
                 String[] parts = line.split(DELIMITER, -1);
+                if (parts.length > 0 && "id".equalsIgnoreCase(parts[0])) continue;
 
                 if (parts.length >= 11) {
                     try {
@@ -272,6 +279,8 @@ public class FileStorageUtils {
                         String specialityId = parts[8];
                         String studyFormStr = parts[9];
                         String statusStr = parts[10];
+                        String email = parts.length > 11 ? parts[11] : "";
+                        String phone = parts.length > 12 ? parts[12] : "";
 
                         StudyForm form = null;
                         if (!studyFormStr.isEmpty() && !studyFormStr.equals("null")) {
@@ -307,6 +316,8 @@ public class FileStorageUtils {
                         }
 
                         Student student = new Student(id, name, surname, patronymic, enrollmentDate, group, faculty, speciality, form);
+                        student.setEmail(blankToNull(email));
+                        student.setPhone(blankToNull(phone));
                         IdGenerator.updateStudentCounter(student.getId());
 
                         if (status != null) {
@@ -338,6 +349,8 @@ public class FileStorageUtils {
     // Save teachers
     private static void saveTeachers(List<Faculty> faculties) throws IOException {
         try (BufferedWriter w = Files.newBufferedWriter(TEACHERS_FILE, StandardCharsets.UTF_8)) {
+            w.write(TEACHERS_HEADER);
+            w.newLine();
             for (Faculty f : faculties) {
                 if (f.getDean() != null) {
                     writeTeacherRow(w, f.getDean(), "DEAN:" + f.getId());
@@ -378,6 +391,7 @@ public class FileStorageUtils {
             while ((line = r.readLine()) != null) {
                 if (line.isBlank()) continue;
                 String[] parts = line.split(DELIMITER, -1);
+                if (parts.length > 0 && "id".equalsIgnoreCase(parts[0])) continue;
 
                 Teacher teacher = restoreTeacher(parts, 0);
 
