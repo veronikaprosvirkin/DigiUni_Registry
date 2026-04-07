@@ -135,9 +135,9 @@ public class ModStudentUtils {
             newStudyForm = StudyForm.CONTRACT;
         }
 
-        String email = InputUtils.readLine(scanner, "Enter email (optional, press Enter to skip): ", true, false);
+        String email = InputUtils.readLine(scanner, "Enter email (optional, press Enter to skip): ", true, true);
         email = InputUtils.removeSpaces(email, false, true, true, true);
-        String phone = InputUtils.readLine(scanner, "Enter phone number (optional, press Enter to skip): ", true, false);
+        String phone = InputUtils.readLine(scanner, "Enter phone number (optional, press Enter to skip): ", true, true);
         phone = InputUtils.removeSpaces(phone, false, true, true, true);
 
         // Save

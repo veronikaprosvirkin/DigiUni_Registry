@@ -41,6 +41,26 @@ public class FileStorageUtils {
         }
     }
 
+    // True when at least one persisted faculty row exists.
+    public static boolean hasSavedStructure() {
+        if (!Files.exists(FACULTIES_FILE)) {
+            return false;
+        }
+
+        try (BufferedReader r = Files.newBufferedReader(FACULTIES_FILE, StandardCharsets.UTF_8)) {
+            String line;
+            while ((line = r.readLine()) != null) {
+                if (!line.isBlank()) {
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            return false;
+        }
+
+        return false;
+    }
+
     // Load all structure
     public static void loadAll(University university, FacultyService facultyService, SpecialityService specialityService) {
         try {
