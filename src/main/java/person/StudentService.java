@@ -7,6 +7,7 @@ import university.University;
 import faculty.Faculty;
 import speciality.Speciality;
 import speciality.Group;
+import utils.FileStorageUtils;
 import utils.IdGenerator;
 
 public class StudentService {
@@ -44,6 +45,7 @@ public class StudentService {
                     defaultSpec, studyForm);
 
             targetGroup.getStudents().add(newStudent);
+            FileStorageUtils.saveAll(university);
             System.out.println("Student added to group " + groupNumber);
 
         } else {
@@ -92,6 +94,7 @@ public class StudentService {
         }
         addStudentToSpeciality(student, studentSpec, newGroupNumber);
         student.setGroup(newGroupNumber);
+        FileStorageUtils.saveAll(university);
 
         System.out.println("Student moved from group " + (oldGroupObj != null ? oldGroupObj.getGroupNumber() : "?") +
                 " to " + newGroupNumber);
@@ -108,6 +111,7 @@ public class StudentService {
         }
 
         if (removed) {
+            FileStorageUtils.saveAll(university);
             System.out.println("Student " + student.getFullName() + " deleted successfully.");
         } else {
             System.out.println("Error: Student not found in any group of " + speciality.getName());
