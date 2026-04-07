@@ -4,23 +4,21 @@ import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+
+import university.University;
+import utils.*;
 import utils.input.InputUtils;
-import utils.ModEntitiesUtils;
-import utils.IdGenerator;
-import utils.SearchUtils;
 import utils.sort.SortUtils;
 import faculty.FacultyService;
 import university.UniversityService;
 import speciality.Speciality;
-import speciality.Group;
 import faculty.Faculty;
-import utils.EntityNotFoundException;
 
 public class ModStudentUtils {
     //! ======= WORK WITH STUDENTS ===== //
 
     //show menu for student
-    public static void showStudentMenu(Scanner scanner, StudentService studentService, FacultyService facultyService, UniversityService universityService, boolean showId) {
+    public static void showStudentMenu(Scanner scanner, StudentService studentService, FacultyService facultyService, UniversityService universityService, boolean showId, University university) {
         System.out.println("1. Add Student");
         System.out.println("2. Delete Student");
         System.out.println("3. Edit information about student");
@@ -30,7 +28,7 @@ public class ModStudentUtils {
         int workWithStudent = InputUtils.readInt(scanner, "> ", 0, 4);
 
         if (workWithStudent == 1) { //add student
-            ModStudentUtils.studentAddStudent(scanner, facultyService, studentService);
+            ModStudentUtils.studentAddStudent(scanner, facultyService, studentService, university);
         } else if (workWithStudent == 2) { //delete student
             int deleteStudent = ModEntitiesUtils.chooseDeleting(scanner);
             if (deleteStudent == 1) {
@@ -38,16 +36,19 @@ public class ModStudentUtils {
                 fullName = InputUtils.removeSpaces(fullName, false, true, true, true);
                 List<Student> result = studentService.findStudentsByFullName(fullName);
                 ModEntitiesUtils.deleteEntity(scanner, result, "Student", (student -> studentService.deleteStudent(student, student.getSpeciality())));
+                FileStorageUtils.saveAll(university);
             } else if (deleteStudent == 2) {
-                ModStudentUtils.studentDeleteById(scanner, studentService);
+                ModStudentUtils.studentDeleteById(scanner, studentService, university);
             }
 
         } else if (workWithStudent == 3) { //edit student
             int editStudent = ModEntitiesUtils.chooseEditing(scanner);
             if (editStudent == 1) {
-                ModStudentUtils.studentEditByName(scanner, studentService);
+                ModStudentUtils.studentEditByName(scanner, studentService, university);
+                FileStorageUtils.saveAll(university);
             } else if (editStudent == 2) {
-                ModStudentUtils.studentEditById(scanner, studentService);
+                ModStudentUtils.studentEditById(scanner, studentService, university);
+                FileStorageUtils.saveAll(university);
             }
 
 
@@ -99,7 +100,7 @@ public class ModStudentUtils {
     /**
      * Add new Student
      */
-    static void studentAddStudent(Scanner scanner, FacultyService facultyService, StudentService studentService) {
+    static void studentAddStudent(Scanner scanner, FacultyService facultyService, StudentService studentService, University university) {
         System.out.println("--- Add Student ---");
         java.util.Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties");
         if (optFaculty.isEmpty()) {
@@ -149,6 +150,7 @@ public class ModStudentUtils {
         if (!phone.isEmpty()) s.setPhone(phone);
 
         studentService.addStudentToSpeciality(s, selectedSpeciality, groupNumber);
+        FileStorageUtils.saveAll(university);
 
         System.out.println("Student " + s.getFullName() + " added to group " + groupNumber +
                 " in " + selectedSpeciality.getName());
@@ -195,18 +197,18 @@ public class ModStudentUtils {
     /**
      * Delete the Student by ID
      */
-    static void studentDeleteById(Scanner scanner, StudentService studentService) {
+    static void studentDeleteById(Scanner scanner, StudentService studentService, University university) {
         String id = InputUtils.readLine(scanner, "Enter ID of student: ", false, true);
 
         List<Student> result = studentService.findStudentById(id);
         ModEntitiesUtils.deleteEntity(scanner, result, "Student", (student -> studentService.deleteStudent(student, student.getSpeciality())));
-
+        FileStorageUtils.saveAll(university);
     }
 
     /**
      * Edit the Student by name
      */
-    static void studentEditByName(Scanner scanner, StudentService studentService) {
+    static void studentEditByName(Scanner scanner, StudentService studentService, University university) {
         String fullName = InputUtils.readLine(scanner, "Enter full name part: ", false, false);
         fullName = InputUtils.removeSpaces(fullName, false, true, true, true);
         List<Student> result = studentService.findStudentsByFullName(fullName);
@@ -230,25 +232,27 @@ public class ModStudentUtils {
             } else {
                 studentToProcess = result.get(0);
             }
-            editStudentDetails(scanner, studentToProcess, studentService);
+            editStudentDetails(scanner, studentToProcess, studentService, university);
+            FileStorageUtils.saveAll(university);
         }
     }
 
     /**
      * Edit the Student by ID
      */
-    static void studentEditById(Scanner scanner, StudentService studentService) {
+    static void studentEditById(Scanner scanner, StudentService studentService, University university) {
         String id = InputUtils.readLine(scanner, "Enter ID of student: ", false, false);
         List<Student> result = studentService.findStudentById(id);
         if (result.isEmpty()){
             System.out.println("No student found by id " + id);
         } else {
             Student studentToProcess = result.get(0);
-            editStudentDetails(scanner, studentToProcess, studentService);
+            editStudentDetails(scanner, studentToProcess, studentService, university);
+            FileStorageUtils.saveAll(university);
         }
     }
 
-    public static void editStudentDetails(Scanner scanner, Student studentToProcess, StudentService studentService) {
+    public static void editStudentDetails(Scanner scanner, Student studentToProcess, StudentService studentService, University university) {
         while (true) {
             System.out.println("\nEditing student: " + studentToProcess.getFullName());
             System.out.println("1. Change Surname");
@@ -263,6 +267,7 @@ public class ModStudentUtils {
 
             int fieldChoice = InputUtils.readInt(scanner, "> ", 0, 8);
             if (fieldChoice == 0) {
+                FileStorageUtils.saveAll(university);
                 break;
             }
 
