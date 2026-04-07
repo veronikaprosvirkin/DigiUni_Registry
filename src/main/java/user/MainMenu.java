@@ -87,7 +87,7 @@ public class MainMenu {
             }
             case "4" -> {
                 if (canWrite) {
-                    ModStudentUtils.showStudentMenu(scanner, studentService, facultyService, universityService, true);
+                    ModStudentUtils.showStudentMenu(scanner, studentService, facultyService, universityService, true, university);
                 } else {
                     System.out.println("1. Find Student");
                     System.out.println("2. Find Teacher");
