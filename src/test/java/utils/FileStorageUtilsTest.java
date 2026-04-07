@@ -45,6 +45,15 @@ class FileStorageUtilsTest {
         departmentsBackup = backup(DEPARTMENTS_FILE);
         studentsBackup = backup(STUDENTS_FILE);
 
+        // Also backup teachers file explicitly and then delete all files for a clean test state
+        byte[] teachersBackupBytes = backup(TEACHERS_FILE);
+
+        Files.deleteIfExists(FACULTIES_FILE);
+        Files.deleteIfExists(SPECIALITIES_FILE);
+        Files.deleteIfExists(DEPARTMENTS_FILE);
+        Files.deleteIfExists(STUDENTS_FILE);
+        Files.deleteIfExists(TEACHERS_FILE);
+
         resetCounters();
     }
 
@@ -60,7 +69,7 @@ class FileStorageUtilsTest {
     @Test
     void saveAllPersistsFacultiesSpecialitiesAndDepartments() throws Exception {
         University university = new University();
-        Teacher dean = new Teacher("t1111", "Anna", "Dean", "A", "Professor", null);
+        Teacher dean = new Teacher("t1111", "Anna", "Wójcik", "Kazimierzówna", "Professor", null);
         dean.setAcademicDegree("PhD");
         dean.setAcademicTitle("Docent");
         dean.setEmploymentDate(LocalDate.of(2020, 1, 10));
@@ -68,7 +77,7 @@ class FileStorageUtilsTest {
         dean.setEmail("dean@uni.test");
         dean.setPhone("+380111111111");
 
-        Teacher head = new Teacher("t2222", "Bob", "Head", "B", "Head", null);
+        Teacher head = new Teacher("t2222", "Bartosz", "Nowak", "Stefanowicz", "Head", null);
         head.setAcademicDegree("MSc");
         head.setAcademicTitle("Senior Lecturer");
         head.setEmploymentDate(LocalDate.of(2021, 3, 12));
@@ -96,9 +105,33 @@ class FileStorageUtilsTest {
         String departmentsCsv = Files.readString(DEPARTMENTS_FILE, StandardCharsets.UTF_8);
 
         assertTrue(facultiesCsv.contains("f010;Faculty A;FA;123"));
-        assertTrue(facultiesCsv.contains(";t1111;Anna;Dean;A;Professor;PhD;Docent;2020-01-10;1.0;dean@uni.test;+380111111111"));
+        assertTrue(facultiesCsv.contains(";t1111;Anna;Wójcik;Kazimierzówna;Professor;PhD;Docent;2020-01-10;1.0;dean@uni.test;+380111111111"));
         assertTrue(specialitiesCsv.contains("sp120;Cybersecurity;f010"));
-        assertTrue(departmentsCsv.contains("d042;AI Department;f010;Building B;t2222;Bob;Head;B;Head;MSc;Senior Lecturer;2021-03-12;0.75;head@uni.test;+380222222222"));
+        assertTrue(departmentsCsv.contains("d042;AI Department;f010;Building B;t2222;Bartosz;Nowak;Stefanowicz;Head;MSc;Senior Lecturer;2021-03-12;0.75;head@uni.test;+380222222222"));
+    }
+
+    @Test
+    void testCsvContentVerification() throws Exception {
+        University university = new University();
+        Faculty faculty = new Faculty("fCSV", "CSV Faculty", "CF", "000", null);
+        university.getFaculties().add(faculty);
+
+        FileStorageUtils.saveAll(university);
+
+        String content = Files.readString(FACULTIES_FILE, StandardCharsets.UTF_8);
+        String[] lines = content.split("\n");
+        boolean found = false;
+        for (String line : lines) {
+            if (line.startsWith("fCSV;CSV Faculty;CF;000")) {
+                found = true;
+                String[] parts = line.split(";");
+                assertEquals("fCSV", parts[0]);
+                assertEquals("CSV Faculty", parts[1]);
+                assertEquals("CF", parts[2]);
+                assertEquals("000", parts[3]);
+            }
+        }
+        assertTrue(found, "The saved CSV should contain the faculty data in correct format");
     }
 
     @Test
@@ -144,7 +177,7 @@ class FileStorageUtilsTest {
     @Test
     void loadAllRestoresHierarchyClearsOldStateAndUpdatesCounters() throws Exception {
         write(FACULTIES_FILE, """
-                f002;Faculty B;FB;111;t0100;Ira;Dean;P;Professor;PhD;Docent;2018-02-03;1.0;dean.b@uni.test;+380000000001
+                f002;Faculty B;FB;111;t0100;Irena;Kowalska;Piotrówna;Professor;PhD;Docent;2018-02-03;1.0;dean.b@uni.test;+380000000001
                 f010;Faculty A;FA;222;;;;;;;;;;;
                 """);
 
@@ -155,7 +188,7 @@ class FileStorageUtilsTest {
                 """);
 
         write(DEPARTMENTS_FILE, """
-                d005;Economics Department;f002;Block A;t0200;Nazar;Head;Q;Head;MSc;Senior Lecturer;2019-05-06;0.75;head.b@uni.test;+380000000002
+                d005;Economics Department;f002;Block A;t0200;Narcyz;Wiśniewski;Quirynowicz;Head;MSc;Senior Lecturer;2019-05-06;0.75;head.b@uni.test;+380000000002
                 d042;AI Department;f010;;;;;;;;;;;;
                 d999;Orphan Department;f999
                 """);
@@ -187,7 +220,7 @@ class FileStorageUtilsTest {
         assertEquals(null, f010.getDepartments().get(0).getHead());
 
         assertEquals("t0100", f002.getDean().getId());
-        assertEquals("Ira", f002.getDean().getOnlyName());
+        assertEquals("Irena", f002.getDean().getOnlyName());
         assertEquals(null, f010.getDean());
 
         assertEquals("f011", IdGenerator.generateFacultyId());
@@ -292,7 +325,9 @@ class FileStorageUtilsTest {
 
         speciality.Group group = new speciality.Group(1);
 
-        person.Student student = new person.Student("st001", "Ivan", "Ivanov", "I", LocalDate.of(2023, 9, 1), 1, faculty, speciality, StudyForm.CONTRACT);
+        person.Student student = new person.Student("st001", "Ignacy", "Zieliński", "Ignacowicz", LocalDate.of(2023, 9, 1), 1, faculty, speciality, StudyForm.CONTRACT);
+        student.setEmail("ignacy@uni.pl");
+        student.setPhone("123456789");
 
         if (group.getStudents() == null) group.setStudents(new java.util.ArrayList<>());
         group.getStudents().add(student);
@@ -308,9 +343,141 @@ class FileStorageUtilsTest {
         assertTrue(Files.exists(STUDENTS_FILE));
         String studentsCsv = Files.readString(STUDENTS_FILE, StandardCharsets.UTF_8);
 
-        assertTrue(studentsCsv.contains("st001"));
-        assertTrue(studentsCsv.contains("Ivanov"));
-        assertTrue(studentsCsv.contains("Ivan"));
+        // Verify header
+        assertTrue(studentsCsv.startsWith("id;name;surname;patronymic;course;enrollmentDate;group;faculty;speciality;studyForm;status;email;phone"));
+
+        // Verify student row
+        assertTrue(studentsCsv.contains("st001;Ignacy;Zieliński;Ignacowicz"));
+        assertTrue(studentsCsv.contains("ignacy@uni.pl;123456789"));
+    }
+
+    @Test
+    void testHasSavedStructureReturnsCorrectBoolean() throws Exception {
+        Files.deleteIfExists(FACULTIES_FILE);
+        assertFalse(FileStorageUtils.hasSavedStructure(), "No file -> false");
+
+        write(FACULTIES_FILE, "");
+        assertFalse(FileStorageUtils.hasSavedStructure(), "Empty file -> false");
+
+        write(FACULTIES_FILE, "\n   \n");
+        assertFalse(FileStorageUtils.hasSavedStructure(), "Blank lines only -> false");
+
+        write(FACULTIES_FILE, "f001;Faculty A;FA;111\n");
+        assertTrue(FileStorageUtils.hasSavedStructure(), "Valid content -> true");
+    }
+
+    @Test
+    void saveAllAndLoadAllPreservesStudentsWithAllFields() throws Exception {
+        University university = new University();
+        Faculty faculty = new Faculty("f1", "Faculty 1", "F1", "123", null);
+        Speciality speciality = new Speciality("sp1", "Spec 1");
+
+        speciality.Group group = new speciality.Group(101);
+        person.Student student = new person.Student("st123", "Jacek", "Dąbrowski", "Dominikowicz", LocalDate.of(2022, 9, 1), 101, faculty, speciality, StudyForm.BUDGET);
+        student.setStatus(person.StudentStatus.ACTIVE);
+        student.setEmail("john@uni.edu");
+        student.setPhone("+380998887766");
+
+        if (group.getStudents() == null) group.setStudents(new java.util.ArrayList<>());
+        group.getStudents().add(student);
+        if (speciality.getGroups() == null) speciality.setGroups(new java.util.ArrayList<>());
+        speciality.getGroups().add(group);
+        faculty.getSpeciality().add(speciality);
+        university.getFaculties().add(faculty);
+
+        FileStorageUtils.saveAll(university);
+
+        // Load into new instance
+        University loadedUni = new University();
+        loadedUni.getFaculties().add(new Faculty("f1", "Faculty 1", "F1", "123", null));
+        loadedUni.getFaculties().get(0).getSpeciality().add(new Speciality("sp1", "Spec 1"));
+
+        FileStorageUtils.loadAll(loadedUni, new faculty.FacultyService(loadedUni), new speciality.SpecialityService(loadedUni));
+
+        person.Student loadedStudent = loadedUni.getFaculties().get(0).getSpeciality().get(0).getGroups().get(0).getStudents().get(0);
+
+        assertEquals("st123", loadedStudent.getId());
+        assertEquals("Jacek", loadedStudent.getOnlyName());
+        assertEquals("Dąbrowski", loadedStudent.getSurname());
+        assertEquals("Dominikowicz", loadedStudent.getPatronymic());
+        assertEquals(LocalDate.of(2022, 9, 1), loadedStudent.getEnrollmentDate());
+        assertEquals(101, loadedStudent.getGroup());
+        assertEquals("f1", loadedStudent.getFaculty().getId());
+        assertEquals("sp1", loadedStudent.getSpeciality().getId());
+        assertEquals(StudyForm.BUDGET, loadedStudent.getStudyForm());
+        assertEquals(person.StudentStatus.ACTIVE, loadedStudent.getStatus());
+        assertEquals("john@uni.edu", loadedStudent.getEmail());
+        assertEquals("+380998887766", loadedStudent.getPhone());
+    }
+
+    @Test
+    void saveAllAndLoadAllPreservesTeachersWithAllFields() throws Exception {
+        University university = new University();
+        Teacher dean = new Teacher("t001", "Amadeusz", "Dudek", "Dariuszowicz", "Dean", null);
+        dean.setAcademicDegree("Doctor");
+        dean.setAcademicTitle("Professor");
+        dean.setEmploymentDate(LocalDate.of(2010, 1, 1));
+        dean.setWorkload(1.0);
+        dean.setEmail("dean1@uni.edu");
+        dean.setPhone("111111");
+
+        Faculty faculty = new Faculty("f2", "Faculty 2", "F2", "222", dean);
+        Department dept = new Department("d1", "Dept 1");
+        faculty.getDepartments().add(dept);
+
+        Teacher prof = new Teacher("t002", "Aleksander", "Szymański", "Stanisławowicz", "Professor", dept);
+        prof.setAcademicDegree("Candidate");
+        prof.setAcademicTitle("Docent");
+        prof.setEmploymentDate(LocalDate.of(2015, 2, 2));
+        prof.setWorkload(1.5);
+        prof.setEmail("prof@uni.edu");
+        prof.setPhone("222222");
+        dept.getTeachers().add(prof);
+
+        university.getFaculties().add(faculty);
+
+        FileStorageUtils.saveAll(university);
+
+        assertTrue(Files.exists(TEACHERS_FILE));
+        String teachersCsv = Files.readString(TEACHERS_FILE, StandardCharsets.UTF_8);
+
+        // Verify header
+        assertTrue(teachersCsv.startsWith("id;name;surname;patronymic;position;academicDegree;academicTitle;employmentDate;workload;email;phone;department"));
+
+        // Verify dean row (with DEAN:f2 marker)
+        assertTrue(teachersCsv.contains("t001;Amadeusz;Dudek;Dariuszowicz;Dean;Doctor;Professor;2010-01-01;1.0;dean1@uni.edu;111111;DEAN:f2"));
+
+        // Verify professor row
+        assertTrue(teachersCsv.contains("t002;Aleksander;Szymański;Stanisławowicz;Professor;Candidate;Docent;2015-02-02;1.5;prof@uni.edu;222222;d1"));
+
+        University loadedUni = new University();
+        loadedUni.getFaculties().add(new Faculty("f2", "Faculty 2", "F2", "222", null));
+        loadedUni.getFaculties().get(0).getDepartments().add(new Department("d1", "Dept 1"));
+
+        FileStorageUtils.loadAll(loadedUni, new faculty.FacultyService(loadedUni), new speciality.SpecialityService(loadedUni));
+
+        Faculty loadedFac = loadedUni.getFaculties().get(0);
+        Teacher loadedDean = loadedFac.getDean();
+        assertEquals("t001", loadedDean.getId());
+        assertEquals("Amadeusz", loadedDean.getOnlyName());
+        assertEquals("Doctor", loadedDean.getAcademicDegree());
+        assertEquals("Professor", loadedDean.getAcademicTitle());
+        assertEquals(LocalDate.of(2010, 1, 1), loadedDean.getEmploymentDate());
+        assertEquals(1.0, loadedDean.getWorkload());
+        assertEquals("dean1@uni.edu", loadedDean.getEmail());
+        assertEquals("111111", loadedDean.getPhone());
+        assertEquals("Dean", loadedDean.getPosition());
+
+        Teacher loadedProf = loadedFac.getDepartments().get(0).getTeachers().get(0);
+        assertEquals("t002", loadedProf.getId());
+        assertEquals("Aleksander", loadedProf.getOnlyName());
+        assertEquals("Candidate", loadedProf.getAcademicDegree());
+        assertEquals("Docent", loadedProf.getAcademicTitle());
+        assertEquals(LocalDate.of(2015, 2, 2), loadedProf.getEmploymentDate());
+        assertEquals(1.5, loadedProf.getWorkload());
+        assertEquals("prof@uni.edu", loadedProf.getEmail());
+        assertEquals("222222", loadedProf.getPhone());
+        assertEquals("Professor", loadedProf.getPosition());
     }
 
     private byte[] backup(Path file) throws Exception {
