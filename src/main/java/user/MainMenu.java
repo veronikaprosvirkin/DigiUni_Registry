@@ -1,12 +1,15 @@
 package user;
 
 import java.util.Scanner;
+
+import university.University;
 import university.UniversityService;
 import person.StudentService;
 import person.TeacherService;
 import faculty.FacultyService;
 import department.DepartmentService;
 import speciality.SpecialityService;
+import utils.FileStorageUtils;
 import utils.input.InputUtils;
 import utils.ModEntitiesUtils;
 import person.ModStudentUtils;
@@ -18,7 +21,10 @@ import faculty.Faculty;
 
 public class MainMenu {
 
-    public static void showMenu(UniversityService universityService, StudentService studentService, TeacherService teacherService, FacultyService facultyService, DepartmentService departmentService, SpecialityService specialityService, UserService userService, Scanner scanner, User currentUser) {
+    public static void showMenu(UniversityService universityService, StudentService studentService,
+                                TeacherService teacherService, FacultyService facultyService,
+                                DepartmentService departmentService, SpecialityService specialityService,
+                                UserService userService, Scanner scanner, User currentUser, University university) {
 
         boolean canWrite = currentUser.hasPermission(Permission.WRITE);
         boolean isAdmin = currentUser.hasPermission(Permission.ADMIN);
@@ -95,7 +101,7 @@ public class MainMenu {
             }
             case "5" -> {
                 if (canWrite) {
-                    ModTeacherUtils.showTeacherMenu(scanner, teacherService, facultyService, universityService, true);
+                    ModTeacherUtils.showTeacherMenu(scanner, teacherService, facultyService, universityService, true, university);
                 } else {
                     System.out.println("Invalid choice.");
                 }
@@ -122,6 +128,7 @@ public class MainMenu {
                 }
             }
             case "0" -> {
+                FileStorageUtils.saveAll(university);
                 userService.logout();
             }
             default -> System.out.println("Invalid.");

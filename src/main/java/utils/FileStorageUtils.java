@@ -35,6 +35,7 @@ public class FileStorageUtils {
             saveSpecialities(university.getFaculties());
             saveDepartments(university.getFaculties());
             saveStudents(gatherAllStudents(university));
+            saveTeachers(university.getFaculties());
         } catch (IOException e) {
             System.err.println("Save error");
         }
@@ -52,9 +53,6 @@ public class FileStorageUtils {
         } catch (IOException e) {
             System.err.println("Load error");
         }
-    }
-
-    private static void loadTeachers(University university) {
     }
 
     // Save faculties
@@ -216,10 +214,11 @@ public class FileStorageUtils {
                         value(s.getFaculty() != null ? s.getFaculty().getId() : ""),
                         value(s.getSpeciality() != null ? s.getSpeciality().getId() : ""),
 
-                        value(s.getStudyForm().toString()),
-                        value(s.getStatus().toString())
-                        ));
-                        w.newLine();
+
+                        value(s.getStudyForm() != null ? s.getStudyForm().toString() : ""),
+                        value(s.getStatus() != null ? s.getStatus().toString() : "")
+                ));
+                w.newLine();
             }
         }
     }
@@ -233,68 +232,143 @@ public class FileStorageUtils {
                 String[] parts = line.split(DELIMITER, -1);
 
                 if (parts.length >= 11) {
-                    String id = parts[0];
-                    String name = parts[1];
-                    String surname = parts[2];
-                    String patronymic = parts[3];
+                    try {
+                        String id = parts[0];
+                        String name = parts[1];
+                        String surname = parts[2];
+                        String patronymic = parts[3];
 
-                    LocalDate enrollmentDate = null;
-                    if (!parts[5].isEmpty() && !parts[5].equals("null")) {
-                        enrollmentDate = LocalDate.parse(parts[5]);
+                        LocalDate enrollmentDate = null;
+                        if (!parts[5].isEmpty() && !parts[5].equals("null")) {
+                            enrollmentDate = LocalDate.parse(parts[5]);
+                        }
+
+                        int group = 1;
+                        if (!parts[6].isEmpty() && !parts[6].equals("null")) {
+                            group = Integer.parseInt(parts[6]);
+                        }
+
+                        String facultyId = parts[7];
+                        String specialityId = parts[8];
+                        String studyFormStr = parts[9];
+                        String statusStr = parts[10];
+
+                        StudyForm form = null;
+                        if (!studyFormStr.isEmpty() && !studyFormStr.equals("null")) {
+                            form = StudyForm.valueOf(studyFormStr);
+                        }
+
+                        StudentStatus status = null;
+                        if (!statusStr.isEmpty() && !statusStr.equals("null")) {
+                            status = StudentStatus.valueOf(statusStr);
+                        }
+
+                        Faculty faculty = null;
+                        if (!facultyId.isEmpty() && !facultyId.equals("null")) {
+                            for (Faculty f : u.getFaculties()) {
+                                if (f.getId().equals(facultyId)) {
+                                    faculty = f;
+                                    break;
+                                }
+                            }
+                        }
+
+                        Speciality speciality = null;
+                        if (!specialityId.isEmpty() && !specialityId.equals("null")) {
+                            for (Faculty f : u.getFaculties()) {
+                                for (Speciality s : f.getSpeciality()) {
+                                    if (s.getId().equals(specialityId)) {
+                                        speciality = s;
+                                        break;
+                                    }
+                                }
+                                if (speciality != null) break;
+                            }
+                        }
+
+                        Student student = new Student(id, name, surname, patronymic, enrollmentDate, group, faculty, speciality, form);
+                        IdGenerator.updateStudentCounter(student.getId());
+
+                        if (status != null) {
+                            student.setStatus(status);
+                        }
+
+                        if (speciality != null) {
+                            final int finalGroupNum = group;
+                            Group targetGroup = speciality.getGroups().stream()
+                                    .filter(g -> g.getGroupNumber() == finalGroupNum)
+                                    .findFirst()
+                                    .orElse(null);
+
+                            if (targetGroup != null) {
+                                targetGroup.getStudents().add(student);
+                            } else {
+                                targetGroup = new Group(finalGroupNum);
+                                speciality.getGroups().add(targetGroup);
+                                targetGroup.getStudents().add(student);
+                            }
+                        }
+                    } catch (Exception e) {
+                        System.err.println("Skipped broken student line: " + line);
                     }
-
-                    int group = 1;
-                    if (!parts[6].isEmpty() && !parts[6].equals("null")) {
-                        group = Integer.parseInt(parts[6]);
-                    }
-
-                    String facultyId = parts[7];
-                    String specialityId = parts[8];
-                    String studyFormStr = parts[9];
-                    String statusStr = parts[10];
-
-                    StudyForm form = null;
-                    if (!studyFormStr.isEmpty() && !studyFormStr.equals("null")) {
-                        form = StudyForm.valueOf(studyFormStr);
-                    }
-
-                    StudentStatus status = null;
-                    if (!statusStr.isEmpty() && !statusStr.equals("null")) {
-                        status = StudentStatus.valueOf(statusStr);
-                    }
-
-                    Faculty faculty = null;
-                    if (!facultyId.isEmpty() && !facultyId.equals("null")) {
-                        faculty = facultyService.findById(facultyId);
-                    }
-
-                    Speciality speciality = null;
-                    if (!specialityId.isEmpty() && !specialityId.equals("null")) {
-                        speciality = specialityService.findById(specialityId);
-                    }
-
-
-                    Student student = new Student(id, name, surname, patronymic, enrollmentDate, group, faculty, speciality, form);
-
-
-                    if (status != null) {
-                        student.setStatus(status);
-                    }
-
-
-                    if (speciality != null) {
-                        final int finalGroupNum = group;
-                        Group targetGroup = speciality.getGroups().stream()
-                                .filter(g -> g.getGroupNumber() == finalGroupNum)
-                                .findFirst()
-                                .orElse(null);
-
-                        if (targetGroup != null) {
-                            targetGroup.getStudents().add(student);
-                        } else {
-                            System.out.println("Warning: Group " + group + " not found in speciality " + speciality.getName());
+                }
+            }
+        }
+    }
+    // Save teachers
+    private static void saveTeachers(List<Faculty> faculties) throws IOException {
+        try (BufferedWriter w = Files.newBufferedWriter(TEACHERS_FILE, StandardCharsets.UTF_8)) {
+            for (Faculty f : faculties) {
+                for (Department d : f.getDepartments()) {
+                    if (d.getTeachers() != null) {
+                        for (Teacher t : d.getTeachers()) {
+                            w.write(String.join(DELIMITER,
+                                    value(t.getId()),
+                                    value(t.getOnlyName()),
+                                    value(t.getSurname()),
+                                    value(t.getPatronymic()),
+                                    value(t.getPosition()),
+                                    value(t.getAcademicDegree()),
+                                    value(t.getAcademicTitle()),
+                                    value(t.getEmploymentDate() != null ? t.getEmploymentDate().toString() : ""),
+                                    value(String.valueOf(t.getWorkload())),
+                                    value(t.getEmail()),
+                                    value(t.getPhone()),
+                                    value(d.getId())
+                            ));
+                            w.newLine();
                         }
                     }
+                }
+            }
+        }
+    }
+
+    // Load teachers
+    private static void loadTeachers(University u) throws IOException {
+        try (BufferedReader r = Files.newBufferedReader(TEACHERS_FILE, StandardCharsets.UTF_8)) {
+            String line;
+            while ((line = r.readLine()) != null) {
+                if (line.isBlank()) continue;
+                String[] parts = line.split(DELIMITER, -1);
+
+                Teacher teacher = restoreTeacher(parts, 0);
+
+                if (teacher != null && parts.length >= 12) {
+                    String departmentId = parts[11];
+                    boolean found = false;
+
+                    for (Faculty f : u.getFaculties()) {
+                        for (Department d : f.getDepartments()) {
+                            if (d.getId().equals(departmentId)) {
+                                d.getTeachers().add(teacher);
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (found) break;
+                    }
+                    IdGenerator.updateTeacherCounter(teacher.getId());
                 }
             }
         }

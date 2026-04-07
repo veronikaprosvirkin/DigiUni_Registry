@@ -65,7 +65,7 @@ class ModTeacherUtilsTest {
         );
 
         // When
-        ModTeacherUtils.teacherAddTeacher(scanner, facultyService, teacherService);
+        ModTeacherUtils.teacherAddTeacher(scanner, facultyService, teacherService, university);
 
         // Then
         assertEquals(2, deptCs.getTeachers().size());
@@ -94,7 +94,7 @@ class ModTeacherUtilsTest {
         );
 
         // When
-        ModTeacherUtils.teacherAddTeacher(scanner, facultyService, teacherService);
+        ModTeacherUtils.teacherAddTeacher(scanner, facultyService, teacherService, university);
 
         // Then
         Teacher added = deptCs.getTeachers().get(1);
@@ -109,7 +109,7 @@ class ModTeacherUtilsTest {
 
         // When + Then
         assertThrows(EntityNotFoundException.class,
-                () -> ModTeacherUtils.teacherAddTeacher(scanner, facultyService, teacherService));
+                () -> ModTeacherUtils.teacherAddTeacher(scanner, facultyService, teacherService, university));
     }
 
     @Test
@@ -122,7 +122,7 @@ class ModTeacherUtilsTest {
         );
 
         // When
-        ModTeacherUtils.teacherDeleteById(scanner, teacherService);
+        ModTeacherUtils.teacherDeleteById(scanner, teacherService, university);
 
         // Then
         assertEquals(0, deptCs.getTeachers().size());
@@ -139,7 +139,7 @@ class ModTeacherUtilsTest {
         );
 
         // When
-        ModTeacherUtils.teacherEditByName(scanner, teacherService);
+        ModTeacherUtils.teacherEditByName(scanner, teacherService, university);
 
         // Then
         assertEquals("Kovalenko", teacherCs.getSurname());
@@ -152,7 +152,7 @@ class ModTeacherUtilsTest {
         String originalSurname = teacherCs.getSurname();
 
         // When
-        ModTeacherUtils.teacherEditByName(scanner, teacherService);
+        ModTeacherUtils.teacherEditByName(scanner, teacherService, university);
 
         // Then
         assertEquals(originalSurname, teacherCs.getSurname());
@@ -170,7 +170,7 @@ class ModTeacherUtilsTest {
         );
 
         // When
-        ModTeacherUtils.teacherEditById(scanner, teacherService);
+        ModTeacherUtils.teacherEditById(scanner, teacherService, university);
 
         // Then
         assertEquals(LocalDate.of(2020, 1, 1), teacherCs.getEmploymentDate());
@@ -186,7 +186,7 @@ class ModTeacherUtilsTest {
         );
 
         // When
-        ModTeacherUtils.showTeacherMenu(scanner, teacherService, facultyService, null, true);
+        ModTeacherUtils.showTeacherMenu(scanner, teacherService, facultyService, null, true, university);
 
         // Then
         assertEquals(2, teacherService.getAllTeachers().size());
@@ -204,7 +204,7 @@ class ModTeacherUtilsTest {
         );
 
         // When
-        ModTeacherUtils.showTeacherMenu(scanner, teacherService, facultyService, null, true);
+        ModTeacherUtils.showTeacherMenu(scanner, teacherService, facultyService, null, true, university);
 
         // Then
         assertTrue(teacherService.findTeacherById("t0001").isEmpty());
@@ -223,7 +223,7 @@ class ModTeacherUtilsTest {
         );
 
         // When
-        ModTeacherUtils.showTeacherMenu(scanner, teacherService, facultyService, null, true);
+        ModTeacherUtils.showTeacherMenu(scanner, teacherService, facultyService, null, true, university);
 
         // Then
         assertEquals("Senior Lecturer", teacherCs.getPosition());

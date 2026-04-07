@@ -69,6 +69,7 @@ public class StudentService {
         }
 
         targetGroup.getStudents().add(student);
+        FileStorageUtils.saveAll(university);
     }
 
     //method for moving student to another group

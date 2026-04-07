@@ -30,10 +30,11 @@ public class Main {
         FileStorageUtils.loadAll(university, facultyService, specialityService);
 
         // Creating few students
-        studentService.addStudent("Zbyshek", "Tymekowskych", "sm", LocalDate.of(2025, 9, 1), 101, StudyForm.BUDGET);
+        /*studentService.addStudent("Zbyshek", "Tymekowskych", "sm", LocalDate.of(2025, 9, 1), 101, StudyForm.BUDGET);
         studentService.addStudent("Irzek", "Zlotych", "sm", LocalDate.of(2024, 9, 1), 101, StudyForm.BUDGET);
         studentService.addStudent("Irzek", "Tymekowskych", "sm", LocalDate.of(2023, 9, 1), 15,StudyForm.CONTRACT);
-        FileStorageUtils.saveAll(university);
+        FileStorageUtils.saveAll(university);*/
+
 
         Department defaultDept = university.getFaculties().get(0).getDepartments().get(0);
 
@@ -55,7 +56,8 @@ public class Main {
                         specialityService,
                         userService,
                         scanner,
-                        currentUser);
+                        currentUser,
+                        university);
 
             } catch (utils.EntityNotFoundException e) {
                 System.out.println(e.getMessage());

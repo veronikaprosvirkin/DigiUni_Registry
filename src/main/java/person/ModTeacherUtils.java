@@ -4,14 +4,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 import java.time.LocalDate;
+
+import university.University;
+import utils.*;
 import utils.input.InputUtils;
-import utils.ModEntitiesUtils;
-import utils.IdGenerator;
-import utils.SearchUtils;
 import utils.sort.SortUtils;
 import faculty.Faculty;
 import department.Department;
-import utils.EntityNotFoundException;
 import faculty.FacultyService;
 import university.UniversityService;
 
@@ -19,7 +18,7 @@ public class ModTeacherUtils {
     //! ======= WORK WITH TEACHERS ===== //
 
     //show menu for teacher
-    public static void showTeacherMenu(Scanner scanner, TeacherService teacherService, FacultyService facultyService, UniversityService universityService, boolean showId) {
+    public static void showTeacherMenu(Scanner scanner, TeacherService teacherService, FacultyService facultyService, UniversityService universityService, boolean showId, University university) {
         System.out.println("1. Add Teacher");
         System.out.println("2. Delete Teacher");
         System.out.println("3. Edit information about teacher");
@@ -28,7 +27,7 @@ public class ModTeacherUtils {
         int workWithTeacher = InputUtils.readInt(scanner, "> ", 0, 4);
 
         if (workWithTeacher == 1) { //add teacher
-            ModTeacherUtils.teacherAddTeacher(scanner, facultyService, teacherService);
+            ModTeacherUtils.teacherAddTeacher(scanner, facultyService, teacherService, university);
         } else if (workWithTeacher == 2) { //delete teacher
             int deleteTeacher= ModEntitiesUtils.chooseDeleting(scanner);
             if (deleteTeacher == 1) {
@@ -38,16 +37,17 @@ public class ModTeacherUtils {
                 List<Teacher> result = teacherService.findTeachersByFullName(fullName);
 
                 ModEntitiesUtils.deleteEntity(scanner, result, "Teacher", (teacher -> teacherService.deleteTeacher(teacher, teacher.getDepartment()) ));
+                FileStorageUtils.saveAll(university);
             } else if (deleteTeacher == 2) {
-                ModTeacherUtils.teacherDeleteById(scanner, teacherService);
+                ModTeacherUtils.teacherDeleteById(scanner, teacherService, university);
             }
 
         } else if (workWithTeacher == 3) { //edit teacher
             int editTeacher = ModEntitiesUtils.chooseEditing(scanner);
             if (editTeacher == 1) {
-                ModTeacherUtils.teacherEditByName(scanner, teacherService);
+                ModTeacherUtils.teacherEditByName(scanner, teacherService, university);
             } else if (editTeacher == 2) {
-                ModTeacherUtils.teacherEditById(scanner, teacherService);
+                ModTeacherUtils.teacherEditById(scanner, teacherService, university);
             }
         } else if (workWithTeacher == 4) {//show all
             List<Teacher> teachers = teacherService.getAllTeachers();
@@ -86,7 +86,7 @@ public class ModTeacherUtils {
     /**
      * Add new Teacher
      */
-    static void teacherAddTeacher(Scanner scanner, FacultyService facultyService, TeacherService teacherService) {
+    static void teacherAddTeacher(Scanner scanner, FacultyService facultyService, TeacherService teacherService, University university) {
         System.out.println("--- Add Teacher ---");
         java.util.Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties");
         if (optFaculty.isEmpty()) {
@@ -146,6 +146,7 @@ public class ModTeacherUtils {
         }
         
         teacherService.addTeacher(newTeacher);
+        FileStorageUtils.saveAll(university);
         
         System.out.println("Teacher " + name + " " + surname +
                 " successfully added to department: " + selectedDept.getName());
@@ -158,16 +159,17 @@ public class ModTeacherUtils {
     /**
      * Delete the Teacher by ID
      */
-    static void teacherDeleteById(Scanner scanner, TeacherService teacherService) {
+    static void teacherDeleteById(Scanner scanner, TeacherService teacherService, University university) {
         String id = InputUtils.readLine(scanner, "Enter ID of teacher: ", false, true);
         List<Teacher> result = teacherService.findTeacherById(id);
         ModEntitiesUtils.deleteEntity(scanner, result, "Teacher", (teacher -> teacherService.deleteTeacher(teacher, teacher.getDepartment())));
+        FileStorageUtils.saveAll(university);
     }
 
     /**
      * Edit the Teacher by name
      */
-    static void teacherEditByName(Scanner scanner, TeacherService teacherService) {
+    static void teacherEditByName(Scanner scanner, TeacherService teacherService, University university) {
         String fullName = InputUtils.readLine(scanner, "Enter full name part: ", false, false);
         fullName = InputUtils.removeSpaces(fullName, false, true, true, true);
 
@@ -192,26 +194,26 @@ public class ModTeacherUtils {
             } else {
                 teacherToProcess = result.get(0);
             }
-            editTeacherDetails(scanner, teacherToProcess);
+            editTeacherDetails(scanner, teacherToProcess, university);
         }
     }
 
     /**
      * Edit the Teacher by ID
      */
-    static void teacherEditById(Scanner scanner, TeacherService teacherService) {
+    static void teacherEditById(Scanner scanner, TeacherService teacherService, University university) {
         String id = InputUtils.readLine(scanner, "Enter ID of teacher: ", false, true);
         List<Teacher> result = teacherService.findTeacherById(id);
         if (result.isEmpty()){
             System.out.println("No teacher found by id " + id);
         } else {
             Teacher teacherToProcess = result.get(0);
-            editTeacherDetails(scanner, teacherToProcess);
+            editTeacherDetails(scanner, teacherToProcess, university);
 
         }
     }
 
-    private static void editTeacherDetails(Scanner scanner, Teacher teacherToProcess){
+    private static void editTeacherDetails(Scanner scanner, Teacher teacherToProcess, University university){
         while(true){
         System.out.println("\nEditing teacher: " + teacherToProcess.getFullName());
         System.out.println("1. Change Surname");
@@ -226,7 +228,10 @@ public class ModTeacherUtils {
         System.out.println("0. Finish editing");
 
         int fieldChoice = InputUtils.readInt(scanner, "> ", 0, 9);
-        if (fieldChoice == 0) { break;}
+        if (fieldChoice == 0) {
+            FileStorageUtils.saveAll(university);
+            break;
+        }
 
         switch (fieldChoice) {
             case 1 -> {

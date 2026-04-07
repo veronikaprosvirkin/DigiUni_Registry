@@ -196,7 +196,7 @@ public class ModStudentUtils {
      * Delete the Student by ID
      */
     static void studentDeleteById(Scanner scanner, StudentService studentService) {
-        String id = InputUtils.readLine(scanner, "Enter ID of student: ", false, false);
+        String id = InputUtils.readLine(scanner, "Enter ID of student: ", false, true);
 
         List<Student> result = studentService.findStudentById(id);
         ModEntitiesUtils.deleteEntity(scanner, result, "Student", (student -> studentService.deleteStudent(student, student.getSpeciality())));

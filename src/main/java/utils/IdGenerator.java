@@ -59,4 +59,22 @@ public class IdGenerator {
         }
     }
 
+    public static void updateTeacherCounter(String id) {
+        int numericPart = extractNumericPart(id, "t");
+        if (numericPart >= teacherCounter) {
+            teacherCounter = numericPart + 1;
+        }
+    }
+    public static void updateStudentCounter(String id) {
+        if (id != null && id.startsWith("st") && id.length() > 6) {
+            try {
+                int numericPart = Integer.parseInt(id.substring(6));
+                if (numericPart >= studentCounter) {
+                    studentCounter = numericPart + 1;
+                }
+            } catch (NumberFormatException ignored) {
+
+            }
+        }
+    }
 }
