@@ -35,16 +35,18 @@ public class FileStorageUtils {
 
     // Save all structure
     public static void saveAll(University university) {
-        try {
-            Files.createDirectories(FACULTIES_FILE.getParent());
-            saveFaculties(university.getFaculties());
-            saveSpecialities(university.getFaculties());
-            saveDepartments(university.getFaculties());
-            saveStudents(gatherAllStudents(university));
-            saveTeachers(university.getFaculties());
-        } catch (IOException e) {
-            System.err.println("Save error");
-        }
+        new Thread(() -> {
+            try {
+                Files.createDirectories(FACULTIES_FILE.getParent());
+                saveFaculties(university.getFaculties());
+                saveSpecialities(university.getFaculties());
+                saveDepartments(university.getFaculties());
+                saveStudents(gatherAllStudents(university));
+                saveTeachers(university.getFaculties());
+            } catch (IOException e) {
+                System.err.println("Save error");
+            }
+        }).start();
     }
 
     // True when at least one persisted faculty row exists.
@@ -516,3 +518,4 @@ public class FileStorageUtils {
         return allStudents;
     }
 }
+
