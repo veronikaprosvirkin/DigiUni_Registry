@@ -44,25 +44,11 @@ public class FileStorageUtils {
         List<Faculty> faculties = university.getFaculties();
         List<Student> students = gatherAllStudents(university);
 
-        new Thread(() -> {
-            try { saveFaculties(faculties); } catch (IOException e) { System.err.println("Save faculties error"); }
-        }).start();
-
-        new Thread(() -> {
-            try { saveSpecialities(faculties); } catch (IOException e) { System.err.println("Save specialities error"); }
-        }).start();
-
-        new Thread(() -> {
-            try { saveDepartments(faculties); } catch (IOException e) { System.err.println("Save departments error"); }
-        }).start();
-
-        new Thread(() -> {
-            try { saveStudents(students); } catch (IOException e) { System.err.println("Save students error"); }
-        }).start();
-
-        new Thread(() -> {
-            try { saveTeachers(faculties); } catch (IOException e) { System.err.println("Save teachers error"); }
-        }).start();
+        saveFaculties(faculties);
+        saveSpecialities(faculties);
+        saveDepartments(faculties);
+        saveStudents(students);
+        saveTeachers(faculties);
     }
 
     // True when at least one persisted faculty row exists.
@@ -100,30 +86,34 @@ public class FileStorageUtils {
     }
 
     // Save faculties
-    private static void saveFaculties(List<Faculty> faculties) throws IOException {
-        try (BufferedWriter w = Files.newBufferedWriter(FACULTIES_FILE, StandardCharsets.UTF_8)) {
-            for (Faculty f : faculties) {
-                Teacher dean = f.getDean();
-                w.write(String.join(DELIMITER,
-                        value(f.getId()),
-                        value(f.getNameOfFaculty()),
-                        value(f.getShortName()),
-                        value(f.getContacts()),
-                        value(dean == null ? null : dean.getId()),
-                        value(dean == null ? null : dean.getOnlyName()),
-                        value(dean == null ? null : dean.getSurname()),
-                        value(dean == null ? null : dean.getPatronymic()),
-                        value(dean == null ? null : dean.getPosition()),
-                        value(dean == null ? null : dean.getAcademicDegree()),
-                        value(dean == null ? null : dean.getAcademicTitle()),
-                        value(dean == null || dean.getEmploymentDate() == null ? null : dean.getEmploymentDate().toString()),
-                        value(dean == null ? null : String.valueOf(dean.getWorkload())),
-                        value(dean == null ? null : dean.getEmail()),
-                        value(dean == null ? null : dean.getPhone())
-                ));
-                w.newLine();
+    private static void saveFaculties(List<Faculty> faculties) {
+        new Thread(() -> {
+            try (BufferedWriter w = Files.newBufferedWriter(FACULTIES_FILE, StandardCharsets.UTF_8)) {
+                for (Faculty f : faculties) {
+                    Teacher dean = f.getDean();
+                    w.write(String.join(DELIMITER,
+                            value(f.getId()),
+                            value(f.getNameOfFaculty()),
+                            value(f.getShortName()),
+                            value(f.getContacts()),
+                            value(dean == null ? null : dean.getId()),
+                            value(dean == null ? null : dean.getOnlyName()),
+                            value(dean == null ? null : dean.getSurname()),
+                            value(dean == null ? null : dean.getPatronymic()),
+                            value(dean == null ? null : dean.getPosition()),
+                            value(dean == null ? null : dean.getAcademicDegree()),
+                            value(dean == null ? null : dean.getAcademicTitle()),
+                            value(dean == null || dean.getEmploymentDate() == null ? null : dean.getEmploymentDate().toString()),
+                            value(dean == null ? null : String.valueOf(dean.getWorkload())),
+                            value(dean == null ? null : dean.getEmail()),
+                            value(dean == null ? null : dean.getPhone())
+                    ));
+                    w.newLine();
+                }
+            } catch (IOException e) {
+                System.err.println("Save faculties error: " + e.getMessage());
             }
-        }
+        }).start();
     }
 
     // Load faculties
@@ -147,15 +137,19 @@ public class FileStorageUtils {
     }
 
     // Save specialities
-    private static void saveSpecialities(List<Faculty> faculties) throws IOException {
-        try (BufferedWriter w = Files.newBufferedWriter(SPECIALITIES_FILE, StandardCharsets.UTF_8)) {
-            for (Faculty f : faculties) {
-                for (Speciality s : f.getSpeciality()) {
-                    w.write(String.join(DELIMITER, value(s.getId()), value(s.getNameOfSpeciality()), value(f.getId())));
-                    w.newLine();
+    private static void saveSpecialities(List<Faculty> faculties) {
+        new Thread(() -> {
+            try (BufferedWriter w = Files.newBufferedWriter(SPECIALITIES_FILE, StandardCharsets.UTF_8)) {
+                for (Faculty f : faculties) {
+                    for (Speciality s : f.getSpeciality()) {
+                        w.write(String.join(DELIMITER, value(s.getId()), value(s.getNameOfSpeciality()), value(f.getId())));
+                        w.newLine();
+                    }
                 }
+            } catch (IOException e) {
+                System.err.println("Save specialities error: " + e.getMessage());
             }
-        }
+        }).start();
     }
 
     // Load specialities and link to faculty
@@ -185,32 +179,36 @@ public class FileStorageUtils {
     }
 
     // Save departments
-    private static void saveDepartments(List<Faculty> faculties) throws IOException {
-        try (BufferedWriter w = Files.newBufferedWriter(DEPARTMENTS_FILE, StandardCharsets.UTF_8)) {
-            for (Faculty f : faculties) {
-                for (Department d : f.getDepartments()) {
-                    Teacher head = d.getHead();
-                    w.write(String.join(DELIMITER,
-                            value(d.getId()),
-                            value(d.getNameOfDepartment()),
-                            value(f.getId()),
-                            value(d.getLocation()),
-                            value(head == null ? null : head.getId()),
-                            value(head == null ? null : head.getOnlyName()),
-                            value(head == null ? null : head.getSurname()),
-                            value(head == null ? null : head.getPatronymic()),
-                            value(head == null ? null : head.getPosition()),
-                            value(head == null ? null : head.getAcademicDegree()),
-                            value(head == null ? null : head.getAcademicTitle()),
-                            value(head == null || head.getEmploymentDate() == null ? null : head.getEmploymentDate().toString()),
-                            value(head == null ? null : String.valueOf(head.getWorkload())),
-                            value(head == null ? null : head.getEmail()),
-                            value(head == null ? null : head.getPhone())
-                    ));
-                    w.newLine();
+    private static void saveDepartments(List<Faculty> faculties) {
+        new Thread(() -> {
+            try (BufferedWriter w = Files.newBufferedWriter(DEPARTMENTS_FILE, StandardCharsets.UTF_8)) {
+                for (Faculty f : faculties) {
+                    for (Department d : f.getDepartments()) {
+                        Teacher head = d.getHead();
+                        w.write(String.join(DELIMITER,
+                                value(d.getId()),
+                                value(d.getNameOfDepartment()),
+                                value(f.getId()),
+                                value(d.getLocation()),
+                                value(head == null ? null : head.getId()),
+                                value(head == null ? null : head.getOnlyName()),
+                                value(head == null ? null : head.getSurname()),
+                                value(head == null ? null : head.getPatronymic()),
+                                value(head == null ? null : head.getPosition()),
+                                value(head == null ? null : head.getAcademicDegree()),
+                                value(head == null ? null : head.getAcademicTitle()),
+                                value(head == null || head.getEmploymentDate() == null ? null : head.getEmploymentDate().toString()),
+                                value(head == null ? null : String.valueOf(head.getWorkload())),
+                                value(head == null ? null : head.getEmail()),
+                                value(head == null ? null : head.getPhone())
+                        ));
+                        w.newLine();
+                    }
                 }
+            } catch (IOException e) {
+                System.err.println("Save departments error: " + e.getMessage());
             }
-        }
+        }).start();
     }
 
     // Load departments and link to faculty
@@ -243,32 +241,35 @@ public class FileStorageUtils {
         }
     }
     //safe students
-    private static void saveStudents(List<Student> students) throws IOException {
-        try (BufferedWriter w = Files.newBufferedWriter(STUDENTS_FILE, StandardCharsets.UTF_8)) {
-            w.write(STUDENTS_HEADER);
-            w.newLine();
-            for (Student s : students){
-                w.write(String.join(DELIMITER,
-                        value(s.getId()),
-                        value(s.getOnlyName()),
-                        value(s.getSurname()),
-                        value(s.getPatronymic()),
-                        value(s.getCourseDisplay()),
-
-                        value(s.getEnrollmentDate() != null ? s.getEnrollmentDate().toString() : ""),
-                        value(s.getGroup() != 0 ? String.valueOf(s.getGroup()) : ""),
-                        value(s.getFaculty() != null ? s.getFaculty().getId() : ""),
-                        value(s.getSpeciality() != null ? s.getSpeciality().getId() : ""),
-
-
-                        value(s.getStudyForm() != null ? s.getStudyForm().toString() : ""),
-                        value(s.getStatus() != null ? s.getStatus().toString() : ""),
-                        value(s.getEmail()),
-                        value(s.getPhone())
-                ));
+    private static void saveStudents(List<Student> students) {
+        new Thread(() -> {
+            try (BufferedWriter w = Files.newBufferedWriter(STUDENTS_FILE, StandardCharsets.UTF_8)) {
+                w.write(STUDENTS_HEADER);
                 w.newLine();
+                for (Student s : students){
+                    w.write(String.join(DELIMITER,
+                            value(s.getId()),
+                            value(s.getOnlyName()),
+                            value(s.getSurname()),
+                            value(s.getPatronymic()),
+                            value(s.getCourseDisplay()),
+
+                            value(s.getEnrollmentDate() != null ? s.getEnrollmentDate().toString() : ""),
+                            value(s.getGroup() != 0 ? String.valueOf(s.getGroup()) : ""),
+                            value(s.getFaculty() != null ? s.getFaculty().getId() : ""),
+                            value(s.getSpeciality() != null ? s.getSpeciality().getId() : ""),
+
+                            value(s.getStudyForm() != null ? s.getStudyForm().toString() : ""),
+                            value(s.getStatus() != null ? s.getStatus().toString() : ""),
+                            value(s.getEmail()),
+                            value(s.getPhone())
+                    ));
+                    w.newLine();
+                }
+            } catch (IOException e) {
+                System.err.println("Save students error: " + e.getMessage());
             }
-        }
+        }).start();
     }
     //load students
     private static void loadStudents(University u, FacultyService facultyService, SpecialityService specialityService) throws IOException {
@@ -369,24 +370,28 @@ public class FileStorageUtils {
         }
     }
     // Save teachers
-    private static void saveTeachers(List<Faculty> faculties) throws IOException {
-        try (BufferedWriter w = Files.newBufferedWriter(TEACHERS_FILE, StandardCharsets.UTF_8)) {
-            w.write(TEACHERS_HEADER);
-            w.newLine();
-            Set<String> savedTeacherIds = new HashSet<>();
-            for (Faculty f : faculties) {
-                if (f.getDean() != null) {
-                    writeTeacherRowIfNeeded(w, f.getDean(), "DEAN:" + f.getId(), savedTeacherIds);
-                }
-                for (Department d : f.getDepartments()) {
-                    if (d.getTeachers() != null) {
-                        for (Teacher t : d.getTeachers()) {
-                            writeTeacherRowIfNeeded(w, t, d.getId(), savedTeacherIds);
+    private static void saveTeachers(List<Faculty> faculties) {
+        new Thread(() -> {
+            try (BufferedWriter w = Files.newBufferedWriter(TEACHERS_FILE, StandardCharsets.UTF_8)) {
+                w.write(TEACHERS_HEADER);
+                w.newLine();
+                Set<String> savedTeacherIds = new HashSet<>();
+                for (Faculty f : faculties) {
+                    if (f.getDean() != null) {
+                        writeTeacherRowIfNeeded(w, f.getDean(), "DEAN:" + f.getId(), savedTeacherIds);
+                    }
+                    for (Department d : f.getDepartments()) {
+                        if (d.getTeachers() != null) {
+                            for (Teacher t : d.getTeachers()) {
+                                writeTeacherRowIfNeeded(w, t, d.getId(), savedTeacherIds);
+                            }
                         }
                     }
                 }
+            } catch (IOException e) {
+                System.err.println("Save teachers error: " + e.getMessage());
             }
-        }
+        }).start();
     }
 
     private static void writeTeacherRowIfNeeded(BufferedWriter w, Teacher t, String ownerId, Set<String> savedTeacherIds) throws IOException {
