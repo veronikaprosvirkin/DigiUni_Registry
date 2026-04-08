@@ -134,9 +134,70 @@ public class ModStudentUtils {
         else{
             newStudyForm = StudyForm.CONTRACT;
         }
+        String domain = "@digiuni.ukma.edu";
+        String finalEmail = "";
 
-        String email = InputUtils.readLine(scanner, "Enter email (optional, press Enter to skip): ", true, true);
-        email = InputUtils.removeSpaces(email, false, true, true, true);
+        String prefix = InputUtils.readLine(scanner, "Enter email without domen (press Enter to generate): ", true, true);
+
+        if (prefix.isEmpty()) {
+            String generatedEmail = ModStudentUtils.generateStudentEmail(name, surname);
+
+            if (!isEmailTaken(generatedEmail, studentService)) {
+                System.out.println("Email generated: " + generatedEmail);
+                finalEmail = generatedEmail;
+            } else {
+                System.out.println("Generated email " + generatedEmail + " is already in system");
+                while (true) {
+                    String newPrefix = InputUtils.readLine(scanner, "Enter UNIQUE prefix for student: ", false, true);
+
+                    if (newPrefix.contains("@")) {
+                        newPrefix = newPrefix.split("@")[0];
+                    }
+                    newPrefix = newPrefix.toLowerCase().replaceAll("[^a-z0-9.]", "");
+
+                    String newEmail = newPrefix + domain;
+
+                    if (!newPrefix.isEmpty() && !isEmailTaken(newEmail, studentService)) {
+                        finalEmail = newEmail;
+                        break;
+                    } else {
+                        System.out.println("Error. This email is taken or empty. Try again.");
+                    }
+                }
+            }
+        } else {
+            if (prefix.contains("@")) {
+                prefix = prefix.split("@")[0];
+            }
+            prefix = prefix.toLowerCase().replaceAll("[^a-z0-9.]", "");
+
+            String emailToCheck = prefix + domain;
+
+            if (isEmailTaken(emailToCheck, studentService)) {
+                System.out.println("This email is already taken, try again");
+                while (true) {
+                    String newPrefix = InputUtils.readLine(scanner, "Enter a UNIQUE email prefix: ", false, true);
+
+                    if (newPrefix.contains("@")) {
+                        newPrefix = newPrefix.split("@")[0];
+                    }
+                    newPrefix = newPrefix.toLowerCase().replaceAll("[^a-z0-9.]", "");
+
+                    String fullNewEmail = newPrefix + domain;
+
+                    if (!newPrefix.isEmpty() && !isEmailTaken(fullNewEmail, studentService)) {
+                        finalEmail = fullNewEmail;
+                        break;
+                    } else {
+                        System.out.println("Error. This email is also taken or empty. Write again.");
+                    }
+                }
+            } else {
+                finalEmail = emailToCheck;
+            }
+        }
+
+        finalEmail = InputUtils.removeSpaces(finalEmail, false, true, true, true);
         String phone = InputUtils.readLine(scanner, "Enter phone number (optional, press Enter to skip): ", true, true);
         phone = InputUtils.removeSpaces(phone, false, true, true, true);
 
@@ -145,8 +206,8 @@ public class ModStudentUtils {
         Student s = new Student(newId,name, surname, patronymic, enrollmentDate, groupNumber,
                 selectedFaculty,
                 selectedSpeciality,newStudyForm);
-        
-        if (!email.isEmpty()) s.setEmail(email);
+
+        s.setEmail(finalEmail);
         if (!phone.isEmpty()) s.setPhone(phone);
 
         studentService.addStudentToSpeciality(s, selectedSpeciality, groupNumber);
@@ -155,6 +216,29 @@ public class ModStudentUtils {
         System.out.println("Student " + s.getFullName() + " added to group " + groupNumber +
                 " in " + selectedSpeciality.getName());
     }
+
+    //work with email
+    private static boolean isEmailTaken(String email, StudentService studentService){
+        if (email.isEmpty() || email ==null){
+            return false;
+        }
+        for (Student s : studentService.getAllStudents()) {
+            if (s.getEmail() != null && email.equals(s.getEmail())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static String generateStudentEmail(String name, String surname){
+        if(name == null || surname == null){
+            return "";
+        }
+        String nameL = String.valueOf(name.toLowerCase().charAt(0));
+        String domen = "@digiuni.ukma.edu";
+        return nameL + "."+surname.toLowerCase().replace(" ", "")+ domen;
+    }
+
 
     /**
      * Delete the Student by name
