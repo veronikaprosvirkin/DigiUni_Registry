@@ -58,7 +58,7 @@ class FileStorageUtilsTest {
     }
 
     @AfterEach
-    void tearDown() throws Exception {
+    void tearDown() throws Exception { Thread.sleep(200);
         restore(FACULTIES_FILE, facultiesBackup);
         restore(SPECIALITIES_FILE, specialitiesBackup);
         restore(DEPARTMENTS_FILE, departmentsBackup);
@@ -93,7 +93,7 @@ class FileStorageUtilsTest {
         faculty.getDepartments().add(department);
         university.getFaculties().add(faculty);
 
-        FileStorageUtils.saveAll(university);
+        FileStorageUtils.saveAll(university); Thread.sleep(200);
 
         assertTrue(Files.exists(FACULTIES_FILE));
         assertTrue(Files.exists(SPECIALITIES_FILE));
@@ -116,7 +116,7 @@ class FileStorageUtilsTest {
         Faculty faculty = new Faculty("fCSV", "CSV Faculty", "CF", "000", null);
         university.getFaculties().add(faculty);
 
-        FileStorageUtils.saveAll(university);
+        FileStorageUtils.saveAll(university); Thread.sleep(200);
 
         String content = Files.readString(FACULTIES_FILE, StandardCharsets.UTF_8);
         String[] lines = content.split("\n");
@@ -138,7 +138,7 @@ class FileStorageUtilsTest {
     void saveAllWithEmptyUniversityCreatesEmptyFiles() throws Exception {
         University university = new University();
 
-        FileStorageUtils.saveAll(university);
+        FileStorageUtils.saveAll(university); Thread.sleep(200);
 
         assertTrue(Files.exists(FACULTIES_FILE));
         assertTrue(Files.exists(SPECIALITIES_FILE));
@@ -160,7 +160,7 @@ class FileStorageUtilsTest {
         faculty.getDepartments().add(new Department("d001", "New Dept"));
         university.getFaculties().add(faculty);
 
-        FileStorageUtils.saveAll(university);
+        FileStorageUtils.saveAll(university); Thread.sleep(200);
 
         String facultiesCsv = Files.readString(FACULTIES_FILE, StandardCharsets.UTF_8);
         String specialitiesCsv = Files.readString(SPECIALITIES_FILE, StandardCharsets.UTF_8);
@@ -338,7 +338,7 @@ class FileStorageUtilsTest {
         faculty.getSpeciality().add(speciality);
         university.getFaculties().add(faculty);
 
-        FileStorageUtils.saveAll(university);
+        FileStorageUtils.saveAll(university); Thread.sleep(200);
 
         assertTrue(Files.exists(STUDENTS_FILE));
         String studentsCsv = Files.readString(STUDENTS_FILE, StandardCharsets.UTF_8);
@@ -385,7 +385,7 @@ class FileStorageUtilsTest {
         faculty.getSpeciality().add(speciality);
         university.getFaculties().add(faculty);
 
-        FileStorageUtils.saveAll(university);
+        FileStorageUtils.saveAll(university); Thread.sleep(200);
 
         // Load into new instance
         University loadedUni = new University();
@@ -436,7 +436,7 @@ class FileStorageUtilsTest {
 
         university.getFaculties().add(faculty);
 
-        FileStorageUtils.saveAll(university);
+        FileStorageUtils.saveAll(university); Thread.sleep(200);
 
         assertTrue(Files.exists(TEACHERS_FILE));
         String teachersCsv = Files.readString(TEACHERS_FILE, StandardCharsets.UTF_8);
@@ -491,7 +491,7 @@ class FileStorageUtilsTest {
         department.getTeachers().add(sameTeacher);
         university.getFaculties().add(faculty);
 
-        FileStorageUtils.saveAll(university);
+        FileStorageUtils.saveAll(university); Thread.sleep(200);
 
         String teachersCsv = Files.readString(TEACHERS_FILE, StandardCharsets.UTF_8);
         long count = teachersCsv.lines()
