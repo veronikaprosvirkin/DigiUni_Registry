@@ -35,17 +35,33 @@ public class FileStorageUtils {
 
     // Save all structure
     public static void saveAll(University university) {
+        try {
+            Files.createDirectories(FACULTIES_FILE.getParent());
+        } catch (IOException e) {
+            System.err.println("Failed to create data directory");
+        }
+
+        List<Faculty> faculties = university.getFaculties();
+        List<Student> students = gatherAllStudents(university);
+
         new Thread(() -> {
-            try {
-                Files.createDirectories(FACULTIES_FILE.getParent());
-                saveFaculties(university.getFaculties());
-                saveSpecialities(university.getFaculties());
-                saveDepartments(university.getFaculties());
-                saveStudents(gatherAllStudents(university));
-                saveTeachers(university.getFaculties());
-            } catch (IOException e) {
-                System.err.println("Save error");
-            }
+            try { saveFaculties(faculties); } catch (IOException e) { System.err.println("Save faculties error"); }
+        }).start();
+
+        new Thread(() -> {
+            try { saveSpecialities(faculties); } catch (IOException e) { System.err.println("Save specialities error"); }
+        }).start();
+
+        new Thread(() -> {
+            try { saveDepartments(faculties); } catch (IOException e) { System.err.println("Save departments error"); }
+        }).start();
+
+        new Thread(() -> {
+            try { saveStudents(students); } catch (IOException e) { System.err.println("Save students error"); }
+        }).start();
+
+        new Thread(() -> {
+            try { saveTeachers(faculties); } catch (IOException e) { System.err.println("Save teachers error"); }
         }).start();
     }
 
