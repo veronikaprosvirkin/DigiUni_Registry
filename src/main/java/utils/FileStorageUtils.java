@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class FileStorageUtils {
 
@@ -32,6 +33,8 @@ public class FileStorageUtils {
     private static final String DELIMITER = ";";
     private static final String STUDENTS_HEADER = "id;name;surname;patronymic;course;enrollmentDate;group;faculty;speciality;studyForm;status;email;phone";
     private static final String TEACHERS_HEADER = "id;name;surname;patronymic;position;academicDegree;academicTitle;employmentDate;workload;email;phone;department";
+
+    private static final ReentrantLock saveLock = new ReentrantLock();
 
     // Save all structure
     public static void saveAll(University university) {
@@ -88,6 +91,7 @@ public class FileStorageUtils {
     // Save faculties
     private static void saveFaculties(List<Faculty> faculties) {
         new Thread(() -> {
+            saveLock.lock();
             try (BufferedWriter w = Files.newBufferedWriter(FACULTIES_FILE, StandardCharsets.UTF_8)) {
                 for (Faculty f : faculties) {
                     Teacher dean = f.getDean();
@@ -112,6 +116,8 @@ public class FileStorageUtils {
                 }
             } catch (IOException e) {
                 System.err.println("Save faculties error: " + e.getMessage());
+            } finally {
+                saveLock.unlock();
             }
         }).start();
     }
@@ -139,6 +145,7 @@ public class FileStorageUtils {
     // Save specialities
     private static void saveSpecialities(List<Faculty> faculties) {
         new Thread(() -> {
+            saveLock.lock();
             try (BufferedWriter w = Files.newBufferedWriter(SPECIALITIES_FILE, StandardCharsets.UTF_8)) {
                 for (Faculty f : faculties) {
                     for (Speciality s : f.getSpeciality()) {
@@ -148,6 +155,8 @@ public class FileStorageUtils {
                 }
             } catch (IOException e) {
                 System.err.println("Save specialities error: " + e.getMessage());
+            } finally {
+                saveLock.unlock();
             }
         }).start();
     }
@@ -181,6 +190,7 @@ public class FileStorageUtils {
     // Save departments
     private static void saveDepartments(List<Faculty> faculties) {
         new Thread(() -> {
+            saveLock.lock();
             try (BufferedWriter w = Files.newBufferedWriter(DEPARTMENTS_FILE, StandardCharsets.UTF_8)) {
                 for (Faculty f : faculties) {
                     for (Department d : f.getDepartments()) {
@@ -207,6 +217,8 @@ public class FileStorageUtils {
                 }
             } catch (IOException e) {
                 System.err.println("Save departments error: " + e.getMessage());
+            } finally {
+                saveLock.unlock();
             }
         }).start();
     }
@@ -243,6 +255,7 @@ public class FileStorageUtils {
     //safe students
     private static void saveStudents(List<Student> students) {
         new Thread(() -> {
+            saveLock.lock();
             try (BufferedWriter w = Files.newBufferedWriter(STUDENTS_FILE, StandardCharsets.UTF_8)) {
                 w.write(STUDENTS_HEADER);
                 w.newLine();
@@ -268,6 +281,8 @@ public class FileStorageUtils {
                 }
             } catch (IOException e) {
                 System.err.println("Save students error: " + e.getMessage());
+            } finally {
+                saveLock.unlock();
             }
         }).start();
     }
@@ -372,6 +387,7 @@ public class FileStorageUtils {
     // Save teachers
     private static void saveTeachers(List<Faculty> faculties) {
         new Thread(() -> {
+            saveLock.lock();
             try (BufferedWriter w = Files.newBufferedWriter(TEACHERS_FILE, StandardCharsets.UTF_8)) {
                 w.write(TEACHERS_HEADER);
                 w.newLine();
@@ -390,6 +406,8 @@ public class FileStorageUtils {
                 }
             } catch (IOException e) {
                 System.err.println("Save teachers error: " + e.getMessage());
+            } finally {
+                saveLock.unlock();
             }
         }).start();
     }
@@ -539,4 +557,3 @@ public class FileStorageUtils {
         return allStudents;
     }
 }
-
