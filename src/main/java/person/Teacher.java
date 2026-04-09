@@ -17,7 +17,11 @@ public final class Teacher extends Person {
     private double workload;
 
     public Teacher(String id, String name, String surname, String patronymic, String position, Department department) {
-        super(id, name, surname, patronymic);
+        this(id, name, surname, patronymic, position, department, null);
+    }
+
+    public Teacher(String id, String name, String surname, String patronymic, String position, Department department, LocalDate dateOfBirth) {
+        super(id, name, surname, patronymic, dateOfBirth);
         this.position = position;
         this.department = department;
     }

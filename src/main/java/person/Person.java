@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import utils.namedEntity.NamedEntity;
+import java.time.LocalDate;
 
 // Base Person entity
 @Data
@@ -17,12 +18,18 @@ public abstract sealed class Person implements NamedEntity permits Student, Teac
     protected String patronymic;
     protected String email;
     protected String phone;
+    protected LocalDate dateOfBirth;
 
     public Person(String id, String name, String surname, String patronymic) {
+        this(id, name, surname, patronymic, null);
+    }
+
+    public Person(String id, String name, String surname, String patronymic, LocalDate dateOfBirth) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.patronymic = patronymic;
+        this.dateOfBirth = dateOfBirth;
     }
 
     @Override

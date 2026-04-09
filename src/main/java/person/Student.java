@@ -18,7 +18,11 @@ public final class Student extends Person {
     private StudentStatus status = StudentStatus.ACTIVE;
 
     public Student(String id, String name, String surname, String patronymic, LocalDate enrollmentDate, int group, Faculty faculty, Speciality speciality, StudyForm studyForm) {
-        super(id, name, surname, patronymic);
+        this(id, name, surname, patronymic, enrollmentDate, group, faculty, speciality, studyForm, null);
+    }
+
+    public Student(String id, String name, String surname, String patronymic, LocalDate enrollmentDate, int group, Faculty faculty, Speciality speciality, StudyForm studyForm, LocalDate dateOfBirth) {
+        super(id, name, surname, patronymic, dateOfBirth);
         if (group <= 0) throw new IllegalArgumentException("Group number must be greater than 0.");
         this.enrollmentDate = enrollmentDate;
         this.group = group;

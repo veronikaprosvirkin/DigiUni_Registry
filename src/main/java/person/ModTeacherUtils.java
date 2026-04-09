@@ -122,8 +122,19 @@ public class ModTeacherUtils {
         String workloadStr = InputUtils.readLine(scanner, "Enter workload (e.g. 1.0, optional, press Enter to skip): ", true, true);
         workloadStr = InputUtils.removeSpaces(workloadStr, false, true, true, true);
 
+        String dobStr = InputUtils.readLine(scanner, "Enter date of birth (YYYY-MM-DD, optional, press Enter to skip): ", true, true);
+        dobStr = InputUtils.removeSpaces(dobStr, false, true, true, true);
+        LocalDate dateOfBirth = null;
+        if (!dobStr.isEmpty()) {
+            try {
+                dateOfBirth = LocalDate.parse(dobStr);
+            } catch (Exception e) {
+                System.out.println("Invalid date format. Skipping date of birth.");
+            }
+        }
+
         // Save
-        Teacher newTeacher = new Teacher(IdGenerator.generateTeacherId(), name, surname, patronymic, position, selectedDept);
+        Teacher newTeacher = new Teacher(IdGenerator.generateTeacherId(), name, surname, patronymic, position, selectedDept, dateOfBirth);
         if (!email.isEmpty()) newTeacher.setEmail(email);
         if (!phone.isEmpty()) newTeacher.setPhone(phone);
         if (!academicDegree.isEmpty()) newTeacher.setAcademicDegree(academicDegree);
@@ -225,9 +236,10 @@ public class ModTeacherUtils {
         System.out.println("7. Change Academic Title");
         System.out.println("8. Change Employment Date");
         System.out.println("9. Change Workload");
+        System.out.println("10. Change Date of Birth");
         System.out.println("0. Finish editing");
 
-        int fieldChoice = InputUtils.readInt(scanner, "> ", 0, 9);
+        int fieldChoice = InputUtils.readInt(scanner, "> ", 0, 10);
         if (fieldChoice == 0) {
             FileStorageUtils.saveAll(university);
             break;
@@ -295,6 +307,21 @@ public class ModTeacherUtils {
                     System.out.println("Workload updated!");
                 } catch (Exception e) {
                     System.out.println("Invalid workload format.");
+                }
+            }
+            case 10 -> {
+                String newDob = InputUtils.readLine(scanner, "Enter new date of birth (YYYY-MM-DD, empty to clear): ", true, true);
+                newDob = InputUtils.removeSpaces(newDob, false, true, true, true);
+                if (newDob.isEmpty()) {
+                    teacherToProcess.setDateOfBirth(null);
+                    System.out.println("Date of birth cleared!");
+                } else {
+                    try {
+                        teacherToProcess.setDateOfBirth(LocalDate.parse(newDob));
+                        System.out.println("Date of birth updated!");
+                    } catch (Exception e) {
+                        System.out.println("Invalid date format.");
+                    }
                 }
             }
         }
