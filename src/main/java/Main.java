@@ -15,6 +15,7 @@ import utils.FileStorageUtils;
 public class Main {
     public static void main(String[] args) {
         University university = new University();
+        UserService userService = new UserService();
 
         FacultyService facultyService = new FacultyService(university);
         SpecialityService specialityService = new SpecialityService(university);
@@ -29,21 +30,13 @@ public class Main {
         UniversityService universityService = new UniversityService(university);
 
         if (!hasSavedStructure) {
-            FileStorageUtils.saveAll(university);
+            FileStorageUtils.saveAll(university, userService);
         }
 
         StudentService studentService = new StudentService(university);
         TeacherService teacherService = new TeacherService(university);
         DepartmentService departmentService = new DepartmentService(university);
         Scanner scanner = new Scanner(System.in);
-        UserService userService = new UserService();
-
-        // Creating few students
-        /*studentService.addStudent("Zbyshek", "Tymekowskych", "sm", LocalDate.of(2025, 9, 1), 101, StudyForm.BUDGET);
-        studentService.addStudent("Irzek", "Zlotych", "sm", LocalDate.of(2024, 9, 1), 101, StudyForm.BUDGET);
-        studentService.addStudent("Irzek", "Tymekowskych", "sm", LocalDate.of(2023, 9, 1), 15,StudyForm.CONTRACT);
-        FileStorageUtils.saveAll(university);*/
-
 
 
         while (true) {

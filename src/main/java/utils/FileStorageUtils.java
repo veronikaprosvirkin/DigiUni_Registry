@@ -8,6 +8,8 @@ import speciality.Speciality;
 import department.Department;
 import speciality.SpecialityService;
 import university.University;
+import user.User;
+import user.UserService;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -30,17 +32,19 @@ public class FileStorageUtils {
     private static final Path DEPARTMENTS_FILE = Path.of("data", "departments.csv");
     private static final Path TEACHERS_FILE = Path.of("data", "teachers.csv");
     private static final Path STUDENTS_FILE = Path.of("data", "students.csv");
+    private static final Path USERS_FILE = Path.of("data", "users.csv");
     private static final String DELIMITER = ";";
     private static final String STUDENTS_HEADER = "id;name;surname;patronymic;course;enrollmentDate;group;faculty;speciality;studyForm;status;email;phone;dateOfBirth";
     private static final String TEACHERS_HEADER = "id;name;surname;patronymic;position;academicDegree;academicTitle;employmentDate;workload;email;phone;department;dateOfBirth";
     private static final String FACULTIES_HEADER = "id;name;shortName;contacts;deanId;deanName;deanSurname;deanPatronymic;deanPosition;deanAcademicDegree;deanAcademicTitle;deanEmploymentDate;deanWorkload;deanEmail;deanPhone";
     private static final String SPECIALITIES_HEADER = "id;name;facultyId";
     private static final String DEPARTMENTS_HEADER = "id;name;facultyId;location;headId;headName;headSurname;headPatronymic;headPosition;headAcademicDegree;headAcademicTitle;headEmploymentDate;headWorkload;headEmail;headPhone";
+    private static final String USERS_HEADER = "username;password;role";
 
     private static final ReentrantLock saveLock = new ReentrantLock();
 
     // Save all structure
-    public static void saveAll(University university) {
+    public static void saveAll(University university, UserService userService) {
         try {
             Files.createDirectories(FACULTIES_FILE.getParent());
         } catch (IOException e) {
@@ -49,12 +53,14 @@ public class FileStorageUtils {
 
         List<Faculty> faculties = university.getFaculties();
         List<Student> students = gatherAllStudents(university);
+        List<User> users = userService.getAllUsers();
 
         saveFaculties(faculties);
         saveSpecialities(faculties);
         saveDepartments(faculties);
         saveStudents(students);
         saveTeachers(faculties);
+        saveUsers(users);
     }
 
     // True when at least one persisted faculty row exists.
@@ -428,6 +434,29 @@ public class FileStorageUtils {
                 saveLock.unlock();
             }
         }).start();
+    }
+    // save users
+    private static void saveUsers(List<User> users){
+         new Thread(() -> {
+             saveLock.lock();
+             try (BufferedWriter w = Files.newBufferedWriter(USERS_FILE, StandardCharsets.UTF_8)){
+                 w.write(USERS_HEADER);
+                 w.newLine();
+                 for (User u : users) {
+                     String line = u.getUsername() + ";"+
+                             u.getPassword() + "+";
+                             u.getRole();
+                     w.write(line);
+                     w.newLine();
+                 }
+
+             } catch (IOException e) {
+                 throw new RuntimeException(e);
+             }finally {
+                 saveLock.unlock();
+             }
+
+         }).start();
     }
 
     private static void writeTeacherRowIfNeeded(BufferedWriter w, Teacher t, String ownerId, Set<String> savedTeacherIds) throws IOException {
