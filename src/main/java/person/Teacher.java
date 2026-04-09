@@ -29,7 +29,7 @@ public final class Teacher extends Person {
     @Override
     public String toString() {
         String deptName = (this.department != null) ? this.department.getName() : "No Department Assigned";
-        return getFullName() + " | Position: " + position + " | Department: " + deptName;
+        return getFullName() + " | Age: " + (age != null ? age : "N/A") + " | Position: " + position + " | Department: " + deptName;
     }
 
     @Override
