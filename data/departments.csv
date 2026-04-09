@@ -1,3 +1,4 @@
+id;name;facultyId;location;headId;headName;headSurname;headPatronymic;headPosition;headAcademicDegree;headAcademicTitle;headEmploymentDate;headWorkload;headEmail;headPhone
 d001;Department of Computer Science;f001;;;;;;;;;;;;
 d002;Department of Multimedia Systems;f001;;;;;;;;;;;;
 d003;Department of Automation, Computer-Integrated Technologies, and Robotics;f001;;;;;;;;;;;;

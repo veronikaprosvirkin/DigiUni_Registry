@@ -33,6 +33,9 @@ public class FileStorageUtils {
     private static final String DELIMITER = ";";
     private static final String STUDENTS_HEADER = "id;name;surname;patronymic;course;enrollmentDate;group;faculty;speciality;studyForm;status;email;phone;dateOfBirth";
     private static final String TEACHERS_HEADER = "id;name;surname;patronymic;position;academicDegree;academicTitle;employmentDate;workload;email;phone;department;dateOfBirth";
+    private static final String FACULTIES_HEADER = "id;name;shortName;contacts;deanId;deanName;deanSurname;deanPatronymic;deanPosition;deanAcademicDegree;deanAcademicTitle;deanEmploymentDate;deanWorkload;deanEmail;deanPhone";
+    private static final String SPECIALITIES_HEADER = "id;name;facultyId";
+    private static final String DEPARTMENTS_HEADER = "id;name;facultyId;location;headId;headName;headSurname;headPatronymic;headPosition;headAcademicDegree;headAcademicTitle;headEmploymentDate;headWorkload;headEmail;headPhone";
 
     private static final ReentrantLock saveLock = new ReentrantLock();
 
@@ -93,6 +96,8 @@ public class FileStorageUtils {
         new Thread(() -> {
             saveLock.lock();
             try (BufferedWriter w = Files.newBufferedWriter(FACULTIES_FILE, StandardCharsets.UTF_8)) {
+                w.write(FACULTIES_HEADER);
+                w.newLine();
                 for (Faculty f : faculties) {
                     Teacher dean = f.getDean();
                     w.write(String.join(DELIMITER,
@@ -129,6 +134,7 @@ public class FileStorageUtils {
             while ((line = r.readLine()) != null) {
                 if (line.isBlank()) continue;
                 String[] parts = line.split(DELIMITER, -1);
+                if (parts.length > 0 && "id".equalsIgnoreCase(parts[0])) continue;
                 if (parts.length >= 4) {
                     String id = parts[0];
                     String name = parts[1];
@@ -147,6 +153,8 @@ public class FileStorageUtils {
         new Thread(() -> {
             saveLock.lock();
             try (BufferedWriter w = Files.newBufferedWriter(SPECIALITIES_FILE, StandardCharsets.UTF_8)) {
+                w.write(SPECIALITIES_HEADER);
+                w.newLine();
                 for (Faculty f : faculties) {
                     for (Speciality s : f.getSpeciality()) {
                         w.write(String.join(DELIMITER, value(s.getId()), value(s.getNameOfSpeciality()), value(f.getId())));
@@ -168,6 +176,7 @@ public class FileStorageUtils {
             while ((line = r.readLine()) != null) {
                 if (line.isBlank()) continue;
                 String[] parts = line.split(DELIMITER, -1);
+                if (parts.length > 0 && "id".equalsIgnoreCase(parts[0])) continue;
                 if (parts.length >= 3) {
                     String id = parts[0];
                     String name = parts[1];
@@ -192,6 +201,8 @@ public class FileStorageUtils {
         new Thread(() -> {
             saveLock.lock();
             try (BufferedWriter w = Files.newBufferedWriter(DEPARTMENTS_FILE, StandardCharsets.UTF_8)) {
+                w.write(DEPARTMENTS_HEADER);
+                w.newLine();
                 for (Faculty f : faculties) {
                     for (Department d : f.getDepartments()) {
                         Teacher head = d.getHead();
@@ -227,10 +238,12 @@ public class FileStorageUtils {
     private static void loadDepartments(University u) throws IOException {
         try (BufferedReader r = Files.newBufferedReader(DEPARTMENTS_FILE, StandardCharsets.UTF_8)) {
             String line;
+
             while ((line = r.readLine()) != null) {
                 if (line.isBlank()) continue;
                 String[] parts = line.split(DELIMITER, -1);
-                if (parts.length >= 3) {
+                if (parts.length > 0 && "id".equalsIgnoreCase(parts[0])) continue;
+                if (parts.length >= 4) {
                     String id = parts[0];
                     String name = parts[1];
                     String facultyId = parts[2];

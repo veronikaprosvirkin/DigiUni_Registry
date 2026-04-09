@@ -143,9 +143,9 @@ class FileStorageUtilsTest {
         assertTrue(Files.exists(FACULTIES_FILE));
         assertTrue(Files.exists(SPECIALITIES_FILE));
         assertTrue(Files.exists(DEPARTMENTS_FILE));
-        assertEquals("", Files.readString(FACULTIES_FILE, StandardCharsets.UTF_8));
-        assertEquals("", Files.readString(SPECIALITIES_FILE, StandardCharsets.UTF_8));
-        assertEquals("", Files.readString(DEPARTMENTS_FILE, StandardCharsets.UTF_8));
+        assertEquals("id;name;shortName;contacts;deanId;deanName;deanSurname;deanPatronymic;deanPosition;deanAcademicDegree;deanAcademicTitle;deanEmploymentDate;deanWorkload;deanEmail;deanPhone" + System.lineSeparator(), Files.readString(FACULTIES_FILE, StandardCharsets.UTF_8));
+        assertEquals("id;name;facultyId" + System.lineSeparator(), Files.readString(SPECIALITIES_FILE, StandardCharsets.UTF_8));
+        assertEquals("id;name;facultyId;location;headId;headName;headSurname;headPatronymic;headPosition;headAcademicDegree;headAcademicTitle;headEmploymentDate;headWorkload;headEmail;headPhone" + System.lineSeparator(), Files.readString(DEPARTMENTS_FILE, StandardCharsets.UTF_8));
     }
 
     @Test
@@ -176,22 +176,19 @@ class FileStorageUtilsTest {
 
     @Test
     void loadAllRestoresHierarchyClearsOldStateAndUpdatesCounters() throws Exception {
-        write(FACULTIES_FILE, """
-                f002;Faculty B;FB;111;t0100;Irena;Kowalska;Piotrówna;Professor;PhD;Docent;2018-02-03;1.0;dean.b@uni.test;+380000000001
-                f010;Faculty A;FA;222;;;;;;;;;;;
-                """);
+        write(FACULTIES_FILE, "id;name;shortName;contacts;deanId;deanName;deanSurname;deanPatronymic;deanPosition;deanAcademicDegree;deanAcademicTitle;deanEmploymentDate;deanWorkload;deanEmail;deanPhone\n" +
+                "f002;Faculty B;FB;111;t0100;Irena;Kowalska;Piotrówna;Professor;PhD;Docent;2018-02-03;1.0;dean.b@uni.test;+380000000001\n" +
+                "f010;Faculty A;FA;222;;;;;;;;;;;\n");
 
-        write(SPECIALITIES_FILE, """
-                sp001;Math;f002
-                sp120;Cybersecurity;f010
-                sp999;Orphan;f999
-                """);
+        write(SPECIALITIES_FILE, "id;name;facultyId\n" +
+                "sp001;Math;f002\n" +
+                "sp120;Cybersecurity;f010\n" +
+                "sp999;Orphan;f999\n");
 
-        write(DEPARTMENTS_FILE, """
-                d005;Economics Department;f002;Block A;t0200;Narcyz;Wiśniewski;Quirynowicz;Head;MSc;Senior Lecturer;2019-05-06;0.75;head.b@uni.test;+380000000002
-                d042;AI Department;f010;;;;;;;;;;;;
-                d999;Orphan Department;f999
-                """);
+        write(DEPARTMENTS_FILE, "id;name;facultyId;location;headId;headName;headSurname;headPatronymic;headPosition;headAcademicDegree;headAcademicTitle;headEmploymentDate;headWorkload;headEmail;headPhone\n" +
+                "d005;Economics Department;f002;Block A;t0200;Narcyz;Wiśniewski;Quirynowicz;Head;MSc;Senior Lecturer;2019-05-06;0.75;head.b@uni.test;+380000000002\n" +
+                "d042;AI Department;f010;;;;;;;;;;;;\n" +
+                "d999;Orphan Department;f999\n");
 
         University university = new University();
         university.getFaculties().add(new Faculty("f777", "Old Faculty", "OF", "old", null));
@@ -231,13 +228,15 @@ class FileStorageUtilsTest {
     @Test
     void loadAllIgnoresMalformedRowsAndBlankLines() throws Exception {
         write(FACULTIES_FILE, """
-                f001;Faculty A;FA;111
+                id;name;shortName;contacts;deanId;deanName;deanSurname;deanPatronymic;deanPosition;deanAcademicDegree;deanAcademicTitle;deanEmploymentDate;deanWorkload;deanEmail;deanPhone
+                f001;Faculty A;FA;111;t1;a;a;a;a;a;a;2020-01-01;1.0;a;a
                 malformed
 
-                f002;Faculty B;FB;222
+                f002;Faculty B;FB;222;t2;b;b;b;b;b;b;2020-01-01;1.0;b;b
                 """);
 
         write(SPECIALITIES_FILE, """
+                id;name;facultyId
                 sp001;Spec A;f001
                 sp002;MissingFaculty
                 ;;;
@@ -245,9 +244,10 @@ class FileStorageUtilsTest {
                 """);
 
         write(DEPARTMENTS_FILE, """
-                d001;Dept A;f001
+                id;name;facultyId;location;headId;headName;headSurname;headPatronymic;headPosition;headAcademicDegree;headAcademicTitle;headEmploymentDate;headWorkload;headEmail;headPhone
+                d001;Dept A;f001;loc;t3;c;c;c;c;c;c;2020-01-01;1.0;c;c
                 d-bad
-                d002;Dept B;f002
+                d002;Dept B;f002;loc;t4;d;d;d;d;d;d;2020-01-01;1.0;d;d
                 """);
 
         University university = new University();
@@ -270,9 +270,9 @@ class FileStorageUtilsTest {
 
     @Test
     void loadAllHandlesOnlySomeFilesPresent() throws Exception {
-        write(FACULTIES_FILE, "f002;Faculty B;FB;111\n");
+        write(FACULTIES_FILE, "id;name;shortName;contacts;deanId;deanName;deanSurname;deanPatronymic;deanPosition;deanAcademicDegree;deanAcademicTitle;deanEmploymentDate;deanWorkload;deanEmail;deanPhone\nf002;Faculty B;FB;111;;;;;;;;;;;\n");
         Files.deleteIfExists(SPECIALITIES_FILE);
-        write(DEPARTMENTS_FILE, "d005;Economics Department;f002\n");
+        write(DEPARTMENTS_FILE, "id;name;facultyId;location;headId;headName;headSurname;headPatronymic;headPosition;headAcademicDegree;headAcademicTitle;headEmploymentDate;headWorkload;headEmail;headPhone\nd005;Economics Department;f002;loc;;;;;;;;;;;\n");
 
         University university = new University();
         FileStorageUtils.loadAll(university, new faculty.FacultyService(university), new speciality.SpecialityService(university));
