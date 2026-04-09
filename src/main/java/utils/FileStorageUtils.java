@@ -34,8 +34,8 @@ public class FileStorageUtils {
     private static final Path STUDENTS_FILE = Path.of("data", "students.csv");
     private static final Path USERS_FILE = Path.of("data", "users.csv");
     private static final String DELIMITER = ";";
-    private static final String STUDENTS_HEADER = "id;name;surname;patronymic;course;enrollmentDate;group;faculty;speciality;studyForm;status;email;phone;dateOfBirth";
-    private static final String TEACHERS_HEADER = "id;name;surname;patronymic;position;academicDegree;academicTitle;employmentDate;workload;email;phone;department;dateOfBirth";
+    private static final String STUDENTS_HEADER = "id;name;surname;patronymic;course;enrollmentDate;group;faculty;speciality;studyForm;status;email;phone;dateOfBirth;age";
+    private static final String TEACHERS_HEADER = "id;name;surname;patronymic;position;academicDegree;academicTitle;employmentDate;workload;email;phone;department;dateOfBirth;age";
     private static final String FACULTIES_HEADER = "id;name;shortName;contacts;deanId;deanName;deanSurname;deanPatronymic;deanPosition;deanAcademicDegree;deanAcademicTitle;deanEmploymentDate;deanWorkload;deanEmail;deanPhone";
     private static final String SPECIALITIES_HEADER = "id;name;facultyId";
     private static final String DEPARTMENTS_HEADER = "id;name;facultyId;location;headId;headName;headSurname;headPatronymic;headPosition;headAcademicDegree;headAcademicTitle;headEmploymentDate;headWorkload;headEmail;headPhone";
@@ -295,7 +295,8 @@ public class FileStorageUtils {
                             value(s.getStatus() != null ? s.getStatus().toString() : ""),
                             value(s.getEmail()),
                             value(s.getPhone()),
-                            value(s.getDateOfBirth() != null ? s.getDateOfBirth().toString() : "")
+                            value(s.getDateOfBirth() != null ? s.getDateOfBirth().toString() : ""),
+                            value(s.getAge() != null ? String.valueOf(s.getAge()) : "")
                     ));
                     w.newLine();
                 }
@@ -483,7 +484,8 @@ public class FileStorageUtils {
                 value(t.getEmail()),
                 value(t.getPhone()),
                 value(ownerId),
-                value(t.getDateOfBirth() != null ? t.getDateOfBirth().toString() : "")
+                value(t.getDateOfBirth() != null ? t.getDateOfBirth().toString() : ""),
+                value(t.getAge() != null ? String.valueOf(t.getAge()) : "")
         ));
         w.newLine();
     }
