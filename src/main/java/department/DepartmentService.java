@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import university.University;
+import university.UniversityService;
+import user.UserService;
 import utils.IdGenerator;
 import utils.FileStorageUtils;
 import person.Teacher;
@@ -20,12 +22,12 @@ public class DepartmentService {
         return faculty.getDepartments();
     }
 
-    public void addNewDepartment(String newDepartmentName, Faculty selectedFaculty) {
+    public void addNewDepartment(String newDepartmentName, Faculty selectedFaculty, UserService userService) {
         Objects.requireNonNull(selectedFaculty, "Faculty cannot be null");
-        addNewDepartment(newDepartmentName, selectedFaculty, null, null);
+        addNewDepartment(newDepartmentName, selectedFaculty, null, null, userService);
     }
     
-    public void addNewDepartment(String newDepartmentName, Faculty selectedFaculty, Teacher head, String location) {
+    public void addNewDepartment(String newDepartmentName, Faculty selectedFaculty, Teacher head, String location, UserService userService) {
         Objects.requireNonNull(selectedFaculty, "Faculty cannot be null");
         Objects.requireNonNull(newDepartmentName, "Department name cannot be null");
         boolean exists = selectedFaculty.getDepartments().stream()
@@ -43,11 +45,11 @@ public class DepartmentService {
             d.setLocation(location);
         }
         selectedFaculty.getDepartments().add(d);
-        FileStorageUtils.saveAll(university, new user.UserService(), null);
+        FileStorageUtils.saveAll(university, userService);
         System.out.println("Department created successfully!");
     }
 
-    public void editDepartmentName(Department dept, String editName, Faculty faculty) {
+    public void editDepartmentName(Department dept, String editName, Faculty faculty, UserService userService) {
         Objects.requireNonNull(dept, "Department cannot be null");
         Objects.requireNonNull(faculty, "Faculty cannot be null");
         Objects.requireNonNull(editName, "New name cannot be null");
@@ -57,21 +59,21 @@ public class DepartmentService {
         }
         String oldName = dept.getName();
         dept.setName(editName);
-        FileStorageUtils.saveAll(university, new user.UserService(), null);
+        FileStorageUtils.saveAll(university, userService);
         System.out.println(oldName+" name updated successfully to: " + dept.getName());
     }
 
-    public void editDepartmentHead(Department dept, Teacher head) {
+    public void editDepartmentHead(Department dept, Teacher head, UserService userService) {
         Objects.requireNonNull(dept, "Department cannot be null");
         dept.setHead(head);
-        FileStorageUtils.saveAll(university, new user.UserService(), null);
+        FileStorageUtils.saveAll(university, userService);
         System.out.println("Head of department set to " + (head == null ? "None" : head.getDisplayInfo()));
     }
 
-    public void editDepartmentLocation(Department dept, String location) {
+    public void editDepartmentLocation(Department dept, String location, UserService userService) {
         Objects.requireNonNull(dept, "Department cannot be null");
         dept.setLocation(location);
-        FileStorageUtils.saveAll(university, new user.UserService(), null);
+        FileStorageUtils.saveAll(university, userService);
         System.out.println("Location updated.");
     }
 
@@ -81,11 +83,11 @@ public class DepartmentService {
                 .anyMatch(item -> nameExtractor.apply(item).equalsIgnoreCase(newName));
     }
 
-    public void deleteDepartment(Department selectedDept, Faculty selectedFaculty) {
+    public void deleteDepartment(Department selectedDept, Faculty selectedFaculty, UserService userService) {
         Objects.requireNonNull(selectedFaculty, "Faculty cannot be null");
         Objects.requireNonNull(selectedDept, "Department cannot be null");
         if (selectedFaculty.getDepartments().remove(selectedDept)) {
-            FileStorageUtils.saveAll(university, new user.UserService(), null);
+            FileStorageUtils.saveAll(university, userService);
         }
     }
 }

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import person.Teacher;
 import university.University;
 import department.Department;
-import person.TeacherService;
+import user.UserService;
 import utils.IdGenerator;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,11 +14,13 @@ class FacultyServiceTest {
 
     private University university;
     private FacultyService facultyService;
+    private UserService userService;
 
     @BeforeEach
     void setUp() {
         university = new University();
         facultyService = new FacultyService(university);
+        userService = UserService.createTestInstance();
     }
 
     @Test
@@ -26,7 +28,7 @@ class FacultyServiceTest {
         Department dept = new Department(IdGenerator.generateDepartmentId(), "Dept");
         Teacher dean = new Teacher(IdGenerator.generateTeacherId(), "A", "B", "", "Prof", dept);
 
-        facultyService.addNewFaculty("Test Faculty", "TF", "contact", dean);
+        facultyService.addNewFaculty("Test Faculty", "TF", "contact", dean, userService);
         assertEquals(1, university.getFaculties().size());
         Faculty f = university.getFaculties().get(0);
         assertEquals("Test Faculty", f.getName());
@@ -40,11 +42,11 @@ class FacultyServiceTest {
         Department dept = new Department(IdGenerator.generateDepartmentId(), "Dept");
         Teacher dean = new Teacher(IdGenerator.generateTeacherId(), "A", "B", "", "Prof", dept);
 
-        facultyService.addNewFaculty("Dup Faculty", "D1", "c", dean);
+        facultyService.addNewFaculty("Dup Faculty", "D1", "c", dean, userService);
         assertEquals(1, university.getFaculties().size());
 
         // try to add duplicate name (case-insensitive)
-        facultyService.addNewFaculty("dup faculty", "D2", "c2", dean);
+        facultyService.addNewFaculty("dup faculty", "D2", "c2", dean, userService);
         assertEquals(1, university.getFaculties().size(), "Duplicate faculty name should not be added");
     }
 
@@ -53,11 +55,11 @@ class FacultyServiceTest {
         Department dept = new Department(IdGenerator.generateDepartmentId(), "Dept");
         Teacher dean = new Teacher(IdGenerator.generateTeacherId(), "A", "B", "", "Prof", dept);
 
-        facultyService.addNewFaculty("ToDelete", "TD", "c", dean);
+        facultyService.addNewFaculty("ToDelete", "TD", "c", dean, userService);
         Faculty f = university.getFaculties().get(0);
         assertEquals(1, university.getFaculties().size());
 
-        facultyService.deleteFaculty(f);
+        facultyService.deleteFaculty(f, userService);
         assertEquals(0, university.getFaculties().size());
     }
 
@@ -66,17 +68,17 @@ class FacultyServiceTest {
         Department dept = new Department(IdGenerator.generateDepartmentId(), "Dept");
         Teacher dean = new Teacher(IdGenerator.generateTeacherId(), "A", "B", "", "Prof", dept);
 
-        facultyService.addNewFaculty("First", "F1", "c", dean);
-        facultyService.addNewFaculty("Second", "F2", "c2", dean);
+        facultyService.addNewFaculty("First", "F1", "c", dean, userService);
+        facultyService.addNewFaculty("Second", "F2", "c2", dean, userService);
 
         Faculty first = university.getFaculties().get(0);
         Faculty second = university.getFaculties().get(1);
 
-        facultyService.editFacultyName(first, "Renamed");
+        facultyService.editFacultyName(first, "Renamed", userService);
         assertEquals("Renamed", first.getName());
 
         // try to rename second to the same as first
-        facultyService.editFacultyName(second, "Renamed");
+        facultyService.editFacultyName(second, "Renamed", userService);
         assertEquals("Second", second.getName(), "Rename to duplicate should not be applied");
     }
 }

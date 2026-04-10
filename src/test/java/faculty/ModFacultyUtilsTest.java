@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import person.Teacher;
 import person.TeacherService;
 import university.University;
+import user.UserService;
 import utils.IdGenerator;
 
 import java.io.ByteArrayInputStream;
@@ -44,6 +45,7 @@ class ModFacultyUtilsTest {
         Teacher t = new Teacher(IdGenerator.generateTeacherId(), "John", "Smith", "", "Dr", dept);
         // add teacher to department via service
         teacherService.addTeacher(t);
+        UserService userService = UserService.createTestInstance();
 
         // Input sequence:
         // Faculty name
@@ -63,7 +65,7 @@ class ModFacultyUtilsTest {
         );
 
         Scanner scanner = scannerFrom(input);
-        ModFacultyUtils.facultyAddFaculty(scanner, facultyService, teacherService);
+        ModFacultyUtils.facultyAddFaculty(scanner, facultyService, teacherService, userService);
 
         assertEquals(2, university.getFaculties().size());
         Faculty added = university.getFaculties().stream().filter(f -> f.getName().equals("New Faculty")).findFirst().orElse(null);
@@ -95,16 +97,17 @@ class ModFacultyUtilsTest {
 
         // confirm delete (y)
         Scanner yes = scannerFrom("y\n\n");
-        java.lang.reflect.Method del = ModFacultyUtils.class.getDeclaredMethod("facultyManageExistingFacultyDelete", Scanner.class, FacultyService.class, Faculty.class);
+        java.lang.reflect.Method del = ModFacultyUtils.class.getDeclaredMethod("facultyManageExistingFacultyDelete",
+                Scanner.class, FacultyService.class, Faculty.class, UserService.class);
         del.setAccessible(true);
-        del.invoke(null, yes, facultyService, f);
+        del.invoke(null, yes, facultyService, f, UserService.createTestInstance());
         assertEquals(0, university.getFaculties().size());
 
         // add again and cancel (n)
         Faculty f2 = new Faculty(IdGenerator.generateFacultyId(), "Keep", "K", "c", null);
         university.getFaculties().add(f2);
         Scanner no = scannerFrom("n\n\n");
-        del.invoke(null, no, facultyService, f2);
+        del.invoke(null, no, facultyService, f2, UserService.createTestInstance());
         assertEquals(1, university.getFaculties().size());
     }
 
@@ -114,17 +117,19 @@ class ModFacultyUtilsTest {
         Faculty f2 = new Faculty(IdGenerator.generateFacultyId(), "Two", "T", "c", null);
         university.getFaculties().add(f1);
         university.getFaculties().add(f2);
+        UserService userService = UserService.createTestInstance();
 
         // rename f1 to NewName
         Scanner sc1 = scannerFrom("NewName\n\n");
-        java.lang.reflect.Method rename = ModFacultyUtils.class.getDeclaredMethod("facultyManageExistingFacultyRename", Scanner.class, FacultyService.class, Faculty.class);
+        java.lang.reflect.Method rename = ModFacultyUtils.class.getDeclaredMethod("facultyManageExistingFacultyRename",
+                Scanner.class, FacultyService.class, Faculty.class, UserService.class);
         rename.setAccessible(true);
-        rename.invoke(null, sc1, facultyService, f1);
+        rename.invoke(null, sc1, facultyService, f1, userService);
         assertEquals("NewName", f1.getName());
 
         // attempt to rename f2 to NewName (duplicate) - should be prevented
         Scanner sc2 = scannerFrom("NewName\n\n");
-        rename.invoke(null, sc2, facultyService, f2);
+        rename.invoke(null, sc2, facultyService, f2, userService);
         assertEquals("Two", f2.getName());
     }
 
@@ -133,7 +138,8 @@ class ModFacultyUtilsTest {
         Faculty f = new Faculty(IdGenerator.generateFacultyId(), "Name", "OLD", "c", null);
         university.getFaculties().add(f);
         Scanner sc = scannerFrom("NEWSHORT\n\n");
-        java.lang.reflect.Method renameShort = ModFacultyUtils.class.getDeclaredMethod("facultyManageExistingFacultyRenameShort", Scanner.class, FacultyService.class, Faculty.class);
+        java.lang.reflect.Method renameShort = ModFacultyUtils.class.getDeclaredMethod("facultyManageExistingFacultyRenameShort",
+                Scanner.class, FacultyService.class, Faculty.class);
         renameShort.setAccessible(true);
         renameShort.invoke(null, sc, facultyService, f);
         assertEquals("NEWSHORT", f.getShortName());

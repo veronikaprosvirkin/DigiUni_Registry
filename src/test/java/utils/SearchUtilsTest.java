@@ -10,6 +10,7 @@ import university.UniversityService;
 import person.StudentService;
 import person.TeacherService;
 import person.StudyForm;
+import user.UserService;
 import faculty.FacultyService;
 import faculty.Faculty;
 import department.Department;
@@ -28,9 +29,10 @@ public class SearchUtilsTest {
         studentService = new StudentService(university);
         teacherService = new TeacherService(university);
         facultyService = new FacultyService(university);
+        UserService userService = UserService.createTestInstance();
 
-        studentService.addStudent("Piotr", "Kamiński", "sm", LocalDate.of(2024, 9, 1), 101, StudyForm.BUDGET);
-        studentService.addStudent("Piotr", "Lewandowski","sm", LocalDate.of(2025, 9, 1), 102, StudyForm.CONTRACT);
+        studentService.addStudent("Piotr", "Kamiński", "sm", LocalDate.of(2024, 9, 1), 101, StudyForm.BUDGET, userService);
+        studentService.addStudent("Piotr", "Lewandowski","sm", LocalDate.of(2025, 9, 1), 102, StudyForm.CONTRACT, userService);
 
         Faculty f = university.getFaculties().get(0);
         Department d = f.getDepartments().get(0);

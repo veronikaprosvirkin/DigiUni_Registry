@@ -13,7 +13,7 @@ public class UserServiceTest {
     @BeforeEach
     void setUp() {
         // Fresh service instance per test keeps state isolated.
-        userService = new UserService();
+        userService = UserService.createTestInstance();
     }
 
     // Test successful login

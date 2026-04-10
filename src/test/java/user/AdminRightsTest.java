@@ -14,7 +14,7 @@ public class AdminRightsTest {
     // set up test environment
     @BeforeEach
     void setUp() {
-        userService = new UserService();
+        userService = UserService.createTestInstance();
         userService.registerNewUser("testUser", "1234", Role.USER);
     }
 

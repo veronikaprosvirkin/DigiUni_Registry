@@ -56,14 +56,14 @@ public class MainMenu {
         switch (choice) {
             case "1" -> {
                 if (canWrite) {
-                    ModFacultyUtils.showFacultiesMenu(scanner, facultyService, teacherService, currentUser);
+                    ModFacultyUtils.showFacultiesMenu(scanner, facultyService, teacherService, currentUser, userService);
                 } else {
                     ModEntitiesUtils.showAllEntity(scanner, facultyService.getFaculties(), "Faculty", false);
                 }
             }
             case "2" -> {
                 if (canWrite) {
-                    ModDepartmentUtils.showDepartmentMenu(scanner, departmentService, facultyService, teacherService);
+                    ModDepartmentUtils.showDepartmentMenu(scanner, departmentService, facultyService, teacherService, userService);
                 } else {
                     java.util.Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty");
                     if (optFaculty.isEmpty()) {
@@ -75,7 +75,7 @@ public class MainMenu {
             }
             case "3" -> {
                 if (canWrite) {
-                    ModSpecialityUtils.showSpecialityMenu(scanner, specialityService, facultyService);
+                    ModSpecialityUtils.showSpecialityMenu(scanner, specialityService, facultyService, userService);
                 } else {
                     java.util.Optional<Faculty> optFaculty2 = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty");
                     if (optFaculty2.isEmpty()) {
@@ -87,7 +87,7 @@ public class MainMenu {
             }
             case "4" -> {
                 if (canWrite) {
-                    ModStudentUtils.showStudentMenu(scanner, studentService, facultyService, universityService, true, university);
+                    ModStudentUtils.showStudentMenu(scanner, studentService, facultyService, userService, true, university);
                 } else {
                     System.out.println("1. Find Student");
                     System.out.println("2. Find Teacher");
@@ -101,7 +101,7 @@ public class MainMenu {
             }
             case "5" -> {
                 if (canWrite) {
-                    ModTeacherUtils.showTeacherMenu(scanner, teacherService, facultyService, universityService, true, university);
+                    ModTeacherUtils.showTeacherMenu(scanner, teacherService, facultyService, userService, true, university);
                 } else {
                     System.out.println("Invalid choice.");
                 }
@@ -122,13 +122,13 @@ public class MainMenu {
             }
             case "7" -> {
                 if (isAdmin) {
-                    ModUserUtils.showUserMenu(scanner, userService, university, universityService);
+                    ModUserUtils.showUserMenu(scanner, userService);
                 } else {
                     System.out.println("Invalid choice.");
                 }
             }
             case "0" -> {
-                FileStorageUtils.saveAll(university, new user.UserService(), null);
+                FileStorageUtils.saveAll(university, userService);
                 userService.logout();
             }
             default -> System.out.println("Invalid.");

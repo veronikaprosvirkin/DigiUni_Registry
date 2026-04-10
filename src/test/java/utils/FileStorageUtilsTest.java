@@ -9,6 +9,7 @@ import person.StudyForm;
 import person.Teacher;
 import speciality.Speciality;
 import university.University;
+import user.UserService;
 
 import java.lang.reflect.Field;
 import java.io.IOException;
@@ -21,6 +22,7 @@ import java.util.Comparator;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class FileStorageUtilsTest {
@@ -30,12 +32,16 @@ class FileStorageUtilsTest {
     private static final Path DEPARTMENTS_FILE = Path.of("data", "departments.csv");
     private static final Path TEACHERS_FILE = Path.of("data", "teachers.csv");
     private static final Path STUDENTS_FILE = Path.of("data", "students.csv");
+    private static final Path USERS_FILE = Path.of("data", "users.csv");
 
 
     private byte[] facultiesBackup;
     private byte[] specialitiesBackup;
     private byte[] departmentsBackup;
     private byte[] studentsBackup;
+    private byte[] teachersBackup;
+    private byte[] usersBackup;
+    private UserService userService;
 
     @BeforeEach
     void setUp() throws Exception {
@@ -44,16 +50,16 @@ class FileStorageUtilsTest {
         specialitiesBackup = backup(SPECIALITIES_FILE);
         departmentsBackup = backup(DEPARTMENTS_FILE);
         studentsBackup = backup(STUDENTS_FILE);
-
-        // Also backup teachers file explicitly and then delete all files for a clean test state
-        byte[] teachersBackupBytes = backup(TEACHERS_FILE);
+        teachersBackup = backup(TEACHERS_FILE);
+        usersBackup = backup(USERS_FILE);
+        userService = UserService.createTestInstance();
 
         Files.deleteIfExists(FACULTIES_FILE);
         Files.deleteIfExists(SPECIALITIES_FILE);
         Files.deleteIfExists(DEPARTMENTS_FILE);
         Files.deleteIfExists(STUDENTS_FILE);
         Files.deleteIfExists(TEACHERS_FILE);
-
+        Files.deleteIfExists(USERS_FILE);
         resetCounters();
     }
 
@@ -63,6 +69,8 @@ class FileStorageUtilsTest {
         restore(SPECIALITIES_FILE, specialitiesBackup);
         restore(DEPARTMENTS_FILE, departmentsBackup);
         restore(STUDENTS_FILE, studentsBackup);
+        restore(TEACHERS_FILE, teachersBackup);
+        restore(USERS_FILE, usersBackup);
         resetCounters();
     }
 
@@ -93,7 +101,7 @@ class FileStorageUtilsTest {
         faculty.getDepartments().add(department);
         university.getFaculties().add(faculty);
 
-        FileStorageUtils.saveAll(university, new user.UserService(), null); Thread.sleep(200);
+        FileStorageUtils.saveAll(university, userService); Thread.sleep(200);
 
         assertTrue(Files.exists(FACULTIES_FILE));
         assertTrue(Files.exists(SPECIALITIES_FILE));
@@ -116,7 +124,7 @@ class FileStorageUtilsTest {
         Faculty faculty = new Faculty("fCSV", "CSV Faculty", "CF", "000", null);
         university.getFaculties().add(faculty);
 
-        FileStorageUtils.saveAll(university, new user.UserService(), null); Thread.sleep(200);
+        FileStorageUtils.saveAll(university, userService); Thread.sleep(200);
 
         String content = Files.readString(FACULTIES_FILE, StandardCharsets.UTF_8);
         String[] lines = content.split("\n");
@@ -138,7 +146,7 @@ class FileStorageUtilsTest {
     void saveAllWithEmptyUniversityCreatesEmptyFiles() throws Exception {
         University university = new University();
 
-        FileStorageUtils.saveAll(university, new user.UserService(), null); Thread.sleep(200);
+        FileStorageUtils.saveAll(university, userService); Thread.sleep(200);
 
         assertTrue(Files.exists(FACULTIES_FILE));
         assertTrue(Files.exists(SPECIALITIES_FILE));
@@ -160,7 +168,7 @@ class FileStorageUtilsTest {
         faculty.getDepartments().add(new Department("d001", "New Dept"));
         university.getFaculties().add(faculty);
 
-        FileStorageUtils.saveAll(university, new user.UserService(), null); Thread.sleep(200);
+        FileStorageUtils.saveAll(university, userService); Thread.sleep(200);
 
         String facultiesCsv = Files.readString(FACULTIES_FILE, StandardCharsets.UTF_8);
         String specialitiesCsv = Files.readString(SPECIALITIES_FILE, StandardCharsets.UTF_8);
@@ -176,24 +184,30 @@ class FileStorageUtilsTest {
 
     @Test
     void loadAllRestoresHierarchyClearsOldStateAndUpdatesCounters() throws Exception {
-        write(FACULTIES_FILE, "id;name;shortName;contacts;deanId;deanName;deanSurname;deanPatronymic;deanPosition;deanAcademicDegree;deanAcademicTitle;deanEmploymentDate;deanWorkload;deanEmail;deanPhone\n" +
-                "f002;Faculty B;FB;111;t0100;Irena;Kowalska;Piotrówna;Professor;PhD;Docent;2018-02-03;1.0;dean.b@uni.test;+380000000001\n" +
-                "f010;Faculty A;FA;222;;;;;;;;;;;\n");
+        write(FACULTIES_FILE, """
+                id;name;shortName;contacts;deanId;deanName;deanSurname;deanPatronymic;deanPosition;deanAcademicDegree;deanAcademicTitle;deanEmploymentDate;deanWorkload;deanEmail;deanPhone
+                f002;Faculty B;FB;111;t0100;Irena;Kowalska;Piotrówna;Professor;PhD;Docent;2018-02-03;1.0;dean.b@uni.test;+380000000001
+                f010;Faculty A;FA;222;;;;;;;;;;;
+                """);
 
-        write(SPECIALITIES_FILE, "id;name;facultyId\n" +
-                "sp001;Math;f002\n" +
-                "sp120;Cybersecurity;f010\n" +
-                "sp999;Orphan;f999\n");
+        write(SPECIALITIES_FILE, """
+                id;name;facultyId
+                sp001;Math;f002
+                sp120;Cybersecurity;f010
+                sp999;Orphan;f999
+                """);
 
-        write(DEPARTMENTS_FILE, "id;name;facultyId;location;headId;headName;headSurname;headPatronymic;headPosition;headAcademicDegree;headAcademicTitle;headEmploymentDate;headWorkload;headEmail;headPhone\n" +
-                "d005;Economics Department;f002;Block A;t0200;Narcyz;Wiśniewski;Quirynowicz;Head;MSc;Senior Lecturer;2019-05-06;0.75;head.b@uni.test;+380000000002\n" +
-                "d042;AI Department;f010;;;;;;;;;;;;\n" +
-                "d999;Orphan Department;f999\n");
+        write(DEPARTMENTS_FILE, """
+                id;name;facultyId;location;headId;headName;headSurname;headPatronymic;headPosition;headAcademicDegree;headAcademicTitle;headEmploymentDate;headWorkload;headEmail;headPhone
+                d005;Economics Department;f002;Block A;t0200;Narcyz;Wiśniewski;Quirynowicz;Head;MSc;Senior Lecturer;2019-05-06;0.75;head.b@uni.test;+380000000002
+                d042;AI Department;f010;;;;;;;;;;;;
+                d999;Orphan Department;f999
+                """);
 
         University university = new University();
         university.getFaculties().add(new Faculty("f777", "Old Faculty", "OF", "old", null));
 
-        FileStorageUtils.loadAll(university, new faculty.FacultyService(university), new speciality.SpecialityService(university));
+        FileStorageUtils.loadAll(university, new faculty.FacultyService(university), new speciality.SpecialityService(university), userService);
 
         assertEquals(2, university.getFaculties().size());
         assertFalse(university.getFaculties().stream().anyMatch(f -> f.getId().equals("f777")));
@@ -214,11 +228,11 @@ class FileStorageUtilsTest {
 
         assertEquals(1, f010.getDepartments().size());
         assertEquals("d042", f010.getDepartments().get(0).getId());
-        assertEquals(null, f010.getDepartments().get(0).getHead());
+        assertNull(f010.getDepartments().get(0).getHead());
 
         assertEquals("t0100", f002.getDean().getId());
         assertEquals("Irena", f002.getDean().getOnlyName());
-        assertEquals(null, f010.getDean());
+        assertNull(f010.getDean());
 
         assertEquals("f011", IdGenerator.generateFacultyId());
         assertEquals("sp121", IdGenerator.generateSpecialityId());
@@ -251,7 +265,7 @@ class FileStorageUtilsTest {
                 """);
 
         University university = new University();
-        FileStorageUtils.loadAll(university, new faculty.FacultyService(university), new speciality.SpecialityService(university));
+        FileStorageUtils.loadAll(university, new faculty.FacultyService(university), new speciality.SpecialityService(university), userService);
 
         assertEquals(2, university.getFaculties().size());
         Faculty f001 = university.getFaculties().stream().filter(f -> f.getId().equals("f001")).findFirst().orElseThrow();
@@ -275,7 +289,7 @@ class FileStorageUtilsTest {
         write(DEPARTMENTS_FILE, "id;name;facultyId;location;headId;headName;headSurname;headPatronymic;headPosition;headAcademicDegree;headAcademicTitle;headEmploymentDate;headWorkload;headEmail;headPhone\nd005;Economics Department;f002;loc;;;;;;;;;;;\n");
 
         University university = new University();
-        FileStorageUtils.loadAll(university, new faculty.FacultyService(university), new speciality.SpecialityService(university));
+        FileStorageUtils.loadAll(university, new faculty.FacultyService(university), new speciality.SpecialityService(university), userService);
 
         assertEquals(1, university.getFaculties().size());
         Faculty loaded = university.getFaculties().get(0);
@@ -293,7 +307,7 @@ class FileStorageUtilsTest {
 
         University university = new University();
 
-        assertDoesNotThrow(() -> FileStorageUtils.loadAll(university, new faculty.FacultyService(university), new speciality.SpecialityService(university)));
+        assertDoesNotThrow(() -> FileStorageUtils.loadAll(university, new faculty.FacultyService(university), new speciality.SpecialityService(university), userService));
         assertTrue(university.getFaculties().isEmpty());
     }
 
@@ -305,7 +319,7 @@ class FileStorageUtilsTest {
         University university = new University();
         university.getFaculties().add(new Faculty("f001", "Faculty A", "FA", "111", null));
 
-        assertDoesNotThrow(() -> FileStorageUtils.saveAll(university, new user.UserService(), null));
+        assertDoesNotThrow(() -> FileStorageUtils.saveAll(university, userService));
     }
 
     @Test
@@ -315,7 +329,7 @@ class FileStorageUtilsTest {
 
         University university = new University();
 
-        assertDoesNotThrow(() -> FileStorageUtils.loadAll(university, new faculty.FacultyService(university), new speciality.SpecialityService(university)));
+        assertDoesNotThrow(() -> FileStorageUtils.loadAll(university, new faculty.FacultyService(university), new speciality.SpecialityService(university), userService));
     }
     @Test
     void saveAllPersistsStudentsInGroups() throws Exception {
@@ -338,7 +352,7 @@ class FileStorageUtilsTest {
         faculty.getSpeciality().add(speciality);
         university.getFaculties().add(faculty);
 
-        FileStorageUtils.saveAll(university, new user.UserService(), null); Thread.sleep(200);
+        FileStorageUtils.saveAll(university, userService); Thread.sleep(200);
 
         assertTrue(Files.exists(STUDENTS_FILE));
         String studentsCsv = Files.readString(STUDENTS_FILE, StandardCharsets.UTF_8);
@@ -386,14 +400,14 @@ class FileStorageUtilsTest {
         faculty.getSpeciality().add(speciality);
         university.getFaculties().add(faculty);
 
-        FileStorageUtils.saveAll(university, new user.UserService(), null); Thread.sleep(200);
+        FileStorageUtils.saveAll(university, userService); Thread.sleep(200);
 
         // Load into new instance
         University loadedUni = new University();
         loadedUni.getFaculties().add(new Faculty("f1", "Faculty 1", "F1", "123", null));
         loadedUni.getFaculties().get(0).getSpeciality().add(new Speciality("sp1", "Spec 1"));
 
-        FileStorageUtils.loadAll(loadedUni, new faculty.FacultyService(loadedUni), new speciality.SpecialityService(loadedUni));
+        FileStorageUtils.loadAll(loadedUni, new faculty.FacultyService(loadedUni), new speciality.SpecialityService(loadedUni), userService);
 
         person.Student loadedStudent = loadedUni.getFaculties().get(0).getSpeciality().get(0).getGroups().get(0).getStudents().get(0);
 
@@ -439,7 +453,7 @@ class FileStorageUtilsTest {
 
         university.getFaculties().add(faculty);
 
-        FileStorageUtils.saveAll(university, new user.UserService(), null); Thread.sleep(200);
+        FileStorageUtils.saveAll(university, userService); Thread.sleep(200);
 
         assertTrue(Files.exists(TEACHERS_FILE));
         String teachersCsv = Files.readString(TEACHERS_FILE, StandardCharsets.UTF_8);
@@ -457,7 +471,7 @@ class FileStorageUtilsTest {
         loadedUni.getFaculties().add(new Faculty("f2", "Faculty 2", "F2", "222", null));
         loadedUni.getFaculties().get(0).getDepartments().add(new Department("d1", "Dept 1"));
 
-        FileStorageUtils.loadAll(loadedUni, new faculty.FacultyService(loadedUni), new speciality.SpecialityService(loadedUni));
+        FileStorageUtils.loadAll(loadedUni, new faculty.FacultyService(loadedUni), new speciality.SpecialityService(loadedUni), userService);
 
         Faculty loadedFac = loadedUni.getFaculties().get(0);
         Teacher loadedDean = loadedFac.getDean();
@@ -495,7 +509,7 @@ class FileStorageUtilsTest {
         department.getTeachers().add(sameTeacher);
         university.getFaculties().add(faculty);
 
-        FileStorageUtils.saveAll(university, new user.UserService(), null); Thread.sleep(200);
+        FileStorageUtils.saveAll(university, userService); Thread.sleep(200);
 
         String teachersCsv = Files.readString(TEACHERS_FILE, StandardCharsets.UTF_8);
         long count = teachersCsv.lines()
@@ -543,16 +557,16 @@ class FileStorageUtilsTest {
     }
 
     private void resetCounters() throws Exception {
-        setCounter("studentCounter", 1);
-        setCounter("teacherCounter", 1);
-        setCounter("facultyCounter", 1);
-        setCounter("departmentCounter", 1);
-        setCounter("specialityCounter", 1);
+        setCounter("studentCounter");
+        setCounter("teacherCounter");
+        setCounter("facultyCounter");
+        setCounter("departmentCounter");
+        setCounter("specialityCounter");
     }
 
-    private void setCounter(String fieldName, int value) throws Exception {
+    private void setCounter(String fieldName) throws Exception {
         Field field = IdGenerator.class.getDeclaredField(fieldName);
         field.setAccessible(true);
-        field.setInt(null, value);
+        field.setInt(null, 1);
     }
 }

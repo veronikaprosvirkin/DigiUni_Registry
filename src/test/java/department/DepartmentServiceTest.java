@@ -7,23 +7,24 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.List;
 import university.University;
 import faculty.Faculty;
+import user.UserService;
 
 public class DepartmentServiceTest {
-    private University university;
     private DepartmentService departmentService;
     private Faculty faculty;
     private Department dept1;
-    private Department dept2;
+    private UserService userService;
 
     // Init data
     @BeforeEach
     void setUp() {
-        university = new University();
+        University university = new University();
         departmentService = new DepartmentService(university);
+        userService = UserService.createTestInstance();
 
         faculty = new Faculty("1", "Faculty of Informatics", "FI", "123", null);
         dept1 = new Department("1", "Computer Science");
-        dept2 = new Department("2", "Mathematics");
+        Department dept2 = new Department("2", "Mathematics");
 
         faculty.getDepartments().add(dept1);
         faculty.getDepartments().add(dept2);
@@ -40,7 +41,7 @@ public class DepartmentServiceTest {
     // Test add unique dept
     @Test
     void testAddNewDepartmentSuccess() {
-        departmentService.addNewDepartment("Physics", faculty);
+        departmentService.addNewDepartment("Physics", faculty, userService);
         List<Department> departments = departmentService.getDepartments(faculty);
 
         assertEquals(3, departments.size());
@@ -50,7 +51,7 @@ public class DepartmentServiceTest {
     // Test add duplicate dept
     @Test
     void testAddNewDepartmentDuplicate() {
-        departmentService.addNewDepartment("Computer Science", faculty);
+        departmentService.addNewDepartment("Computer Science", faculty, userService);
         List<Department> departments = departmentService.getDepartments(faculty);
 
         assertEquals(2, departments.size()); // Size should not change
@@ -59,21 +60,21 @@ public class DepartmentServiceTest {
     // Test edit to unique name
     @Test
     void testEditDepartmentNameSuccess() {
-        departmentService.editDepartmentName(dept1, "Applied CS", faculty);
+        departmentService.editDepartmentName(dept1, "Applied CS", faculty, userService);
         assertEquals("Applied CS", dept1.getName());
     }
 
     // Test edit to duplicate name
     @Test
     void testEditDepartmentNameDuplicate() {
-        departmentService.editDepartmentName(dept1, "Mathematics", faculty);
+        departmentService.editDepartmentName(dept1, "Mathematics", faculty, userService);
         assertEquals("Computer Science", dept1.getName()); // Should not change
     }
 
     // Test delete dept
     @Test
     void testDeleteDepartment() {
-        departmentService.deleteDepartment(dept1, faculty);
+        departmentService.deleteDepartment(dept1, faculty, userService);
         List<Department> departments = departmentService.getDepartments(faculty);
 
         assertEquals(1, departments.size());

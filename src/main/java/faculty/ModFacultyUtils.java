@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import user.Permission;
 import user.User;
+import user.UserService;
 import utils.input.InputUtils;
 import faculty.Faculty;
 import faculty.FacultyService;
@@ -16,14 +17,15 @@ import person.Teacher;
 public class ModFacultyUtils {
     //! ======= WORK WITH FACULTY ===== //
 
-    public static void showFacultiesMenu(Scanner scanner, FacultyService facultyService, TeacherService teacherService, User currentUser){
+    public static void showFacultiesMenu(Scanner scanner, FacultyService facultyService, TeacherService teacherService,
+                                         User currentUser, UserService userService) {
         System.out.println("1. Add Faculty");
         System.out.println("2. Manage Existing Faculty");
         System.out.println("0. Back");
         int action = InputUtils.readInt(scanner, "> ", 0, 2);
 
         if (action == 1) {
-            ModFacultyUtils.facultyAddFaculty(scanner, facultyService, teacherService);
+            ModFacultyUtils.facultyAddFaculty(scanner, facultyService, teacherService, userService);
         } else if (action == 2) { //manage existing faculties
             java.util.Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty");
             if (optFaculty.isEmpty()) {
@@ -40,15 +42,15 @@ public class ModFacultyUtils {
             System.out.println("0. Back");
             int workWithFaculty = InputUtils.readInt(scanner, "> ", 0, 5);
             if (workWithFaculty == 1) { //edit faculty name
-                ModFacultyUtils.facultyManageExistingFacultyRename(scanner, facultyService, selectedFaculty);
+                ModFacultyUtils.facultyManageExistingFacultyRename(scanner, facultyService, selectedFaculty, userService);
             } else if (workWithFaculty == 2) { //delete faculty
-                ModFacultyUtils.facultyManageExistingFacultyDelete(scanner, facultyService, selectedFaculty);
+                ModFacultyUtils.facultyManageExistingFacultyDelete(scanner, facultyService, selectedFaculty, userService);
             } else if (workWithFaculty == 3) { //edit contacts
                 ModFacultyUtils.facultyManageExistingFacultyEditContacts(scanner, facultyService, selectedFaculty);
             } else if (workWithFaculty == 4) {
                 Teacher dean = selectTeacherFlow(scanner, teacherService);
                 if (dean != null) {
-                    facultyService.assignDean(selectedFaculty, dean);
+                    facultyService.assignDean(selectedFaculty, dean, userService);
                     System.out.println("Success! " + dean.getFullName() + " is now the Dean.");
                 }
             } else if (workWithFaculty == 5) {
@@ -123,7 +125,7 @@ public class ModFacultyUtils {
     /**
      * Add new Faculty
      */
-    static void facultyAddFaculty(Scanner scanner, FacultyService facultyService, TeacherService teacherService) {
+    static void facultyAddFaculty(Scanner scanner, FacultyService facultyService, TeacherService teacherService, UserService userService) {
         String name = InputUtils.readLine(scanner, "Enter new Faculty name: ", false, false);
         name = InputUtils.removeSpaces(name, false, true, true, true);
 
@@ -141,7 +143,7 @@ public class ModFacultyUtils {
         Teacher dean = selectTeacherFlow(scanner, teacherService);
 
         if (dean != null) {
-            facultyService.addNewFaculty(name, shortName, contact, dean);
+            facultyService.addNewFaculty(name, shortName, contact, dean, userService);
         } else {
             System.out.println("Error: Faculty cannot be created without a Dean!");
         }
@@ -151,10 +153,11 @@ public class ModFacultyUtils {
     /**
      * Rename Faculty
      */
-    static void facultyManageExistingFacultyRename(Scanner scanner, FacultyService facultyService, Faculty selectedFacultyToRename) {
+    static void facultyManageExistingFacultyRename(Scanner scanner, FacultyService facultyService, Faculty selectedFacultyToRename,
+                                                   UserService userService) {
         String newName = InputUtils.readLine(scanner, "Enter new Faculty name: ", false, false);
         newName = InputUtils.removeSpaces(newName, false, true, true, true);
-        facultyService.editFacultyName(selectedFacultyToRename, newName);
+        facultyService.editFacultyName(selectedFacultyToRename, newName, userService);
         InputUtils.pause(scanner);
     }
 
@@ -173,10 +176,11 @@ public class ModFacultyUtils {
     /**
      * Delete Faculty
      */
-    static void facultyManageExistingFacultyDelete(Scanner scanner, FacultyService facultyService, Faculty selectedFacultyToDelete) {
+    static void facultyManageExistingFacultyDelete(Scanner scanner, FacultyService facultyService, Faculty selectedFacultyToDelete,
+                                                   UserService userService) {
         System.out.print("Are you sure you want to delete " + selectedFacultyToDelete.getName() + "? (y/n): ");
         if (scanner.nextLine().toLowerCase().startsWith("y")) {
-            facultyService.deleteFaculty(selectedFacultyToDelete);
+            facultyService.deleteFaculty(selectedFacultyToDelete, userService);
             System.out.println("Faculty deleted successfully!");
         } else {
             System.out.println("Operation cancelled.");

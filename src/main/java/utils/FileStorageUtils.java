@@ -8,6 +8,8 @@ import speciality.Speciality;
 import department.Department;
 import speciality.SpecialityService;
 import university.University;
+import user.Permission;
+import user.Role;
 import user.User;
 import user.UserService;
 
@@ -85,14 +87,15 @@ public class FileStorageUtils {
     }
 
     // Load all structure
-    public static void loadAll(University university, FacultyService facultyService, SpecialityService specialityService) {
+    public static void loadAll(University university, FacultyService facultyService, SpecialityService specialityService, UserService userService) {
         try {
             university.getFaculties().clear();
             if (Files.exists(FACULTIES_FILE)) loadFaculties(university);
             if (Files.exists(SPECIALITIES_FILE)) loadSpecialities(university);
             if (Files.exists(DEPARTMENTS_FILE)) loadDepartments(university);
             if (Files.exists(TEACHERS_FILE)) loadTeachers(university);
-            if (Files.exists(STUDENTS_FILE)) loadStudents(university, facultyService, specialityService);
+            if (Files.exists(STUDENTS_FILE)) loadStudents(university);
+            if (Files.exists(USERS_FILE)) loadUsers(userService);
         } catch (IOException e) {
             System.err.println("Load error");
         }
@@ -255,9 +258,7 @@ public class FileStorageUtils {
                     String name = parts[1];
                     String facultyId = parts[2];
                     Department d = new Department(id, name);
-                    if (parts.length > 3) {
-                        d.setLocation(parts[3].isBlank() ? null : parts[3]);
-                    }
+                    d.setLocation(parts[3].isBlank() ? null : parts[3]);
                     d.setHead(restoreTeacher(parts, 4));
 
                     // Find parent faculty and add
@@ -309,7 +310,7 @@ public class FileStorageUtils {
         }).start();
     }
     //load students
-    private static void loadStudents(University u, FacultyService facultyService, SpecialityService specialityService) throws IOException {
+    private static void loadStudents(University u) throws IOException {
         try (BufferedReader r = Files.newBufferedReader(STUDENTS_FILE, StandardCharsets.UTF_8)) {
             String line;
             while ((line = r.readLine()) != null) {
@@ -493,11 +494,11 @@ public class FileStorageUtils {
              try (BufferedWriter w = Files.newBufferedWriter(USERS_FILE, StandardCharsets.UTF_8)){
                  w.write(USERS_HEADER);
                  w.newLine();
-                 for (User u : users) {
-                     String line = u.getUsername() + ";"+
-                             u.getPassword() + "+";
-                             u.getRole();
-                     w.write(line);
+                  for (User u : users) {
+                      String line = u.getUsername() + DELIMITER +
+                              u.getPassword() + DELIMITER +
+                              u.getRole();
+                      w.write(line);
                      w.newLine();
                  }
 
@@ -508,6 +509,29 @@ public class FileStorageUtils {
              }
 
          }).start();
+    }
+    //load users
+    public static void loadUsers(UserService userService) throws IOException {
+        try (BufferedReader r = Files.newBufferedReader(USERS_FILE, StandardCharsets.UTF_8)) {
+            String line;
+            while ((line = r.readLine()) != null) {
+                if (line.isBlank()) continue;
+                String[] parts = line.split(DELIMITER, -1);
+                if (parts.length > 0 && "username".equalsIgnoreCase(parts[0])) continue;
+                if (parts.length >= 3) {
+                    String username = parts[0];
+                    String password = parts[1];
+                     try {
+                         Role role = Role.valueOf(parts[2].trim());
+                         int userMask = Permission.getDefaultMaskForRole(role);
+                         userService.addUserFromStorage(new User(username, password, role, userMask));
+
+                    } catch (IllegalArgumentException e) {
+                        System.err.println("Error with loading user " + username + ": unrecognized role '" + parts[2] + "'");
+                    }
+                }
+            }
+        }
     }
 
     private static void writeTeacherRowIfNeeded(BufferedWriter w, Teacher t, String ownerId, Set<String> savedTeacherIds) throws IOException {
