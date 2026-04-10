@@ -30,7 +30,7 @@ public class Main {
         UniversityService universityService = new UniversityService(university);
 
         if (!hasSavedStructure) {
-            FileStorageUtils.saveAll(university, userService);
+            FileStorageUtils.saveAll(university, userService, universityService);
         }
 
         StudentService studentService = new StudentService(university);

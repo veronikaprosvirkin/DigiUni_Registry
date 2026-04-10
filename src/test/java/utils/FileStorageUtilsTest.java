@@ -60,7 +60,6 @@ class FileStorageUtilsTest {
         Files.deleteIfExists(STUDENTS_FILE);
         Files.deleteIfExists(TEACHERS_FILE);
         Files.deleteIfExists(USERS_FILE);
-
         resetCounters();
     }
 

@@ -6,11 +6,14 @@ import utils.input.InputUtils;
 import user.Role;
 import user.UserService;
 import user.User;
+import university.University;
+import university.UniversityService;
+import utils.FileStorageUtils;
 
 public class ModUserUtils {
 
     // show menu for user
-    public static void showUserMenu(Scanner scanner, UserService userService) {
+    public static void showUserMenu(Scanner scanner, UserService userService, University university, UniversityService universityService) {
         System.out.println("1. Add User");
         System.out.println("2. Delete User");
         System.out.println("3. Edit User's role");
@@ -18,13 +21,13 @@ public class ModUserUtils {
         System.out.println("0. Back");
         int workWithUser = InputUtils.readInt(scanner, "> ", 0, 4);
         if (workWithUser == 1) {
-            addUser(scanner, userService);
+            addUser(scanner, userService, university, universityService);
         }
         else if (workWithUser == 2){
-            deleteUser(scanner, userService);
+            deleteUser(scanner, userService, university, universityService);
         }
         else if (workWithUser == 3){
-            editUserRole(scanner, userService);
+            editUserRole(scanner, userService, university, universityService);
         }
         else if (workWithUser == 4){
             showAllUsers(scanner, userService);
@@ -48,23 +51,26 @@ public class ModUserUtils {
 
     //=====WORK WITH USERS=====
     //add user
-    private static void addUser(Scanner scanner, UserService userService) {
+    private static void addUser(Scanner scanner, UserService userService, University university, UniversityService universityService) {
         String username = InputUtils.readLine(scanner, "Enter username: ", true, true);
         String password = InputUtils.readLine(scanner, "Enter password: ", true, true);
         Role selectedRole = chooseRole(scanner);
         userService.registerNewUser(username, password, selectedRole);
+        FileStorageUtils.saveAll(university, userService, universityService);
     }
     //delete user
-    private static void deleteUser(Scanner scanner, UserService userService) {
+    private static void deleteUser(Scanner scanner, UserService userService, University university, UniversityService universityService) {
         String username = InputUtils.readLine(scanner, "Enter username of user you want to delete: ", true, true);
         userService.deleteUser(username);
+        FileStorageUtils.saveAll(university, userService, universityService);
     }
 
     //edit user role
-    private static void editUserRole(Scanner scanner, UserService userService) {
+    private static void editUserRole(Scanner scanner, UserService userService, University university, UniversityService universityService) {
         String username = InputUtils.readLine(scanner, "Enter username of user you want to edit: ", true, true);
         Role selectedRole = ModUserUtils.chooseRole(scanner);
         userService.editUser(username, selectedRole);
+        FileStorageUtils.saveAll(university, userService, universityService);
     }
     //show all users
     private static void showAllUsers(Scanner scanner, UserService userService) {

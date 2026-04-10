@@ -318,15 +318,16 @@ public class ModStudentUtils {
             System.out.println("1. Change Surname");
             System.out.println("2. Change Name");
             System.out.println("3. Change Course");
-            System.out.println("4. Change Group");
-            System.out.println("5. Change Study Form");
-            System.out.println("6. Change Status");
-            System.out.println("7. Change Email");
-            System.out.println("8. Change Phone Number");
-            System.out.println("9. Change Date of Birth");
+            System.out.println("4. Change Faculty/Speciality");
+            System.out.println("5. Change Group");
+            System.out.println("6. Change Study Form");
+            System.out.println("7. Change Status");
+            System.out.println("8. Change Email");
+            System.out.println("9. Change Phone Number");
+            System.out.println("10. Change Date of Birth");
             System.out.println("0. Finish editing");
 
-            int fieldChoice = InputUtils.readInt(scanner, "> ", 0, 9);
+            int fieldChoice = InputUtils.readInt(scanner, "> ", 0, 10);
             if (fieldChoice == 0) {
                 FileStorageUtils.saveAll(university, userService);
                 break;
@@ -351,10 +352,27 @@ public class ModStudentUtils {
                     System.out.println("Course updated!");
                 }
                 case 4 -> {
+                    java.util.Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, university.getFaculties(), "Faculties");
+                    if (optFaculty.isEmpty()) {
+                        System.out.println("Faculty wasn't selected.");
+                        continue;
+                    }
+
+                    Faculty selectedFaculty = optFaculty.get();
+                    java.util.Optional<Speciality> optSpeciality = ModEntitiesUtils.selectEntity(scanner, selectedFaculty.getSpeciality(), "Specialities");
+                    if (optSpeciality.isEmpty()) {
+                        System.out.println("Speciality wasn't selected.");
+                        continue;
+                    }
+
+                    int newGroup = InputUtils.readInt(scanner, "Enter target group number: ", 1, Integer.MAX_VALUE);
+                    studentService.moveStudentToSpeciality(studentToProcess, selectedFaculty, optSpeciality.get(), newGroup);
+                }
+                case 5 -> {
                     int newGroup = InputUtils.readInt(scanner, "Enter new group number: ", 1, Integer.MAX_VALUE);
                     studentService.moveStudentToGroup(studentToProcess, newGroup, userService);
                 }
-                case 5 -> {
+                case 6 -> {
                     int formChoice = InputUtils.readInt(scanner, "Enter new study form (1 - BUDGET, 2 - CONTRACT): ", 1, 2);
                     StudyForm newStudyForm;
                     if (formChoice == 1) {
@@ -370,7 +388,7 @@ public class ModStudentUtils {
                     }
 
                 }
-                case 6 -> {
+                case 7 -> {
                     int statusChoice = InputUtils.readInt(scanner, "Enter new status (1 - ACTIVE, 2 - ACADEMIC LEAVE, 3-EXPELLED, 4-GRADUATED: ", 1, 4);
                     StudentStatus newStatus = null;
                     if (statusChoice == 1) {
@@ -390,19 +408,19 @@ public class ModStudentUtils {
                     }
 
                 }
-                case 7 -> {
+                case 8 -> {
                     String newEmail = InputUtils.readLine(scanner, "Enter new email: ", false, false);
                     newEmail = InputUtils.removeSpaces(newEmail, false, true, true, true);
                     studentToProcess.setEmail(newEmail);
                     System.out.println("Email updated!");
                 }
-                case 8 -> {
+                case 9 -> {
                     String newPhone = InputUtils.readLine(scanner, "Enter new phone number: ", false, false);
                     newPhone = InputUtils.removeSpaces(newPhone, false, true, true, true);
                     studentToProcess.setPhone(newPhone);
                     System.out.println("Phone number updated!");
                 }
-                case 9 -> {
+                case 10 -> {
                     String newDob = InputUtils.readLine(scanner, "Enter new date of birth (YYYY-MM-DD, empty to clear): ", true, true);
                     newDob = InputUtils.removeSpaces(newDob, false, true, true, true);
                     if (newDob.isEmpty()) {

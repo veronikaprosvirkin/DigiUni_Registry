@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -46,7 +47,7 @@ public class FileStorageUtils {
     private static final ReentrantLock saveLock = new ReentrantLock();
 
     // Save all structure
-    public static void saveAll(University university, UserService userService) {
+    public static void saveAll(University university, UserService userService, university.UniversityService universityService) {
         try {
             Files.createDirectories(FACULTIES_FILE.getParent());
         } catch (IOException e) {
@@ -410,6 +411,55 @@ public class FileStorageUtils {
             }
         }
     }
+
+    public static void updateStudentRecord(Student student) {
+        if (student == null || student.getId() == null || student.getId().isBlank()) {
+            return;
+        }
+
+        saveLock.lock();
+        try {
+            Files.createDirectories(STUDENTS_FILE.getParent());
+
+            List<String> rows = new ArrayList<>();
+            boolean replaced = false;
+            if (Files.exists(STUDENTS_FILE)) {
+                List<String> existing = Files.readAllLines(STUDENTS_FILE, StandardCharsets.UTF_8);
+                for (String row : existing) {
+                    if (row == null || row.isBlank()) {
+                        continue;
+                    }
+                    String[] parts = row.split(DELIMITER, -1);
+                    if (parts.length > 0 && "id".equalsIgnoreCase(parts[0])) {
+                        continue;
+                    }
+                    if (parts.length > 0 && student.getId().equals(parts[0])) {
+                        rows.add(toStudentCsvRow(student));
+                        replaced = true;
+                    } else {
+                        rows.add(row);
+                    }
+                }
+            }
+
+            if (!replaced) {
+                rows.add(toStudentCsvRow(student));
+            }
+
+            try (BufferedWriter writer = Files.newBufferedWriter(STUDENTS_FILE, StandardCharsets.UTF_8)) {
+                writer.write(STUDENTS_HEADER);
+                writer.newLine();
+                for (String row : rows) {
+                    writer.write(row);
+                    writer.newLine();
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Save student record error: " + e.getMessage());
+        } finally {
+            saveLock.unlock();
+        }
+    }
     // Save teachers
     private static void saveTeachers(List<Faculty> faculties) {
         new Thread(() -> {
@@ -618,6 +668,26 @@ public class FileStorageUtils {
 
     private static String blankToNull(String value) {
         return value == null || value.isBlank() ? null : value;
+    }
+
+    private static String toStudentCsvRow(Student s) {
+        return String.join(DELIMITER,
+                value(s.getId()),
+                value(s.getOnlyName()),
+                value(s.getSurname()),
+                value(s.getPatronymic()),
+                value(s.getCourseDisplay()),
+                value(s.getEnrollmentDate() != null ? s.getEnrollmentDate().toString() : ""),
+                value(s.getGroup() != 0 ? String.valueOf(s.getGroup()) : ""),
+                value(s.getFaculty() != null ? s.getFaculty().getId() : ""),
+                value(s.getSpeciality() != null ? s.getSpeciality().getId() : ""),
+                value(s.getStudyForm() != null ? s.getStudyForm().toString() : ""),
+                value(s.getStatus() != null ? s.getStatus().toString() : ""),
+                value(s.getEmail()),
+                value(s.getPhone()),
+                value(s.getDateOfBirth() != null ? s.getDateOfBirth().toString() : ""),
+                value(s.getAge() != null ? String.valueOf(s.getAge()) : "")
+        );
     }
 
     private static List<Student> gatherAllStudents(University university) {
