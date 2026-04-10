@@ -1,41 +1,35 @@
 package person;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
+import repository.TeacherRepository;
 import university.University;
 import department.Department;
-import faculty.Faculty;
 import utils.IdGenerator;
 
 public class TeacherService {
-    private University university;
+    private final TeacherRepository teacherRepository;
 
     public TeacherService(University university) {
-        this.university = university;
+        this.teacherRepository = new TeacherRepository(university);
     }
     // Adding a teacher
     public void addTeacher(String name, String surname, String patronymic, String position, Department selectedDept) {
         Objects.requireNonNull(selectedDept, "Department cannot be null");
-        if (selectedDept != null) {
-            Teacher newTeacher = new Teacher(IdGenerator.generateTeacherId(), name, surname, patronymic, position, selectedDept);
-            selectedDept.getTeachers().add(newTeacher);
-        }
+        Teacher newTeacher = new Teacher(IdGenerator.generateTeacherId(), name, surname, patronymic, position, selectedDept);
+        teacherRepository.save(newTeacher);
     }
 
     public void addTeacher(Teacher teacher) {
         Objects.requireNonNull(teacher, "Teacher cannot be null");
-        if (teacher != null && teacher.getDepartment() != null) {
-            teacher.getDepartment().getTeachers().add(teacher);
-        }
+        teacherRepository.save(teacher);
     }
 
     //** ===== SEARCH ===== **/
     // find all teachers
     public List<Teacher> getAllTeachers() {
-        List<Teacher> allTeachers = new ArrayList<>(collectUniqueTeachers().values());
+        List<Teacher> allTeachers = teacherRepository.findAll();
         if (allTeachers.isEmpty()) {
             System.out.println("No teachers found!");
         }
@@ -46,7 +40,7 @@ public class TeacherService {
     public List<Teacher> findTeachersByFullName(String namePart) {
         List<Teacher> result = new ArrayList<>();
 
-        for (Teacher teacher : collectUniqueTeachers().values()) {
+        for (Teacher teacher : teacherRepository.findAll()) {
             if (teacher.getFullName().toLowerCase().contains(namePart.toLowerCase())) {
                 result.add(teacher);
             }
@@ -61,11 +55,9 @@ public class TeacherService {
     public List<Teacher> findTeacherById(String id) {
         List<Teacher> result = new ArrayList<>();
 
-        for (Teacher t : getAllTeachers()){
-            if (t.getId().equalsIgnoreCase(id)){
-                result.add(t);
-                break;
-            }
+        Teacher teacher = teacherRepository.findById(id);
+        if (teacher != null) {
+            result.add(teacher);
         }
         if (result.isEmpty()){
             System.out.println("No teacher found by id " + id);
@@ -81,24 +73,9 @@ public class TeacherService {
     public void deleteTeacher(Teacher teacher) {
         Objects.requireNonNull(teacher, "Teacher cannot be null");
 
-        boolean removed = false;
-
-        for (Faculty faculty : university.getFaculties()) {
-            if (sameTeacher(faculty.getDean(), teacher)) {
-                faculty.setDean(null);
-                removed = true;
-            }
-
-            for (Department department : faculty.getDepartments()) {
-                if (sameTeacher(department.getHead(), teacher)) {
-                    department.setHead(null);
-                    removed = true;
-                }
-
-                if (department.getTeachers().removeIf(t -> sameTeacher(t, teacher))) {
-                    removed = true;
-                }
-            }
+        boolean removed = teacherRepository.findById(teacher.getId()) != null;
+        if (removed) {
+            teacherRepository.delete(teacher.getId());
         }
 
         if (removed) {
@@ -109,32 +86,7 @@ public class TeacherService {
         }
     }
 
-    public void deleteTeacher(Teacher teacher, Department department) {
+    public void deleteTeacher(Teacher teacher, @SuppressWarnings("unused") Department department) {
         deleteTeacher(teacher);
-    }
-
-    private boolean sameTeacher(Teacher first, Teacher second) {
-        return first != null && second != null && first.getId().equalsIgnoreCase(second.getId());
-    }
-
-    private Map<String, Teacher> collectUniqueTeachers() {
-        Map<String, Teacher> teachersById = new LinkedHashMap<>();
-
-        for (Faculty faculty : university.getFaculties()) {
-            Teacher dean = faculty.getDean();
-            if (dean != null && dean.getId() != null && !dean.getId().isBlank()) {
-                teachersById.putIfAbsent(dean.getId().toLowerCase(), dean);
-            }
-
-            for (Department department : faculty.getDepartments()) {
-                for (Teacher teacher : department.getTeachers()) {
-                    if (teacher != null && teacher.getId() != null && !teacher.getId().isBlank()) {
-                        teachersById.putIfAbsent(teacher.getId().toLowerCase(), teacher);
-                    }
-                }
-            }
-        }
-
-        return teachersById;
     }
 }

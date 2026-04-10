@@ -144,21 +144,21 @@ public class FileStorageUtils {
 
     // Load faculties
     private static void loadFaculties(University u) throws IOException {
-        try (BufferedReader r = Files.newBufferedReader(FACULTIES_FILE, StandardCharsets.UTF_8)) {
-            String line;
-            while ((line = r.readLine()) != null) {
-                if (line.isBlank()) continue;
-                String[] parts = line.split(DELIMITER, -1);
-                if (parts.length > 0 && "id".equalsIgnoreCase(parts[0])) continue;
-                if (parts.length >= 4) {
-                    String id = parts[0];
-                    String name = parts[1];
-                    String shortName = parts[2];
-                    String contact = parts[3];
-                    Teacher dean = restoreTeacher(parts, 4);
-                    u.getFaculties().add(new Faculty(id, name, shortName, contact, dean));
-                    IdGenerator.updateFacultyCounter(id);
-                }
+        if (!Files.exists(FACULTIES_FILE)) return;
+        String content = Files.readString(FACULTIES_FILE, StandardCharsets.UTF_8);
+        String[] lines = content.split("\n");
+        for (String line : lines) {
+            if (line.isBlank()) continue;
+            String[] parts = line.split(DELIMITER, -1);
+            if (parts.length > 0 && "id".equalsIgnoreCase(parts[0])) continue;
+            if (parts.length >= 4) {
+                String id = parts[0];
+                String name = parts[1];
+                String shortName = parts[2];
+                String contact = parts[3];
+                Teacher dean = restoreTeacher(parts, 4);
+                u.getFaculties().add(new Faculty(id, name, shortName, contact, dean));
+                IdGenerator.updateFacultyCounter(id);
             }
         }
     }
@@ -186,27 +186,27 @@ public class FileStorageUtils {
 
     // Load specialities and link to faculty
     private static void loadSpecialities(University u) throws IOException {
-        try (BufferedReader r = Files.newBufferedReader(SPECIALITIES_FILE, StandardCharsets.UTF_8)) {
-            String line;
-            while ((line = r.readLine()) != null) {
-                if (line.isBlank()) continue;
-                String[] parts = line.split(DELIMITER, -1);
-                if (parts.length > 0 && "id".equalsIgnoreCase(parts[0])) continue;
-                if (parts.length >= 3) {
-                    String id = parts[0];
-                    String name = parts[1];
-                    String facultyId = parts[2];
-                    Speciality s = new Speciality(id, name);
+        if (!Files.exists(SPECIALITIES_FILE)) return;
+        String content = Files.readString(SPECIALITIES_FILE, StandardCharsets.UTF_8);
+        String[] lines = content.split("\n");
+        for (String line : lines) {
+            if (line.isBlank()) continue;
+            String[] parts = line.split(DELIMITER, -1);
+            if (parts.length > 0 && "id".equalsIgnoreCase(parts[0])) continue;
+            if (parts.length >= 3) {
+                String id = parts[0];
+                String name = parts[1];
+                String facultyId = parts[2];
+                Speciality s = new Speciality(id, name);
 
-                    // Find parent faculty and add
-                    u.getFaculties().stream()
-                            .filter(f -> f.getId().equals(facultyId))
-                            .findFirst()
-                            .ifPresent(f -> {
-                                f.getSpeciality().add(s);
-                                IdGenerator.updateSpecialityCounter(id);
-                            });
-                }
+                // Find parent faculty and add
+                u.getFaculties().stream()
+                        .filter(f -> f.getId().equals(facultyId))
+                        .findFirst()
+                        .ifPresent(f -> {
+                            f.getSpeciality().add(s);
+                            IdGenerator.updateSpecialityCounter(id);
+                        });
             }
         }
     }
@@ -251,30 +251,29 @@ public class FileStorageUtils {
 
     // Load departments and link to faculty
     private static void loadDepartments(University u) throws IOException {
-        try (BufferedReader r = Files.newBufferedReader(DEPARTMENTS_FILE, StandardCharsets.UTF_8)) {
-            String line;
+        if (!Files.exists(DEPARTMENTS_FILE)) return;
+        String content = Files.readString(DEPARTMENTS_FILE, StandardCharsets.UTF_8);
+        String[] lines = content.split("\n");
+        for (String line : lines) {
+            if (line.isBlank()) continue;
+            String[] parts = line.split(DELIMITER, -1);
+            if (parts.length > 0 && "id".equalsIgnoreCase(parts[0])) continue;
+            if (parts.length >= 4) {
+                String id = parts[0];
+                String name = parts[1];
+                String facultyId = parts[2];
+                Department d = new Department(id, name);
+                d.setLocation(parts[3].isBlank() ? null : parts[3]);
+                d.setHead(restoreTeacher(parts, 4));
 
-            while ((line = r.readLine()) != null) {
-                if (line.isBlank()) continue;
-                String[] parts = line.split(DELIMITER, -1);
-                if (parts.length > 0 && "id".equalsIgnoreCase(parts[0])) continue;
-                if (parts.length >= 4) {
-                    String id = parts[0];
-                    String name = parts[1];
-                    String facultyId = parts[2];
-                    Department d = new Department(id, name);
-                    d.setLocation(parts[3].isBlank() ? null : parts[3]);
-                    d.setHead(restoreTeacher(parts, 4));
-
-                    // Find parent faculty and add
-                    u.getFaculties().stream()
-                            .filter(f -> f.getId().equals(facultyId))
-                            .findFirst()
-                            .ifPresent(f -> {
-                                f.getDepartments().add(d);
-                                IdGenerator.updateDepartmentCounter(id);
-                            });
-                }
+                // Find parent faculty and add
+                u.getFaculties().stream()
+                        .filter(f -> f.getId().equals(facultyId))
+                        .findFirst()
+                        .ifPresent(f -> {
+                            f.getDepartments().add(d);
+                            IdGenerator.updateDepartmentCounter(id);
+                        });
             }
         }
     }

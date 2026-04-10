@@ -43,6 +43,8 @@ public class TeacherServiceTest {
 
         // 2 initial + 1 new
         assertEquals(3, csTeachers.size());
+        Teacher addedTeacher = csTeachers.get(csTeachers.size() - 1);
+        assertEquals(1, teacherService.findTeacherById(addedTeacher.getId()).size());
     }
 
     // Test delete teacher
