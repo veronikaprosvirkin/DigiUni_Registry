@@ -30,13 +30,13 @@ public class FacultyService {
             return;
         }
         university.getFaculties().add(new Faculty(IdGenerator.generateFacultyId(),name, shortName, contact, dean));
-        FileStorageUtils.saveAll(university);
+        FileStorageUtils.saveAll(university, new user.UserService(), new university.UniversityService(university));
         System.out.println("Faculty added successfully.");
     }
 
     public void deleteFaculty(Faculty selectedFacultyToDelete) {
         if (university.getFaculties().remove(selectedFacultyToDelete)) {
-            FileStorageUtils.saveAll(university);
+            FileStorageUtils.saveAll(university, new user.UserService(), new university.UniversityService(university));
         }
     }
 
@@ -47,7 +47,7 @@ public class FacultyService {
         }
         String oldName = faculty.getName();
         faculty.setName(newName);
-        FileStorageUtils.saveAll(university);
+        FileStorageUtils.saveAll(university, new user.UserService(), new university.UniversityService(university));
         System.out.println(oldName+" name updated successfully to: " + faculty.getName());
     }
 
@@ -56,7 +56,7 @@ public class FacultyService {
             return;
         }
         faculty.setDean(dean);
-        FileStorageUtils.saveAll(university);
+        FileStorageUtils.saveAll(university, new user.UserService(), new university.UniversityService(university));
     }
 
     public Faculty findById(String id){

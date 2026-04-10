@@ -128,7 +128,7 @@ public class MainMenu {
                 }
             }
             case "0" -> {
-                FileStorageUtils.saveAll(university);
+                FileStorageUtils.saveAll(university, new user.UserService(), new university.UniversityService(university));
                 userService.logout();
             }
             default -> System.out.println("Invalid.");

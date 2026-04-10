@@ -45,7 +45,7 @@ public class StudentService {
                     defaultSpec, studyForm);
 
             targetGroup.getStudents().add(newStudent);
-            FileStorageUtils.saveAll(university);
+            FileStorageUtils.saveAll(university, new user.UserService(), new university.UniversityService(university));
             System.out.println("Student added to group " + groupNumber);
 
         } else {
@@ -69,7 +69,7 @@ public class StudentService {
         }
 
         targetGroup.getStudents().add(student);
-        FileStorageUtils.saveAll(university);
+        FileStorageUtils.saveAll(university, new user.UserService(), new university.UniversityService(university));
     }
 
     //method for moving student to another group
@@ -95,7 +95,7 @@ public class StudentService {
         }
         addStudentToSpeciality(student, studentSpec, newGroupNumber);
         student.setGroup(newGroupNumber);
-        FileStorageUtils.saveAll(university);
+        FileStorageUtils.saveAll(university, new user.UserService(), new university.UniversityService(university));
 
         System.out.println("Student moved from group " + (oldGroupObj != null ? oldGroupObj.getGroupNumber() : "?") +
                 " to " + newGroupNumber);
@@ -112,7 +112,7 @@ public class StudentService {
         }
 
         if (removed) {
-            FileStorageUtils.saveAll(university);
+            FileStorageUtils.saveAll(university, new user.UserService(), new university.UniversityService(university));
             System.out.println("Student " + student.getFullName() + " deleted successfully.");
         } else {
             System.out.println("Error: Student not found in any group of " + speciality.getName());

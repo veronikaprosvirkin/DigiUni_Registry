@@ -36,7 +36,7 @@ public class ModStudentUtils {
                 fullName = InputUtils.removeSpaces(fullName, false, true, true, true);
                 List<Student> result = studentService.findStudentsByFullName(fullName);
                 ModEntitiesUtils.deleteEntity(scanner, result, "Student", (student -> studentService.deleteStudent(student, student.getSpeciality())));
-                FileStorageUtils.saveAll(university);
+                FileStorageUtils.saveAll(university, new user.UserService(), new university.UniversityService(university));
             } else if (deleteStudent == 2) {
                 ModStudentUtils.studentDeleteById(scanner, studentService, university);
             }
@@ -45,10 +45,10 @@ public class ModStudentUtils {
             int editStudent = ModEntitiesUtils.chooseEditing(scanner);
             if (editStudent == 1) {
                 ModStudentUtils.studentEditByName(scanner, studentService, university);
-                FileStorageUtils.saveAll(university);
+                FileStorageUtils.saveAll(university, new user.UserService(), new university.UniversityService(university));
             } else if (editStudent == 2) {
                 ModStudentUtils.studentEditById(scanner, studentService, university);
-                FileStorageUtils.saveAll(university);
+                FileStorageUtils.saveAll(university, new user.UserService(), new university.UniversityService(university));
             }
 
 
@@ -222,7 +222,7 @@ public class ModStudentUtils {
         if (!phone.isEmpty()) s.setPhone(phone);
 
         studentService.addStudentToSpeciality(s, selectedSpeciality, groupNumber);
-        FileStorageUtils.saveAll(university);
+        FileStorageUtils.saveAll(university, new user.UserService(), new university.UniversityService(university));
 
         System.out.println("Student " + s.getFullName() + " added to group " + groupNumber +
                 " in " + selectedSpeciality.getName());
@@ -297,7 +297,7 @@ public class ModStudentUtils {
 
         List<Student> result = studentService.findStudentById(id);
         ModEntitiesUtils.deleteEntity(scanner, result, "Student", (student -> studentService.deleteStudent(student, student.getSpeciality())));
-        FileStorageUtils.saveAll(university);
+        FileStorageUtils.saveAll(university, new user.UserService(), new university.UniversityService(university));
     }
 
     /**
@@ -328,7 +328,7 @@ public class ModStudentUtils {
                 studentToProcess = result.get(0);
             }
             editStudentDetails(scanner, studentToProcess, studentService, university);
-            FileStorageUtils.saveAll(university);
+            FileStorageUtils.saveAll(university, new user.UserService(), new university.UniversityService(university));
         }
     }
 
@@ -343,7 +343,7 @@ public class ModStudentUtils {
         } else {
             Student studentToProcess = result.get(0);
             editStudentDetails(scanner, studentToProcess, studentService, university);
-            FileStorageUtils.saveAll(university);
+            FileStorageUtils.saveAll(university, new user.UserService(), new university.UniversityService(university));
         }
     }
 
@@ -363,7 +363,7 @@ public class ModStudentUtils {
 
             int fieldChoice = InputUtils.readInt(scanner, "> ", 0, 9);
             if (fieldChoice == 0) {
-                FileStorageUtils.saveAll(university);
+                FileStorageUtils.saveAll(university, new user.UserService(), new university.UniversityService(university));
                 break;
             }
 

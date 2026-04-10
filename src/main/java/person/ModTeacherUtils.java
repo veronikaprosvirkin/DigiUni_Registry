@@ -37,7 +37,7 @@ public class ModTeacherUtils {
                 List<Teacher> result = teacherService.findTeachersByFullName(fullName);
 
                 ModEntitiesUtils.deleteEntity(scanner, result, "Teacher", teacherService::deleteTeacher);
-                FileStorageUtils.saveAll(university);
+                FileStorageUtils.saveAll(university, new user.UserService(), new university.UniversityService(university));
             } else if (deleteTeacher == 2) {
                 ModTeacherUtils.teacherDeleteById(scanner, teacherService, university);
             }
@@ -157,7 +157,7 @@ public class ModTeacherUtils {
         }
         
         teacherService.addTeacher(newTeacher);
-        FileStorageUtils.saveAll(university);
+        FileStorageUtils.saveAll(university, new user.UserService(), new university.UniversityService(university));
         
         System.out.println("Teacher " + name + " " + surname +
                 " successfully added to department: " + selectedDept.getName());
@@ -174,7 +174,7 @@ public class ModTeacherUtils {
         String id = InputUtils.readLine(scanner, "Enter ID of teacher: ", false, true);
         List<Teacher> result = teacherService.findTeacherById(id);
         ModEntitiesUtils.deleteEntity(scanner, result, "Teacher", teacherService::deleteTeacher);
-        FileStorageUtils.saveAll(university);
+        FileStorageUtils.saveAll(university, new user.UserService(), new university.UniversityService(university));
     }
 
     /**
@@ -241,7 +241,7 @@ public class ModTeacherUtils {
 
         int fieldChoice = InputUtils.readInt(scanner, "> ", 0, 10);
         if (fieldChoice == 0) {
-            FileStorageUtils.saveAll(university);
+            FileStorageUtils.saveAll(university, new user.UserService(), new university.UniversityService(university));
             break;
         }
 

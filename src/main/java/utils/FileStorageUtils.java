@@ -44,7 +44,7 @@ public class FileStorageUtils {
     private static final ReentrantLock saveLock = new ReentrantLock();
 
     // Save all structure
-    public static void saveAll(University university, UserService userService) {
+    public static void saveAll(University university, UserService userService, university.UniversityService universityService) {
         try {
             Files.createDirectories(FACULTIES_FILE.getParent());
         } catch (IOException e) {

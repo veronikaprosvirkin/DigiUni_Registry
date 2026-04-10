@@ -1,7 +1,7 @@
-id;name;surname;patronymic;position;academicDegree;academicTitle;employmentDate;workload;email;phone;department;dateOfBirth
-t0001;Andrii;Hlybovets;Mykolaiovych;Dean;;;;0.0;;;DEAN:f001;
-t0002;Oleksandra;Humenna;Vitaliivna;Dean;;;;0.0;;;DEAN:f002;
-t0003;Dmytro;Mazin;Mykhailovych;Dean;;;;0.0;;;DEAN:f003;
-t0004;Volodymyr;Venher;Mykolaiovych;Dean;;;;0.0;;;DEAN:f004;
-t0005;Anatolii;Bilous;Markovych;Dean;;;;0.0;;;DEAN:f005;
-t0006;Svitlana;Oksamytna;Mykolaivna;Dean;;;;0.0;;;DEAN:f006;
+id;name;surname;patronymic;position;academicDegree;academicTitle;employmentDate;workload;email;phone;department;dateOfBirth;age
+t0001;Andrii;Hlybovets;Mykolaiovych;Dean;;;;0.0;;;DEAN:f001;;
+t0002;Oleksandra;Humenna;Vitaliivna;Dean;;;;0.0;;;DEAN:f002;;
+t0003;Dmytro;Mazin;Mykhailovych;Dean;;;;0.0;;;DEAN:f003;;
+t0004;Volodymyr;Venher;Mykolaiovych;Dean;;;;0.0;;;DEAN:f004;;
+t0005;Anatolii;Bilous;Markovych;Dean;;;;0.0;;;DEAN:f005;;
+t0006;Svitlana;Oksamytna;Mykolaivna;Dean;;;;0.0;;;DEAN:f006;;

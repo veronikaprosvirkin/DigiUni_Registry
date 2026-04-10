@@ -31,7 +31,7 @@ public class SpecialityService {
             return;
         }
         selectedFaculty.getSpeciality().add(new Speciality(IdGenerator.generateSpecialityId(),newSpecialityName));
-        FileStorageUtils.saveAll(university);
+        FileStorageUtils.saveAll(university, new user.UserService(), new university.UniversityService(university));
         System.out.println("Speciality created successfully!");
     }
 
@@ -45,7 +45,7 @@ public class SpecialityService {
         }
         String oldName = speciality.getName();
         speciality.setName(editName);
-        FileStorageUtils.saveAll(university);
+        FileStorageUtils.saveAll(university, new user.UserService(), new university.UniversityService(university));
         System.out.println(oldName+" speciality name updated successfully to: " + speciality.getName());
     }
 
@@ -54,7 +54,7 @@ public class SpecialityService {
         Objects.requireNonNull(selectedFaculty, "Faculty cannot be null");
         Objects.requireNonNull(selectedSpeciality, "Speciality cannot be null");
         if (selectedFaculty.getSpeciality().remove(selectedSpeciality)) {
-            FileStorageUtils.saveAll(university);
+            FileStorageUtils.saveAll(university, new user.UserService(), new university.UniversityService(university));
         }
     }
 
