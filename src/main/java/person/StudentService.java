@@ -69,6 +69,7 @@ public class StudentService {
         }
 
         targetGroup.getStudents().add(student);
+        FileStorageUtils.updateStudentRecord(student);
         FileStorageUtils.saveAll(university, new user.UserService(), null);
     }
 
@@ -99,6 +100,71 @@ public class StudentService {
 
         System.out.println("Student moved from group " + (oldGroupObj != null ? oldGroupObj.getGroupNumber() : "?") +
                 " to " + newGroupNumber);
+    }
+
+    public void moveStudentToSpeciality(Student student, Faculty newFaculty, Speciality newSpeciality, int newGroupNumber) {
+        if (student == null || newFaculty == null || newSpeciality == null) {
+            System.out.println("Error: Student, faculty and speciality must be provided.");
+            return;
+        }
+        if (newGroupNumber <= 0) {
+            System.out.println("Error: Group number must be greater than 0.");
+            return;
+        }
+        if (!newFaculty.getSpeciality().contains(newSpeciality)) {
+            System.out.println("Error: Selected speciality does not belong to selected faculty.");
+            return;
+        }
+
+        Faculty oldFaculty = null;
+        Speciality oldSpeciality = null;
+        Group oldGroup = null;
+
+        for (Faculty faculty : university.getFaculties()) {
+            for (Speciality speciality : faculty.getSpeciality()) {
+                for (Group group : speciality.getGroups()) {
+                    boolean found = group.getStudents().stream().anyMatch(s -> s.getId().equals(student.getId()));
+                    if (found) {
+                        oldFaculty = faculty;
+                        oldSpeciality = speciality;
+                        oldGroup = group;
+                        group.getStudents().removeIf(s -> s.getId().equals(student.getId()));
+                        break;
+                    }
+                }
+                if (oldGroup != null) {
+                    break;
+                }
+            }
+            if (oldGroup != null) {
+                break;
+            }
+        }
+
+        Group targetGroup = null;
+        for (Group group : newSpeciality.getGroups()) {
+            if (group.getGroupNumber() == newGroupNumber) {
+                targetGroup = group;
+                break;
+            }
+        }
+        if (targetGroup == null) {
+            targetGroup = new Group(newGroupNumber);
+            newSpeciality.getGroups().add(targetGroup);
+        }
+
+        targetGroup.getStudents().add(student);
+        student.setFaculty(newFaculty);
+        student.setSpeciality(newSpeciality);
+        student.setGroup(newGroupNumber);
+
+        FileStorageUtils.saveAll(university, new user.UserService(), null);
+
+        String from = (oldFaculty != null)
+                ? oldFaculty.getName() + " / " + oldSpeciality.getName() + " / group " + oldGroup.getGroupNumber()
+                : "unknown location";
+        System.out.println("Student " + student.getFullName() + " transferred from " + from +
+                " to " + newFaculty.getName() + " / " + newSpeciality.getName() + " / group " + newGroupNumber);
     }
 
     // delete student

@@ -61,6 +61,23 @@ class StudentServiceTest {
         assertEquals(205, testStudent.getGroup());
     }
 
+    @Test
+    void testMoveStudentToSpecialityAcrossFaculties() {
+        Teacher secondDean = new Teacher(IdGenerator.generateTeacherId(), "Petro", "Petrenko", "Petrovych", "Dean", null);
+        Faculty newFaculty = new Faculty("fc002", "Faculty of Mathematics", "FM", "contacts", secondDean);
+        Speciality newSpeciality = new Speciality("sp002", "Applied Mathematics");
+        newFaculty.getSpeciality().add(newSpeciality);
+        university.getFaculties().add(newFaculty);
+
+        studentService.moveStudentToSpeciality(testStudent, newFaculty, newSpeciality, 302);
+
+        assertEquals(newFaculty, testStudent.getFaculty());
+        assertEquals(newSpeciality, testStudent.getSpeciality());
+        assertEquals(302, testStudent.getGroup());
+        assertFalse(studentService.findStudentsInSpecialityByGroup(speciality, 101).contains(testStudent));
+        assertTrue(studentService.findStudentsInSpecialityByGroup(newSpeciality, 302).contains(testStudent));
+    }
+
     // Test deleteStudent method
     @Test
     void testDeleteStudent() {
