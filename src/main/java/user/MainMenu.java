@@ -122,7 +122,7 @@ public class MainMenu {
             }
             case "7" -> {
                 if (isAdmin) {
-                    ModUserUtils.showUserMenu(scanner, userService);
+                    ModUserUtils.showUserMenu(scanner, userService, university, universityService);
                 } else {
                     System.out.println("Invalid choice.");
                 }

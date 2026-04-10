@@ -36,7 +36,7 @@ public class ModStudentUtils {
                 String fullName = InputUtils.readLine(scanner, "Full name of student: ", false, false);
                 fullName = InputUtils.removeSpaces(fullName, false, true, true, true);
                 List<Student> result = studentService.findStudentsByFullName(fullName);
-                ModEntitiesUtils.deleteEntity(scanner, result, "Student", (student -> studentService.deleteStudent(student, student.getSpeciality(), userService)));
+                ModEntitiesUtils.deleteEntity(scanner, result, "Student", (student -> studentService.deleteStudent(student, student.getSpeciality())));
                 FileStorageUtils.saveAll(university, userService);
             } else if (deleteStudent == 2) {
                 ModStudentUtils.studentDeleteById(scanner, studentService, university, userService);
@@ -220,7 +220,7 @@ public class ModStudentUtils {
         s.setEmail(finalEmail);
         if (!phone.isEmpty()) s.setPhone(phone);
 
-        studentService.addStudentToSpeciality(s, selectedSpeciality, groupNumber, userService);
+        studentService.addStudentToSpeciality(s, selectedSpeciality, groupNumber);
         FileStorageUtils.saveAll(university, userService);
 
         System.out.println("Student " + s.getFullName() + " added to group " + groupNumber +
@@ -261,7 +261,7 @@ public class ModStudentUtils {
         String id = InputUtils.readLine(scanner, "Enter ID of student: ", false, true);
 
         List<Student> result = studentService.findStudentById(id);
-        ModEntitiesUtils.deleteEntity(scanner, result, "Student", (student -> studentService.deleteStudent(student, student.getSpeciality(), userService)));
+        ModEntitiesUtils.deleteEntity(scanner, result, "Student", (student -> studentService.deleteStudent(student, student.getSpeciality())));
         FileStorageUtils.saveAll(university, userService);
     }
 
@@ -370,7 +370,7 @@ public class ModStudentUtils {
                 }
                 case 5 -> {
                     int newGroup = InputUtils.readInt(scanner, "Enter new group number: ", 1, Integer.MAX_VALUE);
-                    studentService.moveStudentToGroup(studentToProcess, newGroup, userService);
+                    studentService.moveStudentToGroup(studentToProcess, newGroup);
                 }
                 case 6 -> {
                     int formChoice = InputUtils.readInt(scanner, "Enter new study form (1 - BUDGET, 2 - CONTRACT): ", 1, 2);

@@ -46,6 +46,11 @@ public class FileStorageUtils {
 
     private static final ReentrantLock saveLock = new ReentrantLock();
 
+    // Backward-compatible overload for existing call sites that do not use UniversityService.
+    public static void saveAll(University university, UserService userService) {
+        saveAll(university, userService, null);
+    }
+
     // Save all structure
     public static void saveAll(University university, UserService userService, university.UniversityService universityService) {
         try {

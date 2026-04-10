@@ -70,7 +70,7 @@ public class StudentRepository implements Repository<Student, String> {
         targetGroup.getStudents().add(entity);
 
         FileStorageUtils.updateStudentRecord(entity);
-        FileStorageUtils.saveAll(university, new UserService(), null);
+        FileStorageUtils.saveAll(university, UserService.getInstance());
     }
 
     @Override
@@ -80,7 +80,7 @@ public class StudentRepository implements Repository<Student, String> {
         }
 
         if (removeByIdWithoutPersist(id)) {
-            FileStorageUtils.saveAll(university, new UserService(), null);
+            FileStorageUtils.saveAll(university, UserService.getInstance());
         }
     }
 
@@ -109,4 +109,3 @@ public class StudentRepository implements Repository<Student, String> {
         return false;
     }
 }
-

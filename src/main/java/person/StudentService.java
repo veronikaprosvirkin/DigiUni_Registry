@@ -45,7 +45,7 @@ public class StudentService {
                     defaultSpec, studyForm);
 
             targetGroup.getStudents().add(newStudent);
-            FileStorageUtils.saveAll(university, new user.UserService(), null);
+            FileStorageUtils.saveAll(university, user.UserService.getInstance());
             System.out.println("Student added to group " + groupNumber);
 
         } else {
@@ -70,7 +70,7 @@ public class StudentService {
 
         targetGroup.getStudents().add(student);
         FileStorageUtils.updateStudentRecord(student);
-        FileStorageUtils.saveAll(university, new user.UserService(), null);
+        FileStorageUtils.saveAll(university, user.UserService.getInstance());
     }
 
     //method for moving student to another group
@@ -96,7 +96,7 @@ public class StudentService {
         }
         addStudentToSpeciality(student, studentSpec, newGroupNumber);
         student.setGroup(newGroupNumber);
-        FileStorageUtils.saveAll(university, new user.UserService(), null);
+        FileStorageUtils.saveAll(university, user.UserService.getInstance());
 
         System.out.println("Student moved from group " + (oldGroupObj != null ? oldGroupObj.getGroupNumber() : "?") +
                 " to " + newGroupNumber);
@@ -158,7 +158,7 @@ public class StudentService {
         student.setSpeciality(newSpeciality);
         student.setGroup(newGroupNumber);
 
-        FileStorageUtils.saveAll(university, new user.UserService(), null);
+        FileStorageUtils.saveAll(university, user.UserService.getInstance());
 
         String from = (oldFaculty != null)
                 ? oldFaculty.getName() + " / " + oldSpeciality.getName() + " / group " + oldGroup.getGroupNumber()
@@ -178,7 +178,7 @@ public class StudentService {
         }
 
         if (removed) {
-            FileStorageUtils.saveAll(university, new user.UserService(), null);
+            FileStorageUtils.saveAll(university, user.UserService.getInstance());
             System.out.println("Student " + student.getFullName() + " deleted successfully.");
         } else {
             System.out.println("Error: Student not found in any group of " + speciality.getName());
