@@ -122,13 +122,13 @@ public class MainMenu {
             }
             case "7" -> {
                 if (isAdmin) {
-                    ModUserUtils.showUserMenu(scanner, userService);
+                    ModUserUtils.showUserMenu(scanner, userService, university, universityService);
                 } else {
                     System.out.println("Invalid choice.");
                 }
             }
             case "0" -> {
-                FileStorageUtils.saveAll(university, new user.UserService(), new university.UniversityService(university));
+                FileStorageUtils.saveAll(university, new user.UserService(), null);
                 userService.logout();
             }
             default -> System.out.println("Invalid.");
