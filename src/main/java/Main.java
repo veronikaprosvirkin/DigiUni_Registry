@@ -15,7 +15,7 @@ import utils.FileStorageUtils;
 public class Main {
     public static void main(String[] args) {
         University university = new University();
-        UserService userService = new UserService();
+        UserService userService = UserService.getInstance();
 
         FacultyService facultyService = new FacultyService(university);
         SpecialityService specialityService = new SpecialityService(university);
@@ -24,7 +24,7 @@ public class Main {
 
         if (hasSavedStructure) {
             // Load persisted state first so startup does not overwrite student/teacher CSVs.
-            FileStorageUtils.loadAll(university, facultyService, specialityService);
+            FileStorageUtils.loadAll(university, facultyService, specialityService, userService);
         }
 
         UniversityService universityService = new UniversityService(university);
@@ -38,7 +38,7 @@ public class Main {
         DepartmentService departmentService = new DepartmentService(university);
         Scanner scanner = new Scanner(System.in);
 
-
+        //noinspection InfiniteLoopStatement
         while (true) {
             try {
                 //authorization logic

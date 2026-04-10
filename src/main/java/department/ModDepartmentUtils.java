@@ -2,6 +2,8 @@ package department;
 
 import java.util.List;
 import java.util.Scanner;
+
+import user.UserService;
 import utils.input.InputUtils;
 import department.Department;
 import department.DepartmentService;
@@ -16,14 +18,14 @@ public class ModDepartmentUtils {
     //! ======= WORK WITH DEPARTMENT ===== //
 
     //show menu for department
-    public static void showDepartmentMenu(Scanner scanner, DepartmentService departmentService, FacultyService facultyService, TeacherService teacherService) {
+    public static void showDepartmentMenu(Scanner scanner, DepartmentService departmentService, FacultyService facultyService, TeacherService teacherService, UserService userService) {
         System.out.println("1. Add Department");
         System.out.println("2. Manage existing Department");
         System.out.println("0. Back");
         int action = InputUtils.readInt(scanner, "> ", 0, 2);
 
         if (action == 1) { // add a new department
-            ModDepartmentUtils.departmentAddDepartment(scanner, departmentService, facultyService, teacherService);
+            ModDepartmentUtils.departmentAddDepartment(scanner, departmentService, facultyService, teacherService, userService);
         } else if (action == 2) { // manage existing department
             // Select Faculty and Department
             java.util.Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty");
@@ -63,22 +65,23 @@ public class ModDepartmentUtils {
             int workWithDepartment = InputUtils.readInt(scanner, "> ", 0, 5);
 
             if (workWithDepartment == 1) { // edit department name
-                ModDepartmentUtils.departmentRenameDepartment(scanner, departmentService, selectedDept, selectedFaculty);
+                ModDepartmentUtils.departmentRenameDepartment(scanner, departmentService, selectedDept, selectedFaculty, userService);
             } else if (workWithDepartment == 2) { //delete department
-                ModDepartmentUtils.departmentDeleteDepartment(scanner, departmentService, selectedDept, selectedFaculty);
+                ModDepartmentUtils.departmentDeleteDepartment(scanner, departmentService, selectedDept, selectedFaculty, userService);
             } else if (workWithDepartment == 3) { //show all teachers in the department
                 ModDepartmentUtils.departmentShowTeachers(teacherService, selectedDept, scanner);
             } else if (workWithDepartment == 4) { // change head
-                ModDepartmentUtils.departmentChangeHead(scanner, departmentService, teacherService, selectedDept);
+                ModDepartmentUtils.departmentChangeHead(scanner, departmentService, teacherService, selectedDept, userService);
             } else if (workWithDepartment == 5) { // change location
-                ModDepartmentUtils.departmentChangeLocation(scanner, departmentService, selectedDept);
+                ModDepartmentUtils.departmentChangeLocation(scanner, departmentService, selectedDept,userService );
             }
         }
     }
     /**
      * Add new Department
      */
-    static void departmentAddDepartment(Scanner scanner, DepartmentService departmentService, FacultyService facultyService, TeacherService teacherService) {
+    static void departmentAddDepartment(Scanner scanner, DepartmentService departmentService, FacultyService facultyService,
+                                        TeacherService teacherService, UserService userService) {
         System.out.println("Choose faculty where department will be added:");
         java.util.Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties");
         if (optFaculty.isEmpty()) {
@@ -104,7 +107,7 @@ public class ModDepartmentUtils {
              location = InputUtils.readLine(scanner, "Enter location: ", false, true);
         }
 
-        departmentService.addNewDepartment(name, selectedFaculty, head, location);
+        departmentService.addNewDepartment(name, selectedFaculty, head, location, userService );
 
         InputUtils.pause(scanner);
     }
@@ -112,10 +115,11 @@ public class ModDepartmentUtils {
     /**
      * Rename the Department
      */
-    static void departmentRenameDepartment(Scanner scanner, DepartmentService departmentService, Department selectedDept, Faculty selectedFaculty) {
+    static void departmentRenameDepartment(Scanner scanner, DepartmentService departmentService, Department selectedDept,
+                                           Faculty selectedFaculty, UserService userService) {
         String editName = InputUtils.readLine(scanner, "Write new name for " + selectedDept.getName() + ": ", false, false);
         editName = InputUtils.removeSpaces(editName, false, true, true, true);
-        departmentService.editDepartmentName(selectedDept, editName, selectedFaculty);
+        departmentService.editDepartmentName(selectedDept, editName, selectedFaculty, userService);
 
         InputUtils.pause(scanner);
     }
@@ -123,10 +127,11 @@ public class ModDepartmentUtils {
     /**
      * Delete the Department
      */
-    static void departmentDeleteDepartment(Scanner scanner, DepartmentService departmentService, Department selectedDept, Faculty selectedFaculty) {
+    static void departmentDeleteDepartment(Scanner scanner, DepartmentService departmentService, Department selectedDept,
+                                           Faculty selectedFaculty, UserService userService) {
         System.out.print("Are you sure you want or delete " + selectedDept.getName() + "? (y/n): ");
         if (scanner.nextLine().toLowerCase().startsWith("y")) {
-            departmentService.deleteDepartment(selectedDept, selectedFaculty);
+            departmentService.deleteDepartment(selectedDept, selectedFaculty, userService);
             System.out.println("Department deleted successfully!");
         } else {
             System.out.println("Operation cancelled.");
@@ -148,21 +153,23 @@ public class ModDepartmentUtils {
         InputUtils.pause(scanner);
     }
 
-    static void departmentChangeHead(Scanner scanner, DepartmentService departmentService, TeacherService teacherService, Department selectedDept) {
+    static void departmentChangeHead(Scanner scanner, DepartmentService departmentService, TeacherService teacherService,
+                                     Department selectedDept, UserService userService) {
         System.out.println("Current head: " + (selectedDept.getHead() != null ? selectedDept.getHead().getDisplayInfo() : "None"));
         var optionalHead = ModEntitiesUtils.selectEntity(scanner, teacherService.getAllTeachers(), "Teachers");
         if (optionalHead.isPresent()) {
-            departmentService.editDepartmentHead(selectedDept, optionalHead.get());
+            departmentService.editDepartmentHead(selectedDept, optionalHead.get(), userService);
         } else {
             System.out.println("No head assigned.");
         }
         InputUtils.pause(scanner);
     }
 
-    static void departmentChangeLocation(Scanner scanner, DepartmentService departmentService, Department selectedDept) {
+    static void departmentChangeLocation(Scanner scanner, DepartmentService departmentService, Department selectedDept,
+                                         UserService userService) {
         System.out.println("Current location: " + (selectedDept.getLocation() != null ? selectedDept.getLocation() : "None"));
         String location = InputUtils.readLine(scanner, "Enter new location (or leave empty to clear): ", true, true);
-        departmentService.editDepartmentLocation(selectedDept, location);
+        departmentService.editDepartmentLocation(selectedDept, location, userService);
         InputUtils.pause(scanner);
     }
 }

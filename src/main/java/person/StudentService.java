@@ -7,6 +7,7 @@ import university.University;
 import faculty.Faculty;
 import speciality.Speciality;
 import speciality.Group;
+import user.UserService;
 import utils.FileStorageUtils;
 import utils.IdGenerator;
 
@@ -17,7 +18,7 @@ public class StudentService {
         this.university = university;
     }
 
-    public void addStudent(String name, String surname,String patronymic, LocalDate enrollmentDate, int groupNumber, StudyForm studyForm) {
+    public void addStudent(String name, String surname, String patronymic, LocalDate enrollmentDate, int groupNumber, StudyForm studyForm, UserService userService) {
         if (groupNumber <= 0)
             throw new IllegalArgumentException("Group number must be greater than 0.");
         if (!university.getFaculties().isEmpty() &&
@@ -45,7 +46,7 @@ public class StudentService {
                     defaultSpec, studyForm);
 
             targetGroup.getStudents().add(newStudent);
-            FileStorageUtils.saveAll(university);
+            FileStorageUtils.saveAll(university, userService);
             System.out.println("Student added to group " + groupNumber);
 
         } else {
@@ -54,7 +55,7 @@ public class StudentService {
 
     }
 
-    public void addStudentToSpeciality(Student student, Speciality speciality, int groupNumber) {
+    public void addStudentToSpeciality(Student student, Speciality speciality, int groupNumber, UserService userService) {
         Group targetGroup = null;
         for (Group g : speciality.getGroups()) {
             if (g.getGroupNumber() == groupNumber) {
@@ -69,11 +70,11 @@ public class StudentService {
         }
 
         targetGroup.getStudents().add(student);
-        FileStorageUtils.saveAll(university);
+        FileStorageUtils.saveAll(university, userService);
     }
 
     //method for moving student to another group
-    public void moveStudentToGroup(Student student, int newGroupNumber) {
+    public void moveStudentToGroup(Student student, int newGroupNumber, UserService userService) {
         if (student.getGroup() == newGroupNumber) {
             System.out.println("Student is already in group " + newGroupNumber);
             return;
@@ -93,16 +94,16 @@ public class StudentService {
                 break;
             }
         }
-        addStudentToSpeciality(student, studentSpec, newGroupNumber);
+        addStudentToSpeciality(student, studentSpec, newGroupNumber,userService);
         student.setGroup(newGroupNumber);
-        FileStorageUtils.saveAll(university);
+        FileStorageUtils.saveAll(university, userService);
 
         System.out.println("Student moved from group " + (oldGroupObj != null ? oldGroupObj.getGroupNumber() : "?") +
                 " to " + newGroupNumber);
     }
 
     // delete student
-    public void deleteStudent(Student student, Speciality speciality) {
+    public void deleteStudent(Student student, Speciality speciality, UserService userService) {
         boolean removed = false;
         for (Group group : speciality.getGroups()) {
             if (group.getStudents().remove(student)) {
@@ -112,7 +113,7 @@ public class StudentService {
         }
 
         if (removed) {
-            FileStorageUtils.saveAll(university);
+            FileStorageUtils.saveAll(university, userService);
             System.out.println("Student " + student.getFullName() + " deleted successfully.");
         } else {
             System.out.println("Error: Student not found in any group of " + speciality.getName());

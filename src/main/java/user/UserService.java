@@ -5,22 +5,32 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
+
+import lombok.Getter;
 import utils.input.InputUtils;
 
-import static user.Permission.*;
-
 public class UserService {
-    private List<User> users = new ArrayList<>();
+    private static final UserService INSTANCE = new UserService();
+    private final List<User> users = new ArrayList<>();
+    @Getter
     private User currentUser = null;
-    private boolean initialized = false;
 
-    public UserService() { //test users
-        if (!initialized) {
-            users.add(new User("admin", "admin", Role.ADMIN, Permission.getDefaultMaskForRole(Role.ADMIN)));
-            users.add(new User("user", "user", Role.USER, Permission.getDefaultMaskForRole(Role.USER)));
-            users.add(new User("manager", "manager", Role.MANAGER, Permission.getDefaultMaskForRole(Role.MANAGER)));
-            initialized = true;
-        }
+    private UserService() {
+        seedDefaultUsers();
+    }
+
+    public static UserService getInstance() {
+        return INSTANCE;
+    }
+
+    public static UserService createTestInstance() {
+        return new UserService();
+    }
+
+    private void seedDefaultUsers() {
+        users.add(new User("admin", "admin", Role.ADMIN, Permission.getDefaultMaskForRole(Role.ADMIN)));
+        users.add(new User("user", "user", Role.USER, Permission.getDefaultMaskForRole(Role.USER)));
+        users.add(new User("manager", "manager", Role.MANAGER, Permission.getDefaultMaskForRole(Role.MANAGER)));
     }
 
     // logging in process
@@ -52,10 +62,10 @@ public class UserService {
         return Collections.unmodifiableList(users);
     }
 
-    //return current user to main
-    public User getCurrentUser() {
-        return currentUser;
+    public void addUserFromStorage(User user) {
+        users.add(user);
     }
+
 
     public void logout() {
         currentUser = null;
@@ -101,3 +111,4 @@ public class UserService {
         System.out.println("User not found!");
     }
 }
+

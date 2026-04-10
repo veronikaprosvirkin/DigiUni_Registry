@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Objects;
 import university.University;
 import faculty.Faculty;
+import user.UserService;
 import utils.IdGenerator;
 import utils.FileStorageUtils;
 
@@ -20,7 +21,7 @@ public class SpecialityService {
                 .anyMatch(item -> nameExtractor.apply(item).equalsIgnoreCase(newName));
     }
 
-    public void addNewSpeciality(String newSpecialityName, Faculty selectedFaculty) {
+    public void addNewSpeciality(String newSpecialityName, Faculty selectedFaculty, UserService userService) {
         Objects.requireNonNull(selectedFaculty, "Faculty cannot be null");
         Objects.requireNonNull(newSpecialityName, "Speciality name cannot be null");
         boolean exists = selectedFaculty.getSpeciality().stream()
@@ -31,11 +32,11 @@ public class SpecialityService {
             return;
         }
         selectedFaculty.getSpeciality().add(new Speciality(IdGenerator.generateSpecialityId(),newSpecialityName));
-        FileStorageUtils.saveAll(university);
+        FileStorageUtils.saveAll(university, userService);
         System.out.println("Speciality created successfully!");
     }
 
-    public void editSpecialityName(Speciality speciality, String editName, Faculty faculty) {
+    public void editSpecialityName(Speciality speciality, String editName, Faculty faculty, UserService userService) {
         Objects.requireNonNull(speciality, "Speciality cannot be null");
         Objects.requireNonNull(faculty, "Faculty cannot be null");
         Objects.requireNonNull(editName, "New name cannot be null");
@@ -45,16 +46,16 @@ public class SpecialityService {
         }
         String oldName = speciality.getName();
         speciality.setName(editName);
-        FileStorageUtils.saveAll(university);
+        FileStorageUtils.saveAll(university, userService);
         System.out.println(oldName+" speciality name updated successfully to: " + speciality.getName());
     }
 
 
-    public void deleteSpeciality(Speciality selectedSpeciality, Faculty selectedFaculty) {
+    public void deleteSpeciality(Speciality selectedSpeciality, Faculty selectedFaculty, UserService userService) {
         Objects.requireNonNull(selectedFaculty, "Faculty cannot be null");
         Objects.requireNonNull(selectedSpeciality, "Speciality cannot be null");
         if (selectedFaculty.getSpeciality().remove(selectedSpeciality)) {
-            FileStorageUtils.saveAll(university);
+            FileStorageUtils.saveAll(university, userService);
         }
     }
 
