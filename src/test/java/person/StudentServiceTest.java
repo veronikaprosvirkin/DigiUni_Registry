@@ -3,7 +3,6 @@ package person;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.LocalDate;
@@ -20,7 +19,6 @@ class StudentServiceTest {
     private Speciality speciality;
     private Faculty faculty;
     private Student testStudent;
-    private StudyForm studyForm;
 
     // Set up a test environment
     @BeforeEach
@@ -52,6 +50,7 @@ class StudentServiceTest {
         Student newStudent = new Student("st002", "Lesya", "Ukrainka","sm", LocalDate.of(2018, 9, 1), 101, faculty, speciality,StudyForm.BUDGET);
         studentService.addStudentToSpeciality(newStudent, speciality, 101);
         assertTrue(studentService.getAllStudents().contains(newStudent));
+        assertEquals(1, studentService.findStudentById("st002").size());
     }
 
     // Test moveStudentToGroup method
