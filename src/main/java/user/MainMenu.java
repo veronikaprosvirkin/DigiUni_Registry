@@ -10,6 +10,7 @@ import faculty.FacultyService;
 import department.DepartmentService;
 import speciality.SpecialityService;
 import utils.FileStorageUtils;
+import utils.ModStatisticsUtils;
 import utils.input.InputUtils;
 import utils.ModEntitiesUtils;
 import person.ModStudentUtils;
@@ -40,12 +41,14 @@ public class MainMenu {
             System.out.println("4. Work with Students");
             System.out.println("5. Work with Teachers");
             System.out.println("6. Search");
+            System.out.println("7. University Statistics");
         } else {
             System.out.println("4. Search Students and Teachers");
+            System.out.println("5. University Statistics");
         }
 
         if (isAdmin) {
-            System.out.println("7. Work with Users");
+            System.out.println("8. Work with Users");
         }
 
         System.out.println("0. Log out");
@@ -103,7 +106,7 @@ public class MainMenu {
                 if (canWrite) {
                     ModTeacherUtils.showTeacherMenu(scanner, teacherService, facultyService, userService, true, university);
                 } else {
-                    System.out.println("Invalid choice.");
+                    ModStatisticsUtils.showStatisticsMenu(scanner, university, studentService, teacherService);
                 }
             }
             case "6" -> {
@@ -120,7 +123,15 @@ public class MainMenu {
                     System.out.println("Invalid choice.");
                 }
             }
-            case "7" -> {
+            case "7" ->{
+                if (canWrite) {
+                    ModStatisticsUtils.showStatisticsMenu(scanner, university, studentService, teacherService);
+                } else {
+                    System.out.println("Invalid choice.");
+                }
+
+            }
+            case "8" -> {
                 if (isAdmin) {
                     ModUserUtils.showUserMenu(scanner, userService, university, universityService);
                 } else {

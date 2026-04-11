@@ -50,4 +50,8 @@ public final class Faculty implements NamedEntity {
     public String getDisplayInfo() {
         return "[Code: " + this.id + "] " + this.nameOfFaculty;
     }
+
+    public List<Speciality> getSpecialities() {
+        return speciality;
+    }
 }
