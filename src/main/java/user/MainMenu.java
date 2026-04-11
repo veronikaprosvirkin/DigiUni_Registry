@@ -106,7 +106,7 @@ public class MainMenu {
                 if (canWrite) {
                     ModTeacherUtils.showTeacherMenu(scanner, teacherService, facultyService, userService, true, university);
                 } else {
-                    ModStatisticsUtils.showStatisticsMenu(scanner, university, studentService, teacherService);
+                    ModStatisticsUtils.showStatisticsMenu(scanner, university, studentService, teacherService, specialityService);
                 }
             }
             case "6" -> {
@@ -125,7 +125,7 @@ public class MainMenu {
             }
             case "7" ->{
                 if (canWrite) {
-                    ModStatisticsUtils.showStatisticsMenu(scanner, university, studentService, teacherService);
+                    ModStatisticsUtils.showStatisticsMenu(scanner, university, studentService, teacherService, specialityService);
                 } else {
                     System.out.println("Invalid choice.");
                 }
