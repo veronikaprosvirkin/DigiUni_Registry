@@ -146,7 +146,7 @@ public class FileStorageUtils {
     private static void loadFaculties(University u) throws IOException {
         if (!Files.exists(FACULTIES_FILE)) return;
         String content = Files.readString(FACULTIES_FILE, StandardCharsets.UTF_8);
-        String[] lines = content.split("\n");
+        String[] lines = content.split("\\r?\\n");
         for (String line : lines) {
             if (line.isBlank()) continue;
             String[] parts = line.split(DELIMITER, -1);
@@ -188,7 +188,7 @@ public class FileStorageUtils {
     private static void loadSpecialities(University u) throws IOException {
         if (!Files.exists(SPECIALITIES_FILE)) return;
         String content = Files.readString(SPECIALITIES_FILE, StandardCharsets.UTF_8);
-        String[] lines = content.split("\n");
+        String[] lines = content.split("\\r?\\n");
         for (String line : lines) {
             if (line.isBlank()) continue;
             String[] parts = line.split(DELIMITER, -1);
@@ -196,7 +196,7 @@ public class FileStorageUtils {
             if (parts.length >= 3) {
                 String id = parts[0];
                 String name = parts[1];
-                String facultyId = parts[2];
+                String facultyId = parts[2].trim();
                 Speciality s = new Speciality(id, name);
 
                 // Find parent faculty and add
@@ -253,7 +253,7 @@ public class FileStorageUtils {
     private static void loadDepartments(University u) throws IOException {
         if (!Files.exists(DEPARTMENTS_FILE)) return;
         String content = Files.readString(DEPARTMENTS_FILE, StandardCharsets.UTF_8);
-        String[] lines = content.split("\n");
+        String[] lines = content.split("\\r?\\n");
         for (String line : lines) {
             if (line.isBlank()) continue;
             String[] parts = line.split(DELIMITER, -1);
