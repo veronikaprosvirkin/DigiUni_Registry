@@ -13,13 +13,15 @@ import utils.input.InputUtils;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.function.Function;
 import java.util.function.ToIntFunction;
 
 import static utils.input.InputUtils.pause;
 
 public class ModStatisticsUtils {
     public static void showStatisticsMenu(Scanner scanner, University university, StudentService studentService,
-                                          TeacherService teacherService, SpecialityService specialityService) {
+                                          TeacherService teacherService, SpecialityService specialityService, List<Faculty> faculties) {
+        String title = "=====Popularity ranking=====";
         while (true) {
             System.out.println("=== Statistics Menu ===");
             System.out.println("1. Faculties' statistics");
@@ -32,8 +34,8 @@ public class ModStatisticsUtils {
 
             int choice = InputUtils.readInt(scanner, "> ", 0, 6);
             switch (choice) {
-                case 1 -> showFacultiesStatistics(university, scanner, studentService, teacherService, specialityService);
-                case 2 -> showDepartmentsStatistics(university, scanner, teacherService, studentService);
+                case 1 -> showFacultiesStatistics(university, scanner, studentService, teacherService, faculties, title);
+                case 2 -> showDepartmentsStatistics(university, scanner, teacherService, studentService, title);
                 case 3 -> showSpecialitiesStatistics(university, scanner);
                 case 4 -> showTeachersStatistics(university, scanner);
                 case 5 -> showStudentsStatistics(university, scanner);
@@ -43,12 +45,12 @@ public class ModStatisticsUtils {
                 }
                 default -> System.out.println("Invalid choice. Please select a valid option.");
             }
-             pause(scanner);
 
         }
     }
     // departments statistics
-    private static void showDepartmentsStatistics(University university, Scanner scanner, TeacherService teacherService, StudentService studentService) {
+    private static void showDepartmentsStatistics(University university, Scanner scanner, TeacherService teacherService,
+                                                  StudentService studentService, String title) {
         List<Department> allDepartments = university.getFaculties().stream()
                 .flatMap(f -> f.getDepartments().stream())
                 .toList();
@@ -65,18 +67,18 @@ public class ModStatisticsUtils {
             switch (choice) {
                 case 1 -> {
                     System.out.println("Number of departments: " + allDepartments.size());
+                    pause(scanner);
                 }
                 case 2 -> {
                     System.out.println("Average teachers per department: " +
                             averageCount(allDepartments, d -> countTeachers(d,teacherService)));
+                    pause(scanner);
                 }
                 case 3 -> {
-                    allDepartments.stream().max(Comparator.comparingInt(d -> countTeachers((Department) d, teacherService)))
-                            .ifPresent(d -> {System.out.println("Most popular: " + d.getName() + " with "
-                                    + countTeachers(d, teacherService));});
-                    allDepartments.stream().min(Comparator.comparingInt(d -> countTeachers(d, teacherService)))
-                            .ifPresent(d -> {System.out.println("Least popular: " + d.getName() + " with "
-                                    + countTeachers(d, teacherService));});
+                    printLeaders(allDepartments, d -> countTeachers(d, teacherService),
+                            Department::getName, title);
+                    printOutsiders(allDepartments, d -> countTeachers(d, teacherService),
+                            Department::getName);
                 }
                 case 0 -> {
                     return;
@@ -190,7 +192,8 @@ public class ModStatisticsUtils {
     }
 
     // faculties statistics
-    private static void showFacultiesStatistics(University university, Scanner scanner, StudentService studentService, TeacherService teacherService, SpecialityService specialityService) {
+    private static void showFacultiesStatistics(University university, Scanner scanner, StudentService studentService,
+                                                TeacherService teacherService, List<Faculty> faculties, String title) {
         System.out.println("=== Faculties' Statistics ===");
         while (true) {
             System.out.println("Show statistics for:");
@@ -200,11 +203,6 @@ public class ModStatisticsUtils {
             System.out.println("0. Back to statistics menu");
 
             int choice = InputUtils.readInt(scanner, "> ", 0, 3);
-
-            System.out.println("DEBUG: Faculties count = " + university.getFaculties().size());
-            if (!university.getFaculties().isEmpty()) {
-                System.out.println("DEBUG: Specs in first faculty = " + university.getFaculties().get(0).getSpecialities().size());
-            }
 
             switch (choice) {
                 case 1 -> {
@@ -230,12 +228,10 @@ public class ModStatisticsUtils {
                         System.out.println("No faculties found to calculate rankings.");
                         return;
                     }
-                    university.getFaculties().stream().max(Comparator.comparingInt(f-> countStudents(f,studentService)))
-                            .ifPresent(f -> {System.out.println("Most popular: " + f.getName() + " with " +
-                                    countStudents(f,studentService) + " students");});
-                    university.getFaculties().stream().min(Comparator.comparingInt(f-> countStudents(f,studentService)))
-                            .ifPresent(f -> {System.out.println("Least popular: " + f.getName() + " with " +
-                                    countStudents(f,studentService) + " students");});
+
+                    printLeaders(faculties, f-> countStudents(f, studentService),
+                            Faculty::getNameOfFaculty, title );
+                    printOutsiders(faculties, f-> countStudents(f, studentService), Faculty::getNameOfFaculty);
                     pause(scanner);
                 }
                 case 0 -> {
@@ -255,5 +251,27 @@ public class ModStatisticsUtils {
     }
     private static int countTeachers(Department d, TeacherService teacherService){
         return teacherService.getTeachersByDepartment(d).size();
+    }
+    private static <T> void printLeaders (List<T> items, ToIntFunction<T> valueExtractor, Function<T, String> nameExtractor, String title){
+        if(items == null || items.isEmpty()){
+            System.out.println("No data available for " + title);
+            return;
+        }
+        int maxNumber = items.stream().mapToInt(valueExtractor).max().orElse(0);
+        System.out.println(title);
+        System.out.println("Max count: " + maxNumber);
+        items.stream()
+                .filter(t -> maxNumber == valueExtractor.applyAsInt(t))
+                .forEach(t -> System.out.println(" - " + nameExtractor.apply(t)));
+    }
+    private static <T> void printOutsiders(List <T> items, ToIntFunction<T> value, Function<T, String> name){
+        if (items == null || items.isEmpty()){
+            System.out.println("No data available");
+            return;
+        }
+        int minNumber = items.stream().mapToInt(value).min().orElse(0);
+        System.out.println("Min count: "+ minNumber);
+        items.stream().filter(t -> minNumber == value.applyAsInt(t)).
+                forEach(t -> System.out.println(" - " + name.apply(t)));
     }
 }

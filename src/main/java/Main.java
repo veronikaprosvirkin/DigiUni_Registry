@@ -38,6 +38,7 @@ public class Main {
         DepartmentService departmentService = new DepartmentService(university);
         Scanner scanner = new Scanner(System.in);
 
+
         //noinspection InfiniteLoopStatement
         while (true) {
             try {
@@ -57,7 +58,8 @@ public class Main {
                         userService,
                         scanner,
                         currentUser,
-                        university);
+                        university,
+                        university.getFaculties());
 
             } catch (utils.EntityNotFoundException e) {
                 System.out.println(e.getMessage());

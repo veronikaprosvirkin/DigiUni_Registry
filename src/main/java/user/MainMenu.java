@@ -1,5 +1,6 @@
 package user;
 
+import java.util.List;
 import java.util.Scanner;
 
 import university.University;
@@ -25,7 +26,8 @@ public class MainMenu {
     public static void showMenu(UniversityService universityService, StudentService studentService,
                                 TeacherService teacherService, FacultyService facultyService,
                                 DepartmentService departmentService, SpecialityService specialityService,
-                                UserService userService, Scanner scanner, User currentUser, University university) {
+                                UserService userService, Scanner scanner, User currentUser, University university,
+                                List<Faculty> faculties) {
 
         boolean canWrite = currentUser.hasPermission(Permission.WRITE);
         boolean isAdmin = currentUser.hasPermission(Permission.ADMIN);
@@ -106,7 +108,7 @@ public class MainMenu {
                 if (canWrite) {
                     ModTeacherUtils.showTeacherMenu(scanner, teacherService, facultyService, userService, true, university);
                 } else {
-                    ModStatisticsUtils.showStatisticsMenu(scanner, university, studentService, teacherService, specialityService);
+                    ModStatisticsUtils.showStatisticsMenu(scanner, university, studentService, teacherService, specialityService, faculties);
                 }
             }
             case "6" -> {
@@ -125,7 +127,7 @@ public class MainMenu {
             }
             case "7" ->{
                 if (canWrite) {
-                    ModStatisticsUtils.showStatisticsMenu(scanner, university, studentService, teacherService, specialityService);
+                    ModStatisticsUtils.showStatisticsMenu(scanner, university, studentService, teacherService, specialityService, faculties);
                 } else {
                     System.out.println("Invalid choice.");
                 }
