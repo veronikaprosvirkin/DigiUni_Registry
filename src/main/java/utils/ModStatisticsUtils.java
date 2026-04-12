@@ -13,10 +13,7 @@ import speciality.SpecialityService;
 import university.University;
 import utils.input.InputUtils;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Scanner;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collectors;
@@ -172,9 +169,10 @@ public class ModStatisticsUtils {
             System.out.println("1. Total number of students in the university");
             System.out.println("2. Distribution of students by course/year of study");
             System.out.println("3. Distribution of students by study form (budget vs contract)");
+            System.out.println("4. Number of unique last names (Diversity Check)");
             System.out.println("0. Back to statistics menu");
 
-            int choice = InputUtils.readInt(scanner, "> ", 0, 3);
+            int choice = InputUtils.readInt(scanner, "> ", 0, 4);
 
             switch (choice) {
                 case 1 -> {
@@ -216,6 +214,25 @@ public class ModStatisticsUtils {
                         System.out.println("Total Students: " + total);
                         System.out.printf("Budget: %d (%.1f%%)%n", budgetCount, budgetPercent);
                         System.out.printf("Contract: %d (%.1f%%)%n", contractCount, contractPercent);
+                    }
+
+                    pause(scanner);
+                }
+                case 4 -> {
+                    System.out.println("=== Student Body Diversity ===");
+                    Set<String> uniqueLastNames = studentService.getAllStudents().stream()
+                            .map(Student::getSurname)
+                            .collect(Collectors.toSet());
+
+                    int totalStudents = studentService.getAllStudents().size();
+                    int uniqueCount = uniqueLastNames.size();
+
+                    System.out.println("Total students: " + totalStudents);
+                    System.out.println("Unique last names: " + uniqueCount);
+
+                    if (totalStudents > 0) {
+                        double diversityRatio = (uniqueCount * 100.0) / totalStudents;
+                        System.out.printf("Diversity ratio: %.1f%%%n", diversityRatio);
                     }
 
                     pause(scanner);
