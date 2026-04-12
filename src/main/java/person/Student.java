@@ -33,7 +33,15 @@ public final class Student extends Person {
 
     // Calculate course
     public int getCourse() {
-        return LocalDate.now().getYear() - enrollmentDate.getYear() + 1;
+        int currentYear = LocalDate.now().getYear();
+        int currentMonth = LocalDate.now().getMonthValue();
+        int course = currentYear - enrollmentDate.getYear();
+
+        if (currentMonth >= 9) {
+            course++;
+        }
+
+        return Math.max(1, course);
     }
 
     // Format course output

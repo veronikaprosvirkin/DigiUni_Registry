@@ -16,8 +16,10 @@ import utils.input.InputUtils;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.function.ToIntFunction;
+import java.util.stream.Collectors;
 
 import static utils.input.InputUtils.pause;
 
@@ -41,8 +43,8 @@ public class ModStatisticsUtils {
                 case 2 -> showDepartmentsStatistics(university, scanner, teacherService, studentService, title);
                 case 3 -> showSpecialitiesStatistics(university, scanner, studentService, title);
                 case 4 -> showTeachersStatistics(university, scanner);
-                case 5 -> showStudentsStatistics(university, scanner);
-                case 6 -> showUniversityStatistics(university, scanner);
+                case 5 -> showStudentsStatistics(university, scanner, studentService);
+                case 6 -> showUniversityStatistics(university, scanner, studentService);
                 case 0 -> {
                     return; // Exit the statistics menu
                 }
@@ -144,17 +146,16 @@ public class ModStatisticsUtils {
         while (true) {
             System.out.println("Show statistics for:");
             System.out.println("1. Total number of teachers in the university");
-            System.out.println("2. Number of deans vs regular teachers"); // Якщо декан - це просто поле у факультеті, можна рахувати тут
             System.out.println("0. Back to statistics menu");
 
-            int choice = InputUtils.readInt(scanner, "> ", 0, 2);
+            int choice = InputUtils.readInt(scanner, "> ", 0, 1);
 
             switch (choice) {
                 case 1 -> {
-                    // TODO: count all teachers
-                }
-                case 2 -> {
-                    // TODO: filter deans logic
+                    System.out.println("Total number of teachers: " + university.getFaculties().stream().flatMap(f -> f.getDepartments().stream())
+                            .mapToInt(d -> d.getTeachers().size())
+                            .sum());
+                    pause(scanner);
                 }
                 case 0 -> {
                     return;
@@ -164,22 +165,60 @@ public class ModStatisticsUtils {
     }
 
     // students statistics
-    private static void showStudentsStatistics(University university, Scanner scanner) {
+    private static void showStudentsStatistics(University university, Scanner scanner, StudentService studentService) {
         System.out.println("=== Students' Statistics ===");
         while (true) {
             System.out.println("Show statistics for:");
             System.out.println("1. Total number of students in the university");
-            System.out.println("2. Distribution of students by course/year of study"); // Дуже крута статистика, якщо у класі Student є поле 'course'
+            System.out.println("2. Distribution of students by course/year of study");
+            System.out.println("3. Distribution of students by study form (budget vs contract)");
             System.out.println("0. Back to statistics menu");
 
-            int choice = InputUtils.readInt(scanner, "> ", 0, 2);
+            int choice = InputUtils.readInt(scanner, "> ", 0, 3);
 
             switch (choice) {
                 case 1 -> {
-                    // TODO: count all students
+                    System.out.println("Total number of students: " + studentService.getAllStudents().size());
+                    pause(scanner);
                 }
                 case 2 -> {
-                    // TODO: grouping/counting logic
+                        System.out.println("=== Distribution by Course ===");
+
+                        studentService.getAllStudents().stream()
+                                .collect(Collectors.groupingBy(Student::getCourse, TreeMap::new, Collectors.counting()))
+                                .forEach((course, count) -> {
+
+                                    int numberOfStudents = count.intValue();
+                                    String bar = "█".repeat(numberOfStudents/5);
+                                    System.out.printf("Course %d: %-3d students | %s%n", course, numberOfStudents, bar);
+                                });
+
+                        pause(scanner);
+
+                }
+                case 3 -> {
+                    System.out.println("=== Distribution by Study Form ===");
+                    long budgetCount = studentService.getAllStudents().stream()
+                            .filter(s -> s.getStudyForm() == StudyForm.BUDGET)
+                            .count();
+                    long contractCount = studentService.getAllStudents().stream()
+                            .filter(s -> s.getStudyForm() == StudyForm.CONTRACT)
+                            .count();
+
+                    long total = budgetCount + contractCount;
+
+                    if (total == 0) {
+                        System.out.println("No students found in the system.");
+                    } else {
+                        double budgetPercent = (budgetCount * 100.0) / total;
+                        double contractPercent = (contractCount * 100.0) / total;
+
+                        System.out.println("Total Students: " + total);
+                        System.out.printf("Budget: %d (%.1f%%)%n", budgetCount, budgetPercent);
+                        System.out.printf("Contract: %d (%.1f%%)%n", contractCount, contractPercent);
+                    }
+
+                    pause(scanner);
                 }
                 case 0 -> {
                     return;
@@ -189,7 +228,7 @@ public class ModStatisticsUtils {
     }
 
     //uni statistics
-    private static void showUniversityStatistics(University university, Scanner scanner) {
+    private static void showUniversityStatistics(University university, Scanner scanner, StudentService studentService) {
         System.out.println("=== University-wide Statistics ===");
         while (true) {
             System.out.println("Show statistics for:");
@@ -201,10 +240,34 @@ public class ModStatisticsUtils {
 
             switch (choice) {
                 case 1 -> {
-                    // TODO: call multiple size() methods to print a beautiful summary dashboard
+                    System.out.println("Total Faculties: " + university.getFaculties().size());
+                    System.out.println("------------------------------------");
+                    System.out.println("Total departments: " + university.getFaculties().stream()
+                            .mapToInt(f -> f.getDepartments().size())
+                            .sum());
+                    System.out.println("------------------------------------");
+                    System.out.println("Total specialities: " + university.getFaculties().stream()
+                            .mapToInt(f -> f.getSpecialities().size())
+                            .sum());
+                    System.out.println("------------------------------------");
+                    System.out.println("Total teachers: " + university.getFaculties().stream()
+                            .flatMap(f -> f.getDepartments().stream())
+                            .mapToInt(d -> d.getTeachers().size())
+                            .sum());
+                    System.out.println("------------------------------------");
+                    System.out.println("Total students: " + studentService.getAllStudents().size() + " (Budget: " + studentService.getAllStudents().stream().filter(s -> s.getStudyForm() == StudyForm.BUDGET).count() +
+                            ", Contract: " + studentService.getAllStudents().stream().filter(s -> s.getStudyForm() == StudyForm.CONTRACT).count() + ")");
+                    pause(scanner);
+
                 }
                 case 2 -> {
-                    // TODO: simple math logic (total students / total teachers)
+                    int studentCount = studentService.getAllStudents().size();
+                    int teacherCount = university.getFaculties().stream()
+                            .flatMap(f -> f.getDepartments().stream())
+                            .mapToInt(d -> d.getTeachers().size())
+                            .sum();
+                    System.out.println("Overall Student-to-Teacher Ratio: " + (teacherCount == 0 ? "N/A" : String.format("%.2f", (double) studentCount / teacherCount)));
+                    pause(scanner);
                 }
                 case 0 -> {
                     return;
@@ -254,6 +317,8 @@ public class ModStatisticsUtils {
                     printLeaders(faculties, f-> countStudents(f, studentService, Student::getFaculty),
                             Faculty::getNameOfFaculty, title );
                     printOutsiders(faculties, f-> countStudents(f, studentService, Student::getFaculty), Faculty::getNameOfFaculty);
+                    printLeaders(faculties, f -> countStudentsByFinancing(f, studentService, Student::getFaculty, StudyForm.CONTRACT),
+                            Faculty::getNameOfFaculty, "Most popular faculties among contract students");
                     pause(scanner);
                 }
                 case 0 -> {
