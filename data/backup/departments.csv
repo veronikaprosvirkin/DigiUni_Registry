@@ -1,0 +1,28 @@
+id;name;facultyId;location;headId;headName;headSurname;headPatronymic;headPosition;headAcademicDegree;headAcademicTitle;headEmploymentDate;headWorkload;headEmail;headPhone
+d001;Department of Computer Science;f001;;;;;;;;;;;;
+d002;Department of Multimedia Systems;f001;;;;;;;;;;;;
+d003;Department of Automation, Computer-Integrated Technologies, and Robotics;f001;;;;;;;;;;;;
+d004;Department of Mathematics;f001;;;;;;;;;;;;
+d005;Department of Economic Theory;f002;;;;;;;;;;;;
+d006;Department of Finance;f002;;;;;;;;;;;;
+d007;Department of Marketing and Business Management;f002;;;;;;;;;;;;
+d008;Department of History;f003;;;;;;;;;;;;
+d009;Department of Archaeology;f003;;;;;;;;;;;;
+d010;Department of Philosophy and Religious Studies;f003;;;;;;;;;;;;
+d011;Department of Cultural Studies;f003;;;;;;;;;;;;
+d012;Department of Literature;f003;;;;;;;;;;;;
+d013;Department of English Language;f003;;;;;;;;;;;;
+d014;Department of General Juridical Disciplines;f004;;;;;;;;;;;;
+d015;Department of International and European Law;f004;;;;;;;;;;;;
+d016;Department of Public Law;f004;;;;;;;;;;;;
+d017;Department of Private Law;f004;;;;;;;;;;;;
+d018;Department of Biology;f005;;;;;;;;;;;;
+d019;Department of Environmental Studies;f005;;;;;;;;;;;;
+d020;Department of Chemistry;f005;;;;;;;;;;;;
+d021;Department of Physical and Mathematical Sciences;f005;;;;;;;;;;;;
+d022;Department of Sociology;f006;;;;;;;;;;;;
+d023;Department of Political Science;f006;;;;;;;;;;;;
+d024;Department of Psychology and Pedagogy;f006;;;;;;;;;;;;
+d025;School of Social Work;f006;;;;;;;;;;;;
+d026;Mohyla School of Journalism;f006;;;;;;;;;;;;
+d027;School of Public Health;f006;;;;;;;;;;;;
