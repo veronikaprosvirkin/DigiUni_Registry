@@ -254,13 +254,13 @@ public class ModTeacherUtils {
         switch (fieldChoice) {
             case 1 -> {
                 //? Update surname
-                String newSurname = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Enter new surname: ", false, false), true, false, false, false);
+                String newSurname = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Enter new surname: ", false, true), true, false, false, false);
                 teacherToProcess.setSurname(newSurname);
                 System.out.println("Surname updated!");
             }
             case 2 -> {
                 //? Update name
-                String newName = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Enter new name: ", false, false), true, false, false, false);
+                String newName = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Enter new name: ", false, true), true, false, false, false);
                 teacherToProcess.setName(newName);
                 System.out.println("Name updated!");
             }

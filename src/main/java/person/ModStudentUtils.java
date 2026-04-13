@@ -301,7 +301,7 @@ public class ModStudentUtils {
      * Edit the Student by ID
      */
     static void studentEditById(Scanner scanner, StudentService studentService, University university, UserService userService) {
-        String id = InputUtils.readLine(scanner, "Enter ID of student: ", false, false);
+        String id = InputUtils.readLine(scanner, "Enter ID of student: ", false, true);
         List<Student> result = studentService.findStudentById(id);
         if (result.isEmpty()){
             System.out.println("No student found by id " + id);
@@ -335,12 +335,12 @@ public class ModStudentUtils {
 
             switch (fieldChoice) {
                 case 1 -> {
-                    String newSurname = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Enter new surname: ", false, false), true, false, false, false);
+                    String newSurname = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Enter new surname: ", false, true), true, false, false, false);
                     studentToProcess.setSurname(newSurname);
                     System.out.println("Surname updated!");
                 }
                 case 2 -> {
-                    String newName = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Enter new name: ", false, false), true, false, false, false);
+                    String newName = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Enter new name: ", false, true), true, false, false, false);
                     studentToProcess.setName(newName);
                     System.out.println("Name updated!");
                 }
@@ -409,13 +409,13 @@ public class ModStudentUtils {
 
                 }
                 case 8 -> {
-                    String newEmail = InputUtils.readLine(scanner, "Enter new email: ", false, false);
+                    String newEmail = InputUtils.readLine(scanner, "Enter new email: ", false, true);
                     newEmail = InputUtils.removeSpaces(newEmail, false, true, true, true);
                     studentToProcess.setEmail(newEmail);
                     System.out.println("Email updated!");
                 }
                 case 9 -> {
-                    String newPhone = InputUtils.readLine(scanner, "Enter new phone number: ", false, false);
+                    String newPhone = InputUtils.readLine(scanner, "Enter new phone number: ", false, true);
                     newPhone = InputUtils.removeSpaces(newPhone, false, true, true, true);
                     studentToProcess.setPhone(newPhone);
                     System.out.println("Phone number updated!");

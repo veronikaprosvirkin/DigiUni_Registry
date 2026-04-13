@@ -3,6 +3,8 @@ package person;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import university.University;
 import faculty.Faculty;
 import speciality.Speciality;
@@ -11,6 +13,7 @@ import utils.FileStorageUtils;
 import utils.IdGenerator;
 
 public class StudentService {
+    private static final Logger log = LoggerFactory.getLogger(StudentService.class);
     private University university;
 
     public StudentService(University university) {
@@ -46,9 +49,11 @@ public class StudentService {
 
             targetGroup.getStudents().add(newStudent);
             FileStorageUtils.saveAll(university, user.UserService.getInstance());
+            log.info("Student {} added to group {}", newStudent.getId(), groupNumber);
             System.out.println("Student added to group " + groupNumber);
 
         } else {
+            log.error("Failed to add student: no default faculty/speciality available");
             System.out.println("Error: No department found to add student!");
         }
 
@@ -71,11 +76,13 @@ public class StudentService {
         targetGroup.getStudents().add(student);
         FileStorageUtils.updateStudentRecord(student);
         FileStorageUtils.saveAll(university, user.UserService.getInstance());
+        log.info("Student {} assigned to speciality {} group {}", student.getId(), speciality.getId(), groupNumber);
     }
 
     //method for moving student to another group
     public void moveStudentToGroup(Student student, int newGroupNumber) {
         if (student.getGroup() == newGroupNumber) {
+            log.warn("Student {} already in group {}", student.getId(), newGroupNumber);
             System.out.println("Student is already in group " + newGroupNumber);
             return;
         }
@@ -83,6 +90,7 @@ public class StudentService {
         Speciality studentSpec = student.getSpeciality();
 
         if (studentSpec == null) {
+            log.error("Cannot move student {}: speciality is null", student.getId());
             System.out.println("Error: Could not find speciality for student.");
             return;
         }
@@ -98,20 +106,24 @@ public class StudentService {
         student.setGroup(newGroupNumber);
         FileStorageUtils.saveAll(university, user.UserService.getInstance());
 
+        log.info("Student {} moved from group {} to {}", student.getId(), (oldGroupObj != null ? oldGroupObj.getGroupNumber() : -1), newGroupNumber);
         System.out.println("Student moved from group " + (oldGroupObj != null ? oldGroupObj.getGroupNumber() : "?") +
                 " to " + newGroupNumber);
     }
 
     public void moveStudentToSpeciality(Student student, Faculty newFaculty, Speciality newSpeciality, int newGroupNumber) {
         if (student == null || newFaculty == null || newSpeciality == null) {
+            log.error("Invalid transfer request: student/faculty/speciality is null");
             System.out.println("Error: Student, faculty and speciality must be provided.");
             return;
         }
         if (newGroupNumber <= 0) {
+            log.error("Invalid transfer request for student {}: group {} is not positive", student.getId(), newGroupNumber);
             System.out.println("Error: Group number must be greater than 0.");
             return;
         }
         if (!newFaculty.getSpeciality().contains(newSpeciality)) {
+            log.error("Invalid transfer request for student {}: speciality {} not in faculty {}", student.getId(), newSpeciality.getId(), newFaculty.getId());
             System.out.println("Error: Selected speciality does not belong to selected faculty.");
             return;
         }
@@ -163,6 +175,7 @@ public class StudentService {
         String from = (oldFaculty != null)
                 ? oldFaculty.getName() + " / " + oldSpeciality.getName() + " / group " + oldGroup.getGroupNumber()
                 : "unknown location";
+        log.info("Student {} transferred from {} to {} / {} / group {}", student.getId(), from, newFaculty.getName(), newSpeciality.getName(), newGroupNumber);
         System.out.println("Student " + student.getFullName() + " transferred from " + from +
                 " to " + newFaculty.getName() + " / " + newSpeciality.getName() + " / group " + newGroupNumber);
     }
@@ -179,8 +192,10 @@ public class StudentService {
 
         if (removed) {
             FileStorageUtils.saveAll(university, user.UserService.getInstance());
+            log.info("Student {} deleted from speciality {}", student.getId(), speciality.getId());
             System.out.println("Student " + student.getFullName() + " deleted successfully.");
         } else {
+            log.warn("Failed to delete student {} from speciality {}: not found", student.getId(), speciality.getId());
             System.out.println("Error: Student not found in any group of " + speciality.getName());
         }
     }
@@ -199,6 +214,7 @@ public class StudentService {
             }
         }
         if (allStudents.isEmpty()) {
+            log.info("No students found during getAllStudents");
             System.out.println("No students found!");
         }
         return allStudents;
@@ -234,6 +250,7 @@ public class StudentService {
             }
         }
         if (result.isEmpty()) {
+            log.info("No student found by full name query: {}", namePart);
             System.out.println("No student found by full name " + namePart);
         }
 
@@ -293,6 +310,7 @@ public class StudentService {
             }
         }
         if (result.isEmpty()) {
+            log.info("No student found on course {}", course);
             System.out.println("No student found on course " + course);
         }
         return result;
@@ -323,6 +341,7 @@ public class StudentService {
             }
         }
         if (result.isEmpty()){
+            log.info("No student found by id {}", id);
             System.out.println("No student found by id " + id);
         }
         return result;

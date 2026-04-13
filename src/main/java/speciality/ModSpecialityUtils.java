@@ -64,7 +64,7 @@ public class ModSpecialityUtils {
             return;
         }
         Faculty selectedFaculty = optFaculty.get();
-        String name = InputUtils.readLine(scanner, "Enter new Speciality name: ", false, false);
+        String name = InputUtils.readLine(scanner, "Enter new Speciality name: ", false, true);
         name = InputUtils.removeSpaces(name, false, true, true, true);
         specialityService.addNewSpeciality(name, selectedFaculty, userService);
         InputUtils.pause(scanner);
@@ -75,7 +75,7 @@ public class ModSpecialityUtils {
      */
     static void specialityRenameSpeciality(Scanner scanner, SpecialityService specialityService, Speciality selectedSpeciality,
                                            Faculty selectedFaculty, UserService userService) {
-        String editName = InputUtils.readLine(scanner, "Write new name for " + selectedSpeciality.getName() + ": ", false, false);
+        String editName = InputUtils.readLine(scanner, "Write new name for " + selectedSpeciality.getName() + ": ", false, true);
         editName = InputUtils.removeSpaces(editName, false, true, true, true);
         specialityService.editSpecialityName(selectedSpeciality, editName, selectedFaculty, userService);
 

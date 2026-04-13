@@ -126,7 +126,7 @@ public class ModFacultyUtils {
      * Add new Faculty
      */
     static void facultyAddFaculty(Scanner scanner, FacultyService facultyService, TeacherService teacherService, UserService userService) {
-        String name = InputUtils.readLine(scanner, "Enter new Faculty name: ", false, false);
+        String name = InputUtils.readLine(scanner, "Enter new Faculty name: ", false, true);
         name = InputUtils.removeSpaces(name, false, true, true, true);
 
         String generatedShort = generateShortName(name);
@@ -155,7 +155,7 @@ public class ModFacultyUtils {
      */
     static void facultyManageExistingFacultyRename(Scanner scanner, FacultyService facultyService, Faculty selectedFacultyToRename,
                                                    UserService userService) {
-        String newName = InputUtils.readLine(scanner, "Enter new Faculty name: ", false, false);
+        String newName = InputUtils.readLine(scanner, "Enter new Faculty name: ", false, true);
         newName = InputUtils.removeSpaces(newName, false, true, true, true);
         facultyService.editFacultyName(selectedFacultyToRename, newName, userService);
         InputUtils.pause(scanner);
@@ -166,7 +166,7 @@ public class ModFacultyUtils {
      */
     static void facultyManageExistingFacultyRenameShort(Scanner scanner, FacultyService facultyService, Faculty selectedFacultyToRename) {
         System.out.println("Current short name: " + selectedFacultyToRename.getShortName());
-        String newName = InputUtils.readLine(scanner, "Enter new Faculty short name: ", false, false);
+        String newName = InputUtils.readLine(scanner, "Enter new Faculty short name: ", false, true);
         newName = InputUtils.removeSpaces(newName, false, true, true, true);
         selectedFacultyToRename.setShortName(newName);
         System.out.println("Short name updated successfully!");

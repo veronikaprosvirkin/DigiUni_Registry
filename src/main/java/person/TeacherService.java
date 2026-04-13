@@ -3,12 +3,15 @@ package person;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import repository.TeacherRepository;
 import university.University;
 import department.Department;
 import utils.IdGenerator;
 
 public class TeacherService {
+    private static final Logger log = LoggerFactory.getLogger(TeacherService.class);
     private final TeacherRepository teacherRepository;
 
     public TeacherService(University university) {
@@ -19,11 +22,13 @@ public class TeacherService {
         Objects.requireNonNull(selectedDept, "Department cannot be null");
         Teacher newTeacher = new Teacher(IdGenerator.generateTeacherId(), name, surname, patronymic, position, selectedDept);
         teacherRepository.save(newTeacher);
+        log.info("Teacher {} created in department {}", newTeacher.getId(), selectedDept.getId());
     }
 
     public void addTeacher(Teacher teacher) {
         Objects.requireNonNull(teacher, "Teacher cannot be null");
         teacherRepository.save(teacher);
+        log.info("Teacher {} created", teacher.getId());
     }
 
     //** ===== SEARCH ===== **/
@@ -31,6 +36,7 @@ public class TeacherService {
     public List<Teacher> getAllTeachers() {
         List<Teacher> allTeachers = teacherRepository.findAll();
         if (allTeachers.isEmpty()) {
+            log.info("No teachers found during getAllTeachers");
             System.out.println("No teachers found!");
         }
         return allTeachers;
@@ -46,6 +52,7 @@ public class TeacherService {
             }
         }
         if (result.isEmpty()) {
+            log.info("No teacher found by name query: {}", namePart);
             System.out.println("No teacher found by name " + namePart);
         }
         return result;
@@ -60,6 +67,7 @@ public class TeacherService {
             result.add(teacher);
         }
         if (result.isEmpty()){
+            log.info("No teacher found by id {}", id);
             System.out.println("No teacher found by id " + id);
         }
         return result;
@@ -80,8 +88,10 @@ public class TeacherService {
 
         if (removed) {
             teacher.setDepartment(null);
+            log.info("Teacher {} deleted", teacher.getId());
             System.out.println("Teacher " + teacher.getFullName() + " deleted.");
         } else {
+            log.warn("Failed to delete teacher {}: not found", teacher.getId());
             System.out.println("Error: Teacher not found.");
         }
     }

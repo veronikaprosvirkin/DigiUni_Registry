@@ -22,16 +22,13 @@ public class Main {
 
         boolean hasSavedStructure = FileStorageUtils.hasSavedStructure();
 
-        if (hasSavedStructure) {
-            // Load persisted state first so startup does not overwrite student/teacher CSVs.
+        if (hasSavedStructure)
             FileStorageUtils.loadAll(university, facultyService, specialityService, userService);
-        }
 
         UniversityService universityService = new UniversityService(university);
 
-        if (!hasSavedStructure) {
+        if (!hasSavedStructure)
             FileStorageUtils.saveAll(university, userService, universityService);
-        }
 
         StudentService studentService = new StudentService(university);
         TeacherService teacherService = new TeacherService(university);
@@ -39,7 +36,6 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
 
-        //noinspection InfiniteLoopStatement
         while (true) {
             try {
                 //authorization logic

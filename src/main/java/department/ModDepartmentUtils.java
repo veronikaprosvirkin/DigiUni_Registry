@@ -89,7 +89,7 @@ public class ModDepartmentUtils {
             return;
         }
         Faculty selectedFaculty = optFaculty.get();
-        String name = InputUtils.readLine(scanner, "Enter new Department name: ", false, false);
+        String name = InputUtils.readLine(scanner, "Enter new Department name: ", false, true);
         name = InputUtils.removeSpaces(name, false, true, true, true);
         
         Teacher head = null;
@@ -117,7 +117,7 @@ public class ModDepartmentUtils {
      */
     static void departmentRenameDepartment(Scanner scanner, DepartmentService departmentService, Department selectedDept,
                                            Faculty selectedFaculty, UserService userService) {
-        String editName = InputUtils.readLine(scanner, "Write new name for " + selectedDept.getName() + ": ", false, false);
+        String editName = InputUtils.readLine(scanner, "Write new name for " + selectedDept.getName() + ": ", false, true);
         editName = InputUtils.removeSpaces(editName, false, true, true, true);
         departmentService.editDepartmentName(selectedDept, editName, selectedFaculty, userService);
 
