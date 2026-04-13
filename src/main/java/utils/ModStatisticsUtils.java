@@ -11,6 +11,7 @@ import person.TeacherService;
 import speciality.Speciality;
 import speciality.SpecialityService;
 import university.University;
+import utils.dto.FacultyStats;
 import utils.input.InputUtils;
 
 import java.util.*;
@@ -312,28 +313,31 @@ public class ModStatisticsUtils {
                     pause(scanner);
                 }
                 case 2 -> {
+                    List<FacultyStats> facultyStats = generateFacultyStats(university, studentService, teacherService);
+
                     System.out.println("Average departments per faculty: " + averageCount(university.getFaculties(), f -> f.getDepartments().size()));
 
                     System.out.println("Average specialities per faculty: " + averageCount(university.getFaculties(),
                             f -> f.getSpecialities().size()));
 
-                    System.out.println("Average students per faculty: " + averageCount(university.getFaculties(),
-                            f -> countStudents(f, studentService, Student::getFaculty)));
+                    System.out.println("Average students per faculty: " + averageCount(facultyStats,
+                            f -> Math.toIntExact(f.studentCount())));
 
-                    System.out.println("Average teachers per faculty: " + averageCount(university.getFaculties(),
-                            f -> f.getDepartments().stream().mapToInt(d -> teacherService.getTeachersByDepartment(d)
-                                    .size()).sum()));
+                    System.out.println("Average teachers per faculty: " + averageCount(facultyStats,
+                            f -> Math.toIntExact(f.teacherCount())));
                     pause(scanner);
                 }
                 case 3 ->{
-                    if (university.getFaculties().isEmpty()) {
+                    List<FacultyStats> facultyStats = generateFacultyStats(university, studentService, teacherService);
+                    if (facultyStats.isEmpty()) {
                         System.out.println("No faculties found to calculate rankings.");
                         return;
                     }
 
-                    printLeaders(faculties, f-> countStudents(f, studentService, Student::getFaculty),
-                            Faculty::getNameOfFaculty, title );
-                    printOutsiders(faculties, f-> countStudents(f, studentService, Student::getFaculty), Faculty::getNameOfFaculty);
+                    printLeaders(facultyStats, f -> Math.toIntExact(f.studentCount()),
+                            FacultyStats::facultyName, title);
+                    printOutsiders(facultyStats, f -> Math.toIntExact(f.studentCount()),
+                            FacultyStats::facultyName);
                     printLeaders(faculties, f -> countStudentsByFinancing(f, studentService, Student::getFaculty, StudyForm.CONTRACT),
                             Faculty::getNameOfFaculty, "Most popular faculties among contract students");
                     pause(scanner);
@@ -345,6 +349,20 @@ public class ModStatisticsUtils {
         }
 
     }
+
+    public static List<FacultyStats> generateFacultyStats(University university, StudentService studentService,
+                                                          TeacherService teacherService) {
+        return university.getFaculties().stream()
+                .map(faculty -> new FacultyStats(
+                        faculty.getNameOfFaculty(),
+                        countStudents(faculty, studentService, Student::getFaculty),
+                        faculty.getDepartments().stream()
+                                .mapToLong(department -> teacherService.getTeachersByDepartment(department).size())
+                                .sum()
+                ))
+                .toList();
+    }
+
     private static <T> double averageCount(List<T> items, ToIntFunction<T> numberExtractor){
         return items.stream().mapToInt(numberExtractor).average().orElse(0.0);
     }

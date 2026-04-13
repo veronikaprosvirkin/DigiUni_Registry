@@ -19,7 +19,7 @@ public class UserServiceTest {
     // Test successful login
     @Test
     void testLoginSuccess() {
-        boolean result = userService.loginSuccess("admin", "admin");
+        boolean result = userService.loginSuccess(new LoginCredentials("admin", "admin"));
         assertTrue(result);
         assertNotNull(userService.getCurrentUser());
         assertEquals("admin", userService.getCurrentUser().getUsername());
@@ -28,7 +28,7 @@ public class UserServiceTest {
     // Test failed login
     @Test
     void testLoginFail() {
-        boolean result = userService.loginSuccess("admin", "wrongpass");
+        boolean result = userService.loginSuccess(new LoginCredentials("admin", "wrongpass"));
         assertFalse(result);
         assertNull(userService.getCurrentUser());
     }
@@ -36,7 +36,7 @@ public class UserServiceTest {
     // Test logout
     @Test
     void testLogout() {
-        userService.loginSuccess("user", "user");
+        userService.loginSuccess(new LoginCredentials("user", "user"));
         userService.logout();
         assertNull(userService.getCurrentUser());
     }

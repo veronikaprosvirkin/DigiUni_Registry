@@ -39,28 +39,34 @@ public class UserService {
     // logging in process
     public void login(Scanner scanner) {
         System.out.println("You are not logged in. Please log in first.");
-        String login = InputUtils.readLine(scanner, "Login: ", false, true);
-        String password = InputUtils.readLine(scanner, "Password: ", false, true);
+        LoginCredentials credentials = new LoginCredentials(
+                InputUtils.readLine(scanner, "Login: ", false, true),
+                InputUtils.readLine(scanner, "Password: ", false, true)
+        );
 
-        boolean isSuccess = loginSuccess(login, password);
+        boolean isSuccess = loginSuccess(credentials);
         if (isSuccess) {
-            log.info("Login successful for user {}", login);
-            System.out.println("Login successful! Hello " + login);
+            log.info("Login successful for user {}", credentials.username());
+            System.out.println("Login successful! Hello " + credentials.username());
         } else {
-            log.warn("Login failed for user {}", login);
+            log.warn("Login failed for user {}", credentials.username());
             System.out.println("Login failed. Please try again.");
         }
     }
 
-    // method for login
-    public boolean loginSuccess(String username, String password) {
+    public boolean loginSuccess(LoginCredentials credentials) {
         for (User user : users) {
-            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+            if (user.getUsername().equals(credentials.username()) && user.getPassword().equals(credentials.password())) {
                 currentUser = user;
                 return true;
             }
         }
         return false;
+    }
+
+    // method kept for compatibility with existing callers/tests
+    public boolean loginSuccess(String username, String password) {
+        return loginSuccess(new LoginCredentials(username, password));
     }
 
     public List<User> getAllUsers() {
@@ -126,4 +132,3 @@ public class UserService {
         System.out.println("User not found!");
     }
 }
-
