@@ -42,4 +42,5 @@ public final class Speciality implements NamedEntity {
     public String getDisplayInfo() {
         return "[Code: " + this.id + "] " + this.nameOfSpeciality;
     }
+
 }

@@ -3,6 +3,7 @@ package department;
 import java.util.List;
 import java.util.Scanner;
 
+import speciality.Speciality;
 import user.UserService;
 import utils.input.InputUtils;
 import department.Department;
@@ -23,7 +24,7 @@ public class ModDepartmentUtils {
         System.out.println("2. Manage existing Department");
         System.out.println("3. Show detail info of Department");
         System.out.println("0. Back");
-        int action = InputUtils.readInt(scanner, "> ", 0, 2);
+        int action = InputUtils.readInt(scanner, "> ", 0, 3);
 
         if (action == 1) { // add a new department
             ModDepartmentUtils.departmentAddDepartment(scanner, departmentService, facultyService, teacherService, userService);
@@ -89,7 +90,22 @@ public class ModDepartmentUtils {
                 System.out.println("Department wasn't chosen or found");
                 return;
             }
-            
+            Department selectedDept = optDept.get();
+            ModEntitiesUtils.printDetailedInfo(selectedDept);
+            long teachersCount = teacherService.getTeachersByDepartment(selectedDept).size();
+            System.out.println("Active Teachers: " + teachersCount);
+
+            System.out.println(" ---- Associated Specialities: ----");
+            if (selectedFaculty.getSpecialities() == null || selectedFaculty.getSpecialities().isEmpty()) {
+                System.out.println("No specialities associated with this faculty.");
+            } else {
+                selectedFaculty.getSpecialities().forEach(s ->
+                        System.out.println("  * " + s.getNameOfSpeciality())
+                );
+            }
+
+            System.out.println("=========================================\n");
+             InputUtils.pause(scanner);
         }
     }
     /**
