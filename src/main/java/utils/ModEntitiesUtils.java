@@ -1,8 +1,11 @@
 package utils;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
+
+import utils.annotations.DetailDisplay;
 import utils.input.InputUtils;
 import person.Student;
 import person.Teacher;
@@ -126,5 +129,41 @@ public class ModEntitiesUtils {
             System.out.println("Operation cancelled.");
         }
         InputUtils.pause(scanner);
+    }
+    public static void printDetailedInfo(Object entity) {
+        if (entity == null) return;
+
+        Class<?> clazz = entity.getClass();
+        Field[] fields = clazz.getDeclaredFields();
+
+        System.out.println("\n=========================================");
+        System.out.println("   DETAILED INFORMATION (" + clazz.getSimpleName().toUpperCase() + ")");
+        System.out.println("=========================================");
+
+        boolean found = false;
+        for (Field field : fields) {
+            if (field.isAnnotationPresent(DetailDisplay.class)) {
+                found = true;
+                DetailDisplay annotation = field.getAnnotation(DetailDisplay.class);
+                field.setAccessible(true);
+                try {
+                    Object value = field.get(entity);
+                    String displayValue = "N/A";
+
+                    if (value != null) {
+                        displayValue = value.toString();
+                    }
+                    System.out.printf("%-20s : %s%n", annotation.label(), displayValue);
+
+                } catch (IllegalAccessException e) {
+                    System.out.println("Error accessing field: " + field.getName());
+                }
+            }
+        }
+
+        if (!found) {
+            System.out.println("No annotated fields found for display.");
+        }
+        System.out.println("=========================================\n");
     }
 }

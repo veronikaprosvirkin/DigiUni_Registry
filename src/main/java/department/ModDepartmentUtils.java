@@ -21,6 +21,7 @@ public class ModDepartmentUtils {
     public static void showDepartmentMenu(Scanner scanner, DepartmentService departmentService, FacultyService facultyService, TeacherService teacherService, UserService userService) {
         System.out.println("1. Add Department");
         System.out.println("2. Manage existing Department");
+        System.out.println("3. Show detail info of Department");
         System.out.println("0. Back");
         int action = InputUtils.readInt(scanner, "> ", 0, 2);
 
@@ -75,6 +76,20 @@ public class ModDepartmentUtils {
             } else if (workWithDepartment == 5) { // change location
                 ModDepartmentUtils.departmentChangeLocation(scanner, departmentService, selectedDept,userService );
             }
+        } else if (action == 3) { // show detail info of department
+            java.util.Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty");
+            if (optFaculty.isEmpty()) {
+                System.out.println("Faculty wasn't chosen or found");
+                return;
+            }
+            Faculty selectedFaculty = optFaculty.get();
+
+            java.util.Optional<Department> optDept = ModEntitiesUtils.selectEntity(scanner, selectedFaculty.getDepartments(), "Department");
+            if (optDept.isEmpty()) {
+                System.out.println("Department wasn't chosen or found");
+                return;
+            }
+            
         }
     }
     /**

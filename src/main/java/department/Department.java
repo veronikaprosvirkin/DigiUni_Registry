@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import java.util.ArrayList;
 import java.util.List;
 import person.Teacher;
+import utils.annotations.DetailDisplay;
 import utils.namedEntity.NamedEntity;
 
 // Department entity
@@ -12,9 +13,13 @@ import utils.namedEntity.NamedEntity;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public final class Department implements NamedEntity {
     @EqualsAndHashCode.Include
+    @DetailDisplay(label = "Department Code")
     private String id;
+    @DetailDisplay(label = "Department Name")
     private String nameOfDepartment;
+    @DetailDisplay(label = "Head of Department")
     private Teacher head;
+    @DetailDisplay(label = "Location")
     private String location;
     private List<Teacher> teachers = new ArrayList<>();
 
