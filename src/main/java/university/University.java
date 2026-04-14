@@ -6,7 +6,7 @@ import faculty.Faculty;
 
 public class University {
     private List<Faculty> faculties = new ArrayList<>();
-    private final UniversityInfo info;
+    private  UniversityInfo info;
 
     public University() {
         this(new UniversityInfo(
@@ -47,5 +47,9 @@ public class University {
 
     public String getUniversityAddress() {
         return info.address();
+    }
+
+    public void setInfo(UniversityInfo universityInfo) {
+        this.info = universityInfo;
     }
 }
