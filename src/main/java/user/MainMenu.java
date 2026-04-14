@@ -8,6 +8,7 @@ import department.Department;
 import speciality.Speciality;
 import university.University;
 import university.UniversityService;
+import university.ModUniversityUtils; // Додано імпорт для університету
 import person.StudentService;
 import person.TeacherService;
 import faculty.FacultyService;
@@ -24,8 +25,6 @@ import speciality.ModSpecialityUtils;
 import department.ModDepartmentUtils;
 import faculty.Faculty;
 
-import javax.swing.text.html.Option;
-
 public class MainMenu {
 
     public static void showMenu(UniversityService universityService, StudentService studentService,
@@ -40,22 +39,23 @@ public class MainMenu {
         System.out.println("\n--- DigiUni (Main Menu) ---");
         System.out.println("Role: " + currentUser.getRole() + " | Username: " + currentUser.getUsername());
 
-        System.out.println("1. " + (canWrite ? "Work with Faculties" : "Show Faculties"));
-        System.out.println("2. " + (canWrite ? "Work with Departments" : "Show Departments"));
-        System.out.println("3. " + (canWrite ? "Work with Specialities" : "Show Specialities"));
+        System.out.println("1. " + (isAdmin ? "Work with University" : "Show University Profile"));
+        System.out.println("2. " + (canWrite ? "Work with Faculties" : "Show Faculties"));
+        System.out.println("3. " + (canWrite ? "Work with Departments" : "Show Departments"));
+        System.out.println("4. " + (canWrite ? "Work with Specialities" : "Show Specialities"));
 
         if (canWrite) {
-            System.out.println("4. Work with Students");
-            System.out.println("5. Work with Teachers");
-            System.out.println("6. Search");
-            System.out.println("7. University Statistics");
+            System.out.println("5. Work with Students");
+            System.out.println("6. Work with Teachers");
+            System.out.println("7. Search");
+            System.out.println("8. University Statistics");
         } else {
-            System.out.println("4. Search Students and Teachers");
-            System.out.println("5. University Statistics");
+            System.out.println("5. Search Students and Teachers");
+            System.out.println("6. University Statistics");
         }
 
         if (isAdmin) {
-            System.out.println("8. Work with Users");
+            System.out.println("9. Work with Users");
         }
 
         System.out.println("0. Log out");
@@ -65,8 +65,16 @@ public class MainMenu {
 
         switch (choice) {
             case "1" -> {
+
+                if (isAdmin) {
+                    ModUniversityUtils.editUniversityMenu(university, scanner);
+                } else {
+                    ModUniversityUtils.showUniversityProfile(university, scanner);
+                }
+            }
+            case "2" -> {
                 if (canWrite) {
-                    ModFacultyUtils.showFacultiesMenu(scanner, facultyService, teacherService, currentUser, userService,  studentService);
+                    ModFacultyUtils.showFacultiesMenu(scanner, facultyService, teacherService, currentUser, userService, studentService);
                 } else {
                     ModEntitiesUtils.showAllEntity(scanner, faculties, "Faculty", false);
 
@@ -83,7 +91,7 @@ public class MainMenu {
                     }
                 }
             }
-            case "2" -> {
+            case "3" -> {
                 if (canWrite) {
                     ModDepartmentUtils.showDepartmentMenu(scanner, departmentService, facultyService, teacherService, userService);
                 } else {
@@ -107,28 +115,28 @@ public class MainMenu {
                     }
                 }
             }
-            case "3" -> {
+            case "4" -> {
                 if (canWrite) {
                     ModSpecialityUtils.showSpecialityMenu(scanner, specialityService, facultyService, userService, studentService);
                 } else {
                     Optional<Faculty> optFaculty2 = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty");
                     if (optFaculty2.isEmpty()) {
                         System.out.println("Faculty wasn't chosen or found");
-                        return;
+                        break;
                     }
                     Faculty selectedFaculty = optFaculty2.get();
-                    ModEntitiesUtils.showAllEntity(scanner, optFaculty2.get().getSpeciality(), "Speciality", false);
-                    int options = InputUtils.readInt(scanner, "Press the number to see speciality details or 0 to return: ", 0, optFaculty2.get().getSpeciality().size());
+                    ModEntitiesUtils.showAllEntity(scanner, selectedFaculty.getSpeciality(), "Speciality", false);
+                    int options = InputUtils.readInt(scanner, "Press the number to see speciality details or 0 to return: ", 0, selectedFaculty.getSpeciality().size());
                     if (options == 0) {
                         break;
                     } else {
-                        Speciality selectedSpec = optFaculty2.get().getSpeciality().get(options - 1);
+                        Speciality selectedSpec = selectedFaculty.getSpeciality().get(options - 1);
                         ModSpecialityUtils.showSpecialityDetails(selectedSpec, studentService);
                         InputUtils.pause(scanner);
                     }
                 }
             }
-            case "4" -> {
+            case "5" -> {
                 if (canWrite) {
                     ModStudentUtils.showStudentMenu(scanner, studentService, facultyService, userService, true, university);
                 } else {
@@ -142,14 +150,14 @@ public class MainMenu {
                     }
                 }
             }
-            case "5" -> {
+            case "6" -> {
                 if (canWrite) {
                     ModTeacherUtils.showTeacherMenu(scanner, teacherService, facultyService, userService, true, university);
                 } else {
                     ModStatisticsUtils.showStatisticsMenu(scanner, university, studentService, teacherService, specialityService, faculties);
                 }
             }
-            case "6" -> {
+            case "7" -> {
                 if (canWrite) {
                     System.out.println("1. Find Student");
                     System.out.println("2. Find Teacher");
@@ -163,15 +171,14 @@ public class MainMenu {
                     System.out.println("Invalid choice.");
                 }
             }
-            case "7" ->{
+            case "8" -> {
                 if (canWrite) {
                     ModStatisticsUtils.showStatisticsMenu(scanner, university, studentService, teacherService, specialityService, faculties);
                 } else {
                     System.out.println("Invalid choice.");
                 }
-
             }
-            case "8" -> {
+            case "9" -> {
                 if (isAdmin) {
                     ModUserUtils.showUserMenu(scanner, userService, university, universityService);
                 } else {
@@ -182,7 +189,7 @@ public class MainMenu {
                 FileStorageUtils.saveAll(university, userService);
                 userService.logout();
             }
-            default -> System.out.println("Invalid.");
+            default -> System.out.println("Invalid choice. Please try again.");
         }
     }
 }
