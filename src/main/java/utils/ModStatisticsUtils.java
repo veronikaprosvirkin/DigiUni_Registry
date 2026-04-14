@@ -188,8 +188,8 @@ public class ModStatisticsUtils {
                                 .forEach((course, count) -> {
 
                                     int numberOfStudents = count.intValue();
-                                    String bar = "█".repeat(numberOfStudents/5);
-                                    System.out.printf("Course %d: %-3d students | %s%n", course, numberOfStudents, bar);
+                                    String bar = "█".repeat(numberOfStudents/15);
+                                    System.out.printf("Course %d: %-4d students | %s%n", course, numberOfStudents, bar);
                                 });
 
                         pause(scanner);
