@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import java.util.ArrayList;
 import java.util.List;
+
+import utils.annotations.DetailDisplay;
 import utils.namedEntity.NamedEntity;
 import speciality.Group;
 
@@ -12,7 +14,9 @@ import speciality.Group;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public final class Speciality implements NamedEntity {
     @EqualsAndHashCode.Include
+    @DetailDisplay(label = "Speciality Code")
     private String id;
+    @DetailDisplay(label = "Speciality Name")
     private String nameOfSpeciality;
     private List<Group> groups = new ArrayList<>();
 

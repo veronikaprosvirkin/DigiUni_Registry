@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.Scanner;
 
 import department.Department;
+import speciality.Speciality;
 import university.University;
 import university.UniversityService;
 import person.StudentService;
@@ -108,14 +109,23 @@ public class MainMenu {
             }
             case "3" -> {
                 if (canWrite) {
-                    ModSpecialityUtils.showSpecialityMenu(scanner, specialityService, facultyService, userService);
+                    ModSpecialityUtils.showSpecialityMenu(scanner, specialityService, facultyService, userService, studentService);
                 } else {
-                    java.util.Optional<Faculty> optFaculty2 = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty");
+                    Optional<Faculty> optFaculty2 = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty");
                     if (optFaculty2.isEmpty()) {
                         System.out.println("Faculty wasn't chosen or found");
                         return;
                     }
+                    Faculty selectedFaculty = optFaculty2.get();
                     ModEntitiesUtils.showAllEntity(scanner, optFaculty2.get().getSpeciality(), "Speciality", false);
+                    int options = InputUtils.readInt(scanner, "Press the number to see speciality details or 0 to return: ", 0, optFaculty2.get().getSpeciality().size());
+                    if (options == 0) {
+                        break;
+                    } else {
+                        Speciality selectedSpec = optFaculty2.get().getSpeciality().get(options - 1);
+                        ModSpecialityUtils.showSpecialityDetails(selectedSpec, studentService);
+                        InputUtils.pause(scanner);
+                    }
                 }
             }
             case "4" -> {

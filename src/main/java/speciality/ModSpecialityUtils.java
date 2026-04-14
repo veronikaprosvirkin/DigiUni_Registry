@@ -1,7 +1,9 @@
 package speciality;
 
+import java.util.Optional;
 import java.util.Scanner;
 
+import person.StudentService;
 import user.UserService;
 import utils.input.InputUtils;
 import utils.ModEntitiesUtils;
@@ -15,9 +17,10 @@ public class ModSpecialityUtils {
     //! ======= WORK WITH SPECIALITY ===== //
     //show menu for speciality
     public static void showSpecialityMenu(Scanner scanner, SpecialityService specialityService, FacultyService facultyService,
-                                          UserService userService) {
+                                          UserService userService, StudentService studentService) {
         System.out.println("1. Add Speciality");
         System.out.println("2. Manage existing Speciality");
+        System.out.println("3. Show details of Speciality");
         System.out.println("0. Back");
         int action = InputUtils.readInt(scanner, "> ", 0, 2);
 
@@ -50,8 +53,60 @@ public class ModSpecialityUtils {
             } else if (workWithSpeciality == 2) {
                 ModSpecialityUtils.specialityDeleteSpeciality(scanner, specialityService, selectedSpeciality, selectedFaculty, userService);
             }
+        } else if (action == 3) {
+            showSpecialityDetails(scanner, facultyService, studentService);
         }
     }
+
+    private static void showSpecialityDetails(Scanner scanner, FacultyService facultyService, StudentService studentService) {
+        Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty");
+        if (optFaculty.isEmpty()) {
+            System.out.println("Faculty wasn't chosen or found");
+            return;
+        }
+        Faculty selectedFaculty = optFaculty.get();
+
+        Optional<Speciality> optSpec = ModEntitiesUtils.selectSpeciality(scanner, selectedFaculty);
+        if (optSpec.isEmpty()) {
+            System.out.println("Speciality wasn't chosen or found");
+            return;
+        }
+        Speciality selectedSpeciality = optSpec.get();
+        showSpecialityDetails(selectedSpeciality, studentService);
+    }
+
+    public static void showSpecialityDetails(Speciality selectedSpeciality, StudentService studentService) {
+        System.out.println("--- Speciality Details ---");
+        System.out.println("Name: " + selectedSpeciality.getName());
+        System.out.println("Groups:");
+        if (selectedSpeciality.getGroups().isEmpty()) {
+            System.out.println("No groups in this speciality.");
+        } else {
+            for (Group group : selectedSpeciality.getGroups()) {
+                System.out.println("- " + group.getGroupNumber());
+            }
+        }
+        System.out.println("\n--- Current Enrollment (1st Year) ---");
+
+        long firstYearBudget = studentService.getAllStudents().stream()
+                .filter(s -> s.getSpeciality() != null && s.getSpeciality().equals(selectedSpeciality))
+                .filter(s -> s.getCourse() == 1)
+                .filter(s -> s.getStudyForm() == person.StudyForm.BUDGET)
+                .count();
+
+        long firstYearContract = studentService.getAllStudents().stream()
+                .filter(s -> s.getSpeciality() != null && s.getSpeciality().equals(selectedSpeciality))
+                .filter(s -> s.getCourse() == 1)
+                .filter(s -> s.getStudyForm() == person.StudyForm.CONTRACT)
+                .count();
+
+        System.out.println(" - Budget places taken:   " + firstYearBudget);
+        System.out.println(" - Contract places taken: " + firstYearContract);
+
+        System.out.println("=========================================\n");
+
+    }
+
     /**
      * Add new Speciality
      */
