@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import java.util.ArrayList;
 import java.util.List;
+
+import utils.annotations.DetailDisplay;
 import utils.namedEntity.NamedEntity;
 import person.Teacher;
 import speciality.Speciality;
@@ -14,10 +16,15 @@ import department.Department;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public final class Faculty implements NamedEntity {
     @EqualsAndHashCode.Include
+    @DetailDisplay(label = "Faculty Code")
     private String id;
+    @DetailDisplay(label = "Faculty Name")
     private String nameOfFaculty;
+    @DetailDisplay(label = "Short Name")
     private String shortName;
+    @DetailDisplay(label = "Contacts")
     private String contacts;
+    @DetailDisplay(label = "Dean")
     private Teacher dean;
     private List<Speciality> speciality = new ArrayList<>();
     private List<Department> departments = new ArrayList<>();

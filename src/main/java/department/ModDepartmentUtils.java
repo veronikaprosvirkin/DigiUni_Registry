@@ -80,7 +80,6 @@ public class ModDepartmentUtils {
             }
         } else if (action == 3) { // show detail info of department
             showDepartmentDetails(scanner, facultyService, teacherService);
-
         }
     }
 

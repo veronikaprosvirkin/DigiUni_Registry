@@ -130,6 +130,7 @@ public class ModEntitiesUtils {
         }
         InputUtils.pause(scanner);
     }
+
     public static void printDetailedInfo(Object entity) {
         if (entity == null) return;
 

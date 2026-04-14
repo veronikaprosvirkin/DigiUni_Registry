@@ -1,6 +1,7 @@
 package user;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 import department.Department;
@@ -21,6 +22,8 @@ import faculty.ModFacultyUtils;
 import speciality.ModSpecialityUtils;
 import department.ModDepartmentUtils;
 import faculty.Faculty;
+
+import javax.swing.text.html.Option;
 
 public class MainMenu {
 
@@ -62,16 +65,28 @@ public class MainMenu {
         switch (choice) {
             case "1" -> {
                 if (canWrite) {
-                    ModFacultyUtils.showFacultiesMenu(scanner, facultyService, teacherService, currentUser, userService);
+                    ModFacultyUtils.showFacultiesMenu(scanner, facultyService, teacherService, currentUser, userService,  studentService);
                 } else {
-                    ModEntitiesUtils.showAllEntity(scanner, facultyService.getFaculties(), "Faculty", false);
+                    ModEntitiesUtils.showAllEntity(scanner, faculties, "Faculty", false);
+
+                    if (!faculties.isEmpty()) {
+                        int options = InputUtils.readInt(scanner, "Press the number to see faculty details or 0 to return: ", 0, faculties.size());
+                        if (options == 0) {
+                            break;
+                        } else {
+                            Faculty selectedFaculty = faculties.get(options - 1);
+                            ModFacultyUtils.showFacultiesDetails(selectedFaculty, studentService, scanner);
+                        }
+                    } else {
+                        break;
+                    }
                 }
             }
             case "2" -> {
                 if (canWrite) {
                     ModDepartmentUtils.showDepartmentMenu(scanner, departmentService, facultyService, teacherService, userService);
                 } else {
-                    java.util.Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty");
+                    Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty");
                     if (optFaculty.isEmpty()) {
                         System.out.println("Faculty wasn't chosen or found");
                         break;

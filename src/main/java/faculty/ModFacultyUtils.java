@@ -3,6 +3,7 @@ package faculty;
 import java.util.List;
 import java.util.Scanner;
 
+import person.StudentService;
 import user.Permission;
 import user.User;
 import user.UserService;
@@ -18,11 +19,12 @@ public class ModFacultyUtils {
     //! ======= WORK WITH FACULTY ===== //
 
     public static void showFacultiesMenu(Scanner scanner, FacultyService facultyService, TeacherService teacherService,
-                                         User currentUser, UserService userService) {
+                                         User currentUser, UserService userService, StudentService studentService){
         System.out.println("1. Add Faculty");
         System.out.println("2. Manage Existing Faculty");
+        System.out.println("3. Show details of Faculty");
         System.out.println("0. Back");
-        int action = InputUtils.readInt(scanner, "> ", 0, 2);
+        int action = InputUtils.readInt(scanner, "> ", 0, 3);
 
         if (action == 1) {
             ModFacultyUtils.facultyAddFaculty(scanner, facultyService, teacherService, userService);
@@ -56,7 +58,38 @@ public class ModFacultyUtils {
             } else if (workWithFaculty == 5) {
                 ModFacultyUtils.facultyManageExistingFacultyRenameShort(scanner, facultyService, selectedFaculty);
             }
+        } else if (action == 3) {
+            showFacultiesDetails(scanner, facultyService, studentService);
         }
+    }
+
+    private static void showFacultiesDetails(Scanner scanner, FacultyService facultyService, StudentService studentService) {
+        java.util.Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty");
+        if (optFaculty.isEmpty()) {
+            System.out.println("Faculty wasn't chosen or found");
+            return;
+        }
+        Faculty selectedFaculty = optFaculty.get();
+        showFacultiesDetails(selectedFaculty, studentService, scanner);
+
+    }
+    public static void showFacultiesDetails(Faculty selectedFaculty, StudentService studentService, Scanner scanner) {
+        ModEntitiesUtils.printDetailedInfo(selectedFaculty);
+        System.out.println("--- Faculty Structure & Size ---");
+
+        int deptCount = selectedFaculty.getDepartments().size();
+        System.out.println(" - Total Departments: " + deptCount);
+
+        int specCount = selectedFaculty.getSpeciality().size();
+        System.out.println(" - Total Specialities: " + specCount);
+
+        long studentCount = studentService.getAllStudents().stream()
+                .filter(s -> s.getFaculty().equals(selectedFaculty))
+                .count();
+        System.out.println(" - Total Students: " + studentCount);
+
+        System.out.println("=========================================\n");
+        InputUtils.pause(scanner);
     }
 
     private static Teacher selectTeacherFlow(Scanner scanner, TeacherService teacherService) {
