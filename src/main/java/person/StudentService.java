@@ -3,22 +3,25 @@ package person;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import repository.StudentRepository;
 import university.University;
 import faculty.Faculty;
 import speciality.Speciality;
 import speciality.Group;
-import utils.FileStorageUtils;
 import utils.IdGenerator;
 import utils.validation.EntityValidator;
 
 public class StudentService {
     private static final Logger log = LoggerFactory.getLogger(StudentService.class);
-    private University university;
+    private final University university;
+    private final StudentRepository studentRepository;
 
     public StudentService(University university) {
         this.university = university;
+        this.studentRepository = new StudentRepository(university);
     }
 
     public void addStudent(String name, String surname,String patronymic, LocalDate enrollmentDate, int groupNumber, StudyForm studyForm) {
@@ -27,19 +30,6 @@ public class StudentService {
 
             Faculty defaultFaculty = university.getFaculties().get(0);
             Speciality defaultSpec = defaultFaculty.getSpeciality().get(0);
-            Group targetGroup = null;
-
-            for (Group g : defaultSpec.getGroups()) {
-                if (g.getGroupNumber() == groupNumber) {
-                    targetGroup = g;
-                    break;
-                }
-            }
-
-            if (targetGroup == null) {
-                targetGroup = new Group(groupNumber);
-                defaultSpec.getGroups().add(targetGroup);
-            }
             Student newStudent;
             try {
                 newStudent = new Student(IdGenerator.generateStudentId(enrollmentDate.getYear()), name, surname, patronymic, enrollmentDate, groupNumber,
@@ -52,8 +42,7 @@ public class StudentService {
                 return;
             }
 
-            targetGroup.getStudents().add(newStudent);
-            FileStorageUtils.saveAll(university, user.UserService.getInstance());
+            studentRepository.save(newStudent);
             log.info("Student {} added to group {}", newStudent.getId(), groupNumber);
             System.out.println("Student added to group " + groupNumber);
 
@@ -65,22 +54,16 @@ public class StudentService {
     }
 
     public void addStudentToSpeciality(Student student, Speciality speciality, int groupNumber) {
-        Group targetGroup = null;
-        for (Group g : speciality.getGroups()) {
-            if (g.getGroupNumber() == groupNumber) {
-                targetGroup = g;
-                break;
-            }
-        }
+        Objects.requireNonNull(student, "Student cannot be null");
+        Objects.requireNonNull(speciality, "Speciality cannot be null");
 
-        if (targetGroup == null) {
-            targetGroup = new Group(groupNumber);
-            speciality.getGroups().add(targetGroup);
+        student.setSpeciality(speciality);
+        student.setGroup(groupNumber);
+        Faculty ownerFaculty = findFacultyBySpeciality(speciality);
+        if (ownerFaculty != null) {
+            student.setFaculty(ownerFaculty);
         }
-
-        targetGroup.getStudents().add(student);
-        FileStorageUtils.updateStudentRecord(student);
-        FileStorageUtils.saveAll(university, user.UserService.getInstance());
+        studentRepository.save(student);
         log.info("Student {} assigned to speciality {} group {}", student.getId(), speciality.getId(), groupNumber);
     }
 
@@ -99,20 +82,12 @@ public class StudentService {
             System.out.println("Error: Could not find speciality for student.");
             return;
         }
-        Group oldGroupObj = null;
-        for (Group g : studentSpec.getGroups()) {
-            if (g.getGroupNumber() == student.getGroup()) {
-                g.getStudents().remove(student);
-                oldGroupObj = g;
-                break;
-            }
-        }
-        addStudentToSpeciality(student, studentSpec, newGroupNumber);
+        int oldGroupNumber = student.getGroup();
         student.setGroup(newGroupNumber);
-        FileStorageUtils.saveAll(university, user.UserService.getInstance());
+        studentRepository.save(student);
 
-        log.info("Student {} moved from group {} to {}", student.getId(), (oldGroupObj != null ? oldGroupObj.getGroupNumber() : -1), newGroupNumber);
-        System.out.println("Student moved from group " + (oldGroupObj != null ? oldGroupObj.getGroupNumber() : "?") +
+        log.info("Student {} moved from group {} to {}", student.getId(), oldGroupNumber, newGroupNumber);
+        System.out.println("Student moved from group " + oldGroupNumber +
                 " to " + newGroupNumber);
     }
 
@@ -133,52 +108,17 @@ public class StudentService {
             return;
         }
 
-        Faculty oldFaculty = null;
-        Speciality oldSpeciality = null;
-        Group oldGroup = null;
+        Faculty oldFaculty = student.getFaculty();
+        Speciality oldSpeciality = student.getSpeciality();
+        int oldGroupNumber = student.getGroup();
 
-        for (Faculty faculty : university.getFaculties()) {
-            for (Speciality speciality : faculty.getSpeciality()) {
-                for (Group group : speciality.getGroups()) {
-                    boolean found = group.getStudents().stream().anyMatch(s -> s.getId().equals(student.getId()));
-                    if (found) {
-                        oldFaculty = faculty;
-                        oldSpeciality = speciality;
-                        oldGroup = group;
-                        group.getStudents().removeIf(s -> s.getId().equals(student.getId()));
-                        break;
-                    }
-                }
-                if (oldGroup != null) {
-                    break;
-                }
-            }
-            if (oldGroup != null) {
-                break;
-            }
-        }
-
-        Group targetGroup = null;
-        for (Group group : newSpeciality.getGroups()) {
-            if (group.getGroupNumber() == newGroupNumber) {
-                targetGroup = group;
-                break;
-            }
-        }
-        if (targetGroup == null) {
-            targetGroup = new Group(newGroupNumber);
-            newSpeciality.getGroups().add(targetGroup);
-        }
-
-        targetGroup.getStudents().add(student);
         student.setFaculty(newFaculty);
         student.setSpeciality(newSpeciality);
         student.setGroup(newGroupNumber);
+        studentRepository.save(student);
 
-        FileStorageUtils.saveAll(university, user.UserService.getInstance());
-
-        String from = (oldFaculty != null)
-                ? oldFaculty.getName() + " / " + oldSpeciality.getName() + " / group " + oldGroup.getGroupNumber()
+        String from = (oldFaculty != null && oldSpeciality != null)
+                ? oldFaculty.getName() + " / " + oldSpeciality.getName() + " / group " + oldGroupNumber
                 : "unknown location";
         log.info("Student {} transferred from {} to {} / {} / group {}", student.getId(), from, newFaculty.getName(), newSpeciality.getName(), newGroupNumber);
         System.out.println("Student " + student.getFullName() + " transferred from " + from +
@@ -187,21 +127,20 @@ public class StudentService {
 
     // delete student
     public void deleteStudent(Student student, Speciality speciality) {
-        boolean removed = false;
-        for (Group group : speciality.getGroups()) {
-            if (group.getStudents().remove(student)) {
-                removed = true;
-                break;
-            }
+        Objects.requireNonNull(student, "Student cannot be null");
+        @SuppressWarnings("unused") Speciality ignored = speciality;
+
+        boolean removed = studentRepository.findById(student.getId()) != null;
+        if (removed) {
+            studentRepository.delete(student.getId());
         }
 
         if (removed) {
-            FileStorageUtils.saveAll(university, user.UserService.getInstance());
-            log.info("Student {} deleted from speciality {}", student.getId(), speciality.getId());
+            log.info("Student {} deleted", student.getId());
             System.out.println("Student " + student.getFullName() + " deleted successfully.");
         } else {
-            log.warn("Failed to delete student {} from speciality {}: not found", student.getId(), speciality.getId());
-            System.out.println("Error: Student not found in any group of " + speciality.getName());
+            log.warn("Failed to delete student {}: not found", student.getId());
+            System.out.println("Error: Student not found.");
         }
     }
 
@@ -209,15 +148,7 @@ public class StudentService {
     //** ===== SEARCH ===== **/
     // search all students
     public List<Student> getAllStudents() {
-        List<Student> allStudents = new ArrayList<>();
-
-        for (Faculty faculty : university.getFaculties()) {
-            for (Speciality spec : faculty.getSpeciality()) {
-                for (Group gro : spec.getGroups()) {
-                    allStudents.addAll(gro.getStudents());
-                }
-            }
-        }
+        List<Student> allStudents = studentRepository.findAll();
         if (allStudents.isEmpty()) {
             log.info("No students found during getAllStudents");
             System.out.println("No students found!");
@@ -339,16 +270,23 @@ public class StudentService {
     // Find students by ID
     public List<Student> findStudentById(String id) {
         List<Student> result = new ArrayList<>();
-        for(Student s: getAllStudents()){
-            if (s.getId().equalsIgnoreCase(id)){
-                result.add(s);
-                break;
-            }
+        Student student = studentRepository.findById(id);
+        if (student != null) {
+            result.add(student);
         }
         if (result.isEmpty()){
             log.info("No student found by id {}", id);
             System.out.println("No student found by id " + id);
         }
         return result;
+    }
+
+    private Faculty findFacultyBySpeciality(Speciality speciality) {
+        for (Faculty faculty : university.getFaculties()) {
+            if (faculty.getSpeciality().contains(speciality)) {
+                return faculty;
+            }
+        }
+        return null;
     }
 }
