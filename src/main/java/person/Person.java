@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.AccessLevel;
 import utils.namedEntity.NamedEntity;
+import utils.validation.NotNull;
 import java.time.LocalDate;
 import java.time.Period;
 
@@ -16,7 +17,9 @@ import java.time.Period;
 public abstract sealed class Person implements NamedEntity permits Student, Teacher {
     @EqualsAndHashCode.Include
     protected String id;
+    @NotNull(message = "Name is required")
     protected String name;
+    @NotNull(message = "Surname is required")
     protected String surname;
     protected String patronymic;
     protected String email;

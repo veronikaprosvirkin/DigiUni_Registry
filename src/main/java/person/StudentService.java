@@ -11,6 +11,7 @@ import speciality.Speciality;
 import speciality.Group;
 import utils.FileStorageUtils;
 import utils.IdGenerator;
+import utils.validation.EntityValidator;
 
 public class StudentService {
     private static final Logger log = LoggerFactory.getLogger(StudentService.class);
@@ -21,8 +22,6 @@ public class StudentService {
     }
 
     public void addStudent(String name, String surname,String patronymic, LocalDate enrollmentDate, int groupNumber, StudyForm studyForm) {
-        if (groupNumber <= 0)
-            throw new IllegalArgumentException("Group number must be greater than 0.");
         if (!university.getFaculties().isEmpty() &&
                 !university.getFaculties().get(0).getSpeciality().isEmpty()) {
 
@@ -41,11 +40,17 @@ public class StudentService {
                 targetGroup = new Group(groupNumber);
                 defaultSpec.getGroups().add(targetGroup);
             }
-
-
-            Student newStudent = new Student(IdGenerator.generateStudentId(enrollmentDate.getYear()),name, surname, patronymic, enrollmentDate, groupNumber,
-                    defaultFaculty,
-                    defaultSpec, studyForm);
+            Student newStudent;
+            try {
+                newStudent = new Student(IdGenerator.generateStudentId(enrollmentDate.getYear()), name, surname, patronymic, enrollmentDate, groupNumber,
+                        defaultFaculty,
+                        defaultSpec, studyForm);
+                EntityValidator.validate(newStudent);
+            } catch (IllegalArgumentException e) {
+                log.error("Student validation failed: {}", e.getMessage());
+                System.out.println(e.getMessage());
+                return;
+            }
 
             targetGroup.getStudents().add(newStudent);
             FileStorageUtils.saveAll(university, user.UserService.getInstance());

@@ -9,6 +9,7 @@ import repository.TeacherRepository;
 import university.University;
 import department.Department;
 import utils.IdGenerator;
+import utils.validation.EntityValidator;
 
 public class TeacherService {
     private static final Logger log = LoggerFactory.getLogger(TeacherService.class);
@@ -21,12 +22,26 @@ public class TeacherService {
     public void addTeacher(String name, String surname, String patronymic, String position, Department selectedDept) {
         Objects.requireNonNull(selectedDept, "Department cannot be null");
         Teacher newTeacher = new Teacher(IdGenerator.generateTeacherId(), name, surname, patronymic, position, selectedDept);
+        try {
+            EntityValidator.validate(newTeacher);
+        } catch (IllegalArgumentException e) {
+            log.error("Teacher validation failed: {}", e.getMessage());
+            System.out.println(e.getMessage());
+            return;
+        }
         teacherRepository.save(newTeacher);
         log.info("Teacher {} created in department {}", newTeacher.getId(), selectedDept.getId());
     }
 
     public void addTeacher(Teacher teacher) {
         Objects.requireNonNull(teacher, "Teacher cannot be null");
+        try {
+            EntityValidator.validate(teacher);
+        } catch (IllegalArgumentException e) {
+            log.error("Teacher validation failed: {}", e.getMessage());
+            System.out.println(e.getMessage());
+            return;
+        }
         teacherRepository.save(teacher);
         log.info("Teacher {} created", teacher.getId());
     }

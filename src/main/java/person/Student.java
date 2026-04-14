@@ -5,12 +5,14 @@ import lombok.EqualsAndHashCode;
 import java.time.LocalDate;
 import speciality.Speciality;
 import faculty.Faculty;
+import utils.validation.MinValue;
 
 // Student entity
 @Data
 @EqualsAndHashCode(callSuper = true)
 public final class Student extends Person {
     private LocalDate enrollmentDate;
+    @MinValue(value = 1, message = "Group number must be at least 1")
     private int group;
     private Faculty faculty;
     private Speciality speciality;
