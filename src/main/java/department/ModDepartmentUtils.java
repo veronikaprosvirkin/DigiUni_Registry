@@ -1,6 +1,7 @@
 package department;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 import speciality.Speciality;
@@ -78,36 +79,46 @@ public class ModDepartmentUtils {
                 ModDepartmentUtils.departmentChangeLocation(scanner, departmentService, selectedDept,userService );
             }
         } else if (action == 3) { // show detail info of department
-            java.util.Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty");
-            if (optFaculty.isEmpty()) {
-                System.out.println("Faculty wasn't chosen or found");
-                return;
-            }
-            Faculty selectedFaculty = optFaculty.get();
+            showDepartmentDetails(scanner, facultyService, teacherService);
 
-            java.util.Optional<Department> optDept = ModEntitiesUtils.selectEntity(scanner, selectedFaculty.getDepartments(), "Department");
-            if (optDept.isEmpty()) {
-                System.out.println("Department wasn't chosen or found");
-                return;
-            }
-            Department selectedDept = optDept.get();
-            ModEntitiesUtils.printDetailedInfo(selectedDept);
-            long teachersCount = teacherService.getTeachersByDepartment(selectedDept).size();
-            System.out.println("Active Teachers: " + teachersCount);
-
-            System.out.println(" ---- Associated Specialities: ----");
-            if (selectedFaculty.getSpecialities() == null || selectedFaculty.getSpecialities().isEmpty()) {
-                System.out.println("No specialities associated with this faculty.");
-            } else {
-                selectedFaculty.getSpecialities().forEach(s ->
-                        System.out.println("  * " + s.getNameOfSpeciality())
-                );
-            }
-
-            System.out.println("=========================================\n");
-             InputUtils.pause(scanner);
         }
     }
+
+    public static void showDepartmentDetails(Scanner scanner, FacultyService facultyService, TeacherService teacherService) {
+        Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty");
+        if (optFaculty.isEmpty()) {
+            System.out.println("Faculty wasn't chosen or found");
+            return;
+        }
+        Faculty selectedFaculty = optFaculty.get();
+
+        Optional<Department> optDept = ModEntitiesUtils.selectEntity(scanner, selectedFaculty.getDepartments(), "Department");
+        if (optDept.isEmpty()) {
+            System.out.println("Department wasn't chosen or found");
+            return;
+        }
+        Department selectedDept = optDept.get();
+        showDepartmentDetails(selectedDept, selectedFaculty, teacherService);
+
+        System.out.println("=========================================\n");
+        InputUtils.pause(scanner);
+    }
+
+    public static void showDepartmentDetails(Department selectedDept, Faculty selectedFaculty, TeacherService teacherService) {
+        ModEntitiesUtils.printDetailedInfo(selectedDept);
+        long teachersCount = teacherService.getTeachersByDepartment(selectedDept).size();
+        System.out.println("Active Teachers: " + teachersCount);
+
+        System.out.println(" ---- Associated Specialities: ----");
+        if (selectedFaculty.getSpecialities() == null || selectedFaculty.getSpecialities().isEmpty()) {
+            System.out.println("No specialities associated with this faculty.");
+        } else {
+            selectedFaculty.getSpecialities().forEach(s ->
+                    System.out.println("  * " + s.getNameOfSpeciality())
+            );
+        }
+    }
+
     /**
      * Add new Department
      */

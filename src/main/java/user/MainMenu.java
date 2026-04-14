@@ -3,6 +3,7 @@ package user;
 import java.util.List;
 import java.util.Scanner;
 
+import department.Department;
 import university.University;
 import university.UniversityService;
 import person.StudentService;
@@ -73,9 +74,21 @@ public class MainMenu {
                     java.util.Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty");
                     if (optFaculty.isEmpty()) {
                         System.out.println("Faculty wasn't chosen or found");
-                        return;
+                        break;
                     }
-                    ModEntitiesUtils.showAllEntity(scanner, optFaculty.get().getDepartments(), "Department", false);
+                    Faculty selectedFaculty = optFaculty.get();
+
+                    ModEntitiesUtils.showAllEntity(scanner, selectedFaculty.getDepartments(), "Department", false);
+
+                    int options = InputUtils.readInt(scanner, "Press the number to see department details or 0 to return: ", 0, selectedFaculty.getDepartments().size());
+
+                    if (options == 0) {
+                        break;
+                    } else {
+                        Department selectedDept = selectedFaculty.getDepartments().get(options - 1);
+                        ModDepartmentUtils.showDepartmentDetails(selectedDept, selectedFaculty, teacherService);
+                        InputUtils.pause(scanner);
+                    }
                 }
             }
             case "3" -> {
