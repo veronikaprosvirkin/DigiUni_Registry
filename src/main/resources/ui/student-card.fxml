@@ -32,7 +32,7 @@
                 </VBox>
                 <VBox spacing="2">
                     <Label text="Patronymic" styleClass="label-caption"/>
-                    <Label text="" fx:id="patronymicValue" styleClass="value"/>
+                    <Label text="" fx:id="patronymicValue" styleClass="full-name"/>
                 </VBox>
             </HBox>
             <Label text="ID" styleClass="label-caption"/>

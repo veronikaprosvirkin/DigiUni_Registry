@@ -1,31 +1,33 @@
 .student-card {
-    -fx-background-color: linear-gradient(to bottom right, #f7f9fd, #ecf2ff);
+    -fx-background-color: linear-gradient(to top left, #fff1e5, #faf2eb);
     -fx-background-radius: 14;
-    -fx-border-color: #c7d5ff;
-    -fx-border-radius: 14;
+    -fx-border-color: #B5B5B3;
+    -fx-border-radius: 0, 0, 14, 14;
+    -fx-font-family: Serif;
 }
 
 .title {
     -fx-font-size: 18px;
     -fx-font-weight: 700;
-    -fx-text-fill: #223257;
+    -fx-text-fill: #373734;
 }
 
 .full-name {
     -fx-font-size: 16px;
     -fx-font-weight: 700;
-    -fx-text-fill: #0f1d3a;
+    -fx-text-fill: #b37347;
 }
 
 .label-caption {
     -fx-font-size: 11px;
-    -fx-text-fill: #5b6f9f;
+    -fx-text-fill: #7b7874;
     -fx-font-weight: 700;
 }
 
 .value {
     -fx-font-size: 13px;
-    -fx-text-fill: #1f2e52;
+    -fx-font-weight: 800;
+    -fx-text-fill: #373734;
 }
 
 .photo-frame {
@@ -33,21 +35,23 @@
     -fx-min-height: 124px;
     -fx-max-width: 104px;
     -fx-max-height: 124px;
-    -fx-border-color: #7f95ca;
+    -fx-border-color: #7e7d7c;
     -fx-border-width: 2px;
-    -fx-border-style: segments(8, 5, 8, 5) line-cap round;
-    -fx-background-color: #f3f6ff;
+    -fx-border-style: dashed;
+    -fx-border-dash-array: 8 5 8 5;
+    -fx-border-radius: 8;
+    -fx-background-color: #EFEEEC;
     -fx-background-radius: 8;
 }
 
 .photo-placeholder {
     -fx-font-size: 12px;
-    -fx-text-fill: #6b7ea8;
+    -fx-text-fill: #7B7A74;
     -fx-font-weight: 700;
 }
 
 .separator {
     -fx-min-height: 1px;
-    -fx-background-color: #d7e0f7;
+    -fx-background-color: #B5B5B3;
 }
 
