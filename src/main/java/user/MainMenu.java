@@ -65,9 +65,18 @@ public class MainMenu {
 
         switch (choice) {
             case "1" -> {
-
                 if (isAdmin) {
-                    ModUniversityUtils.editUniversityMenu(university, scanner);
+                    System.out.println("\n--- Work with University ---");
+                    System.out.println("1. Show University Profile");
+                    System.out.println("2. Edit University Settings");
+                    System.out.println("0. Back");
+
+                    int uniChoice = InputUtils.readInt(scanner, "> ", 0, 2);
+                    if (uniChoice == 1) {
+                        ModUniversityUtils.showUniversityProfile(university, scanner);
+                    } else if (uniChoice == 2) {
+                        ModUniversityUtils.editUniversityMenu(university, scanner);
+                    }
                 } else {
                     ModUniversityUtils.showUniversityProfile(university, scanner);
                 }
