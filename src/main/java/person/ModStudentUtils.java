@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import university.University;
 import user.UserService;
+import ui.StudentCardWindow;
 import utils.*;
 import utils.input.InputUtils;
 import utils.sort.SortUtils;
@@ -292,6 +293,7 @@ public class ModStudentUtils {
             } else {
                 studentToProcess = result.get(0);
             }
+            StudentCardWindow.open(studentToProcess);
             editStudentDetails(scanner, studentToProcess, studentService, university, userService);
             FileStorageUtils.saveAll(university, userService);
         }
@@ -307,41 +309,45 @@ public class ModStudentUtils {
             System.out.println("No student found by id " + id);
         } else {
             Student studentToProcess = result.get(0);
+            StudentCardWindow.open(studentToProcess);
             editStudentDetails(scanner, studentToProcess, studentService, university, userService);
             FileStorageUtils.saveAll(university, userService);
         }
     }
 
     public static void editStudentDetails(Scanner scanner, Student studentToProcess, StudentService studentService, University university, UserService userService) {
-        while (true) {
-            System.out.println("\nEditing student: " + studentToProcess.getFullName());
-            System.out.println("1. Change Surname");
-            System.out.println("2. Change Name");
-            System.out.println("3. Change Course");
-            System.out.println("4. Change Faculty/Speciality");
-            System.out.println("5. Change Group");
-            System.out.println("6. Change Study Form");
-            System.out.println("7. Change Status");
-            System.out.println("8. Change Email");
-            System.out.println("9. Change Phone Number");
-            System.out.println("10. Change Date of Birth");
-            System.out.println("0. Finish editing");
+        try {
+            while (true) {
+                System.out.println("\nEditing student: " + studentToProcess.getFullName());
+                System.out.println("1. Change Surname");
+                System.out.println("2. Change Name");
+                System.out.println("3. Change Course");
+                System.out.println("4. Change Faculty/Speciality");
+                System.out.println("5. Change Group");
+                System.out.println("6. Change Study Form");
+                System.out.println("7. Change Status");
+                System.out.println("8. Change Email");
+                System.out.println("9. Change Phone Number");
+                System.out.println("10. Change Date of Birth");
+                System.out.println("0. Finish editing");
 
-            int fieldChoice = InputUtils.readInt(scanner, "> ", 0, 10);
-            if (fieldChoice == 0) {
-                FileStorageUtils.saveAll(university, userService);
-                break;
-            }
+                int fieldChoice = InputUtils.readInt(scanner, "> ", 0, 10);
+                if (fieldChoice == 0) {
+                    FileStorageUtils.saveAll(university, userService);
+                    break;
+                }
 
-            switch (fieldChoice) {
+                switch (fieldChoice) {
                 case 1 -> {
                     String newSurname = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Enter new surname: ", false, true), true, false, false, false);
                     studentToProcess.setSurname(newSurname);
+                    StudentCardWindow.refresh(studentToProcess);
                     System.out.println("Surname updated!");
                 }
                 case 2 -> {
                     String newName = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Enter new name: ", false, true), true, false, false, false);
                     studentToProcess.setName(newName);
+                    StudentCardWindow.refresh(studentToProcess);
                     System.out.println("Name updated!");
                 }
                 case 3 -> {
@@ -349,6 +355,7 @@ public class ModStudentUtils {
                     int currentYear = LocalDate.now().getYear();
                     int newEnrollmentYear = currentYear - newCourse + 1;
                     studentToProcess.setEnrollmentDate(LocalDate.of(newEnrollmentYear, 9, 1));
+                    StudentCardWindow.refresh(studentToProcess);
                     System.out.println("Course updated!");
                 }
                 case 4 -> {
@@ -367,10 +374,12 @@ public class ModStudentUtils {
 
                     int newGroup = InputUtils.readInt(scanner, "Enter target group number: ", 1, Integer.MAX_VALUE);
                     studentService.moveStudentToSpeciality(studentToProcess, selectedFaculty, optSpeciality.get(), newGroup);
+                    StudentCardWindow.refresh(studentToProcess);
                 }
                 case 5 -> {
                     int newGroup = InputUtils.readInt(scanner, "Enter new group number: ", 1, Integer.MAX_VALUE);
                     studentService.moveStudentToGroup(studentToProcess, newGroup);
+                    StudentCardWindow.refresh(studentToProcess);
                 }
                 case 6 -> {
                     int formChoice = InputUtils.readInt(scanner, "Enter new study form (1 - BUDGET, 2 - CONTRACT): ", 1, 2);
@@ -384,6 +393,7 @@ public class ModStudentUtils {
                         System.out.println("Error: Student is already on this study form!");
                     } else {
                         studentToProcess.setStudyForm(newStudyForm);
+                        StudentCardWindow.refresh(studentToProcess);
                         System.out.println("Study form updated!");
                     }
 
@@ -404,6 +414,7 @@ public class ModStudentUtils {
                         System.out.println("Error: Student is already has this status!");
                     } else {
                         studentToProcess.setStatus(newStatus);
+                        StudentCardWindow.refresh(studentToProcess);
                         System.out.println("Status updated!");
                     }
 
@@ -412,12 +423,14 @@ public class ModStudentUtils {
                     String newEmail = InputUtils.readLine(scanner, "Enter new email: ", false, true);
                     newEmail = InputUtils.removeSpaces(newEmail, false, true, true, true);
                     studentToProcess.setEmail(newEmail);
+                    StudentCardWindow.refresh(studentToProcess);
                     System.out.println("Email updated!");
                 }
                 case 9 -> {
                     String newPhone = InputUtils.readLine(scanner, "Enter new phone number: ", false, true);
                     newPhone = InputUtils.removeSpaces(newPhone, false, true, true, true);
                     studentToProcess.setPhone(newPhone);
+                    StudentCardWindow.refresh(studentToProcess);
                     System.out.println("Phone number updated!");
                 }
                 case 10 -> {
@@ -425,10 +438,12 @@ public class ModStudentUtils {
                     newDob = InputUtils.removeSpaces(newDob, false, true, true, true);
                     if (newDob.isEmpty()) {
                         studentToProcess.setDateOfBirth(null);
+                        StudentCardWindow.refresh(studentToProcess);
                         System.out.println("Date of birth cleared!");
                     } else {
                         try {
                             studentToProcess.setDateOfBirth(LocalDate.parse(newDob));
+                            StudentCardWindow.refresh(studentToProcess);
                             System.out.println("Date of birth updated!");
                         } catch (Exception e) {
                             System.out.println("Invalid date format.");
@@ -436,6 +451,9 @@ public class ModStudentUtils {
                     }
                 }
                 }
+            }
+        } finally {
+            StudentCardWindow.close();
         }
 
     }

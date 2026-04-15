@@ -12,6 +12,7 @@ build/
 *.ipr
 *.xml
 !src/main/resources/log4j2.xml
+.logs/
 
 
 .DS_Store

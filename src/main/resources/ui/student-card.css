@@ -1,0 +1,53 @@
+.student-card {
+    -fx-background-color: linear-gradient(to bottom right, #f7f9fd, #ecf2ff);
+    -fx-background-radius: 14;
+    -fx-border-color: #c7d5ff;
+    -fx-border-radius: 14;
+}
+
+.title {
+    -fx-font-size: 18px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #223257;
+}
+
+.full-name {
+    -fx-font-size: 16px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #0f1d3a;
+}
+
+.label-caption {
+    -fx-font-size: 11px;
+    -fx-text-fill: #5b6f9f;
+    -fx-font-weight: 700;
+}
+
+.value {
+    -fx-font-size: 13px;
+    -fx-text-fill: #1f2e52;
+}
+
+.photo-frame {
+    -fx-min-width: 104px;
+    -fx-min-height: 124px;
+    -fx-max-width: 104px;
+    -fx-max-height: 124px;
+    -fx-border-color: #7f95ca;
+    -fx-border-width: 2px;
+    -fx-border-style: segments(8, 5, 8, 5) line-cap round;
+    -fx-background-color: #f3f6ff;
+    -fx-background-radius: 8;
+}
+
+.photo-placeholder {
+    -fx-font-size: 12px;
+    -fx-text-fill: #6b7ea8;
+    -fx-font-weight: 700;
+}
+
+.separator {
+    -fx-min-height: 1px;
+    -fx-background-color: #d7e0f7;
+}
+
