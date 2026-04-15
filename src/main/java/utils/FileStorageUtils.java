@@ -473,10 +473,14 @@ public class FileStorageUtils {
                 w.newLine();
                 Set<String> savedTeacherIds = new HashSet<>();
                 for (Faculty f : faculties) {
+
                     if (f.getDean() != null) {
                         writeTeacherRowIfNeeded(w, f.getDean(), "DEAN:" + f.getId(), savedTeacherIds);
                     }
                     for (Department d : f.getDepartments()) {
+                        if (d.getHead() != null) {
+                            writeTeacherRowIfNeeded(w, d.getHead(), d.getId(), savedTeacherIds);
+                        }
                         if (d.getTeachers() != null) {
                             for (Teacher t : d.getTeachers()) {
                                 writeTeacherRowIfNeeded(w, t, d.getId(), savedTeacherIds);

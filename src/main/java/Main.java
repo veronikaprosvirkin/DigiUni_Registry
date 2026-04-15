@@ -1,5 +1,6 @@
 import java.util.Scanner;
 
+import repository.TeacherRepository;
 import university.University;
 import university.UniversityService;
 import person.StudentService;
@@ -19,13 +20,14 @@ public class Main {
 
         FacultyService facultyService = new FacultyService(university);
         SpecialityService specialityService = new SpecialityService(university);
+        TeacherRepository teacherRepository = new TeacherRepository(university);
 
         boolean hasSavedStructure = FileStorageUtils.hasSavedStructure();
 
         if (hasSavedStructure)
             FileStorageUtils.loadAll(university, facultyService, specialityService, userService);
 
-        UniversityService universityService = new UniversityService(university);
+        UniversityService universityService = new UniversityService(university, teacherRepository);
 
         if (!hasSavedStructure)
             FileStorageUtils.saveAll(university, userService, universityService);
