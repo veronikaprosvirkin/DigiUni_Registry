@@ -1,78 +1,128 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
 
-<StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="ui.StudentCardController" styleClass="student-card">
+<AnchorPane prefHeight="400.0" prefWidth="800.0" styleClass="main-card" stylesheets="@student-card.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.StudentCardController">
 
-    <!-- Watermark Logo -->
-    <ImageView opacity="0.06" mouseTransparent="true" preserveRatio="true" fitWidth="300"
-               StackPane.alignment="BOTTOM_RIGHT" translateX="10" translateY="10">
-        <image>
-            <Image url="@images/kma_logo.png"/>
-        </image>
-    </ImageView>
+    <Rectangle height="400.0" opacity="0.04" width="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <fill>
+            <ImagePattern height="120" proportional="false" width="120">
+                <image>
+                    <Image url="@images/ukma_logo.png" />
+                </image>
+            </ImagePattern>
+        </fill>
+    </Rectangle>
 
-    <!-- Main Content -->
-    <VBox spacing="14">
+    <HBox layoutX="3.0" prefHeight="479.0" prefWidth="798.0" spacing="20.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="-1.0">
         <padding>
-            <Insets top="16" right="16" bottom="16" left="16"/>
+            <Insets bottom="20.0" left="30.0" right="30.0" top="20.0" />
         </padding>
 
-        <HBox spacing="16" alignment="CENTER_LEFT">
-            <StackPane styleClass="photo-frame">
-                <Label text="PHOTO" styleClass="photo-placeholder"/>
-            </StackPane>
+        <VBox prefHeight="418.0" prefWidth="337.0" spacing="15.0">
+            <HBox alignment="BOTTOM_LEFT" spacing="20.0">
+                <StackPane styleClass="photo-container">
+                    <Rectangle arcHeight="25.0" arcWidth="25.0" height="173.0" width="146.0">
+                        <fill>
+                            <ImagePattern>
+                                <image>
+                                    <Image url="@images/student_photo.png" />
+                                </image>
+                            </ImagePattern>
+                        </fill>
+                    </Rectangle>
+                </StackPane>
+                <ImageView fx:id="centerLogoView" fitHeight="183.0" fitWidth="157.0" opacity="0.6">
+                    <Image url="@images/ukma_logo.png" />
+                </ImageView>
+            </HBox>
 
-            <VBox spacing="6" HBox.hgrow="ALWAYS">
-                <Label text="Student card" styleClass="title"/>
-                <HBox spacing="14" alignment="CENTER_LEFT">
-                    <VBox spacing="2">
-                        <Label text="Name" styleClass="label-caption"/>
-                        <Label text="" fx:id="nameValue" styleClass="full-name"/>
-                    </VBox>
-                    <VBox spacing="2">
-                        <Label text="Surname" styleClass="label-caption"/>
-                        <Label text="" fx:id="surnameValue" styleClass="full-name"/>
-                    </VBox>
-                    <VBox spacing="2">
-                        <Label text="Patronymic" styleClass="label-caption"/>
-                        <Label text="" fx:id="patronymicValue" styleClass="full-name"/>
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="chip-container">
+                <StackPane styleClass="icon-bg, icon-sage">
+                    <ImageView fitHeight="24.0" fitWidth="24.0">
+                        <Image url="@images/icon_faculty.png" />
+                    </ImageView>
+                </StackPane>
+                <VBox alignment="CENTER_LEFT">
+                    <Label styleClass="chip-title" text="Faculty" />
+                    <Label fx:id="facultyLabel" styleClass="chip-value" text="Faculty of Informatics" />
+                </VBox>
+            </HBox>
+
+            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="chip-container">
+                <StackPane styleClass="icon-bg, icon-blue">
+                    <ImageView fitHeight="24.0" fitWidth="24.0">
+                        <Image url="@images/icon_speciality.png" />
+                    </ImageView>
+                </StackPane>
+                <VBox alignment="CENTER_LEFT">
+                    <Label styleClass="chip-title" text="Speciality" />
+                    <Label fx:id="specialityLabel" styleClass="chip-value" text="Software Engineering" />
+                </VBox>
+            </HBox>
+
+            <HBox alignment="CENTER_LEFT" prefHeight="56.0" prefWidth="324.0" spacing="12.0" styleClass="chip-container">
+                <StackPane styleClass="icon-bg, icon-terra">
+                    <ImageView fitHeight="24.0" fitWidth="24.0">
+                        <Image url="@images/icon_dob.png" />
+                    </ImageView>
+                </StackPane>
+                <VBox alignment="CENTER_LEFT">
+                    <Label styleClass="chip-title" text="Date of birth" />
+                    <Label fx:id="dobLabel" styleClass="chip-value" text="05.03.2008" />
+                </VBox>
+            </HBox>
+        </VBox>
+
+        <VBox prefWidth="420.0">
+
+            <VBox prefHeight="158.0" prefWidth="387.0" spacing="2.0">
+                <Label fx:id="nameLabel" styleClass="header-name" text="MYKHAILO" />
+                <Label fx:id="surnameLabel" styleClass="header-name" text="PULOV" />
+                <Label fx:id="patronymicLabel" styleClass="header-name" text="VOLODYMYROVYCH" />
+                <Label fx:id="idLabel" prefHeight="39.0" prefWidth="123.0" styleClass="id-text" text="ID: st20250046">
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+                </Label>
+            </VBox>
+
+            <Region prefHeight="30.0" />
+
+            <VBox maxWidth="393.0" prefHeight="200.0" prefWidth="381.0" spacing="12.0" styleClass="contacts-container">
+                <Label styleClass="contacts-header" text="Contacts" />
+
+                <HBox alignment="CENTER_LEFT" spacing="15.0">
+                    <StackPane styleClass="icon-bg, icon-terra">
+                        <ImageView fitHeight="20.0" fitWidth="20.0">
+                            <Image url="@images/icon_phone.png" />
+                        </ImageView>
+                    </StackPane>
+                    <VBox alignment="CENTER_LEFT">
+                        <Label styleClass="chip-title" text="Phone:" />
+                        <Label fx:id="phoneLabel" styleClass="chip-value" text="+380503809989" />
                     </VBox>
                 </HBox>
-                <Label text="ID" styleClass="label-caption"/>
-                <Label text="" fx:id="idValue" styleClass="value"/>
-            </VBox>
-        </HBox>
 
-        <Region VBox.vgrow="NEVER" styleClass="separator"/>
-
-        <HBox spacing="20" alignment="TOP_LEFT">
-            <VBox spacing="8" HBox.hgrow="ALWAYS">
-                <Label text="Faculty" styleClass="label-caption"/>
-                <Label text="" fx:id="facultyValue" styleClass="value"/>
-
-                <Label text="Speciality" styleClass="label-caption"/>
-                <Label text="" fx:id="specialityValue" styleClass="value"/>
-
-                <Label text="Date of birth" styleClass="label-caption"/>
-                <Label text="" fx:id="dobValue" styleClass="value"/>
+                <HBox alignment="CENTER_LEFT" spacing="15.0">
+                    <StackPane styleClass="icon-bg, icon-sand">
+                        <ImageView fitHeight="20.0" fitWidth="20.0">
+                            <Image url="@images/icon_email.png" />
+                        </ImageView>
+                    </StackPane>
+                    <VBox alignment="CENTER_LEFT">
+                        <Label styleClass="chip-title" text="Email:" />
+                        <Label fx:id="emailLabel" styleClass="chip-value" text="m.pulov@ukma.edu.ua" />
+                    </VBox>
+                </HBox>
             </VBox>
 
-            <VBox spacing="8" HBox.hgrow="ALWAYS">
-                <Label text="Phone" styleClass="label-caption"/>
-                <Label text="" fx:id="phoneValue" styleClass="value"/>
+        </VBox>
 
-                <Label text="Email" styleClass="label-caption"/>
-                <Label text="" fx:id="emailValue" styleClass="value"/>
-            </VBox>
-        </HBox>
-    </VBox>
-</StackPane>
+    </HBox>
+</AnchorPane>

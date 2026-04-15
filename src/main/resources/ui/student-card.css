@@ -1,57 +1,107 @@
-.student-card {
-    -fx-background-color: linear-gradient(to top left, #fff1e5, #faf2eb);
-    -fx-background-radius: 14;
-    -fx-border-color: #B5B5B3;
-    -fx-border-radius: 0, 0, 14, 14;
-    -fx-font-family: Serif;
+/* Load bundled Playfair Display fonts for JavaFX controls */
+@font-face {
+    font-family: "Playfair Display";
+    src: url("fonts/PlayfairDisplay-Regular.ttf");
 }
 
-.title {
-    -fx-font-size: 18px;
-    -fx-font-weight: 700;
-    -fx-text-fill: #373734;
+@font-face {
+    font-family: "Playfair Display Bold";
+    src: url("fonts/PlayfairDisplay-Bold.ttf");
 }
 
-.full-name {
+@font-face {
+    font-family: "Playfair Display ExtraBold";
+    src: url("fonts/PlayfairDisplay-ExtraBold.ttf");
+}
+
+/* Root bg */
+.main-card {
+    -fx-background-color: #F0E9D5;
+    -fx-border-color: #D8D0C5;
+    -fx-border-width: 1;
+}
+
+.top-bar-title {
+    -fx-font-family: "Arial";
+    -fx-font-weight: bold;
+    -fx-text-fill: #5C4A40;
+}
+
+/* Background pattern */
+.bg-pattern {
+    -fx-background-image: url('images/ukma_logo.png');
+    -fx-background-repeat: repeat;
+    -fx-background-size: 80px 80px;
+}
+
+/* Photo container */
+.photo-container {
+    -fx-background-color: #EBE5D9;
+    -fx-background-radius: 20;
+    -fx-padding: 6;
+    -fx-max-width: 149;
+    -fx-max-height: 149;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.35), 15, 0, 0, 5);
+}
+
+.header-name{
+    -fx-font-family: "Playfair Display ExtraBold";
+    -fx-font-size: 32px;
+    -fx-text-fill: #4A3525;
+}
+
+.id-text {
+    -fx-font-family: 'Arial';
     -fx-font-size: 16px;
-    -fx-font-weight: 700;
-    -fx-text-fill: #b37347;
+    -fx-text-fill: #4A3525;
+    -fx-padding: 2 0 0 0;
 }
 
-.label-caption {
-    -fx-font-size: 11px;
-    -fx-text-fill: #7b7874;
-    -fx-font-weight: 700;
+/* Chips */
+.chip-container {
+    -fx-background-color: #FAF5EB;
+    -fx-background-radius: 25;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.35), 15, 0, 0, 5);
+    -fx-padding: 8 15 8 8;
 }
 
-.value {
-    -fx-font-size: 13px;
-    -fx-font-weight: 800;
-    -fx-text-fill: #373734;
+.icon-bg {
+    -fx-background-radius: 50;
+    -fx-min-width: 40;
+    -fx-min-height: 40;
+    -fx-max-width: 40;
+    -fx-max-height: 40;
 }
 
-.photo-frame {
-    -fx-min-width: 104px;
-    -fx-min-height: 124px;
-    -fx-max-width: 104px;
-    -fx-max-height: 124px;
-    -fx-border-color: #7e7d7c;
-    -fx-border-width: 2px;
-    -fx-border-style: dashed;
-    -fx-border-dash-array: 8 5 8 5;
-    -fx-border-radius: 8;
-    -fx-background-color: #EFEEEC;
-    -fx-background-radius: 8;
-}
+/* Colors */
+.icon-sage { -fx-background-color: #A3B8A8; }
+.icon-blue { -fx-background-color: #8CA3C0; }
+.icon-terra { -fx-background-color: #E08E79; }
+.icon-sand { -fx-background-color: #DEB887; }
 
-.photo-placeholder {
+.chip-title {
+    -fx-font-family: 'Arial';
     -fx-font-size: 12px;
-    -fx-text-fill: #7B7A74;
-    -fx-font-weight: 700;
+    -fx-text-fill: #807368;
 }
 
-.separator {
-    -fx-min-height: 1px;
-    -fx-background-color: #B5B5B3;
+.chip-value {
+    -fx-font-family: 'Arial';
+    -fx-font-size: 14px;
+    -fx-text-fill: #2B201A;
 }
 
+/* Contacts */
+.contacts-container {
+    -fx-background-color: #F8F5EF;
+    -fx-background-radius: 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.35), 15, 0, 0, 5);
+    -fx-padding: 20;
+}
+
+.contacts-header {
+    -fx-font-family: "Playfair Display Bold";
+    -fx-font-size: 24px;
+    -fx-text-fill: #4A3525;
+    -fx-font-weight: normal;
+}
