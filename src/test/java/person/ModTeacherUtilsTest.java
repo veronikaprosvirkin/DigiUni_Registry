@@ -21,6 +21,7 @@ class ModTeacherUtilsTest {
     private University university;
     private FacultyService facultyService;
     private TeacherService teacherService;
+    private StudentService studentService;
     private UserService userService;
     private Department deptCs;
     private Teacher teacherCs;
@@ -30,6 +31,7 @@ class ModTeacherUtilsTest {
         university = new University();
         facultyService = new FacultyService(university);
         teacherService = new TeacherService(university);
+        studentService = new StudentService(university);
         userService = UserService.createTestInstance();
 
         Faculty faculty = new Faculty("F-1", "Faculty of Informatics", "FI", "contact", null);
@@ -54,18 +56,19 @@ class ModTeacherUtilsTest {
                 "John",             // name
                 "Doe",              // surname
                 "Smith",            // patronymic
-                "Assistant",        // position
+                "8",                // position (Assistant)
                 "",                 // email
                 "",                 // phone
                 "",                 // academic degree
                 "",                 // academic title
                 "",                 // employment date (blank)
                 "",                 // workload
+                "",                 // date of birth
                 ""                  // pause
         );
 
         // When
-        ModTeacherUtils.teacherAddTeacher(scanner, facultyService, teacherService, university, userService);
+        ModTeacherUtils.teacherAddTeacher(scanner, facultyService, teacherService, university, userService, studentService);
 
         // Then
         assertEquals(2, deptCs.getTeachers().size());
@@ -83,18 +86,19 @@ class ModTeacherUtilsTest {
                 "Alice",
                 "Brown",
                 "Pat",
-                "Assistant",
+                "8",                // position (Assistant)
                 "a@b.com",
                 "12345",
                 "PhD",
                 "Docent",
                 "not-a-date",       // invalid date
                 "not-a-number",     // invalid workload
+                "",                 // date of birth
                 ""                  // pause
         );
 
         // When
-        ModTeacherUtils.teacherAddTeacher(scanner, facultyService, teacherService, university, userService);
+        ModTeacherUtils.teacherAddTeacher(scanner, facultyService, teacherService, university, userService, studentService);
 
         // Then
         Teacher added = deptCs.getTeachers().get(1);
@@ -109,7 +113,7 @@ class ModTeacherUtilsTest {
 
         // When + Then
         assertThrows(EntityNotFoundException.class,
-                () -> ModTeacherUtils.teacherAddTeacher(scanner, facultyService, teacherService, university, userService));
+                () -> ModTeacherUtils.teacherAddTeacher(scanner, facultyService, teacherService, university, userService, studentService));
     }
 
     @Test
@@ -186,7 +190,7 @@ class ModTeacherUtilsTest {
         );
 
         // When
-        ModTeacherUtils.showTeacherMenu(scanner, teacherService, facultyService, userService, true, university);
+        ModTeacherUtils.showTeacherMenu(scanner, teacherService, facultyService, userService, true, university, studentService);
 
         // Then
         assertEquals(2, teacherService.getAllTeachers().size());
@@ -204,7 +208,7 @@ class ModTeacherUtilsTest {
         );
 
         // When
-        ModTeacherUtils.showTeacherMenu(scanner, teacherService, facultyService, userService, true, university);
+        ModTeacherUtils.showTeacherMenu(scanner, teacherService, facultyService, userService, true, university, studentService);
 
         // Then
         assertTrue(teacherService.findTeacherById("t0001").isEmpty());
@@ -218,15 +222,15 @@ class ModTeacherUtilsTest {
                 "2",                // by id
                 "t0001",            // id
                 "3",                // change position
-                "Senior Lecturer",  // new position
+                "6",                // new position (Senior Lecturer)
                 "0"                 // finish
         );
 
         // When
-        ModTeacherUtils.showTeacherMenu(scanner, teacherService, facultyService, userService, true, university);
+        ModTeacherUtils.showTeacherMenu(scanner, teacherService, facultyService, userService, true, university, studentService);
 
         // Then
-        assertEquals("Senior Lecturer", teacherCs.getPosition());
+        assertEquals(Position.SENIOR_LECTURER, teacherCs.getPosition());
     }
 
     @Test

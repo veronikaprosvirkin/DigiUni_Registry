@@ -238,26 +238,28 @@ public class ModStudentUtils {
 
     public static void editStudentDetails(Scanner scanner, Student studentToProcess, StudentService studentService,
                                           University university, UserService userService, TeacherService teacherService) {
-        while (true) {
-            System.out.println("\nEditing student: " + studentToProcess.getFullName());
-            System.out.println("1. Change Surname");
-            System.out.println("2. Change Name");
-            System.out.println("3. Change Course");
-            System.out.println("4. Change Faculty/Speciality");
-            System.out.println("5. Change Group");
-            System.out.println("6. Change Study Form");
-            System.out.println("7. Change Status");
-            System.out.println("8. Change Email");
-            System.out.println("9. Change Phone Number");
-            System.out.println("10. Change Date of Birth");
-            System.out.println("11. Change Gender");
-            System.out.println("0. Finish editing");
+        StudentCardWindow.open(studentToProcess);
+        try {
+            while (true) {
+                System.out.println("\nEditing student: " + studentToProcess.getFullName());
+                System.out.println("1. Change Surname");
+                System.out.println("2. Change Name");
+                System.out.println("3. Change Course");
+                System.out.println("4. Change Faculty/Speciality");
+                System.out.println("5. Change Group");
+                System.out.println("6. Change Study Form");
+                System.out.println("7. Change Status");
+                System.out.println("8. Change Email");
+                System.out.println("9. Change Phone Number");
+                System.out.println("10. Change Date of Birth");
+                System.out.println("11. Change Gender");
+                System.out.println("0. Finish editing");
 
-            int fieldChoice = InputUtils.readInt(scanner, "> ", 0, 11);
-            if (fieldChoice == 0) {
-                FileStorageUtils.saveAll(university, userService);
-                break;
-            }
+                int fieldChoice = InputUtils.readInt(scanner, "> ", 0, 11);
+                if (fieldChoice == 0) {
+                    FileStorageUtils.saveAll(university, userService);
+                    break;
+                }
 
                 switch (fieldChoice) {
                 case 1 -> {
@@ -355,6 +357,7 @@ public class ModStudentUtils {
                     );
                     studentToProcess.setEmail(newEmail);
                     FileStorageUtils.updateStudentRecord(studentToProcess);
+                    StudentCardWindow.refresh(studentToProcess);
                     System.out.println("Email successfully updated to: " + studentToProcess.getEmail());
                 }
                 case 9 -> {
@@ -384,6 +387,7 @@ public class ModStudentUtils {
                 case 11 -> {
                     Gender newGender = chooseGender(scanner);
                     studentToProcess.changeGender(newGender);
+                    StudentCardWindow.refresh(studentToProcess);
                     System.out.println("Gender updated to: " + studentToProcess.getGender());
                 }
                 }

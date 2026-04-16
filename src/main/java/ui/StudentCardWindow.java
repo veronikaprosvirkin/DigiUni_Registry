@@ -12,7 +12,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import person.Student;
-import javafx.scene.text.Font;
 
 public final class StudentCardWindow {
     private static final AtomicBoolean FX_INITIALIZED = new AtomicBoolean(false);

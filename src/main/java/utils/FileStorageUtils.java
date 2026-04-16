@@ -115,7 +115,7 @@ public class FileStorageUtils {
             try (BufferedWriter w = Files.newBufferedWriter(FACULTIES_FILE, StandardCharsets.UTF_8)) {
                 w.write(FACULTIES_HEADER);
                 w.newLine();
-                for (Faculty f : faculties) {
+                for (Faculty f : new ArrayList<>(faculties)) {
                     Teacher dean = f.getDean();
                     w.write(String.join(DELIMITER,
                             value(f.getId()),
@@ -127,7 +127,7 @@ public class FileStorageUtils {
                             value(dean == null ? null : dean.getSurname()),
                             value(dean == null ? null : dean.getPatronymic()),
                             value(dean == null || dean.getGender() == null ? null : dean.getGender().toString()),
-                            value(dean == null ? null : dean.getPosition().toString()),
+                            value(dean == null || dean.getPosition() == null ? null : dean.getPosition().toString()),
                             value(dean == null ? null : dean.getAcademicDegree()),
                             value(dean == null ? null : dean.getAcademicTitle()),
                             value(dean == null || dean.getEmploymentDate() == null ? null : dean.getEmploymentDate().toString()),
@@ -173,8 +173,8 @@ public class FileStorageUtils {
             try (BufferedWriter w = Files.newBufferedWriter(SPECIALITIES_FILE, StandardCharsets.UTF_8)) {
                 w.write(SPECIALITIES_HEADER);
                 w.newLine();
-                for (Faculty f : faculties) {
-                    for (Speciality s : f.getSpeciality()) {
+                for (Faculty f : new ArrayList<>(faculties)) {
+                    for (Speciality s : new ArrayList<>(f.getSpeciality())) {
                         w.write(String.join(DELIMITER, value(s.getId()), value(s.getNameOfSpeciality()), value(f.getId())));
                         w.newLine();
                     }
@@ -221,8 +221,8 @@ public class FileStorageUtils {
             try (BufferedWriter w = Files.newBufferedWriter(DEPARTMENTS_FILE, StandardCharsets.UTF_8)) {
                 w.write(DEPARTMENTS_HEADER);
                 w.newLine();
-                for (Faculty f : faculties) {
-                    for (Department d : f.getDepartments()) {
+                for (Faculty f : new ArrayList<>(faculties)) {
+                    for (Department d : new ArrayList<>(f.getDepartments())) {
                         Teacher head = d.getHead();
                         w.write(String.join(DELIMITER,
                                 value(d.getId()),
@@ -234,7 +234,7 @@ public class FileStorageUtils {
                                 value(head == null ? null : head.getSurname()),
                                 value(head == null ? null : head.getPatronymic()),
                                 value(head == null || head.getGender() == null ? null : head.getGender().toString()),
-                                value(head == null ? null : head.getPosition().toString()),
+                                value(head == null || head.getPosition() == null ? null : head.getPosition().toString()),
                                 value(head == null ? null : head.getAcademicDegree()),
                                 value(head == null ? null : head.getAcademicTitle()),
                                 value(head == null || head.getEmploymentDate() == null ? null : head.getEmploymentDate().toString()),
@@ -263,9 +263,12 @@ public class FileStorageUtils {
             String[] parts = line.split(DELIMITER, -1);
             if (parts.length > 0 && "id".equalsIgnoreCase(parts[0])) continue;
             if (parts.length >= 4) {
-                String id = parts[0];
-                String name = parts[1];
-                String facultyId = parts[2];
+                String id = parts[0] == null ? "" : parts[0].trim();
+                String name = parts[1] == null ? "" : parts[1].trim();
+                String facultyId = parts[2] == null ? "" : parts[2].trim();
+                if (id.isEmpty() || name.isEmpty() || facultyId.isEmpty()) {
+                    continue;
+                }
                 Department d = new Department(id, name);
                 d.setLocation(parts[3].isBlank() ? null : parts[3]);
                 d.setHead(restoreTeacher(parts, 4));
@@ -483,17 +486,17 @@ public class FileStorageUtils {
                 w.write(TEACHERS_HEADER);
                 w.newLine();
                 Set<String> savedTeacherIds = new HashSet<>();
-                for (Faculty f : faculties) {
+                for (Faculty f : new ArrayList<>(faculties)) {
 
                     if (f.getDean() != null) {
                         writeTeacherRowIfNeeded(w, f.getDean(), "DEAN:" + f.getId(), savedTeacherIds);
                     }
-                    for (Department d : f.getDepartments()) {
+                    for (Department d : new ArrayList<>(f.getDepartments())) {
                         if (d.getHead() != null) {
                             writeTeacherRowIfNeeded(w, d.getHead(), d.getId(), savedTeacherIds);
                         }
                         if (d.getTeachers() != null) {
-                            for (Teacher t : d.getTeachers()) {
+                            for (Teacher t : new ArrayList<>(d.getTeachers())) {
                                 writeTeacherRowIfNeeded(w, t, d.getId(), savedTeacherIds);
                             }
                         }
@@ -721,13 +724,13 @@ public class FileStorageUtils {
     private static List<Student> gatherAllStudents(University university) {
         List<Student> allStudents = new java.util.ArrayList<>();
         if (university.getFaculties() != null) {
-            for (Faculty faculty : university.getFaculties()) {
+            for (Faculty faculty : new ArrayList<>(university.getFaculties())) {
                 if (faculty.getSpeciality() != null) {
-                    for (Speciality speciality : faculty.getSpeciality()) {
+                    for (Speciality speciality : new ArrayList<>(faculty.getSpeciality())) {
                         if (speciality.getGroups() != null) {
-                            for (Group group : speciality.getGroups()) {
+                            for (Group group : new ArrayList<>(speciality.getGroups())) {
                                 if (group.getStudents() != null) {
-                                    allStudents.addAll(group.getStudents());
+                                    allStudents.addAll(new ArrayList<>(group.getStudents()));
                                 }
                             }
                         }

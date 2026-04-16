@@ -19,11 +19,9 @@
     -fx-background-color: linear-gradient(to bottom right, #F0E9D5, #e4cbb1);
 }
 
-/* Background pattern */
-.bg-pattern {
-    -fx-background-image: url('images/ukma_logo.png');
-    -fx-background-repeat: repeat;
-    -fx-background-size: 80px 80px;
+/* Bottom-right watermark under content */
+.watermark-logo {
+    -fx-effect: innershadow(three-pass-box, rgba(80, 67, 55, 0.14), 18, 0.0, 0, 0);
 }
 
 /* Photo container */

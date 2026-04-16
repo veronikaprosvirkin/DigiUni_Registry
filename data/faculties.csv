@@ -1,7 +1,7 @@
-id;name;shortName;contacts;deanId;deanName;deanSurname;deanPatronymic;deanGender;deanPosition;deanAcademicDegree;deanAcademicTitle;deanEmploymentDate;deanWorkload;deanEmail;deanPhone
-f001;Faculty of Informatics;FI;+38(044) 425-60-64;t0001;Andrii;Hlybovets;Mykolaiovych;Male;Dean;Doctor of Sciences;Professor;2005-09-01;40.0;a.hlybovets@digiuni.ukma.edu;+380501234567
-f002;Faculty of Economics;FE;+38(044) 425-60-59;t0006;Oleksandra;Humenna;Vitaliivna;Female;Dean;Doctor of Sciences;Professor;2000-09-01;40.0;o.humenna@digiuni.ukma.edu;+380631234568
-f003;Faculty of Humanities;FH;+38(044) 425-14-20;t0009;Dmytro;Mazin;Mykhailovych;Male;Dean;Candidate of Sciences;Associate Professor;2015-09-01;40.0;d.mazin@digiuni.ukma.edu;+380631234569
-f004;Faculty of Law;FL;+38(044) 425-60-73;t0016;Volodymyr;Venher;Mykolaiovych;Male;Dean;Candidate of Sciences;Associate Professor;2014-09-01;40.0;v.venher@digiuni.ukma.edu;+380501234572
-f005;Faculty of Natural Sciences;FNS;+38(044) 425-60-57;t0020;Anatolii;Bilous;Markovych;Male;Dean;Doctor of Sciences;Professor;2005-09-01;40.0;a.bilous@digiuni.ukma.edu;+380671234573
-f006;Faculty of Social Sciences and Social Technologies;FSSST;+38(044) 425-60-47;t0025;Svitlana;Oksamytna;Mykolaivna;Female;Dean;Doctor of Sciences;Professor;1998-09-01;40.0;s.oksamytna@digiuni.ukma.edu;+380501234575
+id;name;shortName;contacts;deanId;deanName;deanSurname;deanPatronymic;deanPosition;deanAcademicDegree;deanAcademicTitle;deanEmploymentDate;deanWorkload;deanEmail;deanPhone
+f001;Faculty of Informatics;FI;+38(044) 425-60-64;t0001;Andrii;Hlybovets;Mykolaiovych;Dean;;;;0.0;;
+f002;Faculty of Economics;FE;+38(044) 425-60-59;t0002;Oleksandra;Humenna;Vitaliivna;Dean;;;;0.0;;
+f003;Faculty of Humanities;FH;+38(044) 425-14-20;t0003;Dmytro;Mazin;Mykhailovych;Dean;;;;0.0;;
+f004;Faculty of Law;FL;+38(044) 425-60-73;t0004;Volodymyr;Venher;Mykolaiovych;Dean;;;;0.0;;
+f005;Faculty of Natural Sciences;FNS;+38(044) 425-60-57;t0005;Anatolii;Bilous;Markovych;Dean;;;;0.0;;
+f006;Faculty of Social Sciences and Social Technologies;FSSST;+38(044) 425-60-47;t0006;Svitlana;Oksamytna;Mykolaivna;Dean;;;;0.0;;

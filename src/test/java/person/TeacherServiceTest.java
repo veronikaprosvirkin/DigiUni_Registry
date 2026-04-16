@@ -30,15 +30,15 @@ public class TeacherServiceTest {
         university.getFaculties().add(faculty);
 
         // Add 2 teachers to CS, 1 to Math
-        teacherService.addTeacher("Tomasz", "Zieliński", "Markow", "Docent", deptCS);
-        teacherService.addTeacher("Anna", "Nowak", "Janivna", "Prof", deptCS);
-        teacherService.addTeacher("Jan", "Kowalski", "Petrov", "Asystent", deptMath);
+        teacherService.addTeacher("Tomasz", "Zieliński", "Markow", Position.ASSOCIATE_PROFESSOR, deptCS);
+        teacherService.addTeacher("Anna", "Nowak", "Janivna", Position.PROFESSOR, deptCS);
+        teacherService.addTeacher("Jan", "Kowalski", "Petrov", Position.ASSISTANT, deptMath);
     }
 
     // Test add teacher
     @Test
     void testAddTeacher() {
-        teacherService.addTeacher("Marek", "Wiśniewski", "Igorov", "Prof", deptCS);
+        teacherService.addTeacher("Marek", "Wiśniewski", "Igorov", Position.PROFESSOR, deptCS);
         List<Teacher> csTeachers = teacherService.getTeachersByDepartment(deptCS);
 
         // 2 initial + 1 new

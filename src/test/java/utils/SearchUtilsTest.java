@@ -12,6 +12,7 @@ import university.UniversityService;
 import person.StudentService;
 import person.TeacherService;
 import person.StudyForm;
+import person.Position;
 import user.UserService;
 import faculty.FacultyService;
 import faculty.Faculty;
@@ -28,19 +29,20 @@ public class SearchUtilsTest {
     @BeforeEach
     void setUp() {
         university = new University();
+        teacherRepository = new TeacherRepository(university);
         new UniversityService(university, teacherRepository);
         studentService = new StudentService(university);
         teacherService = new TeacherService(university);
         facultyService = new FacultyService(university);
-        UserService userService = UserService.createTestInstance();
+        UserService.createTestInstance();
 
         studentService.addStudent("Piotr", "Kamiński", "sm", LocalDate.of(2024, 9, 1), 101, StudyForm.BUDGET);
         studentService.addStudent("Piotr", "Lewandowski","sm", LocalDate.of(2025, 9, 1), 102, StudyForm.CONTRACT);
 
         Faculty f = university.getFaculties().get(0);
         Department d = f.getDepartments().get(0);
-        teacherService.addTeacher("Tomasz", "Zieliński","sm", "Docent", d);
-        teacherService.addTeacher("Tomasz", "Szymański","sm", "Prof", d);
+        teacherService.addTeacher("Tomasz", "Zieliński","sm", Position.ASSOCIATE_PROFESSOR, d);
+        teacherService.addTeacher("Tomasz", "Szymański","sm", Position.PROFESSOR, d);
     }
 
     // Mock scanner input

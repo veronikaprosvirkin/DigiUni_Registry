@@ -42,9 +42,12 @@ public class SortUtils {
 
         switch (choice) {
             case 1 -> teachers.sort(Comparator.comparing(Teacher::getFullName));
-            case 2 -> teachers.sort(Comparator.comparing(Teacher::getPosition)
+            case 2 -> teachers.sort(Comparator.comparing(Teacher::getPosition, Comparator.nullsLast(Comparator.naturalOrder()))
                     .thenComparing(Teacher::getFullName));
-            case 3 -> teachers.sort(Comparator.comparing((Teacher t) -> t.getDepartment().getName())
+            case 3 -> teachers.sort(Comparator.comparing((Teacher t) -> {
+                        Department department = t.getDepartment();
+                        return department == null ? null : department.getName();
+                    }, Comparator.nullsLast(Comparator.naturalOrder()))
                     .thenComparing(Teacher::getFullName));
         }
 

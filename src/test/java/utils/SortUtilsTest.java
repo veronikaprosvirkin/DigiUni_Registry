@@ -38,9 +38,9 @@ public class SortUtilsTest {
         dept1 = new Department("dp01","CS");
         dept2 = new Department("dp02","Math");
 
-        teachers.add(new Teacher("th1000","Marek", "Wiśniewski", "sm","Prof", dept2));
-        teachers.add(new Teacher("th1001","Ewa", "Wójcik", "sm", "Docent", dept1));
-        teachers.add(new Teacher("th1002","Adam", "Dąbrowski","sm", "Docent", dept1));
+        teachers.add(new Teacher("th1000","Marek", "Wiśniewski", "sm","Professor", dept2));
+        teachers.add(new Teacher("th1001","Ewa", "Wójcik", "sm", "Associate Professor", dept1));
+        teachers.add(new Teacher("th1002","Adam", "Dąbrowski","sm", "Associate Professor", dept1));
     }
 
     // Test student sort by name
@@ -68,9 +68,9 @@ public class SortUtilsTest {
     void testSortTeachersByPosition() {
         Scanner scanner = new Scanner("2\n");
         SortUtils.sortTeachers(teachers, scanner);
-        assertEquals("Dąbrowski Adam", teachers.get(0).getFullName());
-        assertEquals("Wójcik Ewa", teachers.get(1).getFullName());
-        assertEquals("Wiśniewski Marek", teachers.get(2).getFullName());
+        assertEquals("Wiśniewski Marek", teachers.get(0).getFullName());
+        assertEquals("Dąbrowski Adam", teachers.get(1).getFullName());
+        assertEquals("Wójcik Ewa", teachers.get(2).getFullName());
     }
 
     // Test teacher sort by department

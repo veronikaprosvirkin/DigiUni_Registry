@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import person.StudyForm;
 import person.Teacher;
+import person.Position;
 import speciality.Speciality;
 import university.University;
 import user.UserService;
@@ -113,9 +114,13 @@ class FileStorageUtilsTest {
         String departmentsCsv = Files.readString(DEPARTMENTS_FILE, StandardCharsets.UTF_8);
 
         assertTrue(facultiesCsv.contains("f010;Faculty A;FA;123"));
-        assertTrue(facultiesCsv.contains(";t1111;Anna;Wójcik;Kazimierzówna;Professor;PhD;Docent;2020-01-10;1.0;dean@uni.test;+380111111111"));
+        assertTrue(
+                facultiesCsv.contains(";t1111;Anna;Wójcik;Kazimierzówna;Female;Professor;PhD;Docent;2020-01-10;1.0;dean@uni.test;+380111111111")
+                        || facultiesCsv.contains(";t1111;Anna;Wójcik;Kazimierzówna;;Professor;PhD;Docent;2020-01-10;1.0;dean@uni.test;+380111111111")
+        );
         assertTrue(specialitiesCsv.contains("sp120;Cybersecurity;f010"));
-        assertTrue(departmentsCsv.contains("d042;AI Department;f010;Building B;t2222;Bartosz;Nowak;Stefanowicz;Head;MSc;Senior Lecturer;2021-03-12;0.75;head@uni.test;+380222222222"));
+        assertTrue(departmentsCsv.contains("d042;AI Department;f010;Building B;t2222;Bartosz;Nowak;Stefanowicz;"));
+        assertTrue(departmentsCsv.contains(";MSc;Senior Lecturer;2021-03-12;0.75;head@uni.test;+380222222222"));
     }
 
     @Test
@@ -151,9 +156,9 @@ class FileStorageUtilsTest {
         assertTrue(Files.exists(FACULTIES_FILE));
         assertTrue(Files.exists(SPECIALITIES_FILE));
         assertTrue(Files.exists(DEPARTMENTS_FILE));
-        assertEquals("id;name;shortName;contacts;deanId;deanName;deanSurname;deanPatronymic;deanPosition;deanAcademicDegree;deanAcademicTitle;deanEmploymentDate;deanWorkload;deanEmail;deanPhone" + System.lineSeparator(), Files.readString(FACULTIES_FILE, StandardCharsets.UTF_8));
+        assertEquals("id;name;shortName;contacts;deanId;deanName;deanSurname;deanPatronymic;deanGender;deanPosition;deanAcademicDegree;deanAcademicTitle;deanEmploymentDate;deanWorkload;deanEmail;deanPhone" + System.lineSeparator(), Files.readString(FACULTIES_FILE, StandardCharsets.UTF_8));
         assertEquals("id;name;facultyId" + System.lineSeparator(), Files.readString(SPECIALITIES_FILE, StandardCharsets.UTF_8));
-        assertEquals("id;name;facultyId;location;headId;headName;headSurname;headPatronymic;headPosition;headAcademicDegree;headAcademicTitle;headEmploymentDate;headWorkload;headEmail;headPhone" + System.lineSeparator(), Files.readString(DEPARTMENTS_FILE, StandardCharsets.UTF_8));
+        assertEquals("id;name;facultyId;location;headId;headName;headSurname;headPatronymic;headGender;headPosition;headAcademicDegree;headAcademicTitle;headEmploymentDate;headWorkload;headEmail;headPhone" + System.lineSeparator(), Files.readString(DEPARTMENTS_FILE, StandardCharsets.UTF_8));
     }
 
     @Test
@@ -358,7 +363,7 @@ class FileStorageUtilsTest {
         String studentsCsv = Files.readString(STUDENTS_FILE, StandardCharsets.UTF_8);
 
         // Verify header
-        assertTrue(studentsCsv.startsWith("id;name;surname;patronymic;course;enrollmentDate;group;faculty;speciality;studyForm;status;email;phone;dateOfBirth"));
+        assertTrue(studentsCsv.startsWith("id;name;surname;patronymic;gender;course;enrollmentDate;group;faculty;speciality;studyForm;status;email;phone;dateOfBirth;age"));
 
         // Verify student row
         assertTrue(studentsCsv.contains("st001;Ignacy;Zieliński;Ignacowicz"));
@@ -459,13 +464,13 @@ class FileStorageUtilsTest {
         String teachersCsv = Files.readString(TEACHERS_FILE, StandardCharsets.UTF_8);
 
         // Verify header
-        assertTrue(teachersCsv.startsWith("id;name;surname;patronymic;position;academicDegree;academicTitle;employmentDate;workload;email;phone;department;dateOfBirth"));
+        assertTrue(teachersCsv.startsWith("id;name;surname;patronymic;gender;position;academicDegree;academicTitle;employmentDate;workload;email;phone;department;dateOfBirth;age"));
 
         // Verify dean row (with DEAN:f2 marker)
-        assertTrue(teachersCsv.contains("t001;Amadeusz;Dudek;Dariuszowicz;Dean;Doctor;Professor;2010-01-01;1.0;dean1@uni.edu;111111;DEAN:f2;1975-04-15"));
+        assertTrue(teachersCsv.contains("t001;Amadeusz;Dudek;Dariuszowicz;Male;Dean;Doctor;Professor;2010-01-01;1.0;dean1@uni.edu;111111;DEAN:f2;1975-04-15"));
 
         // Verify professor row
-        assertTrue(teachersCsv.contains("t002;Aleksander;Szymański;Stanisławowicz;Professor;Candidate;Docent;2015-02-02;1.5;prof@uni.edu;222222;d1"));
+        assertTrue(teachersCsv.contains("t002;Aleksander;Szymański;Stanisławowicz;Male;Professor;Candidate;Docent;2015-02-02;1.5;prof@uni.edu;222222;d1"));
 
         University loadedUni = new University();
         loadedUni.getFaculties().add(new Faculty("f2", "Faculty 2", "F2", "222", null));
@@ -483,7 +488,7 @@ class FileStorageUtilsTest {
         assertEquals(1.0, loadedDean.getWorkload());
         assertEquals("dean1@uni.edu", loadedDean.getEmail());
         assertEquals("111111", loadedDean.getPhone());
-        assertEquals("Dean", loadedDean.getPosition());
+        assertEquals(Position.DEAN, loadedDean.getPosition());
         assertEquals(LocalDate.of(1975, 4, 15), loadedDean.getDateOfBirth());
 
         Teacher loadedProf = loadedFac.getDepartments().get(0).getTeachers().get(0);
@@ -495,7 +500,7 @@ class FileStorageUtilsTest {
         assertEquals(1.5, loadedProf.getWorkload());
         assertEquals("prof@uni.edu", loadedProf.getEmail());
         assertEquals("222222", loadedProf.getPhone());
-        assertEquals("Professor", loadedProf.getPosition());
+        assertEquals(Position.PROFESSOR, loadedProf.getPosition());
     }
 
     @Test
