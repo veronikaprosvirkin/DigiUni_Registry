@@ -19,7 +19,9 @@ public class ModTeacherUtils {
     //! ======= WORK WITH TEACHERS ===== //
 
     //show menu for teacher
-    public static void showTeacherMenu(Scanner scanner, TeacherService teacherService, FacultyService facultyService, UserService userService, boolean showId, University university) {
+    @SuppressWarnings("java:S107")
+    public static void showTeacherMenu(Scanner scanner, TeacherService teacherService, FacultyService facultyService,
+                                       UserService userService, boolean showId, University university, StudentService studentService) {
         System.out.println("1. Add Teacher");
         System.out.println("2. Delete Teacher");
         System.out.println("3. Edit information about teacher");
@@ -28,7 +30,7 @@ public class ModTeacherUtils {
         int workWithTeacher = InputUtils.readInt(scanner, "> ", 0, 4);
 
         if (workWithTeacher == 1) { //add teacher
-            ModTeacherUtils.teacherAddTeacher(scanner, facultyService, teacherService, university, userService);
+            ModTeacherUtils.teacherAddTeacher(scanner, facultyService, teacherService, university, userService, studentService);
         } else if (workWithTeacher == 2) { //delete teacher
             int deleteTeacher= ModEntitiesUtils.chooseDeleting(scanner);
             if (deleteTeacher == 1) {
@@ -92,7 +94,7 @@ public class ModTeacherUtils {
      * Add new Teacher
      */
     static void teacherAddTeacher(Scanner scanner, FacultyService facultyService, TeacherService teacherService,
-                                  University university, UserService userService) {
+                                  University university, UserService userService, StudentService studentService) {
         System.out.println("--- Add Teacher ---");
         java.util.Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties");
         if (optFaculty.isEmpty()) {
@@ -112,11 +114,24 @@ public class ModTeacherUtils {
         String name = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Name: ", false, false), true, false, false, false);
         String surname = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Surname: ", false, false), true, false, false, false);
         String patronymic = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Patronymic: ", false, false), true, false, false, false);
-        String position = InputUtils.readLine(scanner, "Position: ", false, true);
-        position = InputUtils.removeSpaces(position, false, true, true, true);
         
-        String email = InputUtils.readLine(scanner, "Enter email (optional, press Enter to skip): ", true, true);
-        email = InputUtils.removeSpaces(email, false, true, true, true);
+        // Position selection using enum
+        System.out.println("Available positions:");
+        Position[] positions = Position.values();
+        for (int i = 0; i < positions.length; i++) {
+            System.out.println((i + 1) + ". " + positions[i].getDisplayName());
+        }
+        int posChoice = InputUtils.readInt(scanner, "> ", 1, positions.length);
+        Position position = positions[posChoice - 1];
+
+        String domain = "@digiuni.ukma.edu";
+        String finalEmail = InputUtils.readAndValidateEmail(
+                scanner,
+                domain,
+                () -> ModEntitiesUtils.generateFullEmail(name, surname, domain),
+                email -> ModEntitiesUtils.isEmailGloballyTaken(email, studentService, teacherService)
+        );
+
         String phone = InputUtils.readLine(scanner, "Enter phone number (optional, press Enter to skip): ", true, true);
         phone = InputUtils.removeSpaces(phone, false, true, true, true);
         String academicDegree = InputUtils.readLine(scanner, "Enter academic degree (optional, press Enter to skip): ", true, true);
@@ -141,7 +156,8 @@ public class ModTeacherUtils {
 
         // Save
         Teacher newTeacher = new Teacher(IdGenerator.generateTeacherId(), name, surname, patronymic, position, selectedDept, dateOfBirth);
-        if (!email.isEmpty()) newTeacher.setEmail(email);
+        System.out.println("Detected gender: " + newTeacher.getGender());
+        if (!finalEmail.isEmpty()) newTeacher.setEmail(finalEmail);
         if (!phone.isEmpty()) newTeacher.setPhone(phone);
         if (!academicDegree.isEmpty()) newTeacher.setAcademicDegree(academicDegree);
         if (!academicTitle.isEmpty()) newTeacher.setAcademicTitle(academicTitle);
@@ -243,9 +259,10 @@ public class ModTeacherUtils {
         System.out.println("8. Change Employment Date");
         System.out.println("9. Change Workload");
         System.out.println("10. Change Date of Birth");
+        System.out.println("11. Change Gender");
         System.out.println("0. Finish editing");
 
-        int fieldChoice = InputUtils.readInt(scanner, "> ", 0, 10);
+        int fieldChoice = InputUtils.readInt(scanner, "> ", 0, 11);
         if (fieldChoice == 0) {
             FileStorageUtils.saveAll(university, userService);
             break;
@@ -266,9 +283,14 @@ public class ModTeacherUtils {
             }
             case 3 -> {
                 //? Update position
-                String newPosition = InputUtils.readLine(scanner, "Enter new position: ", false, true);
-                newPosition = InputUtils.removeSpaces(newPosition, false, true, true, true);
-                teacherToProcess.setPosition(newPosition);
+                System.out.println("Available positions:");
+                Position[] positions = Position.values();
+                for (int i = 0; i < positions.length; i++) {
+                    System.out.println((i + 1) + ". " + positions[i].getDisplayName());
+                }
+                int posChoice = InputUtils.readInt(scanner, "> ", 1, positions.length);
+                Position newPosition = positions[posChoice - 1];
+                teacherToProcess.setPosition(newPosition.toString());
                 System.out.println("Position updated!");
             }
             case 4 -> {
@@ -330,7 +352,22 @@ public class ModTeacherUtils {
                     }
                 }
             }
+            case 11 -> {
+                Gender newGender = chooseGender(scanner);
+                teacherToProcess.changeGender(newGender);
+                System.out.println("Gender updated to: " + teacherToProcess.getGender());
+            }
         }
         }
+    }
+
+    private static Gender chooseGender(Scanner scanner) {
+        System.out.println("Select gender:");
+        Gender[] genders = Gender.values();
+        for (int i = 0; i < genders.length; i++) {
+            System.out.println((i + 1) + ". " + genders[i].getDisplayName());
+        }
+        int choice = InputUtils.readInt(scanner, "> ", 1, genders.length);
+        return genders[choice - 1];
     }
 }

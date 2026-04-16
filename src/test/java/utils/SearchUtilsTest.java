@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayInputStream;
 import java.time.LocalDate;
 import java.util.Scanner;
+
+import repository.TeacherRepository;
 import university.University;
 import university.UniversityService;
 import person.StudentService;
@@ -20,12 +22,13 @@ public class SearchUtilsTest {
     private StudentService studentService;
     private TeacherService teacherService;
     private FacultyService facultyService;
+    private TeacherRepository teacherRepository;
 
     // Init data
     @BeforeEach
     void setUp() {
         university = new University();
-        new UniversityService(university);
+        new UniversityService(university, teacherRepository);
         studentService = new StudentService(university);
         teacherService = new TeacherService(university);
         facultyService = new FacultyService(university);

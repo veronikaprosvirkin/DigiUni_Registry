@@ -22,6 +22,8 @@ public abstract sealed class Person implements NamedEntity permits Student, Teac
     @NotNull(message = "Surname is required")
     protected String surname;
     protected String patronymic;
+    protected Gender gender;
+    private boolean genderManuallySet;
     protected String email;
     protected String phone;
     protected LocalDate dateOfBirth;
@@ -38,7 +40,41 @@ public abstract sealed class Person implements NamedEntity permits Student, Teac
         this.name = name;
         this.surname = surname;
         this.patronymic = patronymic;
+        this.gender = GenderInferenceUtils.infer(name, patronymic);
+        this.genderManuallySet = false;
         setDateOfBirth(dateOfBirth);
+    }
+
+    public void setName(String name) {
+        this.name = name;
+        inferGenderIfNotManuallyOverridden();
+    }
+
+    public void setPatronymic(String patronymic) {
+        this.patronymic = patronymic;
+        inferGenderIfNotManuallyOverridden();
+    }
+
+    public void changeGender(Gender newGender) {
+        if (newGender != null) {
+            this.gender = newGender;
+            this.genderManuallySet = true;
+        }
+    }
+
+    public void setGender(Gender gender) {
+        changeGender(gender);
+    }
+
+    public void inferGenderFromName() {
+        this.gender = GenderInferenceUtils.infer(this.name, this.patronymic);
+        this.genderManuallySet = false;
+    }
+
+    private void inferGenderIfNotManuallyOverridden() {
+        if (!this.genderManuallySet) {
+            this.gender = GenderInferenceUtils.infer(this.name, this.patronymic);
+        }
     }
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
