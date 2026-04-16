@@ -136,7 +136,8 @@ public class ModStudentUtils {
         String domain = "@digiuni.ukma.edu";
         String finalEmail;
 
-        String prefix = InputUtils.readLine(scanner, "Enter email without domen (press Enter to generate): ", true, true);
+        System.out.println("Email domain will always be: " + domain);
+        String prefix = InputUtils.readLine(scanner, "Enter email prefix/username (press Enter to auto-generate): ", true, true);
 
         if (prefix.isEmpty()) {
             String generatedEmail = ModStudentUtils.generateStudentEmail(name, surname);
@@ -147,7 +148,7 @@ public class ModStudentUtils {
             } else {
                 System.out.println("Generated email " + generatedEmail + " is already in system");
                 while (true) {
-                    String newPrefix = InputUtils.readLine(scanner, "Enter UNIQUE prefix for student: ", false, true);
+                    String newPrefix = InputUtils.readLine(scanner, "Enter UNIQUE prefix for email (only letters, numbers, and dots allowed): ", false, true);
 
                     if (newPrefix.contains("@")) {
                         newPrefix = newPrefix.split("@")[0];
@@ -157,14 +158,16 @@ public class ModStudentUtils {
                     String newEmail = newPrefix + domain;
 
                     if (!newPrefix.isEmpty() && !isEmailTaken(newEmail, studentService)) {
+                        System.out.println("Email set to: " + newEmail);
                         finalEmail = newEmail;
                         break;
                     } else {
-                        System.out.println("Error. This email is taken or empty. Try again.");
+                        System.out.println("Error. This email is taken or prefix is empty. Try again.");
                     }
                 }
             }
         } else {
+            // Always strip domain if user accidentally includes one
             if (prefix.contains("@")) {
                 prefix = prefix.split("@")[0];
             }
@@ -173,9 +176,9 @@ public class ModStudentUtils {
             String emailToCheck = prefix + domain;
 
             if (isEmailTaken(emailToCheck, studentService)) {
-                System.out.println("This email is already taken, try again");
+                System.out.println("This email (" + emailToCheck + ") is already taken");
                 while (true) {
-                    String newPrefix = InputUtils.readLine(scanner, "Enter a UNIQUE email prefix: ", false, true);
+                    String newPrefix = InputUtils.readLine(scanner, "Enter a UNIQUE email prefix (only letters, numbers, and dots allowed): ", false, true);
 
                     if (newPrefix.contains("@")) {
                         newPrefix = newPrefix.split("@")[0];
@@ -185,13 +188,15 @@ public class ModStudentUtils {
                     String fullNewEmail = newPrefix + domain;
 
                     if (!newPrefix.isEmpty() && !isEmailTaken(fullNewEmail, studentService)) {
+                        System.out.println("Email set to: " + fullNewEmail);
                         finalEmail = fullNewEmail;
                         break;
                     } else {
-                        System.out.println("Error. This email is also taken or empty. Write again.");
+                        System.out.println("Error. This email is also taken or prefix is empty. Try again.");
                     }
                 }
             } else {
+                System.out.println("Email set to: " + emailToCheck);
                 finalEmail = emailToCheck;
             }
         }
