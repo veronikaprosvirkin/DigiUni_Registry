@@ -101,4 +101,16 @@ public class UserServiceTest {
 
         assertEquals(3, users.size()); // Nothing changes
     }
+
+    @Test
+    void testAddUserFromStorageReplacesExistingUsername() {
+        userService.addUserFromStorage(new User("admin", "admin", Role.ADMIN, Permission.getDefaultMaskForRole(Role.ADMIN)));
+
+        long adminCount = userService.getAllUsers().stream()
+                .filter(u -> u.getUsername().equals("admin"))
+                .count();
+
+        assertEquals(1, adminCount);
+        assertEquals(3, userService.getAllUsers().size());
+    }
 }

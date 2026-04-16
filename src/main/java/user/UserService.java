@@ -74,6 +74,10 @@ public class UserService {
     }
 
     public void addUserFromStorage(User user) {
+        if (user == null || user.getUsername() == null || user.getUsername().isBlank()) {
+            return;
+        }
+        users.removeIf(existing -> existing.getUsername().equals(user.getUsername()));
         users.add(user);
     }
 

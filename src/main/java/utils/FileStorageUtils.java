@@ -23,6 +23,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -516,7 +517,15 @@ public class FileStorageUtils {
              try (BufferedWriter w = Files.newBufferedWriter(USERS_FILE, StandardCharsets.UTF_8)){
                  w.write(USERS_HEADER);
                  w.newLine();
-                  for (User u : users) {
+                 // Keep one record per username to avoid accumulating duplicate roles across reloads.
+                 Map<String, User> usersByUsername = new LinkedHashMap<>();
+                 for (User u : users) {
+                     if (u == null || u.getUsername() == null || u.getUsername().isBlank()) {
+                         continue;
+                     }
+                     usersByUsername.put(u.getUsername(), u);
+                 }
+                  for (User u : usersByUsername.values()) {
                       String line = u.getUsername() + DELIMITER +
                               u.getPassword() + DELIMITER +
                               u.getRole();
@@ -543,6 +552,9 @@ public class FileStorageUtils {
                 if (parts.length >= 3) {
                     String username = parts[0];
                     String password = parts[1];
+                    if (username == null || username.isBlank()) {
+                        continue;
+                    }
                      try {
                          Role role = Role.valueOf(parts[2].trim());
                          int userMask = Permission.getDefaultMaskForRole(role);
