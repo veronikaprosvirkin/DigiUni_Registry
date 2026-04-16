@@ -19,6 +19,7 @@ public class ModStudentUtils {
     //! ======= WORK WITH STUDENTS ===== //
 
     //show menu for student
+    @SuppressWarnings("java:S107")
     public static void showStudentMenu(Scanner scanner, StudentService studentService, FacultyService facultyService,
                                        UserService userService, boolean showId, University university, TeacherService teacherService) {
         System.out.println("1. Add Student");
@@ -161,6 +162,8 @@ public class ModStudentUtils {
                 selectedFaculty,
                 selectedSpeciality,newStudyForm, dateOfBirth);
 
+        System.out.println("Detected gender: " + s.getGender());
+
         s.setEmail(finalEmail);
         if (!phone.isEmpty()) s.setPhone(phone);
 
@@ -246,9 +249,10 @@ public class ModStudentUtils {
             System.out.println("8. Change Email");
             System.out.println("9. Change Phone Number");
             System.out.println("10. Change Date of Birth");
+            System.out.println("11. Change Gender");
             System.out.println("0. Finish editing");
 
-            int fieldChoice = InputUtils.readInt(scanner, "> ", 0, 10);
+            int fieldChoice = InputUtils.readInt(scanner, "> ", 0, 11);
             if (fieldChoice == 0) {
                 FileStorageUtils.saveAll(university, userService);
                 break;
@@ -366,8 +370,23 @@ public class ModStudentUtils {
                         }
                     }
                 }
+                case 11 -> {
+                    Gender newGender = chooseGender(scanner);
+                    studentToProcess.changeGender(newGender);
+                    System.out.println("Gender updated to: " + studentToProcess.getGender());
+                }
                 }
         }
 
+    }
+
+    private static Gender chooseGender(Scanner scanner) {
+        System.out.println("Select gender:");
+        Gender[] genders = Gender.values();
+        for (int i = 0; i < genders.length; i++) {
+            System.out.println((i + 1) + ". " + genders[i].getDisplayName());
+        }
+        int choice = InputUtils.readInt(scanner, "> ", 1, genders.length);
+        return genders[choice - 1];
     }
 }

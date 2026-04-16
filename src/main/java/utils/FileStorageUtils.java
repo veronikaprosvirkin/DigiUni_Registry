@@ -37,11 +37,11 @@ public class FileStorageUtils {
     private static final Path STUDENTS_FILE = Path.of("data", "students.csv");
     private static final Path USERS_FILE = Path.of("data", "users.csv");
     private static final String DELIMITER = ";";
-    private static final String STUDENTS_HEADER = "id;name;surname;patronymic;course;enrollmentDate;group;faculty;speciality;studyForm;status;email;phone;dateOfBirth;age";
-    private static final String TEACHERS_HEADER = "id;name;surname;patronymic;position;academicDegree;academicTitle;employmentDate;workload;email;phone;department;dateOfBirth;age";
-    private static final String FACULTIES_HEADER = "id;name;shortName;contacts;deanId;deanName;deanSurname;deanPatronymic;deanPosition;deanAcademicDegree;deanAcademicTitle;deanEmploymentDate;deanWorkload;deanEmail;deanPhone";
+    private static final String STUDENTS_HEADER = "id;name;surname;patronymic;gender;course;enrollmentDate;group;faculty;speciality;studyForm;status;email;phone;dateOfBirth;age";
+    private static final String TEACHERS_HEADER = "id;name;surname;patronymic;gender;position;academicDegree;academicTitle;employmentDate;workload;email;phone;department;dateOfBirth;age";
+    private static final String FACULTIES_HEADER = "id;name;shortName;contacts;deanId;deanName;deanSurname;deanPatronymic;deanGender;deanPosition;deanAcademicDegree;deanAcademicTitle;deanEmploymentDate;deanWorkload;deanEmail;deanPhone";
     private static final String SPECIALITIES_HEADER = "id;name;facultyId";
-    private static final String DEPARTMENTS_HEADER = "id;name;facultyId;location;headId;headName;headSurname;headPatronymic;headPosition;headAcademicDegree;headAcademicTitle;headEmploymentDate;headWorkload;headEmail;headPhone";
+    private static final String DEPARTMENTS_HEADER = "id;name;facultyId;location;headId;headName;headSurname;headPatronymic;headGender;headPosition;headAcademicDegree;headAcademicTitle;headEmploymentDate;headWorkload;headEmail;headPhone";
     private static final String USERS_HEADER = "username;password;role";
 
     private static final ReentrantLock saveLock = new ReentrantLock();
@@ -52,7 +52,8 @@ public class FileStorageUtils {
     }
 
     // Save all structure
-    public static void saveAll(University university, UserService userService, university.UniversityService universityService) {
+    public static void saveAll(University university, UserService userService,
+                               @SuppressWarnings("unused") university.UniversityService universityService) {
         try {
             Files.createDirectories(FACULTIES_FILE.getParent());
         } catch (IOException e) {
@@ -92,7 +93,8 @@ public class FileStorageUtils {
     }
 
     // Load all structure
-    public static void loadAll(University university, FacultyService facultyService, SpecialityService specialityService, UserService userService) {
+    public static void loadAll(University university, @SuppressWarnings("unused") FacultyService facultyService,
+                               @SuppressWarnings("unused") SpecialityService specialityService, UserService userService) {
         try {
             university.getFaculties().clear();
             if (Files.exists(FACULTIES_FILE)) loadFaculties(university);
@@ -124,6 +126,7 @@ public class FileStorageUtils {
                             value(dean == null ? null : dean.getOnlyName()),
                             value(dean == null ? null : dean.getSurname()),
                             value(dean == null ? null : dean.getPatronymic()),
+                            value(dean == null || dean.getGender() == null ? null : dean.getGender().toString()),
                             value(dean == null ? null : dean.getPosition().toString()),
                             value(dean == null ? null : dean.getAcademicDegree()),
                             value(dean == null ? null : dean.getAcademicTitle()),
@@ -230,6 +233,7 @@ public class FileStorageUtils {
                                 value(head == null ? null : head.getOnlyName()),
                                 value(head == null ? null : head.getSurname()),
                                 value(head == null ? null : head.getPatronymic()),
+                                value(head == null || head.getGender() == null ? null : head.getGender().toString()),
                                 value(head == null ? null : head.getPosition().toString()),
                                 value(head == null ? null : head.getAcademicDegree()),
                                 value(head == null ? null : head.getAcademicTitle()),
@@ -290,6 +294,7 @@ public class FileStorageUtils {
                             value(s.getOnlyName()),
                             value(s.getSurname()),
                             value(s.getPatronymic()),
+                            value(s.getGender() != null ? s.getGender().toString() : ""),
                             value(s.getCourseDisplay()),
 
                             value(s.getEnrollmentDate() != null ? s.getEnrollmentDate().toString() : ""),
@@ -330,23 +335,26 @@ public class FileStorageUtils {
                         String surname = parts[2];
                         String patronymic = parts[3];
 
+                        Gender gender = Gender.fromString(parts[4]);
+                        int offset = gender == null ? 0 : 1;
+
                         LocalDate enrollmentDate = null;
-                        if (!parts[5].isEmpty() && !parts[5].equals("null")) {
-                            enrollmentDate = LocalDate.parse(parts[5]);
+                        if (!parts[5 + offset].isEmpty() && !parts[5 + offset].equals("null")) {
+                            enrollmentDate = LocalDate.parse(parts[5 + offset]);
                         }
 
                         int group = 1;
-                        if (!parts[6].isEmpty() && !parts[6].equals("null")) {
-                            group = Integer.parseInt(parts[6]);
+                        if (!parts[6 + offset].isEmpty() && !parts[6 + offset].equals("null")) {
+                            group = Integer.parseInt(parts[6 + offset]);
                         }
 
-                        String facultyId = parts[7];
-                        String specialityId = parts[8];
-                        String studyFormStr = parts[9];
-                        String statusStr = parts[10];
-                        String email = parts.length > 11 ? parts[11] : "";
-                        String phone = parts.length > 12 ? parts[12] : "";
-                        String dobStr = parts.length > 13 ? parts[13] : "";
+                        String facultyId = parts[7 + offset];
+                        String specialityId = parts[8 + offset];
+                        String studyFormStr = parts[9 + offset];
+                        String statusStr = parts[10 + offset];
+                        String email = parts.length > 11 + offset ? parts[11 + offset] : "";
+                        String phone = parts.length > 12 + offset ? parts[12 + offset] : "";
+                        String dobStr = parts.length > 13 + offset ? parts[13 + offset] : "";
 
                         StudyForm form = null;
                         if (!studyFormStr.isEmpty() && !studyFormStr.equals("null")) {
@@ -382,6 +390,9 @@ public class FileStorageUtils {
                         }
 
                         Student student = new Student(id, name, surname, patronymic, enrollmentDate, group, faculty, speciality, form);
+                        if (gender != null) {
+                            student.changeGender(gender);
+                        }
                         student.setEmail(blankToNull(email));
                         student.setPhone(blankToNull(phone));
                         if (!dobStr.isEmpty() && !dobStr.equals("null")) {
@@ -558,6 +569,7 @@ public class FileStorageUtils {
                 value(t.getOnlyName()),
                 value(t.getSurname()),
                 value(t.getPatronymic()),
+                value(t.getGender() != null ? t.getGender().toString() : ""),
                 value(t.getPosition() != null ? t.getPosition().toString() : ""),
                 value(t.getAcademicDegree()),
                 value(t.getAcademicTitle()),
@@ -586,7 +598,8 @@ public class FileStorageUtils {
 
                 if (teacher != null && parts.length >= 12) {
                     Teacher canonicalTeacher = teachersById.computeIfAbsent(teacher.getId(), key -> teacher);
-                    String ownerId = parts[11];
+                    int ownerIndex = Gender.fromString(part(parts, 4)) != null ? 12 : 11;
+                    String ownerId = part(parts, ownerIndex);
                     boolean found = false;
 
                     if (ownerId != null && ownerId.startsWith("DEAN:")) {
@@ -633,13 +646,19 @@ public class FileStorageUtils {
                 value(part(parts, startIndex + 1)),
                 value(part(parts, startIndex + 2)),
                 value(part(parts, startIndex + 3)),
-                Position.fromString(part(parts, startIndex + 4)),
+                Position.fromString(part(parts, startIndex + (Gender.fromString(part(parts, startIndex + 4)) != null ? 5 : 4))),
                 null
         );
-        teacher.setAcademicDegree(blankToNull(part(parts, startIndex + 5)));
-        teacher.setAcademicTitle(blankToNull(part(parts, startIndex + 6)));
+        Gender gender = Gender.fromString(part(parts, startIndex + 4));
+        int offset = gender == null ? 0 : 1;
+        if (gender != null) {
+            teacher.changeGender(gender);
+        }
 
-        String employmentDate = blankToNull(part(parts, startIndex + 7));
+        teacher.setAcademicDegree(blankToNull(part(parts, startIndex + 5 + offset)));
+        teacher.setAcademicTitle(blankToNull(part(parts, startIndex + 6 + offset)));
+
+        String employmentDate = blankToNull(part(parts, startIndex + 7 + offset));
         if (employmentDate != null) {
             try {
                 teacher.setEmploymentDate(LocalDate.parse(employmentDate));
@@ -647,7 +666,7 @@ public class FileStorageUtils {
             }
         }
 
-        String workload = blankToNull(part(parts, startIndex + 8));
+        String workload = blankToNull(part(parts, startIndex + 8 + offset));
         if (workload != null) {
             try {
                 teacher.setWorkload(Double.parseDouble(workload));
@@ -655,10 +674,10 @@ public class FileStorageUtils {
             }
         }
 
-        teacher.setEmail(blankToNull(part(parts, startIndex + 9)));
-        teacher.setPhone(blankToNull(part(parts, startIndex + 10)));
+        teacher.setEmail(blankToNull(part(parts, startIndex + 9 + offset)));
+        teacher.setPhone(blankToNull(part(parts, startIndex + 10 + offset)));
 
-        String dob = blankToNull(part(parts, startIndex + 12));
+        String dob = blankToNull(part(parts, startIndex + 12 + offset));
         if (dob != null && !dob.equals("null")) {
             try {
                 teacher.setDateOfBirth(LocalDate.parse(dob));
@@ -684,6 +703,7 @@ public class FileStorageUtils {
                 value(s.getOnlyName()),
                 value(s.getSurname()),
                 value(s.getPatronymic()),
+                value(s.getGender() != null ? s.getGender().toString() : ""),
                 value(s.getCourseDisplay()),
                 value(s.getEnrollmentDate() != null ? s.getEnrollmentDate().toString() : ""),
                 value(s.getGroup() != 0 ? String.valueOf(s.getGroup()) : ""),

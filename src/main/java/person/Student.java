@@ -64,7 +64,9 @@ public final class Student extends Person {
 
     @Override
     public String toString() {
-        return getFullName() + " | Age: " + (age != null ? age : "N/A") + " | Course: " + getCourseDisplay() + " | Study form: " + studyForm + " | Group: " + group + " | Faculty: " + faculty.getName() + " | Spec: " + speciality.getName();
+        return getFullName() + " | Age: " + (age != null ? age : "N/A") + " | Gender: " + (getGender() != null ? getGender() : "N/A")
+                + " | Course: " + getCourseDisplay() + " | Study form: " + studyForm + " | Group: " + group
+                + " | Faculty: " + faculty.getName() + " | Spec: " + speciality.getName();
     }
 
     @Override

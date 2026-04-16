@@ -19,6 +19,7 @@ public class ModTeacherUtils {
     //! ======= WORK WITH TEACHERS ===== //
 
     //show menu for teacher
+    @SuppressWarnings("java:S107")
     public static void showTeacherMenu(Scanner scanner, TeacherService teacherService, FacultyService facultyService,
                                        UserService userService, boolean showId, University university, StudentService studentService) {
         System.out.println("1. Add Teacher");
@@ -115,14 +116,13 @@ public class ModTeacherUtils {
         String patronymic = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Patronymic: ", false, false), true, false, false, false);
         
         // Position selection using enum
-        Position position = null;
         System.out.println("Available positions:");
         Position[] positions = Position.values();
         for (int i = 0; i < positions.length; i++) {
             System.out.println((i + 1) + ". " + positions[i].getDisplayName());
         }
         int posChoice = InputUtils.readInt(scanner, "> ", 1, positions.length);
-        position = positions[posChoice - 1];
+        Position position = positions[posChoice - 1];
 
         String domain = "@digiuni.ukma.edu";
         String finalEmail = InputUtils.readAndValidateEmail(
@@ -156,6 +156,7 @@ public class ModTeacherUtils {
 
         // Save
         Teacher newTeacher = new Teacher(IdGenerator.generateTeacherId(), name, surname, patronymic, position, selectedDept, dateOfBirth);
+        System.out.println("Detected gender: " + newTeacher.getGender());
         if (!finalEmail.isEmpty()) newTeacher.setEmail(finalEmail);
         if (!phone.isEmpty()) newTeacher.setPhone(phone);
         if (!academicDegree.isEmpty()) newTeacher.setAcademicDegree(academicDegree);
@@ -258,9 +259,10 @@ public class ModTeacherUtils {
         System.out.println("8. Change Employment Date");
         System.out.println("9. Change Workload");
         System.out.println("10. Change Date of Birth");
+        System.out.println("11. Change Gender");
         System.out.println("0. Finish editing");
 
-        int fieldChoice = InputUtils.readInt(scanner, "> ", 0, 10);
+        int fieldChoice = InputUtils.readInt(scanner, "> ", 0, 11);
         if (fieldChoice == 0) {
             FileStorageUtils.saveAll(university, userService);
             break;
@@ -288,7 +290,7 @@ public class ModTeacherUtils {
                 }
                 int posChoice = InputUtils.readInt(scanner, "> ", 1, positions.length);
                 Position newPosition = positions[posChoice - 1];
-                teacherToProcess.setPosition(newPosition);
+                teacherToProcess.setPosition(newPosition.toString());
                 System.out.println("Position updated!");
             }
             case 4 -> {
@@ -350,7 +352,22 @@ public class ModTeacherUtils {
                     }
                 }
             }
+            case 11 -> {
+                Gender newGender = chooseGender(scanner);
+                teacherToProcess.changeGender(newGender);
+                System.out.println("Gender updated to: " + teacherToProcess.getGender());
+            }
         }
         }
+    }
+
+    private static Gender chooseGender(Scanner scanner) {
+        System.out.println("Select gender:");
+        Gender[] genders = Gender.values();
+        for (int i = 0; i < genders.length; i++) {
+            System.out.println((i + 1) + ". " + genders[i].getDisplayName());
+        }
+        int choice = InputUtils.readInt(scanner, "> ", 1, genders.length);
+        return genders[choice - 1];
     }
 }
