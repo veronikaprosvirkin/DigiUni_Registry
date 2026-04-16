@@ -2,4 +2,7 @@ username;password;role
 admin;admin;ADMIN
 user;user;USER
 manager;manager;MANAGER
+admin;admin;ADMIN
+user;user;USER
+manager;manager;MANAGER
 \;\;ADMIN
