@@ -113,11 +113,14 @@ public final class StudentCardWindow {
             Scene scene = new Scene(root);
             scene.getStylesheets().add(cssUrl.toExternalForm());
 
+            // Create stage
             stage = new Stage();
             stage.setTitle("Student Card");
             stage.setScene(scene);
-            stage.setMinWidth(460);
-            stage.setMinHeight(360);
+
+            // Block resizing
+            stage.setResizable(false);
+
             stage.setOnCloseRequest(event -> stage.hide());
         } catch (IOException e) {
             throw new IllegalStateException("Failed to create student card window", e);

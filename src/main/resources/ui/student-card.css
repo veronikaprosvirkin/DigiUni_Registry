@@ -16,15 +16,7 @@
 
 /* Root bg */
 .main-card {
-    -fx-background-color: #F0E9D5;
-    -fx-border-color: #D8D0C5;
-    -fx-border-width: 1;
-}
-
-.top-bar-title {
-    -fx-font-family: "Arial";
-    -fx-font-weight: bold;
-    -fx-text-fill: #5C4A40;
+    -fx-background-color: linear-gradient(to bottom right, #F0E9D5, #e4cbb1);
 }
 
 /* Background pattern */
@@ -44,6 +36,10 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.35), 15, 0, 0, 5);
 }
 
+#centerLogoView{
+    -fx-effect: dropshadow(three-pass-box, rgba(240,233,213,0.7), 15, 0, 0, 5);
+}
+
 .header-name{
     -fx-font-family: "Playfair Display ExtraBold";
     -fx-font-size: 32px;
@@ -59,7 +55,7 @@
 
 /* Chips */
 .chip-container {
-    -fx-background-color: #FAF5EB;
+    -fx-background-color: #F8F5EF;
     -fx-background-radius: 25;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.35), 15, 0, 0, 5);
     -fx-padding: 8 15 8 8;
