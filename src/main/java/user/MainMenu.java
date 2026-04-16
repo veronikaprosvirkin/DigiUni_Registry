@@ -89,14 +89,10 @@ public class MainMenu {
 
                     if (!faculties.isEmpty()) {
                         int options = InputUtils.readInt(scanner, "Press the number to see faculty details or 0 to return: ", 0, faculties.size());
-                        if (options == 0) {
-                            break;
-                        } else {
+                        if (options != 0) {
                             Faculty selectedFaculty = faculties.get(options - 1);
                             ModFacultyUtils.showFacultiesDetails(selectedFaculty, studentService, scanner);
                         }
-                    } else {
-                        break;
                     }
                 }
             }
@@ -115,9 +111,7 @@ public class MainMenu {
 
                     int options = InputUtils.readInt(scanner, "Press the number to see department details or 0 to return: ", 0, selectedFaculty.getDepartments().size());
 
-                    if (options == 0) {
-                        break;
-                    } else {
+                    if (options != 0) {
                         Department selectedDept = selectedFaculty.getDepartments().get(options - 1);
                         ModDepartmentUtils.showDepartmentDetails(selectedDept, selectedFaculty, teacherService);
                         InputUtils.pause(scanner);
@@ -136,9 +130,7 @@ public class MainMenu {
                     Faculty selectedFaculty = optFaculty2.get();
                     ModEntitiesUtils.showAllEntity(scanner, selectedFaculty.getSpeciality(), "Speciality", false);
                     int options = InputUtils.readInt(scanner, "Press the number to see speciality details or 0 to return: ", 0, selectedFaculty.getSpeciality().size());
-                    if (options == 0) {
-                        break;
-                    } else {
+                    if (options != 0) {
                         Speciality selectedSpec = selectedFaculty.getSpeciality().get(options - 1);
                         ModSpecialityUtils.showSpecialityDetails(selectedSpec, studentService);
                         InputUtils.pause(scanner);
@@ -147,7 +139,7 @@ public class MainMenu {
             }
             case "5" -> {
                 if (canWrite) {
-                    ModStudentUtils.showStudentMenu(scanner, studentService, facultyService, userService, true, university);
+                    ModStudentUtils.showStudentMenu(scanner, studentService, facultyService, userService, true, university, teacherService);
                 } else {
                     System.out.println("1. Find Student");
                     System.out.println("2. Find Teacher");
@@ -161,7 +153,7 @@ public class MainMenu {
             }
             case "6" -> {
                 if (canWrite) {
-                    ModTeacherUtils.showTeacherMenu(scanner, teacherService, facultyService, userService, true, university);
+                    ModTeacherUtils.showTeacherMenu(scanner, teacherService, facultyService, userService, true, university, studentService);
                 } else {
                     ModStatisticsUtils.showStatisticsMenu(scanner, university, studentService, teacherService, specialityService, faculties);
                 }
