@@ -19,7 +19,7 @@ public class TeacherService {
         this.teacherRepository = new TeacherRepository(university);
     }
     // Adding a teacher
-    public void addTeacher(String name, String surname, String patronymic, String position, Department selectedDept) {
+    public void addTeacher(String name, String surname, String patronymic, Position position, Department selectedDept) {
         Objects.requireNonNull(selectedDept, "Department cannot be null");
         Teacher newTeacher = new Teacher(IdGenerator.generateTeacherId(), name, surname, patronymic, position, selectedDept);
         try {

@@ -124,7 +124,7 @@ public class FileStorageUtils {
                             value(dean == null ? null : dean.getOnlyName()),
                             value(dean == null ? null : dean.getSurname()),
                             value(dean == null ? null : dean.getPatronymic()),
-                            value(dean == null ? null : dean.getPosition()),
+                            value(dean == null ? null : dean.getPosition().toString()),
                             value(dean == null ? null : dean.getAcademicDegree()),
                             value(dean == null ? null : dean.getAcademicTitle()),
                             value(dean == null || dean.getEmploymentDate() == null ? null : dean.getEmploymentDate().toString()),
@@ -230,7 +230,7 @@ public class FileStorageUtils {
                                 value(head == null ? null : head.getOnlyName()),
                                 value(head == null ? null : head.getSurname()),
                                 value(head == null ? null : head.getPatronymic()),
-                                value(head == null ? null : head.getPosition()),
+                                value(head == null ? null : head.getPosition().toString()),
                                 value(head == null ? null : head.getAcademicDegree()),
                                 value(head == null ? null : head.getAcademicTitle()),
                                 value(head == null || head.getEmploymentDate() == null ? null : head.getEmploymentDate().toString()),
@@ -558,7 +558,7 @@ public class FileStorageUtils {
                 value(t.getOnlyName()),
                 value(t.getSurname()),
                 value(t.getPatronymic()),
-                value(t.getPosition()),
+                value(t.getPosition() != null ? t.getPosition().toString() : ""),
                 value(t.getAcademicDegree()),
                 value(t.getAcademicTitle()),
                 value(t.getEmploymentDate() != null ? t.getEmploymentDate().toString() : ""),
@@ -633,7 +633,7 @@ public class FileStorageUtils {
                 value(part(parts, startIndex + 1)),
                 value(part(parts, startIndex + 2)),
                 value(part(parts, startIndex + 3)),
-                blankToNull(part(parts, startIndex + 4)),
+                Position.fromString(part(parts, startIndex + 4)),
                 null
         );
         teacher.setAcademicDegree(blankToNull(part(parts, startIndex + 5)));

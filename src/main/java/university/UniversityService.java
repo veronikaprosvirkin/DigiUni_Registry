@@ -1,6 +1,7 @@
 package university;
 
 import person.Teacher;
+import person.Position;
 import repository.TeacherRepository;
 import utils.IdGenerator;
 import faculty.Faculty;
@@ -27,7 +28,7 @@ public class UniversityService {
         // ==========================================
         // 1. FACULTY OF INFORMATICS (FI)
         // ==========================================
-        Teacher deanFI = new Teacher(IdGenerator.generateTeacherId(), "Andrii", "Hlybovets", "Mykolaiovych", "Dean", null);
+        Teacher deanFI = new Teacher(IdGenerator.generateTeacherId(), "Andrii", "Hlybovets", "Mykolaiovych", Position.DEAN, null);
         teacherRepository.save(deanFI);
         Faculty fi = new Faculty(IdGenerator.generateFacultyId(), "Faculty of Informatics", "FI", "+38(044) 425-60-64", deanFI);
 
@@ -45,22 +46,22 @@ public class UniversityService {
         fi.getSpeciality().add(sa);
 
         Department dep_cs = new Department(IdGenerator.generateDepartmentId(), "Department of Computer Science");
-        Teacher headD001 = new Teacher(IdGenerator.generateTeacherId(), "Semen", "Horokhovskyi", "Samuilovych", "Head of Department", dep_cs);
+        Teacher headD001 = new Teacher(IdGenerator.generateTeacherId(), "Semen", "Horokhovskyi", "Samuilovych", Position.HEAD_OF_DEPARTMENT, dep_cs);
         teacherRepository.save(headD001);
         dep_cs.setHead(headD001);
 
         Department dep_ms = new Department(IdGenerator.generateDepartmentId(), "Department of Multimedia Systems");
-        Teacher headD002 = new Teacher(IdGenerator.generateTeacherId(), "Oleksandr", "Zhezherun", "Petrovych", "Head of Department", dep_ms);
+        Teacher headD002 = new Teacher(IdGenerator.generateTeacherId(), "Oleksandr", "Zhezherun", "Petrovych", Position.HEAD_OF_DEPARTMENT, dep_ms);
         teacherRepository.save(headD002);
         dep_ms.setHead(headD002);
 
         Department dep_acitr = new Department(IdGenerator.generateDepartmentId(), "Department of Automation, Computer-Integrated Technologies, and Robotics");
-        Teacher headD003 = new Teacher(IdGenerator.generateTeacherId(), "Ihor", "Derevianko", "Mykolaiovych", "Head of Department", dep_acitr);
+        Teacher headD003 = new Teacher(IdGenerator.generateTeacherId(), "Ihor", "Derevianko", "Mykolaiovych", Position.HEAD_OF_DEPARTMENT, dep_acitr);
         teacherRepository.save(headD003);
         dep_acitr.setHead(headD003);
 
         Department dep_math = new Department(IdGenerator.generateDepartmentId(), "Department of Mathematics");
-        Teacher headD004 = new Teacher(IdGenerator.generateTeacherId(), "Ruslan", "Chornei", "Kostiantynovych", "Head of Department", dep_math);
+        Teacher headD004 = new Teacher(IdGenerator.generateTeacherId(), "Ruslan", "Chornei", "Kostiantynovych", Position.HEAD_OF_DEPARTMENT, dep_math);
         teacherRepository.save(headD004);
         dep_math.setHead(headD004);
 
@@ -74,7 +75,7 @@ public class UniversityService {
         // ==========================================
         // 2. FACULTY OF ECONOMICS (FE)
         // ==========================================
-        Teacher deanFE = new Teacher(IdGenerator.generateTeacherId(), "Oleksandra", "Humenna", "Vitaliivna", "Dean", null);
+        Teacher deanFE = new Teacher(IdGenerator.generateTeacherId(), "Oleksandra", "Humenna", "Vitaliivna", Position.DEAN, null);
         teacherRepository.save(deanFE);
         Faculty fen = new Faculty(IdGenerator.generateFacultyId(), "Faculty of Economics", "FE", "+38(044) 425-60-59", deanFE);
 
@@ -91,12 +92,12 @@ public class UniversityService {
 
         // Departments & Heads
         Department dep_et = new Department(IdGenerator.generateDepartmentId(), "Department of Economic Theory");
-        Teacher headD005 = new Teacher(IdGenerator.generateTeacherId(), "Yurii", "Bazhal", "Mykolaiovych", "Head of Department", dep_et);
+        Teacher headD005 = new Teacher(IdGenerator.generateTeacherId(), "Yurii", "Bazhal", "Mykolaiovych", Position.HEAD_OF_DEPARTMENT, dep_et);
         teacherRepository.save(headD005);
         dep_et.setHead(headD005);
 
         Department dep_fin = new Department(IdGenerator.generateDepartmentId(), "Department of Finance");
-        Teacher headD006 = new Teacher(IdGenerator.generateTeacherId(), "Iryna", "Lukianenko", "Hryhorivna", "Head of Department", dep_fin);
+        Teacher headD006 = new Teacher(IdGenerator.generateTeacherId(), "Iryna", "Lukianenko", "Hryhorivna", Position.HEAD_OF_DEPARTMENT, dep_fin);
         teacherRepository.save(headD006);
         dep_fin.setHead(headD006);
 
@@ -113,7 +114,7 @@ public class UniversityService {
         // ==========================================
         // 3. FACULTY OF HUMANITIES (FH)
         // ==========================================
-        Teacher deanFH = new Teacher(IdGenerator.generateTeacherId(), "Dmytro", "Mazin", "Mykhailovych", "Dean", null);
+        Teacher deanFH = new Teacher(IdGenerator.generateTeacherId(), "Dmytro", "Mazin", "Mykhailovych", Position.DEAN, null);
         teacherRepository.save(deanFH);
         Faculty fh = new Faculty(IdGenerator.generateFacultyId(), "Faculty of Humanities", "FH", "+38(044) 425-14-20", deanFH);
 
@@ -128,32 +129,32 @@ public class UniversityService {
         fh.getSpeciality().add(ling);
 
         Department dep_hist = new Department(IdGenerator.generateDepartmentId(), "Department of History");
-        Teacher headD008 = new Teacher(IdGenerator.generateTeacherId(), "Nataliya", "Shlikhta", "Vasylivna", "Head of Department", dep_hist);
+        Teacher headD008 = new Teacher(IdGenerator.generateTeacherId(), "Nataliya", "Shlikhta", "Vasylivna", Position.HEAD_OF_DEPARTMENT, dep_hist);
         teacherRepository.save(headD008);
         dep_hist.setHead(headD008);
 
         Department dep_arch = new Department(IdGenerator.generateDepartmentId(), "Department of Archaeology");
-        Teacher headD009 = new Teacher(IdGenerator.generateTeacherId(), "Leonid", "Zalizniak", "Lvovych", "Head of Department", dep_arch);
+        Teacher headD009 = new Teacher(IdGenerator.generateTeacherId(), "Leonid", "Zalizniak", "Lvovych", Position.HEAD_OF_DEPARTMENT, dep_arch);
         teacherRepository.save(headD009);
         dep_arch.setHead(headD009);
 
         Department dep_phil = new Department(IdGenerator.generateDepartmentId(), "Department of Philosophy and Religious Studies");
-        Teacher headD010 = new Teacher(IdGenerator.generateTeacherId(), "Vadym", "Menzhulin", "Ihorovych", "Head of Department", dep_phil);
+        Teacher headD010 = new Teacher(IdGenerator.generateTeacherId(), "Vadym", "Menzhulin", "Ihorovych", Position.HEAD_OF_DEPARTMENT, dep_phil);
         teacherRepository.save(headD010);
         dep_phil.setHead(headD010);
 
         Department dep_cult = new Department(IdGenerator.generateDepartmentId(), "Department of Cultural Studies");
-        Teacher headD011 = new Teacher(IdGenerator.generateTeacherId(), "Roman", "Veretelnyk", "Mykolaiovych", "Head of Department", dep_cult);
+        Teacher headD011 = new Teacher(IdGenerator.generateTeacherId(), "Roman", "Veretelnyk", "Mykolaiovych", Position.HEAD_OF_DEPARTMENT, dep_cult);
         teacherRepository.save(headD011);
         dep_cult.setHead(headD011);
 
         Department dep_lit = new Department(IdGenerator.generateDepartmentId(), "Department of Literature");
-        Teacher headD012 = new Teacher(IdGenerator.generateTeacherId(), "Vira", "Aheieva", "Pavlivna", "Head of Department", dep_lit);
+        Teacher headD012 = new Teacher(IdGenerator.generateTeacherId(), "Vira", "Aheieva", "Pavlivna", Position.HEAD_OF_DEPARTMENT, dep_lit);
         teacherRepository.save(headD012);
         dep_lit.setHead(headD012);
 
         Department dep_engl = new Department(IdGenerator.generateDepartmentId(), "Department of English Language");
-        Teacher headD013 = new Teacher(IdGenerator.generateTeacherId(), "Svitlana", "Ivanenko", "Ihorivna", "Head of Department", dep_engl);
+        Teacher headD013 = new Teacher(IdGenerator.generateTeacherId(), "Svitlana", "Ivanenko", "Ihorivna", Position.HEAD_OF_DEPARTMENT, dep_engl);
         teacherRepository.save(headD013);
         dep_engl.setHead(headD013);
 
@@ -169,7 +170,7 @@ public class UniversityService {
         // ==========================================
         // 4. FACULTY OF LAW (FL)
         // ==========================================
-        Teacher deanFL = new Teacher(IdGenerator.generateTeacherId(), "Volodymyr", "Venher", "Mykolaiovych", "Dean", null);
+        Teacher deanFL = new Teacher(IdGenerator.generateTeacherId(), "Volodymyr", "Venher", "Mykolaiovych", Position.DEAN, null);
         teacherRepository.save(deanFL);
         Faculty fl = new Faculty(IdGenerator.generateFacultyId(), "Faculty of Law", "FL", "+38(044) 425-60-73", deanFL);
 
@@ -180,12 +181,12 @@ public class UniversityService {
         fl.getSpeciality().add(pma);
 
         Department dep_gjd = new Department(IdGenerator.generateDepartmentId(), "Department of General Juridical Disciplines");
-        Teacher headD014 = new Teacher(IdGenerator.generateTeacherId(), "Mykola", "Koziubra", "Ivanovych", "Head of Department", dep_gjd);
+        Teacher headD014 = new Teacher(IdGenerator.generateTeacherId(), "Mykola", "Koziubra", "Ivanovych", Position.HEAD_OF_DEPARTMENT, dep_gjd);
         teacherRepository.save(headD014);
         dep_gjd.setHead(headD014);
 
         Department dep_iel = new Department(IdGenerator.generateDepartmentId(), "Department of International and European Law");
-        Teacher headD015 = new Teacher(IdGenerator.generateTeacherId(), "Myroslava", "Antonovych", "Orestivna", "Head of Department", dep_iel);
+        Teacher headD015 = new Teacher(IdGenerator.generateTeacherId(), "Myroslava", "Antonovych", "Orestivna", Position.HEAD_OF_DEPARTMENT, dep_iel);
         teacherRepository.save(headD015);
         dep_iel.setHead(headD015);
 
@@ -194,7 +195,7 @@ public class UniversityService {
         dep_pl.setHead(deanFL);
 
         Department dep_prl = new Department(IdGenerator.generateDepartmentId(), "Department of Private Law");
-        Teacher headD017 = new Teacher(IdGenerator.generateTeacherId(), "Zoryana", "Borysenko", "Serhiivna", "Head of Department", dep_prl);
+        Teacher headD017 = new Teacher(IdGenerator.generateTeacherId(), "Zoryana", "Borysenko", "Serhiivna", Position.HEAD_OF_DEPARTMENT, dep_prl);
         teacherRepository.save(headD017);
         dep_prl.setHead(headD017);
 
@@ -208,7 +209,7 @@ public class UniversityService {
         // ==========================================
         // 5. FACULTY OF NATURAL SCIENCES (FNS)
         // ==========================================
-        Teacher deanFNS = new Teacher(IdGenerator.generateTeacherId(), "Anatolii", "Bilous", "Markovych", "Dean", null);
+        Teacher deanFNS = new Teacher(IdGenerator.generateTeacherId(), "Anatolii", "Bilous", "Markovych", Position.DEAN, null);
         teacherRepository.save(deanFNS);
         Faculty fns = new Faculty(IdGenerator.generateFacultyId(), "Faculty of Natural Sciences", "FNS", "+38(044) 425-60-57", deanFNS);
 
@@ -223,22 +224,22 @@ public class UniversityService {
         fns.getSpeciality().add(phys);
 
         Department dep_bio = new Department(IdGenerator.generateDepartmentId(), "Department of Biology");
-        Teacher headD018 = new Teacher(IdGenerator.generateTeacherId(), "Taras", "Kazantsev", "Anatoliyovych", "Head of Department", dep_bio);
+        Teacher headD018 = new Teacher(IdGenerator.generateTeacherId(), "Taras", "Kazantsev", "Anatoliyovych", Position.HEAD_OF_DEPARTMENT, dep_bio);
         teacherRepository.save(headD018);
         dep_bio.setHead(headD018);
 
         Department dep_eco = new Department(IdGenerator.generateDepartmentId(), "Department of Environmental Studies");
-        Teacher headD019 = new Teacher(IdGenerator.generateTeacherId(), "Viktor", "Karamushka", "Mykolaiovych", "Head of Department", dep_eco);
+        Teacher headD019 = new Teacher(IdGenerator.generateTeacherId(), "Viktor", "Karamushka", "Mykolaiovych", Position.HEAD_OF_DEPARTMENT, dep_eco);
         teacherRepository.save(headD019);
         dep_eco.setHead(headD019);
 
         Department dep_chem = new Department(IdGenerator.generateDepartmentId(), "Department of Chemistry");
-        Teacher headD020 = new Teacher(IdGenerator.generateTeacherId(), "Anatolii", "Burban", "Fedorovych", "Head of Department", dep_chem);
+        Teacher headD020 = new Teacher(IdGenerator.generateTeacherId(), "Anatolii", "Burban", "Fedorovych", Position.HEAD_OF_DEPARTMENT, dep_chem);
         teacherRepository.save(headD020);
         dep_chem.setHead(headD020);
 
         Department dep_pms = new Department(IdGenerator.generateDepartmentId(), "Department of Physical and Mathematical Sciences");
-        Teacher headD021 = new Teacher(IdGenerator.generateTeacherId(), "Bohdan", "Kopyilets", "Ivanovych", "Head of Department", dep_pms);
+        Teacher headD021 = new Teacher(IdGenerator.generateTeacherId(), "Bohdan", "Kopyilets", "Ivanovych", Position.HEAD_OF_DEPARTMENT, dep_pms);
         teacherRepository.save(headD021);
         dep_pms.setHead(headD021);
 
@@ -252,7 +253,7 @@ public class UniversityService {
         // ==========================================
         // 6. FACULTY OF SOCIAL SCIENCES AND SOCIAL TECHNOLOGIES (FSSST)
         // ==========================================
-        Teacher deanFSSST = new Teacher(IdGenerator.generateTeacherId(), "Svitlana", "Oksamytna", "Mykolaivna", "Dean", null);
+        Teacher deanFSSST = new Teacher(IdGenerator.generateTeacherId(), "Svitlana", "Oksamytna", "Mykolaivna", Position.DEAN, null);
         teacherRepository.save(deanFSSST);
         Faculty fssst = new Faculty(IdGenerator.generateFacultyId(), "Faculty of Social Sciences and Social Technologies", "FSSST", "+38(044) 425-60-47", deanFSSST);
 
@@ -275,27 +276,27 @@ public class UniversityService {
         dep_soc.setHead(deanFSSST);
 
         Department dep_pol = new Department(IdGenerator.generateDepartmentId(), "Department of Political Science");
-        Teacher headD023 = new Teacher(IdGenerator.generateTeacherId(), "Oleksandr", "Demianchuk", "Petrovych", "Head of Department", dep_pol);
+        Teacher headD023 = new Teacher(IdGenerator.generateTeacherId(), "Oleksandr", "Demianchuk", "Petrovych", Position.HEAD_OF_DEPARTMENT, dep_pol);
         teacherRepository.save(headD023);
         dep_pol.setHead(headD023);
 
         Department dep_psy = new Department(IdGenerator.generateDepartmentId(), "Department of Psychology and Pedagogy");
-        Teacher headD024 = new Teacher(IdGenerator.generateTeacherId(), "Serhii", "Bohdanov", "Bohdanovych", "Head of Department", dep_psy);
+        Teacher headD024 = new Teacher(IdGenerator.generateTeacherId(), "Serhii", "Bohdanov", "Bohdanovych", Position.HEAD_OF_DEPARTMENT, dep_psy);
         teacherRepository.save(headD024);
         dep_psy.setHead(headD024);
 
         Department school_sw = new Department(IdGenerator.generateDepartmentId(), "School of Social Work");
-        Teacher headD025 = new Teacher(IdGenerator.generateTeacherId(), "Oksana", "Boiko", "Mykolaivna", "Head of Department", school_sw);
+        Teacher headD025 = new Teacher(IdGenerator.generateTeacherId(), "Oksana", "Boiko", "Mykolaivna", Position.HEAD_OF_DEPARTMENT, school_sw);
         teacherRepository.save(headD025);
         school_sw.setHead(headD025);
 
         Department school_jour = new Department(IdGenerator.generateDepartmentId(), "Mohyla School of Journalism");
-        Teacher headD026 = new Teacher(IdGenerator.generateTeacherId(), "Yevhen", "Fedchenko", "Mykolaiovych", "Head of Department", school_jour);
+        Teacher headD026 = new Teacher(IdGenerator.generateTeacherId(), "Yevhen", "Fedchenko", "Mykolaiovych", Position.HEAD_OF_DEPARTMENT, school_jour);
         teacherRepository.save(headD026);
         school_jour.setHead(headD026);
 
         Department school_ph = new Department(IdGenerator.generateDepartmentId(), "School of Public Health");
-        Teacher headD027 = new Teacher(IdGenerator.generateTeacherId(), "Tetiana", "Yurochko", "Petrivna", "Head of Department", school_ph);
+        Teacher headD027 = new Teacher(IdGenerator.generateTeacherId(), "Tetiana", "Yurochko", "Petrivna", Position.HEAD_OF_DEPARTMENT, school_ph);
         teacherRepository.save(headD027);
         school_ph.setHead(headD027);
 

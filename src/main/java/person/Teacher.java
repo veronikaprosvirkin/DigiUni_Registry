@@ -9,18 +9,18 @@ import department.Department;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public final class Teacher extends Person {
-    private String position;
+    private Position position;
     private Department department;
     private String academicDegree;
     private String academicTitle;
     private LocalDate employmentDate;
     private double workload;
 
-    public Teacher(String id, String name, String surname, String patronymic, String position, Department department) {
+    public Teacher(String id, String name, String surname, String patronymic, Position position, Department department) {
         this(id, name, surname, patronymic, position, department, null);
     }
 
-    public Teacher(String id, String name, String surname, String patronymic, String position, Department department, LocalDate dateOfBirth) {
+    public Teacher(String id, String name, String surname, String patronymic, Position position, Department department, LocalDate dateOfBirth) {
         super(id, name, surname, patronymic, dateOfBirth);
         this.position = position;
         this.department = department;

@@ -1,0 +1,28 @@
+id;name;facultyId;location;headId;headName;headSurname;headPatronymic;headPosition;headAcademicDegree;headAcademicTitle;headEmploymentDate;headWorkload;headEmail;headPhone
+d001;Department of Computer Science;f001;;t0002;Semen;Horokhovskyi;Samuilovych;Head of Department;;;;0.0;;
+d002;Department of Multimedia Systems;f001;;t0003;Oleksandr;Zhezherun;Petrovych;Head of Department;;;;0.0;;
+d003;Department of Automation, Computer-Integrated Technologies, and Robotics;f001;;t0004;Ihor;Derevianko;Mykolaiovych;Head of Department;;;;0.0;;
+d004;Department of Mathematics;f001;;t0005;Ruslan;Chornei;Kostiantynovych;Head of Department;;;;0.0;;
+d005;Department of Economic Theory;f002;;t0007;Yurii;Bazhal;Mykolaiovych;Head of Department;;;;0.0;;
+d006;Department of Finance;f002;;t0008;Iryna;Lukianenko;Hryhorivna;Head of Department;;;;0.0;;
+d007;Department of Marketing and Business Management;f002;;t0006;Oleksandra;Humenna;Vitaliivna;Dean;;;;0.0;;
+d008;Department of History;f003;;t0010;Nataliya;Shlikhta;Vasylivna;Head of Department;;;;0.0;;
+d009;Department of Archaeology;f003;;t0011;Leonid;Zalizniak;Lvovych;Head of Department;;;;0.0;;
+d010;Department of Philosophy and Religious Studies;f003;;t0012;Vadym;Menzhulin;Ihorovych;Head of Department;;;;0.0;;
+d011;Department of Cultural Studies;f003;;t0013;Roman;Veretelnyk;Mykolaiovych;Head of Department;;;;0.0;;
+d012;Department of Literature;f003;;t0014;Vira;Aheieva;Pavlivna;Head of Department;;;;0.0;;
+d013;Department of English Language;f003;;t0015;Svitlana;Ivanenko;Ihorivna;Head of Department;;;;0.0;;
+d014;Department of General Juridical Disciplines;f004;;t0017;Mykola;Koziubra;Ivanovych;Head of Department;;;;0.0;;
+d015;Department of International and European Law;f004;;t0018;Myroslava;Antonovych;Orestivna;Head of Department;;;;0.0;;
+d016;Department of Public Law;f004;;t0016;Volodymyr;Venher;Mykolaiovych;Dean;;;;0.0;;
+d017;Department of Private Law;f004;;t0019;Zoryana;Borysenko;Serhiivna;Head of Department;;;;0.0;;
+d018;Department of Biology;f005;;t0021;Taras;Kazantsev;Anatoliyovych;Head of Department;;;;0.0;;
+d019;Department of Environmental Studies;f005;;t0022;Viktor;Karamushka;Mykolaiovych;Head of Department;;;;0.0;;
+d020;Department of Chemistry;f005;;t0023;Anatolii;Burban;Fedorovych;Head of Department;;;;0.0;;
+d021;Department of Physical and Mathematical Sciences;f005;;t0024;Bohdan;Kopyilets;Ivanovych;Head of Department;;;;0.0;;
+d022;Department of Sociology;f006;;t0025;Svitlana;Oksamytna;Mykolaivna;Dean;;;;0.0;;
+d023;Department of Political Science;f006;;t0026;Oleksandr;Demianchuk;Petrovych;Head of Department;;;;0.0;;
+d024;Department of Psychology and Pedagogy;f006;;t0027;Serhii;Bohdanov;Bohdanovych;Head of Department;;;;0.0;;
+d025;School of Social Work;f006;;t0028;Oksana;Boiko;Mykolaivna;Head of Department;;;;0.0;;
+d026;Mohyla School of Journalism;f006;;t0029;Yevhen;Fedchenko;Mykolaiovych;Head of Department;;;;0.0;;
+d027;School of Public Health;f006;;t0030;Tetiana;Yurochko;Petrivna;Head of Department;;;;0.0;;

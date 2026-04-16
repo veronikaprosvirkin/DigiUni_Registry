@@ -112,8 +112,16 @@ public class ModTeacherUtils {
         String name = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Name: ", false, false), true, false, false, false);
         String surname = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Surname: ", false, false), true, false, false, false);
         String patronymic = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Patronymic: ", false, false), true, false, false, false);
-        String position = InputUtils.readLine(scanner, "Position: ", false, true);
-        position = InputUtils.removeSpaces(position, false, true, true, true);
+        
+        // Position selection using enum
+        Position position = null;
+        System.out.println("Available positions:");
+        Position[] positions = Position.values();
+        for (int i = 0; i < positions.length; i++) {
+            System.out.println((i + 1) + ". " + positions[i].getDisplayName());
+        }
+        int posChoice = InputUtils.readInt(scanner, "> ", 1, positions.length);
+        position = positions[posChoice - 1];
         
         String email = InputUtils.readLine(scanner, "Enter email (optional, press Enter to skip): ", true, true);
         email = InputUtils.removeSpaces(email, false, true, true, true);
@@ -266,8 +274,13 @@ public class ModTeacherUtils {
             }
             case 3 -> {
                 //? Update position
-                String newPosition = InputUtils.readLine(scanner, "Enter new position: ", false, true);
-                newPosition = InputUtils.removeSpaces(newPosition, false, true, true, true);
+                System.out.println("Available positions:");
+                Position[] positions = Position.values();
+                for (int i = 0; i < positions.length; i++) {
+                    System.out.println((i + 1) + ". " + positions[i].getDisplayName());
+                }
+                int posChoice = InputUtils.readInt(scanner, "> ", 1, positions.length);
+                Position newPosition = positions[posChoice - 1];
                 teacherToProcess.setPosition(newPosition);
                 System.out.println("Position updated!");
             }
