@@ -83,7 +83,11 @@ public final class StudentCardWindow {
 
             CountDownLatch startupLatch = new CountDownLatch(1);
             try {
-                Platform.startup(startupLatch::countDown);
+                Platform.startup(() -> {
+                    // Prevent FX shutdown
+                    Platform.setImplicitExit(false);
+                    startupLatch.countDown();
+                });
             } catch (IllegalStateException alreadyStarted) {
                 FX_INITIALIZED.set(true);
                 return;
@@ -97,6 +101,7 @@ public final class StudentCardWindow {
             }
         }
     }
+
 
     private static void createWindow() {
         try {
@@ -117,8 +122,8 @@ public final class StudentCardWindow {
             stage.setTitle("Student Card");
             stage.setScene(scene);
 
-            // Block resizing
             stage.setResizable(false);
+            stage.setAlwaysOnTop(true);
 
             stage.setOnCloseRequest(event -> stage.hide());
         } catch (IOException e) {
