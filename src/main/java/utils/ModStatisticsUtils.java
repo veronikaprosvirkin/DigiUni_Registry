@@ -60,9 +60,10 @@ public class ModStatisticsUtils {
             System.out.println("1. Total number of departments");
             System.out.println("2. Average teachers per department");
             System.out.println("3. Largest and smallest departments (by teacher count)");
+            System.out.println("4. Distribution of teachers by gender in departments");
             System.out.println("0. Back to statistics menu");
 
-            int choice = InputUtils.readInt(scanner, "> ", 0, 3);
+            int choice = InputUtils.readInt(scanner, "> ", 0, 4);
 
             switch (choice) {
                 case 1 -> {
@@ -79,6 +80,16 @@ public class ModStatisticsUtils {
                             Department::getName, title);
                     printOutsiders(allDepartments, d -> countTeachers(d, teacherService),
                             Department::getName);
+                    pause(scanner);
+                }
+                case 4 -> {
+                    System.out.println("\n=== Gender Distribution of teachers by Department ===");
+                    for (Department d : allDepartments) {
+                        List<Teacher> teachersInDepartment = teacherService.getAllTeachers().stream()
+                                .filter(t -> t.getDepartment() != null && t.getDepartment().equals(d))
+                                .toList();
+                        printGenderStatistics(teachersInDepartment, "Teachers in " + d.getName());
+                    }
                     pause(scanner);
                 }
                 case 0 -> {
