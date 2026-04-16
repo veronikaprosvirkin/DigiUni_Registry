@@ -4,10 +4,7 @@ import department.Department;
 import department.DepartmentService;
 import faculty.Faculty;
 import faculty.FacultyService;
-import person.Student;
-import person.StudentService;
-import person.StudyForm;
-import person.TeacherService;
+import person.*;
 import speciality.Speciality;
 import speciality.SpecialityService;
 import university.University;
@@ -40,7 +37,7 @@ public class ModStatisticsUtils {
                 case 1 -> showFacultiesStatistics(university, scanner, studentService, teacherService, faculties, title);
                 case 2 -> showDepartmentsStatistics(university, scanner, teacherService, studentService, title);
                 case 3 -> showSpecialitiesStatistics(university, scanner, studentService, title);
-                case 4 -> showTeachersStatistics(university, scanner);
+                case 4 -> showTeachersStatistics(university, scanner, teacherService);
                 case 5 -> showStudentsStatistics(university, scanner, studentService);
                 case 6 -> showUniversityStatistics(university, scanner, studentService);
                 case 0 -> {
@@ -103,9 +100,10 @@ public class ModStatisticsUtils {
             System.out.println("2. Average number of students per speciality"); // Додано!
             System.out.println("3. Most and least popular specialities (by student enrollment)");
             System.out.println("4. Budget vs Contract distribution");
+            System.out.println("5. Distribution of students by gender in specialities");
             System.out.println("0. Back to statistics menu");
 
-            int choice = InputUtils.readInt(scanner, "> ", 0, 4);
+            int choice = InputUtils.readInt(scanner, "> ", 0, 5);
 
             switch (choice) {
                 case 1 -> {
@@ -131,6 +129,16 @@ public class ModStatisticsUtils {
                     pause(scanner);
 
                 }
+                case 5 -> {
+                    System.out.println("\n=== Gender Distribution by Speciality ===");
+                    for (Speciality s : allSpecialities) {
+                        List<Student> studentsInSpeciality = studentService.getAllStudents().stream()
+                                .filter(st -> st.getSpeciality() != null && st.getSpeciality().equals(s))
+                                .toList();
+                        printGenderStatistics(studentsInSpeciality, s.getNameOfSpeciality());
+                    }
+                    pause(scanner);
+                }
                 case 0 -> {
                     return;
                 }
@@ -139,20 +147,25 @@ public class ModStatisticsUtils {
     }
 
     //teachers statistics
-    private static void showTeachersStatistics(University university, Scanner scanner) {
+    private static void showTeachersStatistics(University university, Scanner scanner, TeacherService teacherService) {
         System.out.println("=== Teachers' Statistics ===");
         while (true) {
             System.out.println("Show statistics for:");
             System.out.println("1. Total number of teachers in the university");
+            System.out.println("2. Distribution of teachers by gender");
             System.out.println("0. Back to statistics menu");
 
-            int choice = InputUtils.readInt(scanner, "> ", 0, 1);
+            int choice = InputUtils.readInt(scanner, "> ", 0, 2);
 
             switch (choice) {
                 case 1 -> {
                     System.out.println("Total number of teachers: " + university.getFaculties().stream().flatMap(f -> f.getDepartments().stream())
                             .mapToInt(d -> d.getTeachers().size())
                             .sum());
+                    pause(scanner);
+                }
+                case 2 ->{
+                    printGenderStatistics(teacherService.getAllTeachers(), "All Teachers");
                     pause(scanner);
                 }
                 case 0 -> {
@@ -170,7 +183,8 @@ public class ModStatisticsUtils {
             System.out.println("1. Total number of students in the university");
             System.out.println("2. Distribution of students by course/year of study");
             System.out.println("3. Distribution of students by study form (budget vs contract)");
-            System.out.println("4. Number of unique last names (Diversity Check)");
+            System.out.println("4. Distribution of students by gender");
+            System.out.println("5. Number of unique last names (Diversity Check)");
             System.out.println("0. Back to statistics menu");
 
             int choice = InputUtils.readInt(scanner, "> ", 0, 4);
@@ -220,6 +234,10 @@ public class ModStatisticsUtils {
                     pause(scanner);
                 }
                 case 4 -> {
+                    printGenderStatistics(studentService.getAllStudents(), "All Students");
+                    pause(scanner);
+                }
+                case 5 -> {
                     System.out.println("=== Student Body Diversity ===");
                     Set<String> uniqueLastNames = studentService.getAllStudents().stream()
                             .map(Student::getSurname)
@@ -303,9 +321,10 @@ public class ModStatisticsUtils {
             System.out.println("1. Number of faculties");
             System.out.println("2. Average metrics per faculty");
             System.out.println("3. Student population rankings");
+            System.out.println("4. Gender distribution of students by faculty");
             System.out.println("0. Back to statistics menu");
 
-            int choice = InputUtils.readInt(scanner, "> ", 0, 3);
+            int choice = InputUtils.readInt(scanner, "> ", 0, 4);
 
             switch (choice) {
                 case 1 -> {
@@ -340,6 +359,15 @@ public class ModStatisticsUtils {
                             FacultyStats::facultyName);
                     printLeaders(faculties, f -> countStudentsByFinancing(f, studentService, Student::getFaculty, StudyForm.CONTRACT),
                             Faculty::getNameOfFaculty, "Most popular faculties among contract students");
+                    pause(scanner);
+                }
+                case 4 ->{
+                    for (Faculty f : university.getFaculties()) {
+                        List<Student> studentsInFaculty = studentService.getAllStudents().stream()
+                                .filter(s -> s.getFaculty() != null && s.getFaculty().equals(f))
+                                .toList();
+                        printGenderStatistics(studentsInFaculty, "Students in " + f.getNameOfFaculty());
+                    }
                     pause(scanner);
                 }
                 case 0 -> {
@@ -404,5 +432,38 @@ public class ModStatisticsUtils {
         System.out.println("Min count: "+ minNumber);
         items.stream().filter(t -> minNumber == value.applyAsInt(t)).
                 forEach(t -> System.out.println(" - " + name.apply(t)));
+    }
+
+    public static <T extends Person> void printGenderStatistics(List<T> people, String groupName) {
+        System.out.println("\n=== Gender Statistics: " + groupName + " ===");
+
+        if (people == null || people.isEmpty()) {
+            System.out.println("No data available.");
+            System.out.println("=========================================\n");
+            return;
+        }
+
+        Map<Gender, Long> stats = people.stream()
+                .filter(p -> p.getGender() != null)
+                .collect(Collectors.groupingBy(Person::getGender, Collectors.counting()));
+
+
+        long totalWithGender = stats.values().stream().mapToLong(Long::longValue).sum();
+        long notSpecified = people.size() - totalWithGender;
+
+        for (Gender g : Gender.values()) {
+            long count = stats.getOrDefault(g, 0L);
+            double percentage = (count * 100.0) / people.size();
+            System.out.printf("%-20s : %d (%.1f%%)\n", g.getDisplayName(), count, percentage);
+        }
+
+        if (notSpecified > 0) {
+            double percentage = (notSpecified * 100.0) / people.size();
+            System.out.printf("%-20s : %d (%.1f%%)\n", "Not Specified", notSpecified, percentage);
+        }
+
+        System.out.println("-----------------------------------------");
+        System.out.println("Total Persons        : " + people.size());
+        System.out.println("=========================================\n");
     }
 }
