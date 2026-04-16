@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import university.University;
 import user.UserService;
+import ui.StudentCardWindow;
 import utils.*;
 import utils.input.InputUtils;
 import utils.sort.SortUtils;
@@ -258,15 +259,17 @@ public class ModStudentUtils {
                 break;
             }
 
-            switch (fieldChoice) {
+                switch (fieldChoice) {
                 case 1 -> {
                     String newSurname = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Enter new surname: ", false, true), true, false, false, false);
                     studentToProcess.setSurname(newSurname);
+                    StudentCardWindow.refresh(studentToProcess);
                     System.out.println("Surname updated!");
                 }
                 case 2 -> {
                     String newName = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Enter new name: ", false, true), true, false, false, false);
                     studentToProcess.setName(newName);
+                    StudentCardWindow.refresh(studentToProcess);
                     System.out.println("Name updated!");
                 }
                 case 3 -> {
@@ -274,6 +277,7 @@ public class ModStudentUtils {
                     int currentYear = LocalDate.now().getYear();
                     int newEnrollmentYear = currentYear - newCourse + 1;
                     studentToProcess.setEnrollmentDate(LocalDate.of(newEnrollmentYear, 9, 1));
+                    StudentCardWindow.refresh(studentToProcess);
                     System.out.println("Course updated!");
                 }
                 case 4 -> {
@@ -292,10 +296,12 @@ public class ModStudentUtils {
 
                     int newGroup = InputUtils.readInt(scanner, "Enter target group number: ", 1, Integer.MAX_VALUE);
                     studentService.moveStudentToSpeciality(studentToProcess, selectedFaculty, optSpeciality.get(), newGroup);
+                    StudentCardWindow.refresh(studentToProcess);
                 }
                 case 5 -> {
                     int newGroup = InputUtils.readInt(scanner, "Enter new group number: ", 1, Integer.MAX_VALUE);
                     studentService.moveStudentToGroup(studentToProcess, newGroup);
+                    StudentCardWindow.refresh(studentToProcess);
                 }
                 case 6 -> {
                     int formChoice = InputUtils.readInt(scanner, "Enter new study form (1 - BUDGET, 2 - CONTRACT): ", 1, 2);
@@ -309,6 +315,7 @@ public class ModStudentUtils {
                         System.out.println("Error: Student is already on this study form!");
                     } else {
                         studentToProcess.setStudyForm(newStudyForm);
+                        StudentCardWindow.refresh(studentToProcess);
                         System.out.println("Study form updated!");
                     }
 
@@ -329,6 +336,7 @@ public class ModStudentUtils {
                         System.out.println("Error: Student is already has this status!");
                     } else {
                         studentToProcess.setStatus(newStatus);
+                        StudentCardWindow.refresh(studentToProcess);
                         System.out.println("Status updated!");
                     }
 
@@ -353,6 +361,7 @@ public class ModStudentUtils {
                     String newPhone = InputUtils.readLine(scanner, "Enter new phone number: ", false, true);
                     newPhone = InputUtils.removeSpaces(newPhone, false, true, true, true);
                     studentToProcess.setPhone(newPhone);
+                    StudentCardWindow.refresh(studentToProcess);
                     System.out.println("Phone number updated!");
                 }
                 case 10 -> {
@@ -360,10 +369,12 @@ public class ModStudentUtils {
                     newDob = InputUtils.removeSpaces(newDob, false, true, true, true);
                     if (newDob.isEmpty()) {
                         studentToProcess.setDateOfBirth(null);
+                        StudentCardWindow.refresh(studentToProcess);
                         System.out.println("Date of birth cleared!");
                     } else {
                         try {
                             studentToProcess.setDateOfBirth(LocalDate.parse(newDob));
+                            StudentCardWindow.refresh(studentToProcess);
                             System.out.println("Date of birth updated!");
                         } catch (Exception e) {
                             System.out.println("Invalid date format.");
@@ -376,6 +387,9 @@ public class ModStudentUtils {
                     System.out.println("Gender updated to: " + studentToProcess.getGender());
                 }
                 }
+            }
+        } finally {
+            StudentCardWindow.close();
         }
 
     }
