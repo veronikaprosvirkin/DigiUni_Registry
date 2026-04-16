@@ -19,7 +19,8 @@ public class ModTeacherUtils {
     //! ======= WORK WITH TEACHERS ===== //
 
     //show menu for teacher
-    public static void showTeacherMenu(Scanner scanner, TeacherService teacherService, FacultyService facultyService, UserService userService, boolean showId, University university) {
+    public static void showTeacherMenu(Scanner scanner, TeacherService teacherService, FacultyService facultyService,
+                                       UserService userService, boolean showId, University university, StudentService studentService) {
         System.out.println("1. Add Teacher");
         System.out.println("2. Delete Teacher");
         System.out.println("3. Edit information about teacher");
@@ -28,7 +29,7 @@ public class ModTeacherUtils {
         int workWithTeacher = InputUtils.readInt(scanner, "> ", 0, 4);
 
         if (workWithTeacher == 1) { //add teacher
-            ModTeacherUtils.teacherAddTeacher(scanner, facultyService, teacherService, university, userService);
+            ModTeacherUtils.teacherAddTeacher(scanner, facultyService, teacherService, university, userService, studentService);
         } else if (workWithTeacher == 2) { //delete teacher
             int deleteTeacher= ModEntitiesUtils.chooseDeleting(scanner);
             if (deleteTeacher == 1) {
@@ -92,7 +93,7 @@ public class ModTeacherUtils {
      * Add new Teacher
      */
     static void teacherAddTeacher(Scanner scanner, FacultyService facultyService, TeacherService teacherService,
-                                  University university, UserService userService) {
+                                  University university, UserService userService, StudentService studentService) {
         System.out.println("--- Add Teacher ---");
         java.util.Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties");
         if (optFaculty.isEmpty()) {
@@ -122,9 +123,15 @@ public class ModTeacherUtils {
         }
         int posChoice = InputUtils.readInt(scanner, "> ", 1, positions.length);
         position = positions[posChoice - 1];
-        
-        String email = InputUtils.readLine(scanner, "Enter email (optional, press Enter to skip): ", true, true);
-        email = InputUtils.removeSpaces(email, false, true, true, true);
+
+        String domain = "@digiuni.ukma.edu";
+        String finalEmail = InputUtils.readAndValidateEmail(
+                scanner,
+                domain,
+                () -> ModEntitiesUtils.generateFullEmail(name, surname, domain),
+                email -> ModEntitiesUtils.isEmailGloballyTaken(email, studentService, teacherService)
+        );
+
         String phone = InputUtils.readLine(scanner, "Enter phone number (optional, press Enter to skip): ", true, true);
         phone = InputUtils.removeSpaces(phone, false, true, true, true);
         String academicDegree = InputUtils.readLine(scanner, "Enter academic degree (optional, press Enter to skip): ", true, true);
@@ -149,7 +156,7 @@ public class ModTeacherUtils {
 
         // Save
         Teacher newTeacher = new Teacher(IdGenerator.generateTeacherId(), name, surname, patronymic, position, selectedDept, dateOfBirth);
-        if (!email.isEmpty()) newTeacher.setEmail(email);
+        if (!finalEmail.isEmpty()) newTeacher.setEmail(finalEmail);
         if (!phone.isEmpty()) newTeacher.setPhone(phone);
         if (!academicDegree.isEmpty()) newTeacher.setAcademicDegree(academicDegree);
         if (!academicTitle.isEmpty()) newTeacher.setAcademicTitle(academicTitle);

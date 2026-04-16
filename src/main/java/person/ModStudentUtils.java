@@ -19,7 +19,8 @@ public class ModStudentUtils {
     //! ======= WORK WITH STUDENTS ===== //
 
     //show menu for student
-    public static void showStudentMenu(Scanner scanner, StudentService studentService, FacultyService facultyService, UserService userService, boolean showId, University university) {
+    public static void showStudentMenu(Scanner scanner, StudentService studentService, FacultyService facultyService,
+                                       UserService userService, boolean showId, University university, TeacherService teacherService) {
         System.out.println("1. Add Student");
         System.out.println("2. Delete Student");
         System.out.println("3. Edit information about student");
@@ -29,7 +30,7 @@ public class ModStudentUtils {
         int workWithStudent = InputUtils.readInt(scanner, "> ", 0, 4);
 
         if (workWithStudent == 1) { //add student
-            ModStudentUtils.studentAddStudent(scanner, facultyService, studentService, university, userService);
+            ModStudentUtils.studentAddStudent(scanner, facultyService, studentService, university, userService, teacherService);
         } else if (workWithStudent == 2) { //delete student
             int deleteStudent = ModEntitiesUtils.chooseDeleting(scanner);
             if (deleteStudent == 1) {
@@ -45,9 +46,9 @@ public class ModStudentUtils {
         } else if (workWithStudent == 3) { //edit student
             int editStudent = ModEntitiesUtils.chooseEditing(scanner);
             if (editStudent == 1) {
-                ModStudentUtils.studentEditByName(scanner, studentService, university, userService);
+                ModStudentUtils.studentEditByName(scanner, studentService, university, userService, teacherService);
             } else if (editStudent == 2) {
-                ModStudentUtils.studentEditById(scanner, studentService, university, userService);
+                ModStudentUtils.studentEditById(scanner, studentService, university, userService, teacherService);
             }
 
 
@@ -55,7 +56,9 @@ public class ModStudentUtils {
             List<Student> students = studentService.getAllStudents();//show all students
             if (students.size()>1){
                 System.out.println("Multiple students found. Please select sorting method: ");
-                students = SortUtils.sortStudents(students, scanner);
+                List<Student> sortedStudents = SortUtils.sortStudents(students, scanner);
+                ModEntitiesUtils.showAllEntity(scanner, sortedStudents, "Students List", showId);
+                return;
             }
             ModEntitiesUtils.showAllEntity(scanner, students, "Students List", showId);
         }
@@ -91,7 +94,9 @@ public class ModStudentUtils {
             List<Student> students = studentService.getAllStudents(); // show all students
             if (students.size()>1){
                 System.out.println("Multiple students found. Please select sorting method: ");
-                students = SortUtils.sortStudents(students, scanner);
+                List<Student> sortedStudents = SortUtils.sortStudents(students, scanner);
+                ModEntitiesUtils.showAllEntity(scanner, sortedStudents, "Students List", showId);
+                return;
             }
             ModEntitiesUtils.showAllEntity(scanner, students, "Students List", showId);
         }
@@ -99,7 +104,8 @@ public class ModStudentUtils {
     /**
      * Add new Student
      */
-    static void studentAddStudent(Scanner scanner, FacultyService facultyService, StudentService studentService, University university, UserService userService) {
+    static void studentAddStudent(Scanner scanner, FacultyService facultyService, StudentService studentService, University university,
+                                  UserService userService, TeacherService teacherService) {
         System.out.println("--- Add Student ---");
         java.util.Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties");
         if (optFaculty.isEmpty()) {
@@ -126,82 +132,15 @@ public class ModStudentUtils {
         LocalDate enrollmentDate = LocalDate.of(enrollmentYear, 9, 1);
         int groupNumber = InputUtils.readInt(scanner, "Enter Group: ", 1, Integer.MAX_VALUE);
         int studyForm = InputUtils.readInt(scanner, "Enter study form (1 - BUDGET, 2 - CONTRACT): ", 1, 2);
-        StudyForm newStudyForm;
-        if (studyForm == 1) {
-            newStudyForm = StudyForm.BUDGET;
-        }
-        else{
-            newStudyForm = StudyForm.CONTRACT;
-        }
+        StudyForm newStudyForm = (studyForm == 1) ? StudyForm.BUDGET : StudyForm.CONTRACT;
         String domain = "@digiuni.ukma.edu";
-        String finalEmail;
+        String finalEmail = InputUtils.readAndValidateEmail(
+                scanner,
+                domain,
+                () -> ModEntitiesUtils.generateFullEmail(name, surname, domain),
+                email -> ModEntitiesUtils.isEmailGloballyTaken(email, studentService, teacherService)
+        );
 
-        System.out.println("Email domain will always be: " + domain);
-        String prefix = InputUtils.readLine(scanner, "Enter email prefix/username (press Enter to auto-generate): ", true, true);
-
-        if (prefix.isEmpty()) {
-            String generatedEmail = ModStudentUtils.generateStudentEmail(name, surname);
-
-            if (!isEmailTaken(generatedEmail, studentService)) {
-                System.out.println("Email generated: " + generatedEmail);
-                finalEmail = generatedEmail;
-            } else {
-                System.out.println("Generated email " + generatedEmail + " is already in system");
-                while (true) {
-                    String newPrefix = InputUtils.readLine(scanner, "Enter UNIQUE prefix for email (only letters, numbers, and dots allowed): ", false, true);
-
-                    if (newPrefix.contains("@")) {
-                        newPrefix = newPrefix.split("@")[0];
-                    }
-                    newPrefix = newPrefix.toLowerCase().replaceAll("[^a-z0-9.]", "");
-
-                    String newEmail = newPrefix + domain;
-
-                    if (!newPrefix.isEmpty() && !isEmailTaken(newEmail, studentService)) {
-                        System.out.println("Email set to: " + newEmail);
-                        finalEmail = newEmail;
-                        break;
-                    } else {
-                        System.out.println("Error. This email is taken or prefix is empty. Try again.");
-                    }
-                }
-            }
-        } else {
-            // Always strip domain if user accidentally includes one
-            if (prefix.contains("@")) {
-                prefix = prefix.split("@")[0];
-            }
-            prefix = prefix.toLowerCase().replaceAll("[^a-z0-9.]", "");
-
-            String emailToCheck = prefix + domain;
-
-            if (isEmailTaken(emailToCheck, studentService)) {
-                System.out.println("This email (" + emailToCheck + ") is already taken");
-                while (true) {
-                    String newPrefix = InputUtils.readLine(scanner, "Enter a UNIQUE email prefix (only letters, numbers, and dots allowed): ", false, true);
-
-                    if (newPrefix.contains("@")) {
-                        newPrefix = newPrefix.split("@")[0];
-                    }
-                    newPrefix = newPrefix.toLowerCase().replaceAll("[^a-z0-9.]", "");
-
-                    String fullNewEmail = newPrefix + domain;
-
-                    if (!newPrefix.isEmpty() && !isEmailTaken(fullNewEmail, studentService)) {
-                        System.out.println("Email set to: " + fullNewEmail);
-                        finalEmail = fullNewEmail;
-                        break;
-                    } else {
-                        System.out.println("Error. This email is also taken or prefix is empty. Try again.");
-                    }
-                }
-            } else {
-                System.out.println("Email set to: " + emailToCheck);
-                finalEmail = emailToCheck;
-            }
-        }
-
-        finalEmail = InputUtils.removeSpaces(finalEmail, false, true, true, true);
         String phone = InputUtils.readLine(scanner, "Enter phone number (optional, press Enter to skip): ", true, true);
         phone = InputUtils.removeSpaces(phone, false, true, true, true);
 
@@ -232,32 +171,6 @@ public class ModStudentUtils {
                 " in " + selectedSpeciality.getName());
     }
 
-    //work with email
-    private static boolean isEmailTaken(String email, StudentService studentService){
-        if (email == null || email.isEmpty()){
-            return false;
-        }
-        for (Student s : studentService.getAllStudents()) {
-            if (s.getEmail() != null && email.equals(s.getEmail())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private static String generateStudentEmail(String name, String surname){
-        if(name == null || surname == null){
-            return "";
-        }
-        String nameL = String.valueOf(name.toLowerCase().charAt(0));
-        String domen = "@digiuni.ukma.edu";
-        return nameL + "."+surname.toLowerCase().replace(" ", "")+ domen;
-    }
-
-
-    /**
-     * Delete the Student by name
-     */
 
     /**
      * Delete the Student by ID
@@ -273,7 +186,8 @@ public class ModStudentUtils {
     /**
      * Edit the Student by name
      */
-    static void studentEditByName(Scanner scanner, StudentService studentService, University university, UserService userService) {
+    static void studentEditByName(Scanner scanner, StudentService studentService, University university,
+                                  UserService userService, TeacherService teacherService) {
         String fullName = InputUtils.readLine(scanner, "Enter full name part: ", false, false);
         fullName = InputUtils.removeSpaces(fullName, false, true, true, true);
         List<Student> result = studentService.findStudentsByFullName(fullName);
@@ -297,7 +211,7 @@ public class ModStudentUtils {
             } else {
                 studentToProcess = result.get(0);
             }
-            editStudentDetails(scanner, studentToProcess, studentService, university, userService);
+            editStudentDetails(scanner, studentToProcess, studentService, university, userService, teacherService);
             FileStorageUtils.saveAll(university, userService);
         }
     }
@@ -305,19 +219,21 @@ public class ModStudentUtils {
     /**
      * Edit the Student by ID
      */
-    static void studentEditById(Scanner scanner, StudentService studentService, University university, UserService userService) {
+    static void studentEditById(Scanner scanner, StudentService studentService, University university,
+                                UserService userService, TeacherService teacherService) {
         String id = InputUtils.readLine(scanner, "Enter ID of student: ", false, true);
         List<Student> result = studentService.findStudentById(id);
         if (result.isEmpty()){
             System.out.println("No student found by id " + id);
         } else {
             Student studentToProcess = result.get(0);
-            editStudentDetails(scanner, studentToProcess, studentService, university, userService);
+            editStudentDetails(scanner, studentToProcess, studentService, university, userService, teacherService);
             FileStorageUtils.saveAll(university, userService);
         }
     }
 
-    public static void editStudentDetails(Scanner scanner, Student studentToProcess, StudentService studentService, University university, UserService userService) {
+    public static void editStudentDetails(Scanner scanner, Student studentToProcess, StudentService studentService,
+                                          University university, UserService userService, TeacherService teacherService) {
         while (true) {
             System.out.println("\nEditing student: " + studentToProcess.getFullName());
             System.out.println("1. Change Surname");
@@ -414,10 +330,20 @@ public class ModStudentUtils {
 
                 }
                 case 8 -> {
-                    String newEmail = InputUtils.readLine(scanner, "Enter new email: ", false, true);
-                    newEmail = InputUtils.removeSpaces(newEmail, false, true, true, true);
+                    System.out.println("Current email: " + studentToProcess.getEmail());
+                    String domain = "@digiuni.ukma.edu";
+
+                    String newEmail = InputUtils.readAndValidateEmail(
+                            scanner,
+                            domain,
+                            () -> ModEntitiesUtils.generateFullEmail(studentToProcess.getOnlyName(), studentToProcess.getSurname(), domain),
+
+                            email -> !email.equalsIgnoreCase(studentToProcess.getEmail()) &&
+                                    ModEntitiesUtils.isEmailGloballyTaken(email, studentService, teacherService)
+                    );
                     studentToProcess.setEmail(newEmail);
-                    System.out.println("Email updated!");
+                    FileStorageUtils.updateStudentRecord(studentToProcess);
+                    System.out.println("Email successfully updated to: " + studentToProcess.getEmail());
                 }
                 case 9 -> {
                     String newPhone = InputUtils.readLine(scanner, "Enter new phone number: ", false, true);

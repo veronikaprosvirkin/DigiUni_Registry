@@ -5,10 +5,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
+import person.*;
 import utils.annotations.DetailDisplay;
 import utils.input.InputUtils;
-import person.Student;
-import person.Teacher;
 import speciality.Speciality;
 import faculty.Faculty;
 import department.Department;
@@ -166,5 +165,39 @@ public class ModEntitiesUtils {
             System.out.println("No annotated fields found for display.");
         }
         System.out.println("=========================================\n");
+    }
+
+    public static <T extends Person> boolean isEmailTakenInList(String email, List<T> people) {
+        if (people == null) return false;
+        for (T person : people) {
+            if (person.getEmail() != null && email.equalsIgnoreCase(person.getEmail())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //check if email is taken by any student or teacher
+    public static boolean isEmailGloballyTaken(String email, StudentService studentService, TeacherService teacherService) {
+        boolean takenByStudent = isEmailTakenInList(email, studentService.getAllStudents());
+        boolean takenByTeacher = isEmailTakenInList(email, teacherService.getAllTeachers());
+
+        return takenByStudent || takenByTeacher; //return true if email is taken by either students or teachers
+    }
+
+    //generate email in format: first letter of name + "." + surname + domain
+    public static String generateFullEmail(String name, String surname, String domain) {
+        if (name == null || name.isEmpty() || surname == null || surname.isEmpty()) {
+            return "";
+        }
+
+        String cleanName = name.toLowerCase().replaceAll("[^a-z]", "");
+        String cleanSurname = surname.toLowerCase().replaceAll("[^a-z]", "");
+
+        if (cleanName.isEmpty() || cleanSurname.isEmpty()) {
+            return "";
+        }
+
+        return cleanName.charAt(0) + "." + cleanSurname + domain;
     }
 }

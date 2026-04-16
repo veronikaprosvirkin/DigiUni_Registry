@@ -1,6 +1,13 @@
 package utils.input;
 
+import person.Person;
+import person.StudentService;
+import person.TeacherService;
+
+import java.util.List;
 import java.util.Scanner;
+import java.util.function.Supplier;
+import java.util.function.Predicate;
 
 public class InputUtils {
     public InputUtils() {};
@@ -110,5 +117,66 @@ public class InputUtils {
         }
 
         return result;
+    }
+    /**
+     * method that reads email prefix, checks if it is valid and unique, and generates email if user wants
+     *@param scanner that reads a line
+     *@param domain domain "@digiuni.ukma.edu"
+     * @param autoGenerator function that generates email prefix, should be passed as lambda or method reference
+     * @param isTakenChecker function that checks if email is already taken, should be passed as lambda or method reference
+     * @return validated email
+     */
+    public static String readAndValidateEmail(Scanner scanner, String domain,
+                                              Supplier<String> autoGenerator,
+                                              Predicate<String> isTakenChecker) {
+        System.out.println("Email domain will always be: " + domain);
+        String prefix = readLine(scanner, "Enter email prefix/username (press Enter to auto-generate): ", true, true);
+
+        String finalEmail;
+
+        if (prefix.isEmpty()) {
+            String generatedEmail = autoGenerator.get();
+
+            if (!isTakenChecker.test(generatedEmail)) {
+                System.out.println("Email generated: " + generatedEmail);
+                finalEmail = generatedEmail;
+            } else {
+                System.out.println("Generated email " + generatedEmail + " is already in system");
+                finalEmail = forceUniquePrefix(scanner, domain, isTakenChecker);
+            }
+        } else {
+            String emailToCheck = cleanPrefix(prefix) + domain;
+            if (isTakenChecker.test(emailToCheck)) {
+                System.out.println("This email (" + emailToCheck + ") is already taken");
+                finalEmail = forceUniquePrefix(scanner, domain, isTakenChecker);
+            } else {
+                System.out.println("Email set to: " + emailToCheck);
+                finalEmail = emailToCheck;
+            }
+        }
+
+        return removeSpaces(finalEmail, false, true, true, true);
+    }
+
+
+    private static String forceUniquePrefix(Scanner scanner, String domain, Predicate<String> isTakenChecker) {
+        while (true) {
+            String newPrefix = readLine(scanner, "Enter a UNIQUE email prefix (only letters, numbers, and dots allowed): ", false, true);
+            String fullNewEmail = cleanPrefix(newPrefix) + domain;
+
+            if (!fullNewEmail.replace(domain, "").isEmpty() && !isTakenChecker.test(fullNewEmail)) {
+                System.out.println("Email set to: " + fullNewEmail);
+                return fullNewEmail;
+            } else {
+                System.out.println("Error. This email is taken or prefix is empty. Try again.");
+            }
+        }
+    }
+
+    private static String cleanPrefix(String prefix) {
+        if (prefix.contains("@")) {
+            prefix = prefix.split("@")[0];
+        }
+        return prefix.toLowerCase().replaceAll("[^a-z0-9.]", "");
     }
 }
