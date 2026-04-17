@@ -41,7 +41,7 @@
                     <fill>
                         <ImagePattern>
                             <image>
-                                <Image url="@images/student_photo.png" />
+                                <Image url="@images/student_male_photo.png" />
                             </image>
                         </ImagePattern>
                     </fill>
