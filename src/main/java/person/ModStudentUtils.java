@@ -39,7 +39,7 @@ public class ModStudentUtils {
                 String fullName = InputUtils.readLine(scanner, "Full name of student: ", false, false);
                 fullName = InputUtils.removeSpaces(fullName, false, true, true, true);
                 List<Student> result = studentService.findStudentsByFullName(fullName);
-                ModEntitiesUtils.deleteEntity(scanner, result, "Student", (student -> studentService.deleteStudent(student, student.getSpeciality())));
+                deleteStudentWithPreview(scanner, result, studentService);
                 FileStorageUtils.saveAll(university, userService);
             } else if (deleteStudent == 2) {
                 ModStudentUtils.studentDeleteById(scanner, studentService, university, userService);
@@ -217,8 +217,52 @@ public class ModStudentUtils {
         String id = InputUtils.readLine(scanner, "Enter ID of student: ", false, true);
 
         List<Student> result = studentService.findStudentById(id);
-        ModEntitiesUtils.deleteEntity(scanner, result, "Student", (student -> studentService.deleteStudent(student, student.getSpeciality())));
+        deleteStudentWithPreview(scanner, result, studentService);
         FileStorageUtils.saveAll(university, userService);
+    }
+
+    private static void deleteStudentWithPreview(Scanner scanner, List<Student> students, StudentService studentService) {
+        if (students.isEmpty()) {
+            return;
+        }
+
+        Student studentToDelete;
+        if (students.size() > 1) {
+            System.out.println("Multiple students found. Please select one: ");
+            for (int i = 0; i < students.size(); i++) {
+                System.out.println((i + 1) + ". " + students.get(i).getDisplayInfo());
+            }
+            System.out.println("0. Cancel");
+
+            int index = InputUtils.readInt(scanner, "> ", 0, students.size());
+            if (index == 0) {
+                System.out.println("Operation cancelled.");
+                InputUtils.pause(scanner);
+                return;
+            }
+            studentToDelete = students.get(index - 1);
+        } else {
+            studentToDelete = students.get(0);
+        }
+
+        StudentCardWindow.open(studentToDelete);
+        StudentCardWindow.refresh(studentToDelete);
+        try {
+            String confirmation = InputUtils.readLine(scanner,
+                    "Are you sure you want to delete: " + studentToDelete.getName() + "? (y/n): ",
+                    false,
+                    true);
+
+            if (confirmation.toLowerCase().startsWith("y")) {
+                studentService.deleteStudent(studentToDelete, studentToDelete.getSpeciality());
+            } else {
+                System.out.println("Operation cancelled.");
+            }
+        } finally {
+            StudentCardWindow.close();
+        }
+
+        InputUtils.pause(scanner);
     }
 
     /**
