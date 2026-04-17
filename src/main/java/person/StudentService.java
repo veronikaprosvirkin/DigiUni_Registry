@@ -50,7 +50,6 @@ public class StudentService {
             log.error("Failed to add student: no default faculty/speciality available");
             System.out.println("Error: No department found to add student!");
         }
-
     }
 
     public void addStudentToSpeciality(Student student, Speciality speciality, int groupNumber) {

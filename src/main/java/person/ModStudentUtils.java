@@ -124,55 +124,89 @@ public class ModStudentUtils {
         }
         Speciality selectedSpeciality = optSpec.get();
 
-
-
-        // Student's info
-        String name = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Name: ", false, false), true, false, false, false);
-        String surname = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Surname: ", false, false), true, false, false, false);
-        String patronymic = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Patronymic: ", false, false), true, false, false, false);
-        int enrollmentYear = InputUtils.readInt(scanner, "Enter the year of enrollment: ", 1990, 2026);
-        LocalDate enrollmentDate = LocalDate.of(enrollmentYear, 9, 1);
-        int groupNumber = InputUtils.readInt(scanner, "Enter Group: ", 1, Integer.MAX_VALUE);
-        int studyForm = InputUtils.readInt(scanner, "Enter study form (1 - BUDGET, 2 - CONTRACT): ", 1, 2);
-        StudyForm newStudyForm = (studyForm == 1) ? StudyForm.BUDGET : StudyForm.CONTRACT;
-        String domain = "@digiuni.ukma.edu";
-        String finalEmail = InputUtils.readAndValidateEmail(
-                scanner,
-                domain,
-                () -> ModEntitiesUtils.generateFullEmail(name, surname, domain),
-                email -> ModEntitiesUtils.isEmailGloballyTaken(email, studentService, teacherService)
+        // Create a draft student for live preview in the card window during input.
+        Student draftStudent = new Student(
+                "PENDING",
+                "",
+                "",
+                "",
+                LocalDate.of(LocalDate.now().getYear(), 9, 1),
+                1,
+                selectedFaculty,
+                selectedSpeciality,
+                StudyForm.BUDGET
         );
 
-        String phone = InputUtils.readLine(scanner, "Enter phone number (optional, press Enter to skip): ", true, true);
-        phone = InputUtils.removeSpaces(phone, false, true, true, true);
+        StudentCardWindow.open(draftStudent);
+        try {
+            // Student's info
+            String name = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Name: ", false, false), true, false, false, false);
+            draftStudent.setName(name);
+            StudentCardWindow.refresh(draftStudent);
 
-        String dobStr = InputUtils.readLine(scanner, "Enter date of birth (YYYY-MM-DD, optional, press Enter to skip): ", true, true);
-        dobStr = InputUtils.removeSpaces(dobStr, false, true, true, true);
-        LocalDate dateOfBirth = null;
-        if (!dobStr.isEmpty()) {
-            try {
-                dateOfBirth = LocalDate.parse(dobStr);
-            } catch (Exception e) {
-                System.out.println("Invalid date format. Skipping date of birth.");
+            String surname = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Surname: ", false, false), true, false, false, false);
+            draftStudent.setSurname(surname);
+            StudentCardWindow.refresh(draftStudent);
+
+            String patronymic = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Patronymic: ", false, false), true, false, false, false);
+            draftStudent.setPatronymic(patronymic);
+            StudentCardWindow.refresh(draftStudent);
+
+            int enrollmentYear = InputUtils.readInt(scanner, "Enter the year of enrollment: ", 1990, 2026);
+            LocalDate enrollmentDate = LocalDate.of(enrollmentYear, 9, 1);
+            draftStudent.setEnrollmentDate(enrollmentDate);
+            StudentCardWindow.refresh(draftStudent);
+
+            int groupNumber = InputUtils.readInt(scanner, "Enter Group: ", 1, Integer.MAX_VALUE);
+            draftStudent.setGroup(groupNumber);
+            StudentCardWindow.refresh(draftStudent);
+
+            int studyForm = InputUtils.readInt(scanner, "Enter study form (1 - BUDGET, 2 - CONTRACT): ", 1, 2);
+            StudyForm newStudyForm = (studyForm == 1) ? StudyForm.BUDGET : StudyForm.CONTRACT;
+            draftStudent.setStudyForm(newStudyForm);
+            StudentCardWindow.refresh(draftStudent);
+
+            String domain = "@digiuni.ukma.edu";
+            String finalEmail = InputUtils.readAndValidateEmail(
+                    scanner,
+                    domain,
+                    () -> ModEntitiesUtils.generateFullEmail(name, surname, domain),
+                    email -> ModEntitiesUtils.isEmailGloballyTaken(email, studentService, teacherService)
+            );
+            draftStudent.setEmail(finalEmail);
+            StudentCardWindow.refresh(draftStudent);
+
+            String phone = InputUtils.readLine(scanner, "Enter phone number (optional, press Enter to skip): ", true, true);
+            phone = InputUtils.removeSpaces(phone, false, true, true, true);
+            draftStudent.setPhone(phone.isEmpty() ? null : phone);
+            StudentCardWindow.refresh(draftStudent);
+
+            String dobStr = InputUtils.readLine(scanner, "Enter date of birth (YYYY-MM-DD, optional, press Enter to skip): ", true, true);
+            dobStr = InputUtils.removeSpaces(dobStr, false, true, true, true);
+            if (!dobStr.isEmpty()) {
+                try {
+                    draftStudent.setDateOfBirth(LocalDate.parse(dobStr));
+                } catch (Exception e) {
+                    System.out.println("Invalid date format. Skipping date of birth.");
+                }
             }
+            StudentCardWindow.refresh(draftStudent);
+
+            // Save
+            String newId = IdGenerator.generateStudentId(enrollmentDate.getYear());
+            draftStudent.setId(newId);
+            StudentCardWindow.refresh(draftStudent);
+
+            System.out.println("Detected gender: " + draftStudent.getGender());
+
+            studentService.addStudentToSpeciality(draftStudent, selectedSpeciality, groupNumber);
+            FileStorageUtils.saveAll(university, userService);
+
+            System.out.println("Student " + draftStudent.getFullName() + " added to group " + groupNumber +
+                    " in " + selectedSpeciality.getName());
+        } finally {
+            StudentCardWindow.close();
         }
-
-        // Save
-        String newId = IdGenerator.generateStudentId(enrollmentDate.getYear());
-        Student s = new Student(newId,name, surname, patronymic, enrollmentDate, groupNumber,
-                selectedFaculty,
-                selectedSpeciality,newStudyForm, dateOfBirth);
-
-        System.out.println("Detected gender: " + s.getGender());
-
-        s.setEmail(finalEmail);
-        if (!phone.isEmpty()) s.setPhone(phone);
-
-        studentService.addStudentToSpeciality(s, selectedSpeciality, groupNumber);
-        FileStorageUtils.saveAll(university, userService);
-
-        System.out.println("Student " + s.getFullName() + " added to group " + groupNumber +
-                " in " + selectedSpeciality.getName());
     }
 
 
