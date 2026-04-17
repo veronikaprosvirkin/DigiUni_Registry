@@ -101,5 +101,5 @@
 }
 
 #statusStampView {
-    -fx-effect: dropshadow(three-pass-box, rgba(28, 10, 10, 0.3), 10, 0.5, 0, 2);
+    -fx-effect: dropshadow(three-pass-box, rgba(28, 10, 10, 0.15), 10, 0.5, 0, 2);
 }
