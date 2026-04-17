@@ -53,10 +53,10 @@
         </HBox>
 
         <VBox alignment="CENTER_LEFT" spacing="2.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
-            <Label fx:id="surnameLabel" styleClass="header-name" text="Surname" />
-            <Label fx:id="nameLabel" styleClass="header-name" text="Name" />
-            <Label fx:id="patronymicLabel" styleClass="header-name" text="Patronymic" />
-            <Label fx:id="idLabel" styleClass="id-text" text="ID: stYYYYXXXX">
+            <Label fx:id="surnameLabel" prefHeight="47.0" prefWidth="377.0" styleClass="header-name" text="Surname" />
+            <Label fx:id="nameLabel" prefHeight="47.0" prefWidth="393.0" styleClass="header-name" text="Name" />
+            <Label fx:id="patronymicLabel" prefHeight="47.0" prefWidth="379.0" styleClass="header-name" text="Patronymic" />
+            <Label fx:id="idLabel" prefHeight="22.0" prefWidth="200.0" styleClass="id-text" text="ID: stYYYYXXXX">
                 <VBox.margin>
                     <Insets top="10.0" />
                 </VBox.margin>
@@ -72,7 +72,7 @@
                 </StackPane>
                 <VBox alignment="CENTER_LEFT">
                     <Label styleClass="chip-title" text="Faculty" />
-                    <Label fx:id="facultyLabel" styleClass="chip-value" text="Faculty of Something" />
+                    <Label fx:id="facultyLabel" prefHeight="16.0" prefWidth="267.0" styleClass="chip-value" text="Faculty of Something" />
                 </VBox>
             </HBox>
 
@@ -84,19 +84,19 @@
                 </StackPane>
                 <VBox alignment="CENTER_LEFT">
                     <Label styleClass="chip-title" text="Speciality" />
-                    <Label fx:id="specialityLabel" styleClass="chip-value" text="Speciality of Something" />
+                    <Label fx:id="specialityLabel" prefHeight="16.0" prefWidth="259.0" styleClass="chip-value" text="Speciality of Something" />
                 </VBox>
             </HBox>
 
             <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="chip-container">
                 <StackPane styleClass="icon-bg, icon-terra">
                     <ImageView fitHeight="24.0" fitWidth="24.0">
-                        <Image url="@images/icon_dob.png" />
+                        <Image url="@images/icon_position.png" />
                     </ImageView>
                 </StackPane>
                 <VBox alignment="CENTER_LEFT">
-                    <Label styleClass="chip-title" text="Date of birth" />
-                    <Label fx:id="dobLabel" styleClass="chip-value" text="DD.MM.YYYY" />
+                    <Label styleClass="chip-title" text="Position" />
+                    <Label fx:id="courseGroupLabel" prefHeight="16.0" prefWidth="289.0" styleClass="chip-value" text="Course 0 | Group 0" />
                 </VBox>
             </HBox>
         </VBox>
@@ -112,7 +112,7 @@
                 </StackPane>
                 <VBox alignment="CENTER_LEFT">
                     <Label styleClass="chip-title" text="Phone:" />
-                    <Label fx:id="phoneLabel" styleClass="chip-value" text="+38(XXX)XXXXXXX" />
+                    <Label fx:id="phoneLabel" prefHeight="16.0" prefWidth="276.0" styleClass="chip-value" text="+38(XXX)XXXXXXX" />
                 </VBox>
             </HBox>
 
@@ -122,12 +122,17 @@
                         <Image url="@images/icon_email.png" />
                     </ImageView>
                 </StackPane>
-                <VBox alignment="CENTER_LEFT" prefHeight="49.0" prefWidth="145.0">
+                <VBox alignment="CENTER_LEFT" prefHeight="49.0" prefWidth="314.0">
                     <Label styleClass="chip-title" text="Email:" />
-                    <Label fx:id="emailLabel" styleClass="chip-value" text="a.bbbbb@ukma.edu.ua" />
+                    <Label fx:id="emailLabel" prefHeight="16.0" prefWidth="267.0" styleClass="chip-value" text="n.surname@ukma.edu.ua" />
                 </VBox>
             </HBox>
         </VBox>
-
     </GridPane>
+
+    <ImageView fx:id="statusStampView" blendMode="MULTIPLY" fitHeight="160.0" fitWidth="160.0" opacity="0.6" rotate="-15.0" AnchorPane.bottomAnchor="140.0" AnchorPane.rightAnchor="0.0">
+        <image>
+            <Image url="@images/stamp_contract.png" />
+        </image>
+    </ImageView>
 </AnchorPane>

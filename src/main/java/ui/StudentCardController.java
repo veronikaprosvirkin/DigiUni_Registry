@@ -7,6 +7,7 @@ import java.time.format.DateTimeFormatter;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import person.Gender;
@@ -34,13 +35,15 @@ public class StudentCardController {
     @FXML
     private Label specialityLabel;
     @FXML
-    private Label dobLabel;
+    private Label courseGroupLabel;
     @FXML
     private Label phoneLabel;
     @FXML
     private Label emailLabel;
     @FXML
     private Rectangle studentPhotoRect;
+    @FXML
+    private ImageView statusStampView;
 
 
     // Updates all FXML labels with data from Student object
@@ -60,9 +63,10 @@ public class StudentCardController {
 
         facultyLabel.setText(student.getFaculty() != null ? normalized(student.getFaculty().getName(), "N/A") : "N/A");
         specialityLabel.setText(student.getSpeciality() != null ? normalized(student.getSpeciality().getName(), "N/A") : "N/A");
-        dobLabel.setText(formatDate(student.getDateOfBirth()));
+        courseGroupLabel.setText("Course " + student.getCourse() + " | Group " + student.getGroup());;
         phoneLabel.setText(normalized(student.getPhone(), "Not set"));
         emailLabel.setText(normalized(student.getEmail(), "Not set"));
+        updateStatusStamp(student);
     }
 
     // Formats LocalDate to string or returns default text
@@ -108,5 +112,29 @@ public class StudentCardController {
     private static Image loadImage(String resourcePath) {
         URL imageUrl = StudentCardController.class.getResource(resourcePath);
         return imageUrl == null ? null : new Image(imageUrl.toExternalForm());
+    }
+
+    // Sets stamp image based on study form
+    private void updateStatusStamp(Student student) {
+        if (student.getStudyForm() == null) {
+            statusStampView.setImage(null);
+            return;
+        }
+
+        String imageName;
+        // Use your enum values here (e.g., BUDGET/CONTRACT)
+        if (student.getStudyForm().toString().equalsIgnoreCase("BUDGET")) {
+            imageName = "stamp_budget.png";
+        } else {
+            imageName = "stamp_contract.png";
+        }
+
+        try {
+            String path = "images/" + imageName;
+            statusStampView.setImage(new Image(getClass().getResourceAsStream(path)));
+        } catch (Exception e) {
+            // Log error if image missing
+            System.err.println("Could not load stamp: " + e.getMessage());
+        }
     }
 }
