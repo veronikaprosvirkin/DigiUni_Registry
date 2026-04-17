@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
@@ -130,13 +131,13 @@
         </VBox>
     </GridPane>
 
-    <ImageView fx:id="statusStampView" blendMode="MULTIPLY" fitHeight="160.0" fitWidth="160.0" opacity="0.83" rotate="-15.0" AnchorPane.bottomAnchor="140.0" AnchorPane.rightAnchor="0.0">
+    <ImageView fx:id="statusStampView" blendMode="MULTIPLY" fitHeight="160.0" fitWidth="160.0" opacity="0.5" rotate="-15.0" AnchorPane.bottomAnchor="140.0" AnchorPane.rightAnchor="0.0">
         <image>
             <Image url="@images/stamp_contract.png" />
         </image>
     </ImageView>
 
-    <StackPane fx:id="archivedOverlay" visible="false" styleClass="archived-overlay" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <StackPane fx:id="archivedOverlay" styleClass="archived-overlay" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <ImageView fitHeight="300.0" fitWidth="600.0" preserveRatio="true" rotate="-15.0">
             <image>
                 <Image url="@images/stamp_archived.png" />
