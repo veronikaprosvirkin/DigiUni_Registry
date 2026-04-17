@@ -255,6 +255,12 @@ public class ModStudentUtils {
 
             if (confirmation.toLowerCase().startsWith("y")) {
                 studentService.deleteStudent(studentToDelete, studentToDelete.getSpeciality());
+                StudentCardWindow.showArchived();
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
             } else {
                 System.out.println("Operation cancelled.");
             }

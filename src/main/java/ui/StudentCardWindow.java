@@ -57,6 +57,20 @@ public final class StudentCardWindow {
         });
     }
 
+    public static void showArchived() {
+        if (!FX_INITIALIZED.get()) {
+            return;
+        }
+
+        Platform.runLater(() -> {
+            synchronized (WINDOW_LOCK) {
+                if (controller != null) {
+                    controller.showArchived();
+                }
+            }
+        });
+    }
+
     public static void close() {
         if (!FX_INITIALIZED.get()) {
             return;
@@ -131,5 +145,3 @@ public final class StudentCardWindow {
         }
     }
 }
-
-

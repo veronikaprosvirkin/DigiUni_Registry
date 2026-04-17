@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import person.Gender;
@@ -44,6 +45,8 @@ public class StudentCardController {
     private Rectangle studentPhotoRect;
     @FXML
     private ImageView statusStampView;
+    @FXML
+    private StackPane archivedOverlay;
 
 
     // Updates all FXML labels with data from Student object
@@ -71,6 +74,7 @@ public class StudentCardController {
         phoneLabel.setText(normalized(student.getPhone(), "Not set"));
         emailLabel.setText(normalized(student.getEmail(), "Not set"));
         updateStatusStamp(student);
+        archivedOverlay.setVisible(false);
     }
 
     // Formats LocalDate to string or returns default text
@@ -139,5 +143,11 @@ public class StudentCardController {
         } catch (Exception e) {
             System.err.println("Could not load stamp: " + e.getMessage());
         }
+    }
+
+    // Show archived stamp overlay
+    public void showArchived() {
+        archivedOverlay.setVisible(true);
+        archivedOverlay.toFront();
     }
 }
