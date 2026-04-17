@@ -133,7 +133,6 @@ public class StudentCardController {
             String path = "images/" + imageName;
             statusStampView.setImage(new Image(getClass().getResourceAsStream(path)));
         } catch (Exception e) {
-            // Log error if image missing
             System.err.println("Could not load stamp: " + e.getMessage());
         }
     }

@@ -9,7 +9,7 @@
 
 <AnchorPane prefHeight="518.0" prefWidth="790.0" styleClass="main-card" stylesheets="@student-card.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.StudentCardController">
 
-    <Rectangle height="518.0" opacity="0.05" width="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <Rectangle height="524.0" opacity="0.08" width="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <fill>
             <ImagePattern height="120" proportional="false" width="120">
                 <image>
