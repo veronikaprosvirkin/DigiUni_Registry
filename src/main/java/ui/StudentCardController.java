@@ -1,15 +1,25 @@
 package ui;
 
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
+import person.Gender;
 import person.Student;
 
 public class StudentCardController {
     private static final DateTimeFormatter DOB_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+    private static final String MALE_PHOTO_RESOURCE = "/ui/images/student_male_photo.png";
+    private static final String FEMALE_PHOTO_RESOURCE = "/ui/images/student_female_photo.png";
+    private static final String OTHER_PHOTO_RESOURCE = "/ui/images/student_other_photo.png";
+    private static final Image MALE_PHOTO = loadImage(MALE_PHOTO_RESOURCE);
+    private static final Image FEMALE_PHOTO = loadImage(FEMALE_PHOTO_RESOURCE);
+    private static final Image OTHER_PHOTO = loadImage(OTHER_PHOTO_RESOURCE);
 
     @FXML
     private Label nameLabel;
@@ -29,6 +39,9 @@ public class StudentCardController {
     private Label phoneLabel;
     @FXML
     private Label emailLabel;
+    @FXML
+    private Rectangle studentPhotoRect;
+
 
     // Updates all FXML labels with data from Student object
     public void updateCard(Student student) {
@@ -36,6 +49,7 @@ public class StudentCardController {
             return;
         }
 
+        updateStudentPhoto(student.getGender());
         nameLabel.setText(normalized(student.getOnlyName(), "N/A"));
         surnameLabel.setText(normalized(student.getSurname(), "N/A"));
         patronymicLabel.setText(normalized(student.getPatronymic(), "Not set"));
@@ -67,5 +81,32 @@ public class StudentCardController {
             return fallback;
         }
         return value.trim();
+    }
+
+    private void updateStudentPhoto(Gender gender) {
+        if (studentPhotoRect == null) {
+            return;
+        }
+
+        Image photo = resolvePhotoByGender(gender);
+        if (photo != null) {
+            studentPhotoRect.setFill(new ImagePattern(photo));
+        }
+    }
+
+    private static Image resolvePhotoByGender(Gender gender) {
+        if (gender == Gender.FEMALE) {
+            return FEMALE_PHOTO != null ? FEMALE_PHOTO : MALE_PHOTO;
+        }
+        if (gender == Gender.MALE) {
+            return MALE_PHOTO;
+        }
+
+        return OTHER_PHOTO != null ? OTHER_PHOTO : MALE_PHOTO;
+    }
+
+    private static Image loadImage(String resourcePath) {
+        URL imageUrl = StudentCardController.class.getResource(resourcePath);
+        return imageUrl == null ? null : new Image(imageUrl.toExternalForm());
     }
 }

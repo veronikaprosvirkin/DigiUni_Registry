@@ -37,11 +37,11 @@
 
         <HBox alignment="CENTER_LEFT" spacing="20.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
             <StackPane styleClass="photo-container">
-                <Rectangle arcHeight="25.0" arcWidth="25.0" height="173.0" width="142.0">
+                <Rectangle fx:id="studentPhotoRect" arcHeight="25.0" arcWidth="25.0" height="173.0" width="142.0">
                     <fill>
                         <ImagePattern>
                             <image>
-                                <Image url="@images/student_male_photo.png" />
+                                <Image url="@images/student_other_photo.png" />
                             </image>
                         </ImagePattern>
                     </fill>
@@ -53,10 +53,10 @@
         </HBox>
 
         <VBox alignment="CENTER_LEFT" spacing="2.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
-            <Label fx:id="nameLabel" styleClass="header-name" text="MYKHAILO" />
-            <Label fx:id="surnameLabel" styleClass="header-name" text="PULOV" />
-            <Label fx:id="patronymicLabel" styleClass="header-name" text="VOLODYMYROVYCH" />
-            <Label fx:id="idLabel" styleClass="id-text" text="ID: st20250046">
+            <Label fx:id="surnameLabel" styleClass="header-name" text="Surname" />
+            <Label fx:id="nameLabel" styleClass="header-name" text="Name" />
+            <Label fx:id="patronymicLabel" styleClass="header-name" text="Patronymic" />
+            <Label fx:id="idLabel" styleClass="id-text" text="ID: stYYYYXXXX">
                 <VBox.margin>
                     <Insets top="10.0" />
                 </VBox.margin>
@@ -72,7 +72,7 @@
                 </StackPane>
                 <VBox alignment="CENTER_LEFT">
                     <Label styleClass="chip-title" text="Faculty" />
-                    <Label fx:id="facultyLabel" styleClass="chip-value" text="Faculty of Informatics" />
+                    <Label fx:id="facultyLabel" styleClass="chip-value" text="Faculty of Something" />
                 </VBox>
             </HBox>
 
@@ -84,7 +84,7 @@
                 </StackPane>
                 <VBox alignment="CENTER_LEFT">
                     <Label styleClass="chip-title" text="Speciality" />
-                    <Label fx:id="specialityLabel" styleClass="chip-value" text="Software Engineering" />
+                    <Label fx:id="specialityLabel" styleClass="chip-value" text="Speciality of Something" />
                 </VBox>
             </HBox>
 
@@ -96,7 +96,7 @@
                 </StackPane>
                 <VBox alignment="CENTER_LEFT">
                     <Label styleClass="chip-title" text="Date of birth" />
-                    <Label fx:id="dobLabel" styleClass="chip-value" text="05.03.2008" />
+                    <Label fx:id="dobLabel" styleClass="chip-value" text="DD.MM.YYYY" />
                 </VBox>
             </HBox>
         </VBox>
@@ -112,7 +112,7 @@
                 </StackPane>
                 <VBox alignment="CENTER_LEFT">
                     <Label styleClass="chip-title" text="Phone:" />
-                    <Label fx:id="phoneLabel" styleClass="chip-value" text="+380503809989" />
+                    <Label fx:id="phoneLabel" styleClass="chip-value" text="+38(XXX)XXXXXXX" />
                 </VBox>
             </HBox>
 
@@ -124,7 +124,7 @@
                 </StackPane>
                 <VBox alignment="CENTER_LEFT" prefHeight="49.0" prefWidth="145.0">
                     <Label styleClass="chip-title" text="Email:" />
-                    <Label fx:id="emailLabel" styleClass="chip-value" text="m.pulov@ukma.edu.ua" />
+                    <Label fx:id="emailLabel" styleClass="chip-value" text="a.bbbbb@ukma.edu.ua" />
                 </VBox>
             </HBox>
         </VBox>
