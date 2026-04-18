@@ -4,15 +4,23 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import javafx.animation.ScaleTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import person.Gender;
 import person.Student;
+import person.StudyForm;
+import javafx.animation.ScaleTransition;
+import javafx.util.Duration;
+import javafx.scene.Node;
+
 
 public class StudentCardController {
     private static final DateTimeFormatter DOB_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
@@ -44,9 +52,18 @@ public class StudentCardController {
     @FXML
     private Rectangle studentPhotoRect;
     @FXML
+    private StackPane studentPhoto;
+    @FXML
     private ImageView statusStampView;
     @FXML
     private StackPane archivedOverlay;
+    @FXML
+    private HBox facultyChip;
+    @FXML
+    private HBox specialityChip;
+    @FXML
+    private HBox positionChip;
+
 
 
     // Updates all FXML labels with data from Student object
@@ -124,23 +141,36 @@ public class StudentCardController {
 
     // Sets stamp image based on study form
     private void updateStatusStamp(Student student) {
-        if (student.getStudyForm() == null) {
-            statusStampView.setImage(null);
+        if (statusStampView == null) {
             return;
         }
 
-        String imageName;
-        // Use your enum values here (e.g., BUDGET/CONTRACT)
-        if (student.getStudyForm().toString().equalsIgnoreCase("BUDGET")) {
-            imageName = "stamp_budget.png";
-        } else {
-            imageName = "stamp_contract.png";
+        StudyForm studyForm = student.getStudyForm();
+        if (studyForm == null) {
+            statusStampView.setImage(null);
+            statusStampView.setVisible(false);
+            return;
+        }
+
+        String imageName = switch (studyForm) {
+            case BUDGET -> "stamp_budget.png";
+            case CONTRACT -> "stamp_contract.png";
+            default -> null;
+        };
+
+        if (imageName == null) {
+            statusStampView.setImage(null);
+            statusStampView.setVisible(false);
+            return;
         }
 
         try {
             String path = "images/" + imageName;
             statusStampView.setImage(new Image(getClass().getResourceAsStream(path)));
+            statusStampView.setVisible(true);
         } catch (Exception e) {
+            statusStampView.setImage(null);
+            statusStampView.setVisible(false);
             System.err.println("Could not load stamp: " + e.getMessage());
         }
     }
@@ -149,5 +179,32 @@ public class StudentCardController {
     public void showArchived() {
         archivedOverlay.setVisible(true);
         archivedOverlay.toFront();
+    }
+
+    @FXML
+    public void initialize() {
+        applySmoothHover(facultyChip);
+        applySmoothHover(specialityChip);
+        applySmoothHover(positionChip);
+        applySmoothHover(studentPhoto);
+    }
+
+
+    private void applySmoothHover(Node node) {
+        ScaleTransition st = new ScaleTransition(Duration.millis(200), node);
+
+        node.setOnMouseEntered(e -> {
+            st.stop();
+            st.setToX(1.03);
+            st.setToY(1.03);
+            st.play();
+        });
+
+        node.setOnMouseExited(e -> {
+            st.stop();
+            st.setToX(1.0);
+            st.setToY(1.0);
+            st.play();
+        });
     }
 }

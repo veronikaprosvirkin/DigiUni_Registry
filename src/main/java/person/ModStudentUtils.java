@@ -134,7 +134,7 @@ public class ModStudentUtils {
                 1,
                 selectedFaculty,
                 selectedSpeciality,
-                StudyForm.BUDGET
+                null
         );
 
         StudentCardWindow.open(draftStudent);

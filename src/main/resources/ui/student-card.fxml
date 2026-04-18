@@ -37,7 +37,7 @@
         </rowConstraints>
 
         <HBox alignment="CENTER_LEFT" spacing="20.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
-            <StackPane styleClass="photo-container">
+            <StackPane fx:id="studentPhoto" styleClass="photo-container">
                 <Rectangle fx:id="studentPhotoRect" arcHeight="25.0" arcWidth="25.0" height="173.0" width="142.0">
                     <fill>
                         <ImagePattern>
@@ -65,7 +65,7 @@
         </VBox>
 
         <VBox alignment="BASELINE_LEFT" prefHeight="181.0" prefWidth="327.0" spacing="15.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
-            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="chip-container">
+            <HBox fx:id="facultyChip" alignment="CENTER_LEFT" spacing="12.0" styleClass="chip-container">
                 <StackPane styleClass="icon-bg, icon-sage">
                     <ImageView fitHeight="24.0" fitWidth="24.0">
                         <Image url="@images/icon_faculty.png" />
@@ -77,7 +77,7 @@
                 </VBox>
             </HBox>
 
-            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="chip-container">
+            <HBox fx:id="specialityChip" alignment="CENTER_LEFT" spacing="12.0" styleClass="chip-container">
                 <StackPane styleClass="icon-bg, icon-blue">
                     <ImageView fitHeight="24.0" fitWidth="24.0">
                         <Image url="@images/icon_speciality.png" />
@@ -89,7 +89,7 @@
                 </VBox>
             </HBox>
 
-            <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="chip-container">
+            <HBox fx:id="positionChip" alignment="CENTER_LEFT" spacing="12.0" styleClass="chip-container">
                 <StackPane styleClass="icon-bg, icon-terra">
                     <ImageView fitHeight="24.0" fitWidth="24.0">
                         <Image url="@images/icon_position.png" />
@@ -102,7 +102,7 @@
             </HBox>
         </VBox>
 
-        <VBox maxWidth="366.0" prefHeight="225.0" prefWidth="360.0" spacing="12.0" styleClass="contacts-container" GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <VBox fx:id="contactsLabel" maxWidth="366.0" prefHeight="225.0" prefWidth="360.0" spacing="12.0" styleClass="contacts-container" GridPane.columnIndex="1" GridPane.rowIndex="1">
             <Label prefHeight="45.0" prefWidth="98.0" styleClass="contacts-header" text="Contacts" />
 
             <HBox alignment="CENTER_LEFT" prefHeight="53.0" prefWidth="320.0" spacing="15.0">
@@ -131,11 +131,7 @@
         </VBox>
     </GridPane>
 
-    <ImageView fx:id="statusStampView" blendMode="MULTIPLY" fitHeight="160.0" fitWidth="160.0" opacity="0.5" rotate="-15.0" AnchorPane.bottomAnchor="140.0" AnchorPane.rightAnchor="0.0">
-        <image>
-            <Image url="@images/stamp_contract.png" />
-        </image>
-    </ImageView>
+    <ImageView fx:id="statusStampView" blendMode="MULTIPLY" fitHeight="160.0" fitWidth="160.0" opacity="0.5" rotate="-15.0" visible="false" AnchorPane.bottomAnchor="140.0" AnchorPane.rightAnchor="0.0" />
 
     <StackPane fx:id="archivedOverlay" styleClass="archived-overlay" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <ImageView fitHeight="300.0" fitWidth="600.0" preserveRatio="true" rotate="-15.0">
