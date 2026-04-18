@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.ImagePattern;
@@ -23,6 +24,9 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
+import javafx.animation.FadeTransition;
+import javafx.util.Duration;
+
 
 
 
@@ -35,6 +39,10 @@ public class StudentCardController {
     private static final Image FEMALE_PHOTO = loadImage(FEMALE_PHOTO_RESOURCE);
     private static final Image OTHER_PHOTO = loadImage(OTHER_PHOTO_RESOURCE);
 
+    @FXML
+    private AnchorPane rootPane;
+    @FXML
+    private Rectangle bgPattern;
     @FXML
     private Label nameLabel;
     @FXML
@@ -67,6 +75,15 @@ public class StudentCardController {
     private HBox specialityChip;
     @FXML
     private HBox positionChip;
+
+    @FXML
+    public void initialize() {
+        applySmoothHover(facultyChip);
+        applySmoothHover(specialityChip);
+        applySmoothHover(positionChip);
+        applySmoothHover(studentPhoto);
+        setupRootHoverEffect();
+    }
 
 
 
@@ -185,14 +202,6 @@ public class StudentCardController {
         archivedOverlay.toFront();
     }
 
-    @FXML
-    public void initialize() {
-        applySmoothHover(facultyChip);
-        applySmoothHover(specialityChip);
-        applySmoothHover(positionChip);
-        applySmoothHover(studentPhoto);
-    }
-
 
     private void applySmoothHover(Node node) {
         ScaleTransition st = new ScaleTransition(Duration.millis(200), node);
@@ -240,6 +249,22 @@ public class StudentCardController {
 
             st.play();
             shadowOut.play();
+        });
+    }
+
+    private void setupRootHoverEffect() {
+        FadeTransition fade = new FadeTransition(Duration.millis(300), bgPattern);
+
+        rootPane.setOnMouseEntered(e -> {
+            fade.stop();
+            fade.setToValue(0.25);
+            fade.play();
+        });
+
+        rootPane.setOnMouseExited(e -> {
+            fade.stop();
+            fade.setToValue(0.15);
+            fade.play();
         });
     }
 }
