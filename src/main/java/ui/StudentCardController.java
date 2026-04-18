@@ -11,15 +11,19 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import person.Gender;
 import person.Student;
 import person.StudyForm;
-import javafx.animation.ScaleTransition;
 import javafx.util.Duration;
 import javafx.scene.Node;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.paint.Color;
+
 
 
 public class StudentCardController {
@@ -193,18 +197,49 @@ public class StudentCardController {
     private void applySmoothHover(Node node) {
         ScaleTransition st = new ScaleTransition(Duration.millis(200), node);
 
+        DropShadow shadow = new DropShadow();
+        shadow.setColor(Color.rgb(0, 0, 0, 0.35));
+        shadow.setRadius(15);
+        shadow.setOffsetY(5);
+        node.setEffect(shadow);
+
+        Timeline shadowIn = new Timeline(
+                new KeyFrame(Duration.millis(200),
+                        new KeyValue(shadow.offsetYProperty(), 50),
+                        new KeyValue(shadow.radiusProperty(), 30),
+                        new KeyValue(shadow.colorProperty(), Color.rgb(0, 0, 0, 0.25))
+                )
+        );
+
+        // Shadow hover OUT timeline
+        Timeline shadowOut = new Timeline(
+                new KeyFrame(Duration.millis(200),
+                        new KeyValue(shadow.offsetYProperty(), 5),
+                        new KeyValue(shadow.radiusProperty(), 15),
+                        new KeyValue(shadow.colorProperty(), Color.rgb(0, 0, 0, 0.35))
+                )
+        );
+
         node.setOnMouseEntered(e -> {
             st.stop();
+            shadowOut.stop();
+
             st.setToX(1.03);
             st.setToY(1.03);
+
             st.play();
+            shadowIn.play();
         });
 
         node.setOnMouseExited(e -> {
             st.stop();
+            shadowIn.stop();
+
             st.setToX(1.0);
             st.setToY(1.0);
+
             st.play();
+            shadowOut.play();
         });
     }
 }
