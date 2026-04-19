@@ -41,6 +41,7 @@
     -fx-font-family: "Playfair Display ExtraBold";
     -fx-font-size: 32px;
     -fx-text-fill: #4A3525;
+    -fx-effect: dropshadow(three-pass-box, rgb(241, 237, 224), 20, 0.8, 0, 0);
 }
 
 .id-text {
@@ -48,6 +49,7 @@
     -fx-font-size: 16px;
     -fx-text-fill: #4A3525;
     -fx-padding: 2 0 0 0;
+    -fx-effect: dropshadow(three-pass-box, rgb(241, 237, 224), 20, 0.8, 0, 0);
 }
 
 /* Chips */
@@ -88,6 +90,7 @@
     -fx-background-color: #F8F5EF;
     -fx-background-radius: 20;
     -fx-padding: 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.35), 15, 0, 0, 5);
 }
 
 .contacts-header {

@@ -97,7 +97,7 @@ public class StudentCardController {
             return;
         }
 
-        updateStudentPhoto(student.getGender());
+        updateStudentPhoto(student);
         nameLabel.setText(normalized(student.getOnlyName(), "N/A"));
         surnameLabel.setText(normalized(student.getSurname(), "N/A"));
         patronymicLabel.setText(normalized(student.getPatronymic(), "Not set"));
@@ -142,15 +142,47 @@ public class StudentCardController {
         return value.trim();
     }
 
-    private void updateStudentPhoto(Gender gender) {
+    private void updateStudentPhoto(Student student) {
         if (studentPhotoRect == null) {
             return;
         }
 
-        Image photo = resolvePhotoByGender(gender);
+        String resolvedPath = resolvePhotoPath(student);
+        Image photo = resolvedPath == null ? null : loadImage(resolvedPath);
+
+        if (photo == null) {
+            photo = resolvePhotoByGender(student.getGender());
+        }
+
+        if (photo == null) {
+            photo = OTHER_PHOTO != null ? OTHER_PHOTO : MALE_PHOTO;
+        }
+
         if (photo != null) {
             studentPhotoRect.setFill(new ImagePattern(photo));
         }
+    }
+
+    private String resolvePhotoPath(Student student) {
+        if (student == null) {
+            return null;
+        }
+
+        String id = student.getId();
+        if (id != null && !id.trim().isEmpty()) {
+            String directPath = "/ui/images/photos/students/" + id.trim() + ".png";
+            if (getClass().getResource(directPath) != null) {
+                return directPath;
+            }
+
+            // Keep compatibility with nested personal-photo folder naming.
+            String nestedPath = "/ui/images/photos/students/students/" + id.trim() + ".png";
+            if (getClass().getResource(nestedPath) != null) {
+                return nestedPath;
+            }
+        }
+
+        return null;
     }
 
     private static Image resolvePhotoByGender(Gender gender) {
@@ -269,13 +301,13 @@ public class StudentCardController {
 
         rootPane.setOnMouseEntered(e -> {
             fade.stop();
-            fade.setToValue(0.25);
+            fade.setToValue(0.2);
             fade.play();
         });
 
         rootPane.setOnMouseExited(e -> {
             fade.stop();
-            fade.setToValue(0.15);
+            fade.setToValue(0.1);
             fade.play();
         });
     }
