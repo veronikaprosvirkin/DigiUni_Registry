@@ -1,16 +1,11 @@
 package utils.input;
 
-import person.Person;
-import person.StudentService;
-import person.TeacherService;
-
-import java.util.List;
 import java.util.Scanner;
-import java.util.function.Supplier;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public class InputUtils {
-    public InputUtils() {};
+    public InputUtils() {}
 
 
     // method for pause before going to the next menu
@@ -37,9 +32,9 @@ public class InputUtils {
                     return intInput;
                 }
                 // Describe error
-                if (min == Integer.MIN_VALUE && max != Integer.MAX_VALUE) {
+                if (min == Integer.MIN_VALUE) {
                     System.out.println("Error: Number must be less than or equal to " + max + "!");
-                } else if (min != Integer.MIN_VALUE && max == Integer.MAX_VALUE) {
+                } else if (max == Integer.MAX_VALUE) {
                     System.out.println("Error: Number must be more than or equal to " + min + "!");
                 } else {
                     System.out.println("Error: Number must be between " + min + " and " + max + "!");
@@ -121,7 +116,7 @@ public class InputUtils {
     /**
      * method that reads email prefix, checks if it is valid and unique, and generates email if user wants
      *@param scanner that reads a line
-     *@param domain domain "@digiuni.ukma.edu"
+     *@param domain email domain suffix, e.g. "@ukma.edu.ua"
      * @param autoGenerator function that generates email prefix, should be passed as lambda or method reference
      * @param isTakenChecker function that checks if email is already taken, should be passed as lambda or method reference
      * @return validated email

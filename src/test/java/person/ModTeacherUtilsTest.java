@@ -71,10 +71,10 @@ class ModTeacherUtilsTest {
         ModTeacherUtils.teacherAddTeacher(scanner, facultyService, teacherService, university, userService, studentService);
 
         // Then
-        assertEquals(2, deptCs.getTeachers().size());
-        Teacher added = deptCs.getTeachers().get(1);
+        Teacher added = teacherService.findTeachersByFullName("Doe John").get(0);
         assertNotNull(added.getEmploymentDate());
         assertEquals(LocalDate.now(), added.getEmploymentDate());
+        assertTrue(added.getEmail().endsWith("@ukma.edu.ua"));
     }
 
     @Test

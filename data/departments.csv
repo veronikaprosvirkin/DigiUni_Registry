@@ -1,28 +1,3 @@
 id;name;facultyId;location;headId;headName;headSurname;headPatronymic;headGender;headPosition;headAcademicDegree;headAcademicTitle;headEmploymentDate;headWorkload;headEmail;headPhone
-d001;Department of Computer Science;f001;Building 1 Room 114;t0002;Semen;Horokhovskyi;Samuilovych;Male;Head of Department;Candidate of Sciences;Associate Professor;2010-09-01;40.0;s.horokhovskyi@digiuni.ukma.edu;+380671234567
-d002;Department of Multimedia Systems;f001;Building 1 Room 115;t0003;Oleksandr;Zhezherun;Petrovych;Male;Head of Department;Candidate of Sciences;Associate Professor;2012-09-01;40.0;o.zhezherun@digiuni.ukma.edu;+380631234567
-d003;Department of Automation, Computer-Integrated Technologies, and Robotics;f001;Building 1 Room 116;t0004;Ihor;Derevianko;Mykolaiovych;Male;Head of Department;Doctor of Sciences;Professor;2008-09-01;40.0;i.derevianko@digiuni.ukma.edu;+380501234568
-d004;Department of Mathematics;f001;Building 1 Room 118;t0005;Ruslan;Chornei;Kostiantynovych;Male;Head of Department;Doctor of Sciences;Professor;2002-09-01;60.0;r.chornei@digiuni.ukma.edu;+380671234568
-d005;Department of Economic Theory;f002;Building 6 Room 201;t0007;Yurii;Bazhal;Mykolaiovych;Male;Head of Department;Doctor of Sciences;Professor;1995-09-01;40.0;y.bazhal@digiuni.ukma.edu;+380501234569
-d006;Department of Finance;f002;Building 6 Room 202;t0008;Iryna;Lukianenko;Hryhorivna;Female;Head of Department;Doctor of Sciences;Professor;1998-09-01;40.0;i.lukianenko@digiuni.ukma.edu;+380671234569
-d007;Department of Marketing and Business Management;f002;Building 6 Room 203;t0006;Oleksandra;Humenna;Vitaliivna;Female;Dean;Doctor of Sciences;Professor;2000-09-01;40.0;o.humenna@digiuni.ukma.edu;+380631234568
-d008;Department of History;f003;Building 3 Room 301;t0010;Nataliya;Shlikhta;Vasylivna;Female;Head of Department;Doctor of Sciences;Professor;2006-09-01;40.0;n.shlikhta@digiuni.ukma.edu;+380501234570
-d009;Department of Archaeology;f003;Building 3 Room 302;t0011;Leonid;Zalizniak;Lvovych;Male;Head of Department;Doctor of Sciences;Professor;1993-09-01;20.0;l.zalizniak@digiuni.ukma.edu;+380671234570
-d010;Department of Philosophy and Religious Studies;f003;Building 3 Room 303;t0012;Vadym;Menzhulin;Ihorovych;Male;Head of Department;Doctor of Sciences;Professor;2004-09-01;40.0;v.menzhulin@digiuni.ukma.edu;+380631234570
-d011;Department of Cultural Studies;f003;Building 3 Room 304;t0013;Roman;Veretelnyk;Mykolaiovych;Male;Head of Department;Candidate of Sciences;Associate Professor;2001-09-01;40.0;r.veretelnyk@digiuni.ukma.edu;+380501234571
-d012;Department of Literature;f003;Building 3 Room 305;t0014;Vira;Aheieva;Pavlivna;Female;Head of Department;Doctor of Sciences;Professor;1996-09-01;40.0;v.aheieva@digiuni.ukma.edu;+380671234571
-d013;Department of English Language;f003;Building 3 Room 306;t0015;Svitlana;Ivanenko;Ihorivna;Female;Head of Department;Candidate of Sciences;Associate Professor;2010-09-01;40.0;s.ivanenko@digiuni.ukma.edu;+380631234571
-d014;Department of General Juridical Disciplines;f004;Building 4 Room 401;t0017;Mykola;Koziubra;Ivanovych;Male;Head of Department;Doctor of Sciences;Professor;1997-09-01;20.0;m.koziubra@digiuni.ukma.edu;+380671234572
-d015;Department of International and European Law;f004;Building 4 Room 402;t0018;Myroslava;Antonovych;Orestivna;Female;Head of Department;Doctor of Sciences;Professor;1999-09-01;40.0;m.antonovych@digiuni.ukma.edu;+380631234572
-d016;Department of Public Law;f004;Building 4 Room 403;t0016;Volodymyr;Venher;Mykolaiovych;Male;Dean;Candidate of Sciences;Associate Professor;2014-09-01;40.0;v.venher@digiuni.ukma.edu;+380501234572
-d017;Department of Private Law;f004;Building 4 Room 404;t0019;Zoryana;Borysenko;Serhiivna;Female;Head of Department;Candidate of Sciences;Associate Professor;2016-09-01;40.0;z.borysenko@digiuni.ukma.edu;+380501234573
-d018;Department of Biology;f005;Building 3 Room 101;t0021;Taras;Kazantsev;Anatoliyovych;Male;Head of Department;Candidate of Sciences;Associate Professor;2011-09-01;40.0;t.kazantsev@digiuni.ukma.edu;+380631234573
-d019;Department of Environmental Studies;f005;Building 3 Room 102;t0022;Viktor;Karamushka;Mykolaiovych;Male;Head of Department;Candidate of Sciences;Associate Professor;2003-09-01;40.0;v.karamushka@digiuni.ukma.edu;+380501234574
-d020;Department of Chemistry;f005;Building 3 Room 103;t0023;Anatolii;Burban;Fedorovych;Male;Head of Department;Doctor of Sciences;Professor;2000-09-01;40.0;a.burban@digiuni.ukma.edu;+380671234574
-d021;Department of Physical and Mathematical Sciences;f005;Building 3 Room 104;t0024;Bohdan;Kopyilets;Ivanovych;Male;Head of Department;Candidate of Sciences;Associate Professor;2013-09-01;40.0;b.kopyilets@digiuni.ukma.edu;+380631234574
-d022;Department of Sociology;f006;Building 1 Room 201;t0025;Svitlana;Oksamytna;Mykolaivna;Female;Dean;Doctor of Sciences;Professor;1998-09-01;40.0;s.oksamytna@digiuni.ukma.edu;+380501234575
-d023;Department of Political Science;f006;Building 1 Room 202;t0026;Oleksandr;Demianchuk;Petrovych;Male;Head of Department;Doctor of Sciences;Professor;2002-09-01;40.0;o.demianchuk@digiuni.ukma.edu;+380671234575
-d024;Department of Psychology and Pedagogy;f006;Building 1 Room 203;t0027;Serhii;Bohdanov;Bohdanovych;Male;Head of Department;Candidate of Sciences;Associate Professor;2007-09-01;40.0;s.bohdanov@digiuni.ukma.edu;+380631234575
-d025;School of Social Work;f006;Building 1 Room 204;t0028;Oksana;Boiko;Mykolaivna;Female;Head of Department;Doctor of Sciences;Professor;2005-09-01;40.0;o.boiko@digiuni.ukma.edu;+380501234576
-d026;Mohyla School of Journalism;f006;Building 1 Room 205;t0029;Yevhen;Fedchenko;Mykolaiovych;Male;Head of Department;Candidate of Sciences;Associate Professor;2004-09-01;40.0;y.fedchenko@digiuni.ukma.edu;+380671234576
-d027;School of Public Health;f006;Building 1 Room 206;t0030;Tetiana;Yurochko;Petrivna;Female;Head of Department;Candidate of Sciences;Associate Professor;2009-09-01;40.0;t.yurochko@digiuni.ukma.edu;+380631234576
+D-1;Computer Science;F-1;;;;;;;;;;;;;
+D-2;Mathematics;F-1;;;;;;;;;;;;;

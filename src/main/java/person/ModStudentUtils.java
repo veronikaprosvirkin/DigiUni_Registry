@@ -166,7 +166,7 @@ public class ModStudentUtils {
             draftStudent.setStudyForm(newStudyForm);
             StudentCardWindow.refresh(draftStudent);
 
-            String domain = "@digiuni.ukma.edu";
+            String domain = "@ukma.edu.ua";
             String finalEmail = InputUtils.readAndValidateEmail(
                     scanner,
                     domain,
@@ -429,7 +429,7 @@ public class ModStudentUtils {
                 }
                 case 8 -> {
                     System.out.println("Current email: " + studentToProcess.getEmail());
-                    String domain = "@digiuni.ukma.edu";
+                    String domain = "@ukma.edu.ua";
 
                     String newEmail = InputUtils.readAndValidateEmail(
                             scanner,

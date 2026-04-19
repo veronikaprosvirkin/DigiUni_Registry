@@ -124,7 +124,7 @@ public class ModTeacherUtils {
         int posChoice = InputUtils.readInt(scanner, "> ", 1, positions.length);
         Position position = positions[posChoice - 1];
 
-        String domain = "@digiuni.ukma.edu";
+        String domain = "@ukma.edu.ua";
         String finalEmail = InputUtils.readAndValidateEmail(
                 scanner,
                 domain,
