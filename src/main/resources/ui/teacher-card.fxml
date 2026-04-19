@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+
+<AnchorPane fx:id="rootPane" prefHeight="518.0" prefWidth="790.0" styleClass="main-card" stylesheets="@teacher-card.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.TeacherCardController">
+    <Rectangle fx:id="bgPattern" height="524.0" opacity="0.15" width="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <fill>
+            <ImagePattern height="120" proportional="false" width="120">
+                <image>
+                    <Image url="@images/ukma_logo.png" />
+                </image>
+            </ImagePattern>
+        </fill>
+    </Rectangle>
+
+    <GridPane hgap="40.0" layoutX="1.0" layoutY="-2.0" prefHeight="505.0" prefWidth="802.0" vgap="30.0" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="35.0">
+
+        <padding>
+            <Insets bottom="30.0" left="40.0" right="40.0" top="30.0" />
+        </padding>
+
+        <columnConstraints>
+            <ColumnConstraints hgrow="NEVER" minWidth="320.0" prefWidth="320.0" />
+            <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+        </columnConstraints>
+
+        <rowConstraints>
+            <RowConstraints valignment="CENTER" vgrow="NEVER" />
+            <RowConstraints valignment="TOP" vgrow="ALWAYS" />
+        </rowConstraints>
+
+        <HBox alignment="CENTER_LEFT" spacing="20.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+            <StackPane fx:id="teacherPhoto" styleClass="photo-container">
+                <Rectangle fx:id="teacherPhotoRect" arcHeight="25.0" arcWidth="25.0" height="173.0" width="142.0">
+                    <fill>
+                        <ImagePattern>
+                            <image>
+                                <Image url="@images/teacher_other_photo.png" />
+                            </image>
+                        </ImagePattern>
+                    </fill>
+                </Rectangle>
+            </StackPane>
+            <ImageView fx:id="centerLogoView" fitHeight="181.0" fitWidth="146.0" opacity="0.6">
+                <Image url="@images/ukma_logo.png" />
+            </ImageView>
+        </HBox>
+
+        <VBox alignment="CENTER_LEFT" spacing="2.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <Label fx:id="surnameLabel" prefHeight="47.0" prefWidth="377.0" styleClass="header-name" text="Surname" />
+            <Label fx:id="nameLabel" prefHeight="47.0" prefWidth="393.0" styleClass="header-name" text="Name" />
+            <Label fx:id="patronymicLabel" prefHeight="47.0" prefWidth="379.0" styleClass="header-name" text="Patronymic" />
+            <Label fx:id="idLabel" prefHeight="22.0" prefWidth="200.0" styleClass="id-text" text="ID: tXXXX">
+                <VBox.margin>
+                    <Insets top="10.0" />
+                </VBox.margin>
+            </Label>
+        </VBox>
+
+        <VBox alignment="BASELINE_LEFT" prefHeight="181.0" prefWidth="327.0" spacing="15.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
+            <HBox fx:id="facultyChip" alignment="CENTER_LEFT" spacing="12.0" styleClass="chip-container">
+                <StackPane styleClass="icon-bg, icon-sage">
+                    <ImageView fitHeight="24.0" fitWidth="24.0">
+                        <Image url="@images/icon_faculty.png" />
+                    </ImageView>
+                </StackPane>
+                <VBox alignment="CENTER_LEFT">
+                    <Label styleClass="chip-title" text="Faculty" />
+                    <Label fx:id="facultyLabel" prefHeight="16.0" prefWidth="267.0" styleClass="chip-value" text="Faculty of Something" />
+                </VBox>
+            </HBox>
+
+            <HBox fx:id="departmentChip" alignment="CENTER_LEFT" spacing="12.0" styleClass="chip-container">
+                <StackPane styleClass="icon-bg, icon-blue">
+                    <ImageView fitHeight="24.0" fitWidth="24.0">
+                        <Image url="@images/icon_department.png" />
+                    </ImageView>
+                </StackPane>
+                <VBox alignment="CENTER_LEFT">
+                    <Label styleClass="chip-title" text="Department" />
+                    <Label fx:id="departmentLabel" prefHeight="16.0" prefWidth="259.0" styleClass="chip-value" text="Department of Something" />
+                </VBox>
+            </HBox>
+
+            <HBox fx:id="positionChip" alignment="CENTER_LEFT" spacing="12.0" styleClass="chip-container">
+                <StackPane styleClass="icon-bg, icon-terra">
+                    <ImageView fitHeight="24.0" fitWidth="24.0">
+                        <Image url="@images/icon_academic.png" />
+                    </ImageView>
+                </StackPane>
+                <VBox alignment="CENTER_LEFT">
+                    <Label styleClass="chip-title" text="Position" />
+                    <Label fx:id="positionLabel" prefHeight="16.0" prefWidth="289.0" styleClass="chip-value" text="Professor, Doctor of Sciences" />
+                </VBox>
+            </HBox>
+        </VBox>
+
+        <VBox fx:id="contactsLabel" maxWidth="366.0" prefHeight="225.0" prefWidth="360.0" spacing="12.0" styleClass="contacts-container" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <Label prefHeight="45.0" prefWidth="98.0" styleClass="contacts-header" text="Contacts" />
+
+            <HBox alignment="CENTER_LEFT" prefHeight="53.0" prefWidth="320.0" spacing="15.0">
+                <StackPane styleClass="icon-bg, icon-terra">
+                    <ImageView fitHeight="20.0" fitWidth="20.0">
+                        <Image url="@images/icon_phone.png" />
+                    </ImageView>
+                </StackPane>
+                <VBox alignment="CENTER_LEFT">
+                    <Label styleClass="chip-title" text="Phone:" />
+                    <Label fx:id="phoneLabel" prefHeight="16.0" prefWidth="276.0" styleClass="chip-value" text="+38(XXX)XXXXXXX" />
+                </VBox>
+            </HBox>
+
+            <HBox alignment="CENTER_LEFT" spacing="15.0">
+                <StackPane styleClass="icon-bg, icon-sand">
+                    <ImageView fitHeight="20.0" fitWidth="20.0">
+                        <Image url="@images/icon_email.png" />
+                    </ImageView>
+                </StackPane>
+                <VBox alignment="CENTER_LEFT" prefHeight="49.0" prefWidth="314.0">
+                    <Label styleClass="chip-title" text="Email:" />
+                    <Label fx:id="emailLabel" prefHeight="16.0" prefWidth="267.0" styleClass="chip-value" text="n.surname@ukma.edu.ua" />
+                </VBox>
+            </HBox>
+        </VBox>
+    </GridPane>
+
+    <StackPane fx:id="archivedOverlay" styleClass="archived-overlay" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <ImageView fitHeight="300.0" fitWidth="600.0" preserveRatio="true" rotate="-15.0">
+            <image>
+                <Image url="@images/stamp_archived.png" />
+            </image>
+            <effect>
+                <javafx.scene.effect.DropShadow color="rgba(0,0,0,0.4)" offsetY="10.0" radius="20.0" />
+            </effect>
+        </ImageView>
+    </StackPane>
+</AnchorPane>
