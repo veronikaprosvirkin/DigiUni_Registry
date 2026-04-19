@@ -25,16 +25,13 @@ import javafx.animation.Timeline;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
 import javafx.animation.FadeTransition;
-import javafx.util.Duration;
-
-
 
 
 public class StudentCardController {
     private static final DateTimeFormatter DOB_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-    private static final String MALE_PHOTO_RESOURCE = "/ui/images/student_male_photo.png";
-    private static final String FEMALE_PHOTO_RESOURCE = "/ui/images/student_female_photo.png";
-    private static final String OTHER_PHOTO_RESOURCE = "/ui/images/student_other_photo.png";
+    private static final String MALE_PHOTO_RESOURCE = "/ui/images/photos/students/student_male_photo.png";
+    private static final String FEMALE_PHOTO_RESOURCE = "/ui/images/photos/students/student_female_photo.png";
+    private static final String OTHER_PHOTO_RESOURCE = "/ui/images/photos/students/student_other_photo.png";
     private static final Image MALE_PHOTO = loadImage(MALE_PHOTO_RESOURCE);
     private static final Image FEMALE_PHOTO = loadImage(FEMALE_PHOTO_RESOURCE);
     private static final Image OTHER_PHOTO = loadImage(OTHER_PHOTO_RESOURCE);
