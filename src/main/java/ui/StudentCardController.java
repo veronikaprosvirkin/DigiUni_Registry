@@ -216,19 +216,22 @@ public class StudentCardController {
 
 
     private void applySmoothHover(Node node) {
+        if (node == null) return;
+
         ScaleTransition st = new ScaleTransition(Duration.millis(200), node);
 
         DropShadow shadow = new DropShadow();
         shadow.setColor(Color.rgb(0, 0, 0, 0.35));
         shadow.setRadius(15);
         shadow.setOffsetY(5);
+        shadow.setSpread(0.08);
         node.setEffect(shadow);
 
         Timeline shadowIn = new Timeline(
                 new KeyFrame(Duration.millis(200),
-                        new KeyValue(shadow.offsetYProperty(), 50),
-                        new KeyValue(shadow.radiusProperty(), 30),
-                        new KeyValue(shadow.colorProperty(), Color.rgb(0, 0, 0, 0.25))
+                        new KeyValue(shadow.offsetYProperty(), 9),
+                        new KeyValue(shadow.radiusProperty(), 24),
+                        new KeyValue(shadow.colorProperty(), Color.rgb(0, 0, 0, 0.5))
                 )
         );
 
@@ -248,8 +251,8 @@ public class StudentCardController {
             st.setToX(1.03);
             st.setToY(1.03);
 
-            st.play();
-            shadowIn.play();
+            st.playFromStart();
+            shadowIn.playFromStart();
         });
 
         node.setOnMouseExited(e -> {
@@ -259,8 +262,8 @@ public class StudentCardController {
             st.setToX(1.0);
             st.setToY(1.0);
 
-            st.play();
-            shadowOut.play();
+            st.playFromStart();
+            shadowOut.playFromStart();
         });
     }
 

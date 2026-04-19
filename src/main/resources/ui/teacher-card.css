@@ -16,7 +16,7 @@
 
 /* Root bg */
 .main-card {
-    -fx-background-color: linear-gradient(to bottom right, #b9dded, #65a5d6);
+    -fx-background-color: linear-gradient(to bottom right, #E1F0F7, #C5DFF5);
 }
 
 /* Bottom-right watermark under content */
@@ -26,36 +26,36 @@
 
 /* Photo container */
 .photo-container {
-    -fx-background-color: #EBE5D9;
+    -fx-background-color: #D4E7F1;
     -fx-background-radius: 20;
     -fx-padding: 6;
     -fx-max-width: 149;
     -fx-max-height: 149;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.35), 15, 0, 0, 5);
 }
 
 #centerLogoView{
-    -fx-effect: dropshadow(three-pass-box, rgb(241, 237, 224), 20, 0.8, 0, 0);
+    -fx-effect: dropshadow(three-pass-box, rgb(209, 230, 245), 20, 0.8, 0, 0);
 }
 
 .header-name{
     -fx-font-family: "Playfair Display ExtraBold";
     -fx-font-size: 32px;
-    -fx-text-fill: #4A3525;
+    -fx-text-fill: #354452;
+    -fx-effect: dropshadow(three-pass-box, rgb(209, 230, 245), 20, 0.8, 0, 0);
 }
 
 .id-text {
     -fx-font-family: 'Arial';
     -fx-font-size: 16px;
-    -fx-text-fill: #4A3525;
+    -fx-text-fill: #3C4C5A;
     -fx-padding: 2 0 0 0;
+    -fx-effect: dropshadow(three-pass-box, rgb(209, 230, 245), 20, 0.8, 0, 0);
 }
 
 /* Chips */
 .chip-container {
-    -fx-background-color: #F8F5EF;
+    -fx-background-color: #E6F5FD;
     -fx-background-radius: 25;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.35), 15, 0, 0, 5);
     -fx-padding: 8 15 8 8;
 }
 
@@ -68,40 +68,35 @@
 }
 
 /* Colors */
-.icon-sage { -fx-background-color: #A3B8A8; }
-.icon-blue { -fx-background-color: #8CA3C0; }
-.icon-terra { -fx-background-color: #E08E79; }
-.icon-sand { -fx-background-color: #DEB887; }
+.icon-sage { -fx-background-color: #88b1ab; }
+.icon-blue { -fx-background-color: #608092; }
+.icon-terra { -fx-background-color: #9AA5E5; }
+.icon-sand { -fx-background-color: #6C8FB2; }
 
 .chip-title {
     -fx-font-family: 'Arial';
     -fx-font-size: 12px;
-    -fx-text-fill: #807368;
+    -fx-text-fill: #8D9AA5;
 }
 
 .chip-value {
     -fx-font-family: 'Arial';
     -fx-font-size: 14px;
-    -fx-text-fill: #2B201A;
+    -fx-text-fill: #2B333F;
 }
 
 /* Contacts */
 .contacts-container {
-    -fx-background-color: #F8F5EF;
+    -fx-background-color: #E6F5FD;
     -fx-background-radius: 20;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.35), 15, 0, 0, 5);
     -fx-padding: 20;
 }
 
 .contacts-header {
     -fx-font-family: "Playfair Display Bold";
     -fx-font-size: 24px;
-    -fx-text-fill: #4A3525;
+    -fx-text-fill: #303D4D;
     -fx-font-weight: normal;
-}
-
-#statusStampView {
-    -fx-effect: dropshadow(three-pass-box, rgba(28, 10, 10, 0.15), 10, 0.5, 0, 2);
 }
 
 .archived-overlay {

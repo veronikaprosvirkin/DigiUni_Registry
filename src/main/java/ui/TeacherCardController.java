@@ -142,7 +142,7 @@ public class TeacherCardController {
         String photoPath = null;
 
         if (id != null) {
-            String personalPath = "/ui/images/photos/" + id + ".png";
+            String personalPath = "/ui/images/photos/teachers/teachers/" + id + ".png";
             if (getClass().getResource(personalPath) != null) {
                 photoPath = personalPath;
             }
@@ -151,20 +151,20 @@ public class TeacherCardController {
         if (photoPath == null) {
             if (pos == Position.DEAN || pos == Position.HEAD_OF_DEPARTMENT) {
                 if (teacher.getGender() == Gender.FEMALE) {
-                    photoPath = "/ui/images/head_female.png";
+                    photoPath = "/ui/images/photos/teachers/head_female.png";
                 } else if (teacher.getGender() == Gender.MALE) {
-                    photoPath = "/ui/images/head_male.png";
+                    photoPath = "/ui/images/photos/teachers/head_male.png";
                 }
             }
         }
 
         if (photoPath == null) {
             if (teacher.getGender() == Gender.FEMALE) {
-                photoPath = "/ui/images/teacher_female_photo.png";
+                photoPath = "/ui/images/photos/teachers/teacher_female_photo.png";
             } else if (teacher.getGender() == Gender.MALE) {
-                photoPath = "/ui/images/teacher_male_photo.png";
+                photoPath = "/ui/images/photos/teachers/teacher_male_photo.png";
             } else {
-                photoPath = "/ui/images/teacher_other_photo.png";
+                photoPath = "/ui/images/photos/teachers/teacher_other_photo.png";
             }
         }
 
@@ -176,7 +176,7 @@ public class TeacherCardController {
             Image image = new Image(stream);
             teacherPhotoRect.setFill(new ImagePattern(image));
         } catch (Exception e) {
-            InputStream fallbackStream = getClass().getResourceAsStream("/ui/images/teacher_other_photo.png");
+            InputStream fallbackStream = getClass().getResourceAsStream("/ui/images/photos/teachers/teacher_other_photo.png");
             if (fallbackStream != null) {
                 teacherPhotoRect.setFill(new ImagePattern(new Image(fallbackStream)));
             }
@@ -192,19 +192,21 @@ public class TeacherCardController {
     }
     private void applySmoothHover(Node node) {
         if (node == null) return;
+
         ScaleTransition st = new ScaleTransition(Duration.millis(200), node);
 
         DropShadow shadow = new DropShadow();
         shadow.setColor(Color.rgb(0, 0, 0, 0.35));
         shadow.setRadius(15);
         shadow.setOffsetY(5);
+        shadow.setSpread(0.08);
         node.setEffect(shadow);
 
         Timeline shadowIn = new Timeline(
                 new KeyFrame(Duration.millis(200),
-                        new KeyValue(shadow.offsetYProperty(), 15),
-                        new KeyValue(shadow.radiusProperty(), 30),
-                        new KeyValue(shadow.colorProperty(), Color.rgb(0, 0, 0, 0.25))
+                        new KeyValue(shadow.offsetYProperty(), 9),
+                        new KeyValue(shadow.radiusProperty(), 24),
+                        new KeyValue(shadow.colorProperty(), Color.rgb(0, 0, 0, 0.3))
                 )
         );
 
@@ -212,7 +214,7 @@ public class TeacherCardController {
                 new KeyFrame(Duration.millis(200),
                         new KeyValue(shadow.offsetYProperty(), 5),
                         new KeyValue(shadow.radiusProperty(), 15),
-                        new KeyValue(shadow.colorProperty(), Color.rgb(0, 0, 0, 0.35))
+                        new KeyValue(shadow.colorProperty(), Color.rgb(0, 0, 0, 0.4))
                 )
         );
 
@@ -221,8 +223,8 @@ public class TeacherCardController {
             shadowOut.stop();
             st.setToX(1.03);
             st.setToY(1.03);
-            st.play();
-            shadowIn.play();
+            st.playFromStart();
+            shadowIn.playFromStart();
         });
 
         node.setOnMouseExited(e -> {
@@ -230,8 +232,8 @@ public class TeacherCardController {
             shadowIn.stop();
             st.setToX(1.0);
             st.setToY(1.0);
-            st.play();
-            shadowOut.play();
+            st.playFromStart();
+            shadowOut.playFromStart();
         });
     }
 
@@ -242,13 +244,13 @@ public class TeacherCardController {
 
         rootPane.setOnMouseEntered(e -> {
             fade.stop();
-            fade.setToValue(0.25);
+            fade.setToValue(0.2);
             fade.play();
         });
 
         rootPane.setOnMouseExited(e -> {
             fade.stop();
-            fade.setToValue(0.15);
+            fade.setToValue(0.1);
             fade.play();
         });
     }
