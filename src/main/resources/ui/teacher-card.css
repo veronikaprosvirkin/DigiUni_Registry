@@ -16,7 +16,7 @@
 
 /* Root bg */
 .main-card {
-    -fx-background-color: linear-gradient(to bottom right, #89d1f5, #43678a);
+    -fx-background-color: linear-gradient(to bottom right, #b9dded, #65a5d6);
 }
 
 /* Bottom-right watermark under content */

@@ -133,8 +133,6 @@ public class TeacherCardController {
             sb.append(teacher.getAcademicDegree());
         }
 
-        sb.append(" (").append(teacher.getWorkload()).append(")");
-
         return !sb.isEmpty() ? sb.toString() : "Position not specified";
     }
 
