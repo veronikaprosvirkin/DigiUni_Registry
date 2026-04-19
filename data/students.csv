@@ -720,7 +720,7 @@ st20220173;Artem;Lysenko;Mykolaiovych;Male;4;2022-09-01;3;f001;sp005;CONTRACT;AC
 st20220174;Anton;Marchenko;Volodymyrovych;Male;4;2022-09-01;3;f001;sp005;CONTRACT;ACTIVE;a.marchenko14@ukma.edu.ua;+380501236546;2004-06-05;21
 st20220175;Liubov;Marchenko;Volodymyrivna;Female;4;2022-09-01;3;f001;sp005;BUDGET;ACTIVE;l.marchenko@ukma.edu.ua;+380501236560;2004-12-18;21
 st20220176;Andrii;Moroz;Yuriiovych;Male;4;2022-09-01;3;f001;sp005;CONTRACT;ACTIVE;a.moroz5@ukma.edu.ua;+380501236552;2003-01-10;23
-st20220177;Yevhen;Oliinyk;Artemovych;Male;4;2022-09-01;3;f001;sp005;BUDGET;ACTIVE;y.oliinyk1@ukma.edu.ua;+380501236555;2003-04-20;23
+st20220177;Yevhen;Oliinyk;Artemovych;Male;4;2022-09-01;3;f001;sp005;BUDGET;ACTIVE;y.oliinyk1@ukma.edu.ua;+380501236555;2003-04-20;22
 st20250195;Daria;Miroshnichenko;Oleksandrivna;Female;1;2025-09-01;4;f001;sp005;CONTRACT;ACTIVE;d.miroshnichenko@ukma.edu.ua;+380503809987;2006-04-30;19
 st20250196;Nazarii;Nazarenko;Ihorovych;Male;1;2025-09-01;4;f001;sp005;CONTRACT;ACTIVE;n.nazarenko@ukma.edu.ua;+380503809988;2007-10-12;18
 st20250197;Mykola;Novikov;Viktorovych;Male;1;2025-09-01;4;f001;sp005;CONTRACT;ACTIVE;m.novikov@ukma.edu.ua;+380503809989;2006-02-28;20
@@ -944,7 +944,7 @@ st20240253;Liliia;Sarazhynska;Oleksandrivna;Female;2;2024-09-01;5;f002;sp006;BUD
 st20240254;Daria;Sbitnieva;Serhiivna;Female;2;2024-09-01;5;f002;sp006;CONTRACT;ACTIVE;d.sbitnieva@ukma.edu.ua;+380501234738;2005-04-25;20
 st20240255;Mariia;Serhiienko;Denysivna;Female;2;2024-09-01;5;f002;sp006;CONTRACT;ACTIVE;m.serhiienko@ukma.edu.ua;+380501234764;2006-02-01;20
 st20240256;Solomiia;Serhiienko;Mykhailivna;Female;2;2024-09-01;5;f002;sp006;CONTRACT;ACTIVE;s.serhiienko@ukma.edu.ua;+380501234765;2005-09-03;20
-st20240257;Ivan;Slobodeniuk;Oleksandrovych;Male;2;2024-09-01;5;f002;sp006;BUDGET;ACTIVE;i.slobodeniuk@ukma.edu.ua;+380501234711;2005-04-20;21
+st20240257;Ivan;Slobodeniuk;Oleksandrovych;Male;2;2024-09-01;5;f002;sp006;BUDGET;ACTIVE;i.slobodeniuk@ukma.edu.ua;+380501234711;2005-04-20;20
 st20240258;Daria;Sokyrko;Hennadiivna;Female;2;2024-09-01;5;f002;sp006;BUDGET;ACTIVE;d.sokyrko@ukma.edu.ua;+380501234709;2006-05-16;19
 st20240259;Olena;Soldatova;Andriivna;Female;2;2024-09-01;5;f002;sp006;BUDGET;ACTIVE;o.soldatova@ukma.edu.ua;+380501234712;2006-08-07;19
 st20240260;Viktoriia;Subota;Vasylivna;Female;2;2024-09-01;5;f002;sp006;BUDGET;ACTIVE;v.subota@ukma.edu.ua;+380501234695;2006-08-17;19
@@ -974,7 +974,7 @@ st20240262;Milana;Timokhova;Mykhailivna;Female;2;2024-09-01;6;f002;sp006;CONTRAC
 st20240263;Mariana;Tiurdio;Tarasivna;Female;2;2024-09-01;6;f002;sp006;CONTRACT;ACTIVE;m.tiurdio@ukma.edu.ua;+380501234752;2006-03-28;20
 st20240264;Iryna;Tymofiienko;Serhiivna;Female;2;2024-09-01;6;f002;sp006;CONTRACT;ACTIVE;i.tymofiienko@ukma.edu.ua;+380501234747;2005-12-16;20
 st20240265;Olesia;Veryzhenko;Vitaliivna;Female;2;2024-09-01;6;f002;sp006;CONTRACT;ACTIVE;o.veryzhenko@ukma.edu.ua;+380501234757;2006-06-09;19
-st20240266;Mariia;Vodolazska;Oleksandrivna;Female;2;2024-09-01;6;f002;sp006;CONTRACT;ACTIVE;m.vodolazska@ukma.edu.ua;+380501234766;2006-04-20;20
+st20240266;Mariia;Vodolazska;Oleksandrivna;Female;2;2024-09-01;6;f002;sp006;CONTRACT;ACTIVE;m.vodolazska@ukma.edu.ua;+380501234766;2006-04-20;19
 st20240267;Kateryna;Volkova;Andriivna;Female;2;2024-09-01;6;f002;sp006;BUDGET;ACTIVE;k.volkova@ukma.edu.ua;+380501234698;2005-10-11;20
 st20240268;Zlata;Yakovchenko;Oleksiivna;Female;2;2024-09-01;6;f002;sp006;CONTRACT;ACTIVE;z.yakovchenko@ukma.edu.ua;+380501234723;2005-03-21;21
 st20240269;Lada;Zadorozhenko;Ihorivna;Female;2;2024-09-01;6;f002;sp006;CONTRACT;ACTIVE;l.zadorozhenko@ukma.edu.ua;+380501234728;2006-11-16;19
@@ -1116,7 +1116,7 @@ st20230259;Bohdan;Radchenko;Valentynovych;Male;3;2023-09-01;5;f002;sp007;CONTRAC
 st20230260;Anastasiia;Radchenko;Stepanivna;Female;3;2023-09-01;5;f002;sp007;CONTRACT;ACTIVE;a.radchenko4@ukma.edu.ua;+380501235717;2005-10-10;20
 st20230261;Dmytro;Shevchenko;Antonovych;Male;3;2023-09-01;5;f002;sp007;CONTRACT;ACTIVE;d.shevchenko2@ukma.edu.ua;+380501235694;2004-03-10;22
 st20220268;Halyna;Ponomarenko;Dmytrivna;Female;4;2022-09-01;5;f002;sp007;CONTRACT;ACTIVE;h.ponomarenko3@ukma.edu.ua;+380501236618;2003-05-03;22
-st20220269;Valentyn;Ponomarenko;Mykhailovych;Male;4;2022-09-01;5;f002;sp007;CONTRACT;ACTIVE;v.ponomarenko10@ukma.edu.ua;+380501236640;2003-04-20;23
+st20220269;Valentyn;Ponomarenko;Mykhailovych;Male;4;2022-09-01;5;f002;sp007;CONTRACT;ACTIVE;v.ponomarenko10@ukma.edu.ua;+380501236640;2003-04-20;22
 st20220270;Oksana;Radchenko;Vladyslavivna;Female;4;2022-09-01;5;f002;sp007;CONTRACT;ACTIVE;o.radchenko5@ukma.edu.ua;+380501236649;2003-08-06;22
 st20220271;Olena;Rudenko;Artemivna;Female;4;2022-09-01;5;f002;sp007;CONTRACT;ACTIVE;o.rudenko2@ukma.edu.ua;+380501236615;2004-03-01;22
 st20220272;Tetiana;Savchenko;Antonivna;Female;4;2022-09-01;5;f002;sp007;CONTRACT;ACTIVE;t.savchenko@ukma.edu.ua;+380501236619;2003-09-14;22
@@ -1275,7 +1275,7 @@ st20220308;Artem;Shevchuk;Stepanovych;Male;4;2022-09-01;5;f002;sp008;CONTRACT;AC
 st20220309;Sofiia;Sydorenko;Andriivna;Female;4;2022-09-01;5;f002;sp008;BUDGET;ACTIVE;s.sydorenko5@ukma.edu.ua;+380501236668;2004-01-12;22
 st20220310;Hlib;Taran;Artemovych;Male;4;2022-09-01;5;f002;sp008;CONTRACT;ACTIVE;h.taran1@ukma.edu.ua;+380501236653;2004-07-05;21
 st20220311;Oleh;Taran;Serhiiovych;Male;4;2022-09-01;5;f002;sp008;BUDGET;ACTIVE;o.taran4@ukma.edu.ua;+380501236670;2003-10-13;22
-st20220312;Volodymyr;Taran;Bohdanovych;Male;4;2022-09-01;5;f002;sp008;BUDGET;ACTIVE;v.taran12@ukma.edu.ua;+380501236675;2004-04-20;22
+st20220312;Volodymyr;Taran;Bohdanovych;Male;4;2022-09-01;5;f002;sp008;BUDGET;ACTIVE;v.taran12@ukma.edu.ua;+380501236675;2004-04-20;21
 st20220313;Bohdan;Taran;Valentynovych;Male;4;2022-09-01;5;f002;sp008;CONTRACT;ACTIVE;b.taran3@ukma.edu.ua;+380501236679;2004-01-16;22
 st20250325;Yevheniia;Samystrok;Anatoliivna;Female;1;2025-09-01;6;f002;sp008;CONTRACT;ACTIVE;y.samystrok@ukma.edu.ua;+380501234615;2006-02-15;20
 st20250326;Karіna;Sіrobaba;Ruslanіvna;Female;1;2025-09-01;6;f002;sp008;BUDGET;ACTIVE;k.sirobaba@ukma.edu.ua;+380501234616;2007-01-28;19
@@ -1767,7 +1767,7 @@ st20230420;Volodymyr;Dmytrenko;Dmytrovych;Male;3;2023-09-01;1;f003;sp012;BUDGET;
 st20230421;Valeriia;Honcharenko;Mykolaivna;Female;3;2023-09-01;1;f003;sp012;CONTRACT;ACTIVE;v.honcharenko8@ukma.edu.ua;+380501235878;2004-10-01;21
 st20230422;Vitalii;Honcharenko;Artemovych;Male;3;2023-09-01;1;f003;sp012;BUDGET;ACTIVE;v.honcharenko9@ukma.edu.ua;+380501235884;2005-10-14;20
 st20230423;Nazar;Honcharenko;Yuriiovych;Male;3;2023-09-01;1;f003;sp012;BUDGET;ACTIVE;n.honcharenko@ukma.edu.ua;+380501235898;2005-01-07;21
-st20220437;Vasyl;Boiko;Hlibovych;Male;4;2022-09-01;1;f003;sp012;CONTRACT;ACTIVE;v.boiko10@ukma.edu.ua;+380501236828;2003-04-20;23
+st20220437;Vasyl;Boiko;Hlibovych;Male;4;2022-09-01;1;f003;sp012;CONTRACT;ACTIVE;v.boiko10@ukma.edu.ua;+380501236828;2003-04-20;22
 st20220438;Diana;Bondarenko;Romanivna;Female;4;2022-09-01;1;f003;sp012;CONTRACT;ACTIVE;d.bondarenko1@ukma.edu.ua;+380501236837;2004-08-16;21
 st20220439;Pavlo;Dmytrenko;Artemovych;Male;4;2022-09-01;1;f003;sp012;CONTRACT;ACTIVE;p.dmytrenko1@ukma.edu.ua;+380501236815;2003-03-18;23
 st20220440;Yurii;Havryliuk;Artemovych;Male;4;2022-09-01;1;f003;sp012;CONTRACT;ACTIVE;y.havryliuk3@ukma.edu.ua;+380501236820;2004-11-01;21
@@ -2356,7 +2356,7 @@ st20220562;Anton;Ponomarenko;Valentynovych;Male;4;2022-09-01;4;f004;sp015;CONTRA
 st20220563;Iryna;Radchenko;Hlibivna;Female;4;2022-09-01;4;f004;sp015;CONTRACT;ACTIVE;i.radchenko3@ukma.edu.ua;+380501236935;2003-10-15;22
 st20250675;Veronika;Sikaliuk;Mykolaivna;Female;1;2025-09-01;5;f004;sp015;CONTRACT;ACTIVE;v.sikaliuk@ukma.edu.ua;+380501234965;2007-02-23;19
 st20250676;Yuliana;Teren;Serhiivna;Female;1;2025-09-01;5;f004;sp015;CONTRACT;ACTIVE;y.teren@ukma.edu.ua;+380501234966;2006-09-06;19
-st20250677;Vitalina;Vielinska;Valentynivna;Female;1;2025-09-01;5;f004;sp015;CONTRACT;ACTIVE;v.vielinska@ukma.edu.ua;+380501234967;2007-04-20;19
+st20250677;Vitalina;Vielinska;Valentynivna;Female;1;2025-09-01;5;f004;sp015;CONTRACT;ACTIVE;v.vielinska@ukma.edu.ua;+380501234967;2007-04-20;18
 st20240574;Dmytro;Ponomarenko;Dmytrovych;Male;2;2024-09-01;5;f004;sp015;CONTRACT;ACTIVE;d.ponomarenko2@ukma.edu.ua;+380501235055;2006-07-12;19
 st20240575;Artem;Ponomarenko;Antonovych;Male;2;2024-09-01;5;f004;sp015;CONTRACT;ACTIVE;a.ponomarenko1@ukma.edu.ua;+380501235061;2005-03-25;21
 st20240576;Vira;Ponomarenko;Bohdanivna;Female;2;2024-09-01;5;f004;sp015;CONTRACT;ACTIVE;v.ponomarenko3@ukma.edu.ua;+380501235080;2006-10-26;19
@@ -2379,7 +2379,7 @@ st20220569;Oksana;Sydorenko;Arturivna;Female;4;2022-09-01;5;f004;sp015;BUDGET;AC
 st20250678;Sofiia;Yakob;Liubomyrivna;Female;1;2025-09-01;6;f004;sp015;CONTRACT;ACTIVE;s.yakob@ukma.edu.ua;+380501234968;2006-12-03;19
 st20250679;Sofiia;Zinchenko;Oleksandrivna;Female;1;2025-09-01;6;f004;sp015;CONTRACT;ACTIVE;s.zinchenko@ukma.edu.ua;+380501234969;2007-07-17;18
 st20240581;Nadiia;Sydorenko;Ivanivna;Female;2;2024-09-01;6;f004;sp015;CONTRACT;ACTIVE;n.sydorenko1@ukma.edu.ua;+380501235054;2005-08-25;20
-st20240582;Roman;Sydorenko;Illich;Male;2;2024-09-01;6;f004;sp015;CONTRACT;ACTIVE;r.sydorenko@ukma.edu.ua;+380501235065;2005-04-20;21
+st20240582;Roman;Sydorenko;Illich;Male;2;2024-09-01;6;f004;sp015;CONTRACT;ACTIVE;r.sydorenko@ukma.edu.ua;+380501235065;2005-04-20;20
 st20240583;Pavlo;Taran;Stepanovych;Male;2;2024-09-01;6;f004;sp015;CONTRACT;ACTIVE;p.taran@ukma.edu.ua;+380501235060;2006-01-04;20
 st20240584;Valeriia;Tkachenko;Bohdanivna;Female;2;2024-09-01;6;f004;sp015;CONTRACT;ACTIVE;v.tkachenko4@ukma.edu.ua;+380501235058;2006-08-07;19
 st20240585;Khrystyna;Tkachenko;Vladyslavivna;Female;2;2024-09-01;6;f004;sp015;CONTRACT;ACTIVE;k.tkachenko@ukma.edu.ua;+380501235059;2006-11-18;19
@@ -2397,7 +2397,7 @@ st20250681;Lada;Arsirii;Oleksandrivna;Female;1;2025-09-01;1;f005;sp016;BUDGET;AC
 st20250682;Anna;Chvalova;Serhiivna;Female;1;2025-09-01;1;f005;sp016;BUDGET;ACTIVE;a.chvalova@ukma.edu.ua;+380501234972;2006-02-15;20
 st20250683;Yevheniia;Dehtiar;Oleksandrivna;Female;1;2025-09-01;1;f005;sp016;BUDGET;ACTIVE;y.dehtiar@ukma.edu.ua;+380501234973;2007-09-04;18
 st20240587;Polina;Babenko;Hlibivna;Female;2;2024-09-01;1;f005;sp016;BUDGET;ACTIVE;p.babenko@ukma.edu.ua;+380501235109;2006-04-12;20
-st20240588;Tymur;Boiko;Ivanovych;Male;2;2024-09-01;1;f005;sp016;CONTRACT;ACTIVE;t.boiko@ukma.edu.ua;+380501235095;2005-04-20;21
+st20240588;Tymur;Boiko;Ivanovych;Male;2;2024-09-01;1;f005;sp016;CONTRACT;ACTIVE;t.boiko@ukma.edu.ua;+380501235095;2005-04-20;20
 st20240589;Nazar;Bondar;Romanovych;Male;2;2024-09-01;1;f005;sp016;CONTRACT;ACTIVE;n.bondar@ukma.edu.ua;+380501235093;2006-11-14;19
 st20240590;Hlib;Dmytrenko;Andriiovych;Male;2;2024-09-01;1;f005;sp016;CONTRACT;ACTIVE;h.dmytrenko1@ukma.edu.ua;+380501235116;2005-03-01;21
 st20240591;Bohdan;Havryliuk;Valentynovych;Male;2;2024-09-01;1;f005;sp016;BUDGET;ACTIVE;b.havryliuk@ukma.edu.ua;+380501235096;2005-04-09;21
@@ -2581,7 +2581,7 @@ st20230611;Zlata;Melnyk;Vladyslavivna;Female;3;2023-09-01;3;f005;sp017;CONTRACT;
 st20220628;Roman;Ivanenko;Rostyslavovych;Male;4;2022-09-01;3;f005;sp017;CONTRACT;ACTIVE;r.ivanenko1@ukma.edu.ua;+380501236989;2004-02-15;22
 st20220629;Yana;Ivanenko;Ivanivna;Female;4;2022-09-01;3;f005;sp017;BUDGET;ACTIVE;y.ivanenko3@ukma.edu.ua;+380501236999;2004-09-11;21
 st20220630;Liubov;Karpenko;Romanivna;Female;4;2022-09-01;3;f005;sp017;CONTRACT;ACTIVE;l.karpenko1@ukma.edu.ua;+380501236997;2003-03-01;23
-st20220631;Bohdan;Koval;Artemovych;Male;4;2022-09-01;3;f005;sp017;CONTRACT;ACTIVE;b.koval6@ukma.edu.ua;+380501236991;2004-04-20;22
+st20220631;Bohdan;Koval;Artemovych;Male;4;2022-09-01;3;f005;sp017;CONTRACT;ACTIVE;b.koval6@ukma.edu.ua;+380501236991;2004-04-20;21
 st20220632;Kateryna;Kovalenko;Yuriivna;Female;4;2022-09-01;3;f005;sp017;BUDGET;ACTIVE;k.kovalenko4@ukma.edu.ua;+380501237008;2004-07-13;21
 st20220633;Anton;Kovalenko;Vitaliiovych;Male;4;2022-09-01;3;f005;sp017;CONTRACT;ACTIVE;a.kovalenko6@ukma.edu.ua;+380501237009;2004-07-07;21
 st20220634;Diana;Lysenko;Vladyslavivna;Female;4;2022-09-01;3;f005;sp017;CONTRACT;ACTIVE;d.lysenko5@ukma.edu.ua;+380501236992;2003-04-08;23
@@ -2668,7 +2668,7 @@ st20220657;Denys;Boiko;Denysovych;Male;4;2022-09-01;1;f005;sp018;CONTRACT;ACTIVE
 st20220658;Serhii;Boiko;Stepanovych;Male;4;2022-09-01;1;f005;sp018;CONTRACT;ACTIVE;s.boiko6@ukma.edu.ua;+380501237051;2003-11-14;22
 st20220659;Nataliia;Bondar;Artemivna;Female;4;2022-09-01;1;f005;sp018;BUDGET;ACTIVE;n.bondar2@ukma.edu.ua;+380501237041;2003-10-12;22
 st20250713;Hryhorii;Kozhukhovskyi;Dmytrovych;Male;1;2025-09-01;2;f005;sp018;BUDGET;ACTIVE;h.kozhukhovskyi@ukma.edu.ua;+380501235003;2007-07-04;18
-st20250714;Vladyslav;Kryklyvyi;Ruslanovych;Male;1;2025-09-01;2;f005;sp018;BUDGET;ACTIVE;v.kryklyvyi@ukma.edu.ua;+380501235004;2006-04-20;20
+st20250714;Vladyslav;Kryklyvyi;Ruslanovych;Male;1;2025-09-01;2;f005;sp018;BUDGET;ACTIVE;v.kryklyvyi@ukma.edu.ua;+380501235004;2006-04-20;19
 st20240660;Sofiia;Ivanenko;Vitaliivna;Female;2;2024-09-01;2;f005;sp018;CONTRACT;ACTIVE;s.ivanenko1@ukma.edu.ua;+380501235177;2006-04-01;20
 st20240661;Rostyslav;Khomenko;Ivanovych;Male;2;2024-09-01;2;f005;sp018;BUDGET;ACTIVE;r.khomenko@ukma.edu.ua;+380501235155;2006-10-16;19
 st20240662;Polina;Khomenko;Tarasivna;Female;2;2024-09-01;2;f005;sp018;BUDGET;ACTIVE;p.khomenko1@ukma.edu.ua;+380501235170;2005-01-03;21
@@ -2921,7 +2921,7 @@ st20220736;Illia;Hrytsenko;Valentynovych;Male;4;2022-09-01;2;f006;sp020;BUDGET;A
 st20220737;Maksym;Ivanenko;Antonovych;Male;4;2022-09-01;2;f006;sp020;CONTRACT;ACTIVE;m.ivanenko6@ukma.edu.ua;+380501237121;2004-01-16;22
 st20220738;Yana;Karpenko;Artemivna;Female;4;2022-09-01;2;f006;sp020;BUDGET;ACTIVE;y.karpenko9@ukma.edu.ua;+380501237102;2003-11-21;22
 st20220739;Anton;Khomenko;Bohdanovych;Male;4;2022-09-01;2;f006;sp020;BUDGET;ACTIVE;a.khomenko9@ukma.edu.ua;+380501237118;2003-09-03;22
-st20220740;Taras;Koval;Ivanovych;Male;4;2022-09-01;2;f006;sp020;BUDGET;ACTIVE;t.koval6@ukma.edu.ua;+380501237129;2004-04-20;22
+st20220740;Taras;Koval;Ivanovych;Male;4;2022-09-01;2;f006;sp020;BUDGET;ACTIVE;t.koval6@ukma.edu.ua;+380501237129;2004-04-20;21
 st20220741;Viktoriia;Koval;Maksymivna;Female;4;2022-09-01;2;f006;sp020;BUDGET;ACTIVE;v.koval10@ukma.edu.ua;+380501237130;2004-10-12;21
 st20250732;Nataliia;Khomenko;Ihorivna;Female;1;2025-09-01;3;f006;sp020;BUDGET;ACTIVE;n.khomenko@ukma.edu.ua;+380501235022;2006-10-27;19
 st20250733;Oksana;Sotina;Andriivna;Female;1;2025-09-01;3;f006;sp020;BUDGET;ACTIVE;o.sotina@ukma.edu.ua;+380501235023;2007-03-31;19

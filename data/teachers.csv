@@ -24,7 +24,7 @@ t0358;Olha;Pustovoit;Serhiivna;Female;Assistant;Master;;2022-09-01;40.0;o.pustov
 t0003;Oleksandr;Zhezherun;Petrovych;Male;Head of Department;Candidate of Sciences;Associate Professor;2012-09-01;40.0;o.zhezherun@digiuni.ukma.edu;+380631234567;d002;;
 t0112;Andrii;Volokhov;Mykolaiovych;Male;Senior Lecturer;Master;;2015-09-01;40.0;a.volokhov@digiuni.ukma.edu;+380671234621;d002;1990-11-03;35
 t0116;Iryna;Zavadovska;Vasylivna;Female;Associate Professor;Candidate of Sciences;Associate Professor;2012-09-01;40.0;i.zavadovska@digiuni.ukma.edu;+380631234623;d002;1984-01-30;42
-t0180;Serhii;Bohomolov;Ivanovych;Male;Associate Professor;Candidate of Sciences;Associate Professor;2006-09-01;40.0;s.bohomolov@digiuni.ukma.edu;+380631234729;d002;1975-04-20;51
+t0180;Serhii;Bohomolov;Ivanovych;Male;Associate Professor;Candidate of Sciences;Associate Professor;2006-09-01;40.0;s.bohomolov@digiuni.ukma.edu;+380631234729;d002;1975-04-20;50
 t0195;Roman;Zinchuk;Andriiovych;Male;Senior Lecturer;Master;;2021-09-01;40.0;r.zinchuk@digiuni.ukma.edu;+380631234744;d002;1995-10-05;30
 t0237;Maksym;Bohomaz;Olehovych;Male;Senior Lecturer;Master;;2022-09-01;40.0;m.bohomaz@digiuni.ukma.edu;+380631234786;d002;1997-03-22;29
 t0277;Dmytro;Kryvenko;Olehovych;Male;Senior Lecturer;Master;;2020-09-01;40.0;d.kryvenko@digiuni.ukma.edu;+380501234826;d002;1994-12-01;31
@@ -72,7 +72,7 @@ t0042;Olena;Bazhenova;Volodymyrivna;Female;Professor;Doctor of Sciences;Professo
 t0048;Oleksandr;Bandura;Viktorovych;Male;Associate Professor;Doctor of Sciences;Associate Professor;2008-09-01;40.0;o.bandura@digiuni.ukma.edu;+380631234589;d005;1977-08-21;48
 t0121;Oleksii;Slukhai;Volodymyrovych;Male;Professor;Doctor of Sciences;Professor;2005-09-01;40.0;o.slukhai@digiuni.ukma.edu;+380671234626;d005;1965-06-18;60
 t0124;Halyna;Kharlamova;Olehivna;Female;Associate Professor;Doctor of Sciences;Associate Professor;2018-09-01;40.0;h.kharlamova@digiuni.ukma.edu;+380671234627;d005;1989-11-05;36
-t0163;Valerii;Heyets;Mykhailovych;Male;Professor;Doctor of Sciences;Professor;2002-09-01;20.0;v.heyets@digiuni.ukma.edu;+380501234712;d005;1945-04-20;81
+t0163;Valerii;Heyets;Mykhailovych;Male;Professor;Doctor of Sciences;Professor;2002-09-01;20.0;v.heyets@digiuni.ukma.edu;+380501234712;d005;1945-04-20;80
 t0210;Vira;Nesterenko;Pavlivna;Female;Professor;Doctor of Sciences;Professor;2003-09-01;40.0;v.nesterenko@digiuni.ukma.edu;+380631234759;d005;1969-12-04;56
 t0222;Iryna;Zhuravliova;Anatoliivna;Female;Associate Professor;Candidate of Sciences;Associate Professor;2014-09-01;40.0;i.zhuravliova@digiuni.ukma.edu;+380631234771;d005;1986-07-14;39
 t0243;Andrii;Novak;Yuriiovych;Male;Associate Professor;Candidate of Sciences;Associate Professor;2010-09-01;40.0;a.novak@digiuni.ukma.edu;+380631234792;d005;1979-11-09;46
