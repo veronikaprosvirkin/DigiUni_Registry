@@ -142,7 +142,7 @@ public class TeacherCardController {
         String photoPath = null;
 
         if (id != null) {
-            String personalPath = "/ui/images/photos/teachers/teachers/" + id + ".png";
+            String personalPath = "/ui/images/photos/teachers/" + id + ".png";
             if (getClass().getResource(personalPath) != null) {
                 photoPath = personalPath;
             }
@@ -174,14 +174,36 @@ public class TeacherCardController {
                 throw new IllegalArgumentException("Photo not found: " + photoPath);
             }
             Image image = new Image(stream);
-            teacherPhotoRect.setFill(new ImagePattern(image));
+            applyCoverImage(teacherPhotoRect, image);
         } catch (Exception e) {
             InputStream fallbackStream = getClass().getResourceAsStream("/ui/images/photos/teachers/teacher_other_photo.png");
             if (fallbackStream != null) {
-                teacherPhotoRect.setFill(new ImagePattern(new Image(fallbackStream)));
+                applyCoverImage(teacherPhotoRect, new Image(fallbackStream));
             }
             System.err.println("Error with loading photo: " + photoPath);
         }
+    }
+
+    private static void applyCoverImage(Rectangle photoRect, Image image) {
+        if (photoRect == null || image == null) {
+            return;
+        }
+
+        double rectWidth = photoRect.getWidth();
+        double rectHeight = photoRect.getHeight();
+        if (rectWidth <= 0 || rectHeight <= 0 || image.getWidth() <= 0 || image.getHeight() <= 0) {
+            photoRect.setFill(new ImagePattern(image));
+            return;
+        }
+
+        // Scale to cover the full frame, then center by offsetting overflow.
+        double scale = Math.max(rectWidth / image.getWidth(), rectHeight / image.getHeight());
+        double scaledWidth = image.getWidth() * scale;
+        double scaledHeight = image.getHeight() * scale;
+        double x = (rectWidth - scaledWidth) / 2.0;
+        double y = (rectHeight - scaledHeight) / 2.0;
+
+        photoRect.setFill(new ImagePattern(image, x, y, scaledWidth, scaledHeight, false));
     }
 
 

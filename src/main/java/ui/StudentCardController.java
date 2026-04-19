@@ -100,7 +100,7 @@ public class StudentCardController {
         updateStudentPhoto(student);
         nameLabel.setText(normalized(student.getOnlyName(), "N/A"));
         surnameLabel.setText(normalized(student.getSurname(), "N/A"));
-        patronymicLabel.setText(normalized(student.getPatronymic(), "Not set"));
+        patronymicLabel.setText(normalized(student.getPatronymic(), ""));
 
         idLabel.setVisible(isIdVisible); 
         if (isIdVisible) {
@@ -159,8 +159,30 @@ public class StudentCardController {
         }
 
         if (photo != null) {
-            studentPhotoRect.setFill(new ImagePattern(photo));
+            applyCoverImage(studentPhotoRect, photo);
         }
+    }
+
+    private static void applyCoverImage(Rectangle photoRect, Image image) {
+        if (photoRect == null || image == null) {
+            return;
+        }
+
+        double rectWidth = photoRect.getWidth();
+        double rectHeight = photoRect.getHeight();
+        if (rectWidth <= 0 || rectHeight <= 0 || image.getWidth() <= 0 || image.getHeight() <= 0) {
+            photoRect.setFill(new ImagePattern(image));
+            return;
+        }
+
+        // Scale to cover the full frame, then center by offsetting overflow.
+        double scale = Math.max(rectWidth / image.getWidth(), rectHeight / image.getHeight());
+        double scaledWidth = image.getWidth() * scale;
+        double scaledHeight = image.getHeight() * scale;
+        double x = (rectWidth - scaledWidth) / 2.0;
+        double y = (rectHeight - scaledHeight) / 2.0;
+
+        photoRect.setFill(new ImagePattern(image, x, y, scaledWidth, scaledHeight, false));
     }
 
     private String resolvePhotoPath(Student student) {
