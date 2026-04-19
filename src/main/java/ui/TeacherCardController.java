@@ -2,16 +2,27 @@ package ui;
 
 import java.io.InputStream;
 
-import faculty.Faculty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import person.Gender;
 import person.Position;
 import person.Teacher;
+import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.ScaleTransition;
+import javafx.animation.Timeline;
+import javafx.scene.Node;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.paint.Color;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 public class TeacherCardController {
     @FXML
@@ -40,7 +51,37 @@ public class TeacherCardController {
 
     @FXML
     private StackPane archivedOverlay;
+    @FXML
+    private AnchorPane rootPane;
+    @FXML
+    private Rectangle bgPattern;
+    @FXML
+    private StackPane teacherPhoto;
+    @FXML
+    private HBox facultyChip;
+    @FXML
+    private HBox departmentChip;
+    @FXML
+    private HBox positionChip;
+    @FXML
+    private VBox contactsLabel;
+
+    @FXML
+    public void initialize() {
+        applySmoothHover(facultyChip);
+        applySmoothHover(departmentChip);
+        applySmoothHover(positionChip);
+        applySmoothHover(teacherPhoto);
+        applySmoothHover(contactsLabel);
+
+        setupRootHoverEffect();
+    }
     private boolean isIdVisible = true;
+
+    public void updateCard(Teacher teacher, boolean showId) {
+        this.isIdVisible = showId;
+        updateCard(teacher);
+    }
 
     public void updateCard(Teacher teacher) {
         if (teacher == null) {
@@ -50,12 +91,14 @@ public class TeacherCardController {
         surnameLabel.setText(teacher.getSurname() != null ? teacher.getSurname() : "N/A");
         nameLabel.setText(teacher.getName() != null ? teacher.getOnlyName() : "N/A");
         patronymicLabel.setText(teacher.getPatronymic() != null ? teacher.getPatronymic() : "");
-        idLabel.setText("ID: " + (teacher.getId() != null ? teacher.getId() : "N/A"));
 
+        idLabel.setVisible(isIdVisible);
+        if (isIdVisible) {
+            idLabel.setText("ID: " + (teacher.getId() != null ? teacher.getId() : "N/A"));
+        }
 
         phoneLabel.setText(teacher.getPhone() != null ? teacher.getPhone() : "No phone");
         emailLabel.setText(teacher.getEmail() != null ? teacher.getEmail() : "No email");
-
 
         if (teacher.getDepartment() != null) {
             departmentLabel.setText(teacher.getDepartment().getName());
@@ -94,8 +137,9 @@ public class TeacherCardController {
 
         return !sb.isEmpty() ? sb.toString() : "Position not specified";
     }
+
     private void setTeacherPhoto(Teacher teacher) {
-        String id = teacher.getId();
+        String id = teacher.getId() != null ? teacher.getId().toString() : null;
         Position pos = teacher.getPosition();
         String photoPath = null;
 
@@ -148,4 +192,67 @@ public class TeacherCardController {
             archivedOverlay.setVisible(true);
         }
     }
+    private void applySmoothHover(Node node) {
+        if (node == null) return;
+        ScaleTransition st = new ScaleTransition(Duration.millis(200), node);
+
+        DropShadow shadow = new DropShadow();
+        shadow.setColor(Color.rgb(0, 0, 0, 0.35));
+        shadow.setRadius(15);
+        shadow.setOffsetY(5);
+        node.setEffect(shadow);
+
+        Timeline shadowIn = new Timeline(
+                new KeyFrame(Duration.millis(200),
+                        new KeyValue(shadow.offsetYProperty(), 15),
+                        new KeyValue(shadow.radiusProperty(), 30),
+                        new KeyValue(shadow.colorProperty(), Color.rgb(0, 0, 0, 0.25))
+                )
+        );
+
+        Timeline shadowOut = new Timeline(
+                new KeyFrame(Duration.millis(200),
+                        new KeyValue(shadow.offsetYProperty(), 5),
+                        new KeyValue(shadow.radiusProperty(), 15),
+                        new KeyValue(shadow.colorProperty(), Color.rgb(0, 0, 0, 0.35))
+                )
+        );
+
+        node.setOnMouseEntered(e -> {
+            st.stop();
+            shadowOut.stop();
+            st.setToX(1.03);
+            st.setToY(1.03);
+            st.play();
+            shadowIn.play();
+        });
+
+        node.setOnMouseExited(e -> {
+            st.stop();
+            shadowIn.stop();
+            st.setToX(1.0);
+            st.setToY(1.0);
+            st.play();
+            shadowOut.play();
+        });
+    }
+
+    private void setupRootHoverEffect() {
+        if (bgPattern == null || rootPane == null) return;
+
+        FadeTransition fade = new FadeTransition(Duration.millis(300), bgPattern);
+
+        rootPane.setOnMouseEntered(e -> {
+            fade.stop();
+            fade.setToValue(0.25);
+            fade.play();
+        });
+
+        rootPane.setOnMouseExited(e -> {
+            fade.stop();
+            fade.setToValue(0.15);
+            fade.play();
+        });
+    }
+
 }

@@ -23,7 +23,7 @@ public final class TeacherCardWindow {
     private TeacherCardWindow() {
     }
 
-    public static void open(Teacher teacher) {
+    public static void open(Teacher teacher, boolean showId) {
         if (teacher == null) {
             return;
         }
@@ -35,7 +35,7 @@ public final class TeacherCardWindow {
                     createWindow();
                 }
                 if (controller != null) {
-                    controller.updateCard(teacher);
+                    controller.updateCard(teacher, showId);
                 }
                 stage.show();
                 stage.toFront();

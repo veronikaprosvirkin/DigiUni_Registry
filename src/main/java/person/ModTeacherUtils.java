@@ -39,18 +39,18 @@ public class ModTeacherUtils {
                 String fullName = InputUtils.readLine(scanner, "Full name of teacher: ", false, false);
                 fullName = InputUtils.removeSpaces(fullName, false, true, true, true);
                 List<Teacher> result = teacherService.findTeachersByFullName(fullName);
-                deleteTeacherWithPreview(scanner, result, teacherService);
+                deleteTeacherWithPreview(scanner, result, teacherService, showId);
                 FileStorageUtils.saveAll(university, userService);
             } else if (deleteTeacher == 2) {
-                ModTeacherUtils.teacherDeleteById(scanner, teacherService, university, userService);
+                ModTeacherUtils.teacherDeleteById(scanner, teacherService, university, userService, showId);
             }
 
         } else if (workWithTeacher == 3) { //edit teacher
             int editTeacher = ModEntitiesUtils.chooseEditing(scanner);
             if (editTeacher == 1) {
-                ModTeacherUtils.teacherEditByName(scanner, teacherService, university, userService);
+                ModTeacherUtils.teacherEditByName(scanner, teacherService, university, userService, showId);
             } else if (editTeacher == 2) {
-                ModTeacherUtils.teacherEditById(scanner, teacherService, university, userService);
+                ModTeacherUtils.teacherEditById(scanner, teacherService, university, userService, showId);
             }
         } else if (workWithTeacher == 4) {//show all
             List<Teacher> teachers = teacherService.getAllTeachers();
@@ -190,14 +190,16 @@ public class ModTeacherUtils {
     /**
      * Delete the Teacher by ID
      */
-    static void teacherDeleteById(Scanner scanner, TeacherService teacherService, University university, UserService userService) {
+    static void teacherDeleteById(Scanner scanner, TeacherService teacherService, University university, UserService userService,
+                                  boolean showId) {
         String id = InputUtils.readLine(scanner, "Enter ID of teacher: ", false, true);
         List<Teacher> result = teacherService.findTeacherById(id);
-        deleteTeacherWithPreview(scanner, result, teacherService);
+        deleteTeacherWithPreview(scanner, result, teacherService, showId);
         FileStorageUtils.saveAll(university, userService);
     }
 
-    private static void deleteTeacherWithPreview(Scanner scanner, List<Teacher> teachers, TeacherService teacherService) {
+    private static void deleteTeacherWithPreview(Scanner scanner, List<Teacher> teachers, TeacherService teacherService,
+                                                 boolean showId) {
         if (teachers.isEmpty()) {
             return;
         }
@@ -221,7 +223,7 @@ public class ModTeacherUtils {
             teacherToDelete = teachers.get(0);
         }
 
-        TeacherCardWindow.open(teacherToDelete);
+        TeacherCardWindow.open(teacherToDelete, showId);
         TeacherCardWindow.refresh(teacherToDelete);
         try {
             String confirmation = InputUtils.readLine(scanner,
@@ -248,7 +250,8 @@ public class ModTeacherUtils {
     /**
      * Edit the Teacher by name
      */
-    static void teacherEditByName(Scanner scanner, TeacherService teacherService, University university, UserService userService) {
+    static void teacherEditByName(Scanner scanner, TeacherService teacherService, University university, UserService userService,
+                                  boolean showId) {
         String fullName = InputUtils.readLine(scanner, "Enter full name part: ", false, false);
         fullName = InputUtils.removeSpaces(fullName, false, true, true, true);
 
@@ -273,27 +276,27 @@ public class ModTeacherUtils {
             } else {
                 teacherToProcess = result.get(0);
             }
-            editTeacherDetails(scanner, teacherToProcess, university, userService);
+            editTeacherDetails(scanner, teacherToProcess, university, userService, showId);
         }
     }
 
     /**
      * Edit the Teacher by ID
      */
-    static void teacherEditById(Scanner scanner, TeacherService teacherService, University university, UserService userService) {
+    static void teacherEditById(Scanner scanner, TeacherService teacherService, University university, UserService userService, boolean showId) {
         String id = InputUtils.readLine(scanner, "Enter ID of teacher: ", false, true);
         List<Teacher> result = teacherService.findTeacherById(id);
         if (result.isEmpty()){
             System.out.println("No teacher found by id " + id);
         } else {
             Teacher teacherToProcess = result.get(0);
-            editTeacherDetails(scanner, teacherToProcess, university, userService);
+            editTeacherDetails(scanner, teacherToProcess, university, userService, showId);
 
         }
     }
 
-    private static void editTeacherDetails(Scanner scanner, Teacher teacherToProcess, University university, UserService userService) {
-        TeacherCardWindow.open(teacherToProcess);
+    private static void editTeacherDetails(Scanner scanner, Teacher teacherToProcess, University university, UserService userService, boolean showId) {
+        TeacherCardWindow.open(teacherToProcess, showId);
         try {
         while(true){
         System.out.println("\nEditing teacher: " + teacherToProcess.getFullName());

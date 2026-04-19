@@ -77,6 +77,7 @@ public class StudentCardController {
     private HBox positionChip;
 
 
+
     @FXML
     public void initialize() {
         applySmoothHover(facultyChip);
@@ -86,9 +87,14 @@ public class StudentCardController {
         setupRootHoverEffect();
     }
 
-
+    private boolean isIdVisible = true;
 
     // Updates all FXML labels with data from Student object
+    public void updateCard(Student student, boolean showId) {
+        this.isIdVisible = showId;
+        updateCard(student);
+    }
+
     public void updateCard(Student student) {
         if (student == null) {
             return;
@@ -99,9 +105,11 @@ public class StudentCardController {
         surnameLabel.setText(normalized(student.getSurname(), "N/A"));
         patronymicLabel.setText(normalized(student.getPatronymic(), "Not set"));
 
-        // Adds "ID: " prefix to match the design
-        String rawId = normalized(student.getId(), "N/A");
-        idLabel.setText("ID: " + rawId);
+        idLabel.setVisible(isIdVisible); 
+        if (isIdVisible) {
+            String rawId = normalized(student.getId(), "N/A");
+            idLabel.setText("ID: " + rawId);
+        }
 
         facultyLabel.setText(student.getFaculty() != null ? normalized(student.getFaculty().getName(), "N/A") : "N/A");
         specialityLabel.setText(student.getSpeciality() != null ? normalized(student.getSpeciality().getName(), "N/A") : "N/A");
@@ -113,7 +121,10 @@ public class StudentCardController {
         phoneLabel.setText(normalized(student.getPhone(), "Not set"));
         emailLabel.setText(normalized(student.getEmail(), "Not set"));
         updateStatusStamp(student);
-        archivedOverlay.setVisible(false);
+
+        if (archivedOverlay != null) {
+            archivedOverlay.setVisible(false);
+        }
     }
 
     // Formats LocalDate to string or returns default text

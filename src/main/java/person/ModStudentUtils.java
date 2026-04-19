@@ -32,25 +32,25 @@ public class ModStudentUtils {
         int workWithStudent = InputUtils.readInt(scanner, "> ", 0, 4);
 
         if (workWithStudent == 1) { //add student
-            ModStudentUtils.studentAddStudent(scanner, facultyService, studentService, university, userService, teacherService);
+            ModStudentUtils.studentAddStudent(scanner, facultyService, studentService, university, userService, teacherService, showId);
         } else if (workWithStudent == 2) { //delete student
             int deleteStudent = ModEntitiesUtils.chooseDeleting(scanner);
             if (deleteStudent == 1) {
                 String fullName = InputUtils.readLine(scanner, "Full name of student: ", false, false);
                 fullName = InputUtils.removeSpaces(fullName, false, true, true, true);
                 List<Student> result = studentService.findStudentsByFullName(fullName);
-                deleteStudentWithPreview(scanner, result, studentService);
+                deleteStudentWithPreview(scanner, result, studentService, showId);
                 FileStorageUtils.saveAll(university, userService);
             } else if (deleteStudent == 2) {
-                ModStudentUtils.studentDeleteById(scanner, studentService, university, userService);
+                ModStudentUtils.studentDeleteById(scanner, studentService, university, userService, showId);
             }
 
         } else if (workWithStudent == 3) { //edit student
             int editStudent = ModEntitiesUtils.chooseEditing(scanner);
             if (editStudent == 1) {
-                ModStudentUtils.studentEditByName(scanner, studentService, university, userService, teacherService);
+                ModStudentUtils.studentEditByName(scanner, studentService, university, userService, teacherService, showId);
             } else if (editStudent == 2) {
-                ModStudentUtils.studentEditById(scanner, studentService, university, userService, teacherService);
+                ModStudentUtils.studentEditById(scanner, studentService, university, userService, teacherService, showId);
             }
 
 
@@ -78,6 +78,7 @@ public class ModStudentUtils {
 
         if (searchBy == 1) { //by full name
             SearchUtils.searchStudentByName(scanner, studentService);
+
         } else if (searchBy == 2) { //by group number
             System.out.println("1. Find in specific speciality");
             System.out.println("2. Find in all university");
@@ -107,7 +108,7 @@ public class ModStudentUtils {
      * Add new Student
      */
     static void studentAddStudent(Scanner scanner, FacultyService facultyService, StudentService studentService, University university,
-                                  UserService userService, TeacherService teacherService) {
+                                  UserService userService, TeacherService teacherService, boolean showId) {
         System.out.println("--- Add Student ---");
         java.util.Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties");
         if (optFaculty.isEmpty()) {
@@ -137,7 +138,7 @@ public class ModStudentUtils {
                 null
         );
 
-        StudentCardWindow.open(draftStudent);
+        StudentCardWindow.open(draftStudent, showId);
         try {
             // Student's info
             String name = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Name: ", false, false), true, false, false, false);
@@ -213,15 +214,16 @@ public class ModStudentUtils {
     /**
      * Delete the Student by ID
      */
-    static void studentDeleteById(Scanner scanner, StudentService studentService, University university, UserService userService) {
+    static void studentDeleteById(Scanner scanner, StudentService studentService, University university, UserService userService,
+                                  boolean showId) {
         String id = InputUtils.readLine(scanner, "Enter ID of student: ", false, true);
 
         List<Student> result = studentService.findStudentById(id);
-        deleteStudentWithPreview(scanner, result, studentService);
+        deleteStudentWithPreview(scanner, result, studentService, showId);
         FileStorageUtils.saveAll(university, userService);
     }
 
-    private static void deleteStudentWithPreview(Scanner scanner, List<Student> students, StudentService studentService) {
+    private static void deleteStudentWithPreview(Scanner scanner, List<Student> students, StudentService studentService, boolean showId) {
         if (students.isEmpty()) {
             return;
         }
@@ -245,7 +247,7 @@ public class ModStudentUtils {
             studentToDelete = students.get(0);
         }
 
-        StudentCardWindow.open(studentToDelete);
+        StudentCardWindow.open(studentToDelete, showId);
         StudentCardWindow.refresh(studentToDelete);
         try {
             String confirmation = InputUtils.readLine(scanner,
@@ -275,7 +277,7 @@ public class ModStudentUtils {
      * Edit the Student by name
      */
     static void studentEditByName(Scanner scanner, StudentService studentService, University university,
-                                  UserService userService, TeacherService teacherService) {
+                                  UserService userService, TeacherService teacherService, boolean showId) {
         String fullName = InputUtils.readLine(scanner, "Enter full name part: ", false, false);
         fullName = InputUtils.removeSpaces(fullName, false, true, true, true);
         List<Student> result = studentService.findStudentsByFullName(fullName);
@@ -299,7 +301,7 @@ public class ModStudentUtils {
             } else {
                 studentToProcess = result.get(0);
             }
-            editStudentDetails(scanner, studentToProcess, studentService, university, userService, teacherService);
+            editStudentDetails(scanner, studentToProcess, studentService, university, userService, teacherService, showId);
             FileStorageUtils.saveAll(university, userService);
         }
     }
@@ -308,21 +310,21 @@ public class ModStudentUtils {
      * Edit the Student by ID
      */
     static void studentEditById(Scanner scanner, StudentService studentService, University university,
-                                UserService userService, TeacherService teacherService) {
+                                UserService userService, TeacherService teacherService, boolean showId) {
         String id = InputUtils.readLine(scanner, "Enter ID of student: ", false, true);
         List<Student> result = studentService.findStudentById(id);
         if (result.isEmpty()){
             System.out.println("No student found by id " + id);
         } else {
             Student studentToProcess = result.get(0);
-            editStudentDetails(scanner, studentToProcess, studentService, university, userService, teacherService);
+            editStudentDetails(scanner, studentToProcess, studentService, university, userService, teacherService, showId);
             FileStorageUtils.saveAll(university, userService);
         }
     }
 
     public static void editStudentDetails(Scanner scanner, Student studentToProcess, StudentService studentService,
-                                          University university, UserService userService, TeacherService teacherService) {
-        StudentCardWindow.open(studentToProcess);
+                                          University university, UserService userService, TeacherService teacherService, boolean showId) {
+        StudentCardWindow.open(studentToProcess, showId);
         try {
             while (true) {
                 System.out.println("\nEditing student: " + studentToProcess.getFullName());
