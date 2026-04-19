@@ -1,5 +1,6 @@
 package department;
 
+import faculty.Faculty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import utils.namedEntity.NamedEntity;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public final class Department implements NamedEntity {
+    private Faculty faculty;
     @EqualsAndHashCode.Include
     @DetailDisplay(label = "Department Code")
     private String id;

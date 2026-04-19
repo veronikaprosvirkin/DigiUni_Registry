@@ -1,6 +1,8 @@
 package ui;
 
 import java.io.InputStream;
+
+import faculty.Faculty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -38,14 +40,15 @@ public class TeacherCardController {
 
     @FXML
     private StackPane archivedOverlay;
+    private boolean isIdVisible = true;
 
-    public void setTeacherData(Teacher teacher) {
+    public void updateCard(Teacher teacher) {
         if (teacher == null) {
             return;
         }
 
         surnameLabel.setText(teacher.getSurname() != null ? teacher.getSurname() : "N/A");
-        nameLabel.setText(teacher.getName() != null ? teacher.getName() : "N/A");
+        nameLabel.setText(teacher.getName() != null ? teacher.getOnlyName() : "N/A");
         patronymicLabel.setText(teacher.getPatronymic() != null ? teacher.getPatronymic() : "");
         idLabel.setText("ID: " + (teacher.getId() != null ? teacher.getId() : "N/A"));
 
@@ -56,7 +59,9 @@ public class TeacherCardController {
 
         if (teacher.getDepartment() != null) {
             departmentLabel.setText(teacher.getDepartment().getName());
-            facultyLabel.setText("N/A");
+            if (teacher.getDepartment().getFaculty() != null) {
+                facultyLabel.setText(teacher.getDepartment().getFaculty().getName());
+            }
         } else {
             departmentLabel.setText("N/A");
             facultyLabel.setText("N/A");
@@ -89,34 +94,34 @@ public class TeacherCardController {
 
         return !sb.isEmpty() ? sb.toString() : "Position not specified";
     }
-
     private void setTeacherPhoto(Teacher teacher) {
-        String photoPath;
         String id = teacher.getId();
         Position pos = teacher.getPosition();
+        String photoPath = null;
 
-        if (id != null && (id.equals("t0301") || id.equals("t0001"))) {
-            photoPath = "/ui/images/photos/" + id + ".png";
-        }
-
-        else if (pos == Position.DEAN || pos == Position.HEAD_OF_DEPARTMENT) {
-            if (teacher.getGender() == Gender.FEMALE) {
-                photoPath = "/ui/images/head_female.png";}
-            else if (teacher.getGender() == Gender.MALE){
-                photoPath = "/ui/images/head_male.png";
+        if (id != null) {
+            String personalPath = "/ui/images/photos/" + id + ".png";
+            if (getClass().getResource(personalPath) != null) {
+                photoPath = personalPath;
             }
-            else {
-                photoPath = "/ui/images/teacher_other_photo.png";
-                }
         }
 
-        else {
+        if (photoPath == null) {
+            if (pos == Position.DEAN || pos == Position.HEAD_OF_DEPARTMENT) {
+                if (teacher.getGender() == Gender.FEMALE) {
+                    photoPath = "/ui/images/head_female.png";
+                } else if (teacher.getGender() == Gender.MALE) {
+                    photoPath = "/ui/images/head_male.png";
+                }
+            }
+        }
+
+        if (photoPath == null) {
             if (teacher.getGender() == Gender.FEMALE) {
                 photoPath = "/ui/images/teacher_female_photo.png";
-            } else if(teacher.getGender() == Gender.MALE) {
+            } else if (teacher.getGender() == Gender.MALE) {
                 photoPath = "/ui/images/teacher_male_photo.png";
-            }
-            else {
+            } else {
                 photoPath = "/ui/images/teacher_other_photo.png";
             }
         }
@@ -129,12 +134,18 @@ public class TeacherCardController {
             Image image = new Image(stream);
             teacherPhotoRect.setFill(new ImagePattern(image));
         } catch (Exception e) {
-            InputStream fallbackStream = getClass().getResourceAsStream("/ui/images/placeholder.png");
+            InputStream fallbackStream = getClass().getResourceAsStream("/ui/images/teacher_other_photo.png");
             if (fallbackStream != null) {
-                Image fallback = new Image(fallbackStream);
-                teacherPhotoRect.setFill(new ImagePattern(fallback));
+                teacherPhotoRect.setFill(new ImagePattern(new Image(fallbackStream)));
             }
             System.err.println("Error with loading photo: " + photoPath);
+        }
+    }
+
+
+    public void showArchived() {
+        if (archivedOverlay != null) {
+            archivedOverlay.setVisible(true);
         }
     }
 }

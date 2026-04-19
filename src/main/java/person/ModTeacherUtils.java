@@ -14,6 +14,7 @@ import faculty.Faculty;
 import department.Department;
 import faculty.FacultyService;
 import university.UniversityService;
+import ui.TeacherCardWindow;
 
 public class ModTeacherUtils {
     //! ======= WORK WITH TEACHERS ===== //
@@ -38,8 +39,7 @@ public class ModTeacherUtils {
                 String fullName = InputUtils.readLine(scanner, "Full name of teacher: ", false, false);
                 fullName = InputUtils.removeSpaces(fullName, false, true, true, true);
                 List<Teacher> result = teacherService.findTeachersByFullName(fullName);
-
-                ModEntitiesUtils.deleteEntity(scanner, result, "Teacher", teacherService::deleteTeacher);
+                deleteTeacherWithPreview(scanner, result, teacherService);
                 FileStorageUtils.saveAll(university, userService);
             } else if (deleteTeacher == 2) {
                 ModTeacherUtils.teacherDeleteById(scanner, teacherService, university, userService);
@@ -110,11 +110,6 @@ public class ModTeacherUtils {
         }
         Department selectedDept = optDept.get();
 
-        // Teachers's info
-        String name = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Name: ", false, false), true, false, false, false);
-        String surname = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Surname: ", false, false), true, false, false, false);
-        String patronymic = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Patronymic: ", false, false), true, false, false, false);
-        
         // Position selection using enum
         System.out.println("Available positions:");
         Position[] positions = Position.values();
@@ -123,6 +118,9 @@ public class ModTeacherUtils {
         }
         int posChoice = InputUtils.readInt(scanner, "> ", 1, positions.length);
         Position position = positions[posChoice - 1];
+        String name = InputUtils.readLine(scanner, "Enter teacher's name: ", false, false);
+        String surname = InputUtils.readLine(scanner, "Enter teacher's surname: ", false, false);
+        String patronymic = InputUtils.readLine(scanner, "Enter teacher's patronymic (optional, press Enter to skip): ", true, false);
 
         String domain = "@ukma.edu.ua";
         String finalEmail = InputUtils.readAndValidateEmail(
@@ -177,10 +175,10 @@ public class ModTeacherUtils {
                 System.out.println("Invalid workload format. Skipping workload.");
             }
         }
-        
+
         teacherService.addTeacher(newTeacher);
         FileStorageUtils.saveAll(university, userService);
-        
+
         System.out.println("Teacher " + name + " " + surname +
                 " successfully added to department: " + selectedDept.getName());
 
@@ -195,8 +193,56 @@ public class ModTeacherUtils {
     static void teacherDeleteById(Scanner scanner, TeacherService teacherService, University university, UserService userService) {
         String id = InputUtils.readLine(scanner, "Enter ID of teacher: ", false, true);
         List<Teacher> result = teacherService.findTeacherById(id);
-        ModEntitiesUtils.deleteEntity(scanner, result, "Teacher", teacherService::deleteTeacher);
+        deleteTeacherWithPreview(scanner, result, teacherService);
         FileStorageUtils.saveAll(university, userService);
+    }
+
+    private static void deleteTeacherWithPreview(Scanner scanner, List<Teacher> teachers, TeacherService teacherService) {
+        if (teachers.isEmpty()) {
+            return;
+        }
+
+        Teacher teacherToDelete;
+        if (teachers.size() > 1) {
+            System.out.println("Multiple teachers found. Please select one: ");
+            for (int i = 0; i < teachers.size(); i++) {
+                System.out.println((i + 1) + ". " + teachers.get(i).getDisplayInfo());
+            }
+            System.out.println("0. Cancel");
+
+            int index = InputUtils.readInt(scanner, "> ", 0, teachers.size());
+            if (index == 0) {
+                System.out.println("Operation cancelled.");
+                InputUtils.pause(scanner);
+                return;
+            }
+            teacherToDelete = teachers.get(index - 1);
+        } else {
+            teacherToDelete = teachers.get(0);
+        }
+
+        TeacherCardWindow.open(teacherToDelete);
+        TeacherCardWindow.refresh(teacherToDelete);
+        try {
+            String confirmation = InputUtils.readLine(scanner,
+                    "Are you sure you want to delete: " + teacherToDelete.getName() + "? (y/n): ",
+                    false,
+                    true);
+
+            if (confirmation.toLowerCase().startsWith("y")) {
+                teacherService.deleteTeacher(teacherToDelete);
+                TeacherCardWindow.showArchived();
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            } else {
+                System.out.println("Operation cancelled.");
+            }
+        } finally {
+            TeacherCardWindow.close();
+        }
     }
 
     /**
@@ -247,6 +293,8 @@ public class ModTeacherUtils {
     }
 
     private static void editTeacherDetails(Scanner scanner, Teacher teacherToProcess, University university, UserService userService) {
+        TeacherCardWindow.open(teacherToProcess);
+        try {
         while(true){
         System.out.println("\nEditing teacher: " + teacherToProcess.getFullName());
         System.out.println("1. Change Surname");
@@ -273,12 +321,14 @@ public class ModTeacherUtils {
                 //? Update surname
                 String newSurname = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Enter new surname: ", false, true), true, false, false, false);
                 teacherToProcess.setSurname(newSurname);
+                TeacherCardWindow.refresh(teacherToProcess);
                 System.out.println("Surname updated!");
             }
             case 2 -> {
                 //? Update name
                 String newName = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Enter new name: ", false, true), true, false, false, false);
                 teacherToProcess.setName(newName);
+                TeacherCardWindow.refresh(teacherToProcess);
                 System.out.println("Name updated!");
             }
             case 3 -> {
@@ -291,30 +341,35 @@ public class ModTeacherUtils {
                 int posChoice = InputUtils.readInt(scanner, "> ", 1, positions.length);
                 Position newPosition = positions[posChoice - 1];
                 teacherToProcess.setPosition(newPosition.toString());
+                TeacherCardWindow.refresh(teacherToProcess);
                 System.out.println("Position updated!");
             }
             case 4 -> {
                 String newEmail = InputUtils.readLine(scanner, "Enter new email: ", false, true);
                 newEmail = InputUtils.removeSpaces(newEmail, false, true, true, true);
                 teacherToProcess.setEmail(newEmail);
+                TeacherCardWindow.refresh(teacherToProcess);
                 System.out.println("Email updated!");
             }
             case 5 -> {
                 String newPhone = InputUtils.readLine(scanner, "Enter new phone number: ", false, true);
                 newPhone = InputUtils.removeSpaces(newPhone, false, true, true, true);
                 teacherToProcess.setPhone(newPhone);
+                TeacherCardWindow.refresh(teacherToProcess);
                 System.out.println("Phone number updated!");
             }
             case 6 -> {
                 String newDegree = InputUtils.readLine(scanner, "Enter new academic degree: ", false, true);
                 newDegree = InputUtils.removeSpaces(newDegree, false, true, true, true);
                 teacherToProcess.setAcademicDegree(newDegree);
+                TeacherCardWindow.refresh(teacherToProcess);
                 System.out.println("Academic degree updated!");
             }
             case 7 -> {
                 String newTitle = InputUtils.readLine(scanner, "Enter new academic title: ", false, true);
                 newTitle = InputUtils.removeSpaces(newTitle, false, true, true, true);
                 teacherToProcess.setAcademicTitle(newTitle);
+                TeacherCardWindow.refresh(teacherToProcess);
                 System.out.println("Academic title updated!");
             }
             case 8 -> {
@@ -322,6 +377,7 @@ public class ModTeacherUtils {
                 newDate = InputUtils.removeSpaces(newDate, false, true, true, true);
                 try {
                     teacherToProcess.setEmploymentDate(LocalDate.parse(newDate));
+                    TeacherCardWindow.refresh(teacherToProcess);
                     System.out.println("Employment date updated!");
                 } catch (Exception e) {
                     System.out.println("Invalid date format.");
@@ -332,6 +388,7 @@ public class ModTeacherUtils {
                 newWorkload = InputUtils.removeSpaces(newWorkload, false, true, true, true);
                 try {
                     teacherToProcess.setWorkload(Double.parseDouble(newWorkload));
+                    TeacherCardWindow.refresh(teacherToProcess);
                     System.out.println("Workload updated!");
                 } catch (Exception e) {
                     System.out.println("Invalid workload format.");
@@ -342,10 +399,12 @@ public class ModTeacherUtils {
                 newDob = InputUtils.removeSpaces(newDob, false, true, true, true);
                 if (newDob.isEmpty()) {
                     teacherToProcess.setDateOfBirth(null);
+                    TeacherCardWindow.refresh(teacherToProcess);
                     System.out.println("Date of birth cleared!");
                 } else {
                     try {
                         teacherToProcess.setDateOfBirth(LocalDate.parse(newDob));
+                        TeacherCardWindow.refresh(teacherToProcess);
                         System.out.println("Date of birth updated!");
                     } catch (Exception e) {
                         System.out.println("Invalid date format.");
@@ -355,9 +414,13 @@ public class ModTeacherUtils {
             case 11 -> {
                 Gender newGender = chooseGender(scanner);
                 teacherToProcess.changeGender(newGender);
+                TeacherCardWindow.refresh(teacherToProcess);
                 System.out.println("Gender updated to: " + teacherToProcess.getGender());
             }
         }
+        }
+        } finally {
+            TeacherCardWindow.close();
         }
     }
 

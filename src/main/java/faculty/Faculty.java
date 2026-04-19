@@ -37,6 +37,7 @@ public final class Faculty implements NamedEntity {
         this.dean = dean;
     }
 
+
     @Override
     public String getName() {
         return nameOfFaculty;

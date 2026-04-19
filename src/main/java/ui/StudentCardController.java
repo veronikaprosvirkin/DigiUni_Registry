@@ -76,6 +76,7 @@ public class StudentCardController {
     @FXML
     private HBox positionChip;
 
+
     @FXML
     public void initialize() {
         applySmoothHover(facultyChip);
