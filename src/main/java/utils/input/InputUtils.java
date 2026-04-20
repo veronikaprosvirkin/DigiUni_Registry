@@ -11,7 +11,9 @@ public class InputUtils {
     // method for pause before going to the next menu
     public static void pause(Scanner scanner){
         System.out.println("\nPress Enter to return to the menu...");
-        scanner.nextLine();
+        if (scanner.hasNextLine()) {
+            scanner.nextLine();
+        }
     }
 
     /**
