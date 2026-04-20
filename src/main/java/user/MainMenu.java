@@ -8,7 +8,7 @@ import department.Department;
 import speciality.Speciality;
 import university.University;
 import university.UniversityService;
-import university.ModUniversityUtils; // Додано імпорт для університету
+import university.ModUniversityUtils;
 import person.StudentService;
 import person.TeacherService;
 import faculty.FacultyService;

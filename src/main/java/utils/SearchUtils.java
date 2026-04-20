@@ -16,6 +16,9 @@ import faculty.FacultyService;
 import faculty.Faculty;
 import department.Department;
 import speciality.Speciality;
+import user.Role;
+import user.User;
+import user.UserService;
 import utils.EntityNotFoundException;
 import utils.ModEntitiesUtils;
 
@@ -37,9 +40,7 @@ public class SearchUtils {
                 result = SortUtils.sortStudents(result, scanner);
             }
             System.out.println(" --- Students found by name part: " + name + " ---");
-            for (int i = 0; i < result.size(); i++) {
-                System.out.println((i + 1) + ". " + result.get(i).toString());
-            }
+            printStudentsWithIndexes(result);
             promptToShowStudentCard(scanner, result);
         }
         InputUtils.pause(scanner);
@@ -77,7 +78,8 @@ public class SearchUtils {
                 result = SortUtils.sortStudents(result, scanner);
             }
             System.out.println(" --- Students in group " + groupNumber + " on " + selectedSpeciality.getName() + " ---");
-            result.forEach(System.out::println);
+            printStudentsWithIndexes(result);
+            promptToShowStudentCard(scanner, result);
         }
         InputUtils.pause(scanner);
     }
@@ -98,7 +100,8 @@ public class SearchUtils {
                 result = SortUtils.sortStudents(result, scanner);
             }
             System.out.println(" --- Students in group " + groupNumber + " ---");
-            result.forEach(System.out::println);
+            printStudentsWithIndexes(result);
+            promptToShowStudentCard(scanner, result);
         }
         InputUtils.pause(scanner);
     }
@@ -117,7 +120,8 @@ public class SearchUtils {
                 result = SortUtils.sortStudents(result, scanner);
             }
             System.out.println(" --- Students in course " + course + " ---");
-            result.forEach(System.out::println);
+            printStudentsWithIndexes(result);
+            promptToShowStudentCard(scanner, result);
         }
         InputUtils.pause(scanner);
     }
@@ -150,7 +154,8 @@ public class SearchUtils {
                 result = SortUtils.sortStudents(result, scanner);
             }
             System.out.println(" --- Students in " + selectedSpeciality2.getName() + " ---");
-            result.forEach(System.out::println);
+            printStudentsWithIndexes(result);
+            promptToShowStudentCard(scanner, result);
         }
         InputUtils.pause(scanner);
 
@@ -239,6 +244,12 @@ public class SearchUtils {
         InputUtils.pause(scanner);
     }
 
+    private static void printStudentsWithIndexes(List<Student> students) {
+        for (int i = 0; i < students.size(); i++) {
+            System.out.println((i + 1) + ". " + students.get(i));
+        }
+    }
+
     private static void promptToShowStudentCard(Scanner scanner, List<Student> students) {
         if (students == null || students.isEmpty()) {
             return;
@@ -249,12 +260,16 @@ public class SearchUtils {
         if (students.size() == 1) {
             selectedStudent = students.get(0);
             System.out.print("\nDo you want to open the graphical Student Card? (y/n): ");
+            if (!scanner.hasNextLine())
+                return;
             String answer = scanner.nextLine().trim().toLowerCase();
             if (!answer.equals("y") && !answer.equals("yes")) {
                 return;
             }
         } else {
             System.out.print("\nEnter the number of the student from the list above to view their card (or press Enter to skip): ");
+            if (!scanner.hasNextLine())
+                return;
             String input = scanner.nextLine().trim();
 
             if (input.isEmpty()) {
@@ -278,14 +293,21 @@ public class SearchUtils {
 
         if (selectedStudent != null) {
             final Student studentToShow = selectedStudent;
+            final boolean showId = canCurrentUserWrite();
             Platform.runLater(() -> {
                 try {
                     StudentCardWindow window = new StudentCardWindow();
-                    window.open(studentToShow, true);
+                    window.open(studentToShow, showId);
                 } catch (Exception e) {
                     System.out.println("Error opening Student Card: " + e.getMessage());
                 }
             });
         }
+    }
+
+    private static boolean canCurrentUserWrite() {
+        User currentUser = UserService.getInstance().getCurrentUser();
+        return currentUser != null
+                && (currentUser.getRole() == Role.MANAGER || currentUser.getRole() == Role.ADMIN);
     }
 }
