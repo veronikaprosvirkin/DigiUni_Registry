@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import javafx.application.Platform;
 import ui.StudentCardWindow;
+import ui.TeacherCardWindow;
 import utils.input.InputUtils;
 import utils.sort.SortUtils;
 import utils.namedEntity.NamedEntity;
@@ -177,7 +178,8 @@ public class SearchUtils {
                 result = SortUtils.sortTeachers(result, scanner);
             }
             System.out.println(" --- Teachers found by name part: " + name + " ---");
-            result.forEach(System.out::println);
+            printTeachersWithIndexes(result);
+            promptToShowTeacherCard(scanner, result);
         }
         InputUtils.pause(scanner);
     }
@@ -212,7 +214,8 @@ public class SearchUtils {
                 result = SortUtils.sortTeachers(result, scanner);
             }
             System.out.println(" --- Teachers in " + selectedDepartment.getName() + " ---");
-            result.forEach(System.out::println);
+            printTeachersWithIndexes(result);
+            promptToShowTeacherCard(scanner, result);
         }
         InputUtils.pause(scanner);
     }
@@ -239,7 +242,8 @@ public class SearchUtils {
                 result = SortUtils.sortTeachers(result, scanner);
             }
             System.out.println(" --- Teachers by position: " + position + " ---");
-            result.forEach(System.out::println);
+            printTeachersWithIndexes(result);
+            promptToShowTeacherCard(scanner, result);
         }
         InputUtils.pause(scanner);
     }
@@ -247,6 +251,12 @@ public class SearchUtils {
     private static void printStudentsWithIndexes(List<Student> students) {
         for (int i = 0; i < students.size(); i++) {
             System.out.println((i + 1) + ". " + students.get(i));
+        }
+    }
+
+    private static void printTeachersWithIndexes(List<Teacher> teachers) {
+        for (int i = 0; i < teachers.size(); i++) {
+            System.out.println((i + 1) + ". " + teachers.get(i));
         }
     }
 
@@ -300,6 +310,62 @@ public class SearchUtils {
                     window.open(studentToShow, showId);
                 } catch (Exception e) {
                     System.out.println("Error opening Student Card: " + e.getMessage());
+                }
+            });
+        }
+    }
+
+    private static void promptToShowTeacherCard(Scanner scanner, List<Teacher> teachers) {
+        if (teachers == null || teachers.isEmpty()) {
+            return;
+        }
+
+        Teacher selectedTeacher = null;
+
+        if (teachers.size() == 1) {
+            selectedTeacher = teachers.get(0);
+            System.out.print("\nDo you want to open the graphical Teacher Card? (y/n): ");
+            if (!scanner.hasNextLine()) {
+                return;
+            }
+            String answer = scanner.nextLine().trim().toLowerCase();
+            if (!answer.equals("y") && !answer.equals("yes")) {
+                return;
+            }
+        } else {
+            System.out.print("\nEnter the number of the teacher from the list above to view their card (or press Enter to skip): ");
+            if (!scanner.hasNextLine()) {
+                return;
+            }
+            String input = scanner.nextLine().trim();
+
+            if (input.isEmpty()) {
+                return;
+            }
+
+            try {
+                int index = Integer.parseInt(input) - 1;
+
+                if (index >= 0 && index < teachers.size()) {
+                    selectedTeacher = teachers.get(index);
+                } else {
+                    System.out.println("Invalid number. Skipping...");
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Skipping...");
+                return;
+            }
+        }
+
+        if (selectedTeacher != null) {
+            final Teacher teacherToShow = selectedTeacher;
+            final boolean showId = canCurrentUserWrite();
+            Platform.runLater(() -> {
+                try {
+                    TeacherCardWindow.open(teacherToShow, showId);
+                } catch (Exception e) {
+                    System.out.println("Error opening Teacher Card: " + e.getMessage());
                 }
             });
         }
