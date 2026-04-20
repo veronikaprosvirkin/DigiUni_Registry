@@ -30,6 +30,22 @@ public final class Department implements NamedEntity {
         this.nameOfDepartment = nameOfDepartment;
     }
 
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
+        if (head != null) {
+            head.setFaculty(faculty);
+            head.setDepartment(this);
+        }
+        if (teachers != null) {
+            for (Teacher teacher : teachers) {
+                if (teacher != null) {
+                    teacher.setFaculty(faculty);
+                    teacher.setDepartment(this);
+                }
+            }
+        }
+    }
+
     @Override
     public String getName() {
         return nameOfDepartment;

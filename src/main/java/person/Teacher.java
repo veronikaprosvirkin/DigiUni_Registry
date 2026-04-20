@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import java.time.LocalDate;
 import department.Department;
+import faculty.Faculty;
 
 // Teacher entity
 @Data
@@ -11,6 +12,7 @@ import department.Department;
 public final class Teacher extends Person {
     private Position position;
     private Department department;
+    private Faculty faculty;
     private String academicDegree;
     private String academicTitle;
     private LocalDate employmentDate;

@@ -23,6 +23,7 @@ import java.util.Comparator;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -522,6 +523,55 @@ class FileStorageUtilsTest {
                 .count();
 
         assertEquals(1, count);
+    }
+
+    @Test
+    void loadAllLinksTeacherToDepartmentWhenGenderCellIsBlank() throws Exception {
+        write(FACULTIES_FILE, """
+                id;name;shortName;contacts;deanId;deanName;deanSurname;deanPatronymic;deanGender;deanPosition;deanAcademicDegree;deanAcademicTitle;deanEmploymentDate;deanWorkload;deanEmail;deanPhone
+                f001;Faculty A;FA;111;;;;;;;;;;;;
+                """);
+
+        write(DEPARTMENTS_FILE, """
+                id;name;facultyId;location;headId;headName;headSurname;headPatronymic;headGender;headPosition;headAcademicDegree;headAcademicTitle;headEmploymentDate;headWorkload;headEmail;headPhone
+                d001;Computer Science;f001;Block A;;;;;;;;;;;;
+                """);
+
+        write(TEACHERS_FILE, """
+                id;name;surname;patronymic;gender;position;academicDegree;academicTitle;employmentDate;workload;email;phone;department;dateOfBirth;age
+                t0100;Iryna;Koval;Stepanivna;;Associate Professor;Candidate of Sciences;Associate Professor;2019-09-01;40.0;iryna@uni.test;+380000000001;d001;1988-10-10;37
+                """);
+
+        University university = new University();
+        FileStorageUtils.loadAll(university, new faculty.FacultyService(university), new speciality.SpecialityService(university), userService);
+
+        Faculty faculty = university.getFaculties().get(0);
+        Department department = faculty.getDepartments().get(0);
+        assertEquals(1, department.getTeachers().size());
+        Teacher teacher = department.getTeachers().get(0);
+        assertNotNull(teacher.getDepartment());
+        assertEquals("d001", teacher.getDepartment().getId());
+    }
+
+    @Test
+    void loadAllSetsDepartmentFacultyBackLink() throws Exception {
+        write(FACULTIES_FILE, """
+                id;name;shortName;contacts;deanId;deanName;deanSurname;deanPatronymic;deanGender;deanPosition;deanAcademicDegree;deanAcademicTitle;deanEmploymentDate;deanWorkload;deanEmail;deanPhone
+                f001;Faculty A;FA;111;;;;;;;;;;;;
+                """);
+
+        write(DEPARTMENTS_FILE, """
+                id;name;facultyId;location;headId;headName;headSurname;headPatronymic;headGender;headPosition;headAcademicDegree;headAcademicTitle;headEmploymentDate;headWorkload;headEmail;headPhone
+                d001;Computer Science;f001;Block A;;;;;;;;;;;;
+                """);
+
+        University university = new University();
+        FileStorageUtils.loadAll(university, new faculty.FacultyService(university), new speciality.SpecialityService(university), userService);
+
+        Faculty faculty = university.getFaculties().get(0);
+        Department department = faculty.getDepartments().get(0);
+        assertNotNull(department.getFaculty());
+        assertEquals("f001", department.getFaculty().getId());
     }
 
     private byte[] backup(Path file) throws Exception {

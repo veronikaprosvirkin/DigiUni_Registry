@@ -53,10 +53,10 @@ class ModTeacherUtilsTest {
         Scanner scanner = scannerFromLines(
                 "1",                // faculty
                 "1",                // department
+                "8",                // position (Assistant)
                 "John",             // name
                 "Doe",              // surname
                 "Smith",            // patronymic
-                "8",                // position (Assistant)
                 "",                 // email
                 "",                 // phone
                 "",                 // academic degree
@@ -83,10 +83,10 @@ class ModTeacherUtilsTest {
         Scanner scanner = scannerFromLines(
                 "1",
                 "1",
+                "8",                // position (Assistant)
                 "Alice",
                 "Brown",
                 "Pat",
-                "8",                // position (Assistant)
                 "a@b.com",
                 "12345",
                 "PhD",
@@ -126,7 +126,7 @@ class ModTeacherUtilsTest {
         );
 
         // When
-        ModTeacherUtils.teacherDeleteById(scanner, teacherService, university, userService);
+        ModTeacherUtils.teacherDeleteById(scanner, teacherService, university, userService, true);
 
         // Then
         assertEquals(0, deptCs.getTeachers().size());
@@ -143,7 +143,7 @@ class ModTeacherUtilsTest {
         );
 
         // When
-        ModTeacherUtils.teacherEditByName(scanner, teacherService, university, userService);
+        ModTeacherUtils.teacherEditByName(scanner, teacherService, university, userService, true);
 
         // Then
         assertEquals("Kovalenko", teacherCs.getSurname());
@@ -156,7 +156,7 @@ class ModTeacherUtilsTest {
         String originalSurname = teacherCs.getSurname();
 
         // When
-        ModTeacherUtils.teacherEditByName(scanner, teacherService, university, userService);
+        ModTeacherUtils.teacherEditByName(scanner, teacherService, university, userService, true);
 
         // Then
         assertEquals(originalSurname, teacherCs.getSurname());
@@ -174,7 +174,7 @@ class ModTeacherUtilsTest {
         );
 
         // When
-        ModTeacherUtils.teacherEditById(scanner, teacherService, university, userService);
+        ModTeacherUtils.teacherEditById(scanner, teacherService, university, userService, true);
 
         // Then
         assertEquals(LocalDate.of(2020, 1, 1), teacherCs.getEmploymentDate());

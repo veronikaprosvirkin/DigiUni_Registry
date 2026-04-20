@@ -104,10 +104,18 @@ public class TeacherCardController {
             departmentLabel.setText(teacher.getDepartment().getName());
             if (teacher.getDepartment().getFaculty() != null) {
                 facultyLabel.setText(teacher.getDepartment().getFaculty().getName());
+            } else if (teacher.getFaculty() != null) {
+                facultyLabel.setText(teacher.getFaculty().getName());
+            } else {
+                facultyLabel.setText("N/A");
             }
         } else {
-            departmentLabel.setText("N/A");
-            facultyLabel.setText("N/A");
+            if (teacher.getPosition() == Position.DEAN && teacher.getFaculty() != null) {
+                departmentLabel.setText("Dean's Office");
+            } else {
+                departmentLabel.setText("N/A");
+            }
+            facultyLabel.setText(teacher.getFaculty() != null ? teacher.getFaculty().getName() : "N/A");
         }
 
         String positionText = formatPositionString(teacher);

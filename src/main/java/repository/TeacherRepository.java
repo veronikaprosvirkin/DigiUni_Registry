@@ -65,6 +65,7 @@ public class TeacherRepository implements Repository<Teacher, String> {
         removeByIdWithoutPersist(entity.getId());
 
         if (entity.getDepartment() != null) {
+            entity.setFaculty(entity.getDepartment().getFaculty());
             entity.getDepartment().getTeachers().add(entity);
         }
 

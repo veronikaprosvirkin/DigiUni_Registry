@@ -34,7 +34,14 @@ public final class Faculty implements NamedEntity {
         this.nameOfFaculty = nameOfFaculty;
         this.shortName = shortName;
         this.contacts = contacts;
+        setDean(dean);
+    }
+
+    public void setDean(Teacher dean) {
         this.dean = dean;
+        if (dean != null) {
+            dean.setFaculty(this);
+        }
     }
 
 

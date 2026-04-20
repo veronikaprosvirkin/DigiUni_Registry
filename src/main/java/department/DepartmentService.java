@@ -42,8 +42,11 @@ public class DepartmentService {
             return;
         }
         Department d = new Department(IdGenerator.generateDepartmentId(),newDepartmentName);
+        d.setFaculty(selectedFaculty);
         if (head != null) {
             d.setHead(head);
+            head.setDepartment(d);
+            head.setFaculty(selectedFaculty);
         }
         if (location != null && !location.trim().isEmpty()) {
             d.setLocation(location);
@@ -73,6 +76,10 @@ public class DepartmentService {
     public void editDepartmentHead(Department dept, Teacher head, UserService userService) {
         Objects.requireNonNull(dept, "Department cannot be null");
         dept.setHead(head);
+        if (head != null) {
+            head.setDepartment(dept);
+            head.setFaculty(dept.getFaculty());
+        }
         FileStorageUtils.saveAll(university, userService);
         log.info("Department {} head set to {}", dept.getId(), head == null ? "None" : head.getId());
         System.out.println("Head of department set to " + (head == null ? "None" : head.getDisplayInfo()));

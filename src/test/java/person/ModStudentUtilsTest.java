@@ -57,7 +57,7 @@ class ModStudentUtilsTest {
                 ""                  // pause
         );
 
-        ModStudentUtils.studentAddStudent(scanner, facultyService, studentService, university, userService, teacherService);
+        ModStudentUtils.studentAddStudent(scanner, facultyService, studentService, university, userService, teacherService, true);
 
         assertFalse(studentService.getAllStudents().isEmpty());
         Student added = studentService.getAllStudents().get(0);

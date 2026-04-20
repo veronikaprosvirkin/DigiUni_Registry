@@ -161,7 +161,10 @@ public class FileStorageUtils {
                 String shortName = parts[2];
                 String contact = parts[3];
                 Teacher dean = restoreTeacher(parts, 4);
-                u.getFaculties().add(new Faculty(id, name, shortName, contact, dean));
+                Faculty faculty = new Faculty(id, name, shortName, contact, dean);
+                if (dean != null)
+                    dean.setFaculty(faculty);
+                u.getFaculties().add(faculty);
                 IdGenerator.updateFacultyCounter(id);
             }
         }
@@ -279,6 +282,7 @@ public class FileStorageUtils {
                         .filter(f -> f.getId().equals(facultyId))
                         .findFirst()
                         .ifPresent(f -> {
+                            d.setFaculty(f);
                             f.getDepartments().add(d);
                             IdGenerator.updateDepartmentCounter(id);
                         });
@@ -613,15 +617,16 @@ public class FileStorageUtils {
 
                 if (teacher != null && parts.length >= 12) {
                     Teacher canonicalTeacher = teachersById.computeIfAbsent(teacher.getId(), key -> teacher);
-                    int ownerIndex = Gender.fromString(part(parts, 4)) != null ? 12 : 11;
-                    String ownerId = part(parts, ownerIndex);
+                    int ownerIndex = resolveTeacherOwnerIndex(parts);
+                    String ownerId = normalizeOwnerId(part(parts, ownerIndex));
                     boolean found = false;
 
                     if (ownerId != null && ownerId.startsWith("DEAN:")) {
-                        String facultyId = ownerId.substring("DEAN:".length());
+                        String facultyId = ownerId.substring("DEAN:".length()).trim();
                         for (Faculty f : u.getFaculties()) {
-                            if (f.getId().equals(facultyId)) {
+                            if (f.getId() != null && f.getId().equalsIgnoreCase(facultyId)) {
                                 f.setDean(canonicalTeacher);
+                                canonicalTeacher.setFaculty(f);
                                 found = true;
                                 break;
                             }
@@ -631,14 +636,37 @@ public class FileStorageUtils {
                     if (!found) {
                         for (Faculty f : u.getFaculties()) {
                             for (Department d : f.getDepartments()) {
-                                if (d.getId().equals(ownerId)) {
+                                if (d.getId() != null && d.getId().equalsIgnoreCase(ownerId)) {
                                     canonicalTeacher.setDepartment(d);
+                                    canonicalTeacher.setFaculty(f);
+                                    if (d.getFaculty() == null) {
+                                        d.setFaculty(f);
+                                    }
                                     d.getTeachers().add(canonicalTeacher);
                                     found = true;
                                     break;
                                 }
                             }
                             if (found) break;
+                        }
+                    }
+
+                    // Keep department-head links canonical by teacher ID even if teacher row owner is DEAN:.
+                    for (Faculty f : u.getFaculties()) {
+                        for (Department d : f.getDepartments()) {
+                            Teacher head = d.getHead();
+                            if (head != null && head.getId() != null
+                                    && canonicalTeacher.getId() != null
+                                    && head.getId().equalsIgnoreCase(canonicalTeacher.getId())) {
+                                d.setHead(canonicalTeacher);
+                                canonicalTeacher.setDepartment(d);
+                                canonicalTeacher.setFaculty(f);
+                                if (d.getTeachers().stream().noneMatch(t -> t != null
+                                        && t.getId() != null
+                                        && t.getId().equalsIgnoreCase(canonicalTeacher.getId()))) {
+                                    d.getTeachers().add(canonicalTeacher);
+                                }
+                            }
                         }
                     }
                     IdGenerator.updateTeacherCounter(canonicalTeacher.getId());
@@ -710,6 +738,32 @@ public class FileStorageUtils {
 
     private static String blankToNull(String value) {
         return value == null || value.isBlank() ? null : value;
+    }
+
+    private static int resolveTeacherOwnerIndex(String[] parts) {
+        if (parts == null) {
+            return -1;
+        }
+        // Current teachers.csv schema keeps owner at index 12 even when gender is blank.
+        if (parts.length >= 13) {
+            return 12;
+        }
+        // Legacy rows without a dedicated gender column placed owner at index 11.
+        if (parts.length >= 12) {
+            return 11;
+        }
+        return -1;
+    }
+
+    private static String normalizeOwnerId(String ownerIdRaw) {
+        String ownerId = blankToNull(ownerIdRaw);
+        if (ownerId == null) {
+            return null;
+        }
+        if (ownerId.regionMatches(true, 0, "DEAN:", 0, "DEAN:".length())) {
+            return "DEAN:" + ownerId.substring("DEAN:".length()).trim();
+        }
+        return ownerId.trim();
     }
 
     private static String toStudentCsvRow(Student s) {
