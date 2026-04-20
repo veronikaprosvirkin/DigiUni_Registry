@@ -1,5 +1,6 @@
 import java.util.Scanner;
 
+import javafx.application.Platform;
 import repository.TeacherRepository;
 import university.University;
 import university.UniversityService;
@@ -15,6 +16,9 @@ import utils.FileStorageUtils;
 
 public class Main {
     public static void main(String[] args) {
+        Platform.startup(() -> {});
+        Platform.setImplicitExit(false);
+
         University university = new University();
         UserService userService = UserService.getInstance();
 

@@ -20,7 +20,7 @@ public final class StudentCardWindow {
     private static Stage stage;
     private static StudentCardController controller;
 
-    private StudentCardWindow() {
+    public StudentCardWindow() {
     }
 
     public static void open(Student student, boolean showId) {

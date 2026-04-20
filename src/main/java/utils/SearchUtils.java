@@ -3,6 +3,8 @@ package utils;
 import java.util.List;
 import java.util.Scanner;
 
+import javafx.application.Platform;
+import ui.StudentCardWindow;
 import utils.input.InputUtils;
 import utils.sort.SortUtils;
 import utils.namedEntity.NamedEntity;
@@ -35,7 +37,10 @@ public class SearchUtils {
                 result = SortUtils.sortStudents(result, scanner);
             }
             System.out.println(" --- Students found by name part: " + name + " ---");
-            result.forEach(System.out::println);
+            for (int i = 0; i < result.size(); i++) {
+                System.out.println((i + 1) + ". " + result.get(i).toString());
+            }
+            promptToShowStudentCard(scanner, result);
         }
         InputUtils.pause(scanner);
     }
@@ -232,5 +237,55 @@ public class SearchUtils {
             result.forEach(System.out::println);
         }
         InputUtils.pause(scanner);
+    }
+
+    private static void promptToShowStudentCard(Scanner scanner, List<Student> students) {
+        if (students == null || students.isEmpty()) {
+            return;
+        }
+
+        Student selectedStudent = null;
+
+        if (students.size() == 1) {
+            selectedStudent = students.get(0);
+            System.out.print("\nDo you want to open the graphical Student Card? (y/n): ");
+            String answer = scanner.nextLine().trim().toLowerCase();
+            if (!answer.equals("y") && !answer.equals("yes")) {
+                return;
+            }
+        } else {
+            System.out.print("\nEnter the number of the student from the list above to view their card (or press Enter to skip): ");
+            String input = scanner.nextLine().trim();
+
+            if (input.isEmpty()) {
+                return;
+            }
+
+            try {
+                int index = Integer.parseInt(input) - 1;
+
+                if (index >= 0 && index < students.size()) {
+                    selectedStudent = students.get(index);
+                } else {
+                    System.out.println("Invalid number. Skipping...");
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Skipping...");
+                return;
+            }
+        }
+
+        if (selectedStudent != null) {
+            final Student studentToShow = selectedStudent;
+            Platform.runLater(() -> {
+                try {
+                    StudentCardWindow window = new StudentCardWindow();
+                    window.open(studentToShow, true);
+                } catch (Exception e) {
+                    System.out.println("Error opening Student Card: " + e.getMessage());
+                }
+            });
+        }
     }
 }
