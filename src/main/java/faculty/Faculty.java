@@ -2,6 +2,8 @@ package faculty;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +16,8 @@ import department.Department;
 // Faculty entity
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public final class Faculty implements NamedEntity {
+public final class Faculty implements NamedEntity, Serializable {
+    private static final long serialVersionUID = 1L;
     @EqualsAndHashCode.Include
     @DetailDisplay(label = "Faculty Code")
     private String id;

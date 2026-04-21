@@ -2,6 +2,8 @@ package person;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
 import java.time.LocalDate;
 import speciality.Speciality;
 import faculty.Faculty;
@@ -10,7 +12,8 @@ import utils.validation.MinValue;
 // Student entity
 @Data
 @EqualsAndHashCode(callSuper = true)
-public final class Student extends Person {
+public final class Student extends Person implements Serializable {
+    private static final long serialVersionUID = 1L;
     private LocalDate enrollmentDate;
     @MinValue(value = 1, message = "Group number must be at least 1")
     private int group;

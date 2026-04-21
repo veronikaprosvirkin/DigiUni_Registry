@@ -2,6 +2,8 @@ package speciality;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +14,8 @@ import speciality.Group;
 // Speciality entity
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public final class Speciality implements NamedEntity {
+public final class Speciality implements NamedEntity, Serializable {
+    private static final long serialVersionUID = 1L;
     @EqualsAndHashCode.Include
     @DetailDisplay(label = "Speciality Code")
     private String id;
