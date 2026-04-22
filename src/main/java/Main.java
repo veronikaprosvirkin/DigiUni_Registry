@@ -1,62 +1,53 @@
-import java.util.Scanner;
-
-import javafx.application.Platform;
-import repository.TeacherRepository;
-import university.University;
-import university.UniversityService;
-import person.StudentService;
-import person.TeacherService;
-import faculty.FacultyService;
-import department.DepartmentService;
-import speciality.SpecialityService;
-import user.UserService;
-import user.User;
-import utils.FileStorageUtils;
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import service.ClientMain;
+import service.ServerMain;
 
 
 public class Main {
+    private static final String HOST = "127.0.0.1";
+    private static final int PORT = 8080;
+    private static final int STARTUP_WAIT_ATTEMPTS = 40;
+    private static final int STARTUP_WAIT_MS = 250;
+
     public static void main(String[] args) {
-        Platform.startup(() -> {});
-        Platform.setImplicitExit(false);
+        ensureServerIsRunning();
+        ClientMain.main(args);
+    }
 
-        University university = new University();
-        UserService userService = UserService.getInstance();
+    private static void ensureServerIsRunning() {
+        if (isServerReachable()) {
+            return;
+        }
 
-        FacultyService facultyService = new FacultyService(university);
-        SpecialityService specialityService = new SpecialityService(university);
-        TeacherRepository teacherRepository = new TeacherRepository(university);
+        System.out.println("Server is not reachable. Starting embedded server...");
+        Thread serverThread = new Thread(() -> ServerMain.main(new String[0]), "diguni-server-thread");
+        serverThread.setDaemon(true);
+        serverThread.start();
 
-        boolean hasSavedStructure = FileStorageUtils.hasSavedStructure();
-
-        if (hasSavedStructure)
-            FileStorageUtils.loadAll(university, facultyService, specialityService, userService);
-
-        UniversityService universityService = new UniversityService(university, teacherRepository);
-
-        if (!hasSavedStructure)
-            FileStorageUtils.saveAll(university, userService, universityService);
-
-        StudentService studentService = new StudentService(university);
-        TeacherService teacherService = new TeacherService(university);
-        DepartmentService departmentService = new DepartmentService(university);
-        Scanner scanner = new Scanner(System.in);
-
-
-        while (true) {
-            try {
-                //authorization logic
-                User currentUser = userService.getCurrentUser();
-                if (currentUser == null) {
-                    userService.login(scanner);
-                    continue;
-                }
-                user.MainMenu.showMenu(scanner, currentUser);
-
-            } catch (utils.EntityNotFoundException e) {
-                System.out.println(e.getMessage());
-            } catch (Exception e) {
-                System.out.println("An error occurred: " + e.getMessage());
+        for (int i = 0; i < STARTUP_WAIT_ATTEMPTS; i++) {
+            if (isServerReachable()) {
+                System.out.println("Server started successfully.");
+                return;
             }
+            try {
+                Thread.sleep(STARTUP_WAIT_MS);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+        }
+
+        System.out.println("Warning: server did not start in time. Client will continue and retry on requests.");
+    }
+
+    private static boolean isServerReachable() {
+        try (Socket socket = new Socket()) {
+            socket.connect(new InetSocketAddress(HOST, PORT), 300);
+            return true;
+        } catch (IOException e) {
+            return false;
         }
     }
 }

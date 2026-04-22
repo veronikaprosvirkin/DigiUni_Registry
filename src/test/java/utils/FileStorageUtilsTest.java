@@ -5,6 +5,7 @@ import faculty.Faculty;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import person.StudyForm;
 import person.Teacher;
 import person.Position;
@@ -13,12 +14,10 @@ import university.University;
 import user.UserService;
 
 import java.lang.reflect.Field;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Comparator;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,50 +28,36 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class FileStorageUtilsTest {
 
-    private static final Path FACULTIES_FILE = Path.of("data", "faculties.csv");
-    private static final Path SPECIALITIES_FILE = Path.of("data", "specialities.csv");
-    private static final Path DEPARTMENTS_FILE = Path.of("data", "departments.csv");
-    private static final Path TEACHERS_FILE = Path.of("data", "teachers.csv");
-    private static final Path STUDENTS_FILE = Path.of("data", "students.csv");
-    private static final Path USERS_FILE = Path.of("data", "users.csv");
+    @TempDir
+    Path tempDir;
 
+    private Path FACULTIES_FILE;
+    private Path SPECIALITIES_FILE;
+    private Path DEPARTMENTS_FILE;
+    private Path TEACHERS_FILE;
+    private Path STUDENTS_FILE;
 
-    private byte[] facultiesBackup;
-    private byte[] specialitiesBackup;
-    private byte[] departmentsBackup;
-    private byte[] studentsBackup;
-    private byte[] teachersBackup;
-    private byte[] usersBackup;
     private UserService userService;
 
     @BeforeEach
     void setUp() throws Exception {
-        Files.createDirectories(Path.of("data"));
-        facultiesBackup = backup(FACULTIES_FILE);
-        specialitiesBackup = backup(SPECIALITIES_FILE);
-        departmentsBackup = backup(DEPARTMENTS_FILE);
-        studentsBackup = backup(STUDENTS_FILE);
-        teachersBackup = backup(TEACHERS_FILE);
-        usersBackup = backup(USERS_FILE);
-        userService = UserService.createTestInstance();
+        Path dataDir = tempDir.resolve("data");
+        Files.createDirectories(dataDir);
+        FACULTIES_FILE = dataDir.resolve("faculties.csv");
+        SPECIALITIES_FILE = dataDir.resolve("specialities.csv");
+        DEPARTMENTS_FILE = dataDir.resolve("departments.csv");
+        TEACHERS_FILE = dataDir.resolve("teachers.csv");
+        STUDENTS_FILE = dataDir.resolve("students.csv");
 
-        Files.deleteIfExists(FACULTIES_FILE);
-        Files.deleteIfExists(SPECIALITIES_FILE);
-        Files.deleteIfExists(DEPARTMENTS_FILE);
-        Files.deleteIfExists(STUDENTS_FILE);
-        Files.deleteIfExists(TEACHERS_FILE);
-        Files.deleteIfExists(USERS_FILE);
+        FileStorageUtils.setStorageRootForTests(dataDir);
+        userService = UserService.createTestInstance();
         resetCounters();
     }
 
     @AfterEach
-    void tearDown() throws Exception { Thread.sleep(200);
-        restore(FACULTIES_FILE, facultiesBackup);
-        restore(SPECIALITIES_FILE, specialitiesBackup);
-        restore(DEPARTMENTS_FILE, departmentsBackup);
-        restore(STUDENTS_FILE, studentsBackup);
-        restore(TEACHERS_FILE, teachersBackup);
-        restore(USERS_FILE, usersBackup);
+    void tearDown() throws Exception {
+        Thread.sleep(200);
+        FileStorageUtils.resetStorageRootForTests();
         resetCounters();
     }
 
@@ -574,42 +559,10 @@ class FileStorageUtilsTest {
         assertEquals("f001", department.getFaculty().getId());
     }
 
-    private byte[] backup(Path file) throws Exception {
-        if (!Files.exists(file)) {
-            return null;
-        }
-        return Files.readAllBytes(file);
-    }
-
-    private void restore(Path file, byte[] backup) throws Exception {
-        cleanupDirectoryPath(file);
-        if (backup == null) {
-            Files.deleteIfExists(file);
-            return;
-        }
-        Files.write(file, backup);
-    }
-
     private void write(Path file, String content) throws Exception {
-        cleanupDirectoryPath(file);
         Files.writeString(file, content, StandardCharsets.UTF_8);
     }
 
-    private void cleanupDirectoryPath(Path file) throws IOException {
-        if (!Files.isDirectory(file)) {
-            return;
-        }
-        try (var walk = Files.walk(file)) {
-            walk.sorted(Comparator.reverseOrder())
-                    .forEach(path -> {
-                        try {
-                            Files.deleteIfExists(path);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    });
-        }
-    }
 
     private void resetCounters() throws Exception {
         setCounter("studentCounter");
@@ -620,8 +573,12 @@ class FileStorageUtilsTest {
     }
 
     private void setCounter(String fieldName) throws Exception {
-        Field field = IdGenerator.class.getDeclaredField(fieldName);
-        field.setAccessible(true);
-        field.setInt(null, 1);
+        try {
+            Field field = IdGenerator.class.getDeclaredField(fieldName);
+            field.setAccessible(true);
+            field.setInt(null, 1);
+        } catch (NoSuchFieldException ignored) {
+            // IdGenerator no longer keeps mutable counters; keep tests compatible.
+        }
     }
 }
