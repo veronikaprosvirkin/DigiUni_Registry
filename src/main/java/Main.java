@@ -50,18 +50,7 @@ public class Main {
                     userService.login(scanner);
                     continue;
                 }
-                user.MainMenu.showMenu(
-                        universityService,
-                        studentService,
-                        teacherService,
-                        facultyService,
-                        departmentService,
-                        specialityService,
-                        userService,
-                        scanner,
-                        currentUser,
-                        university,
-                        university.getFaculties());
+                user.MainMenu.showMenu(scanner, currentUser);
 
             } catch (utils.EntityNotFoundException e) {
                 System.out.println(e.getMessage());

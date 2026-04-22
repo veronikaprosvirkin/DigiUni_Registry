@@ -178,11 +178,11 @@ public class ModEntitiesUtils {
     }
 
     //check if email is taken by any student or teacher
-    public static boolean isEmailGloballyTaken(String email, StudentService studentService, TeacherService teacherService) {
-        boolean takenByStudent = isEmailTakenInList(email, studentService.getAllStudents());
-        boolean takenByTeacher = isEmailTakenInList(email, teacherService.getAllTeachers());
+    public static boolean isEmailGloballyTaken(String email, List<Student> students, List<Teacher> teachers) {
+        boolean takenByStudent = isEmailTakenInList(email, students);
+        boolean takenByTeacher = isEmailTakenInList(email, teachers);
 
-        return takenByStudent || takenByTeacher; //return true if email is taken by either students or teachers
+        return takenByStudent || takenByTeacher;
     }
 
     //generate email in format: first letter of name + "." + surname + domain

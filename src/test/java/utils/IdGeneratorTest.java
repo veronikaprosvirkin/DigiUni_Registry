@@ -1,138 +1,58 @@
 package utils;
 
-import org.junit.jupiter.api.BeforeEach;
+import department.Department;
+import faculty.Faculty;
 import org.junit.jupiter.api.Test;
-
-import java.lang.reflect.Field;
+import person.Teacher;
+import speciality.Speciality;
+import university.University;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class IdGeneratorTest {
 
-    @BeforeEach
-    void resetCounters() throws Exception {
-        setCounter("studentCounter", 1);
-        setCounter("teacherCounter", 1);
-        setCounter("facultyCounter", 1);
-        setCounter("departmentCounter", 1);
-        setCounter("specialityCounter", 1);
+    @Test
+    void generateFacultyId_returnsFirstIdForEmptyUniversity() {
+        University university = new University();
+
+        assertEquals("f001", IdGenerator.generateFacultyId(university));
     }
 
     @Test
-    void generateMethodsUseExpectedFormatAndIncrement() {
-        assertEquals("st20260001", IdGenerator.generateStudentId(2026));
-        assertEquals("st20260002", IdGenerator.generateStudentId(2026));
+    void generateFacultyDepartmentAndSpecialityIds_useMaxExistingValue() {
+        University university = new University();
 
-        assertEquals("t0001", IdGenerator.generateTeacherId());
-        assertEquals("t0002", IdGenerator.generateTeacherId());
+        Faculty faculty = new Faculty("f007", "Engineering", "ENG", "contacts", null);
+        faculty.getDepartments().add(new Department("d009", "CS"));
+        faculty.getSpeciality().add(new Speciality("sp011", "Software Engineering"));
+        university.getFaculties().add(faculty);
 
-        assertEquals("f001", IdGenerator.generateFacultyId());
-        assertEquals("f002", IdGenerator.generateFacultyId());
-
-        assertEquals("d001", IdGenerator.generateDepartmentId());
-        assertEquals("d002", IdGenerator.generateDepartmentId());
-
-        assertEquals("sp001", IdGenerator.generateSpecialityId());
-        assertEquals("sp002", IdGenerator.generateSpecialityId());
+        assertEquals("f008", IdGenerator.generateFacultyId(university));
+        assertEquals("d010", IdGenerator.generateDepartmentId(university));
+        assertEquals("sp012", IdGenerator.generateSpecialityId(university));
     }
 
     @Test
-    void studentCounterIsGlobalAcrossDifferentYears() {
-        assertEquals("st20240001", IdGenerator.generateStudentId(2024));
-        assertEquals("st20250002", IdGenerator.generateStudentId(2025));
-        assertEquals("st20260003", IdGenerator.generateStudentId(2026));
+    void generateTeacherId_usesTeachersAcrossAllDepartments() {
+        University university = new University();
+        Faculty faculty = new Faculty("f001", "Engineering", "ENG", "contacts", null);
+
+        Department d1 = new Department("d001", "CS");
+        Department d2 = new Department("d002", "Math");
+        d1.getTeachers().add(new Teacher("t0002", "John", "Doe", "", "Professor", d1));
+        d2.getTeachers().add(new Teacher("t0010", "Jane", "Smith", "", "Professor", d2));
+
+        faculty.getDepartments().add(d1);
+        faculty.getDepartments().add(d2);
+        university.getFaculties().add(faculty);
+
+        assertEquals("t0011", IdGenerator.generateTeacherId(university));
     }
 
     @Test
-    void updateFacultyCounterSkipsToNextAvailableValue() {
-        IdGenerator.updateFacultyCounter("f010");
-        assertEquals("f011", IdGenerator.generateFacultyId());
+    void generateStudentId_returnsFirstValueWhenNoStudentsExist() {
+        University university = new University();
 
-        IdGenerator.updateFacultyCounter("f005");
-        assertEquals("f012", IdGenerator.generateFacultyId());
-
-        IdGenerator.updateFacultyCounter("x999");
-        assertEquals("f013", IdGenerator.generateFacultyId());
-    }
-
-    @Test
-    void updateDepartmentCounterSkipsToNextAvailableValue() {
-        IdGenerator.updateDepartmentCounter("d099");
-        assertEquals("d100", IdGenerator.generateDepartmentId());
-
-        IdGenerator.updateDepartmentCounter("dabc");
-        assertEquals("d101", IdGenerator.generateDepartmentId());
-
-        IdGenerator.updateDepartmentCounter(null);
-        assertEquals("d102", IdGenerator.generateDepartmentId());
-    }
-
-    @Test
-    void updateSpecialityCounterSkipsToNextAvailableValue() {
-        IdGenerator.updateSpecialityCounter("sp120");
-        assertEquals("sp121", IdGenerator.generateSpecialityId());
-
-        IdGenerator.updateSpecialityCounter("sp002");
-        assertEquals("sp122", IdGenerator.generateSpecialityId());
-
-        IdGenerator.updateSpecialityCounter("spbad");
-        assertEquals("sp123", IdGenerator.generateSpecialityId());
-    }
-
-    @Test
-    void updateMethodsIgnoreInvalidIdsAndKeepMonotonicSequence() {
-        IdGenerator.updateFacultyCounter(null);
-        IdGenerator.updateFacultyCounter("");
-        IdGenerator.updateFacultyCounter("faculty10");
-        IdGenerator.updateFacultyCounter("f");
-        IdGenerator.updateFacultyCounter("f-1");
-        IdGenerator.updateFacultyCounter("fNaN");
-        assertEquals("f001", IdGenerator.generateFacultyId());
-
-        IdGenerator.updateDepartmentCounter("dept001");
-        IdGenerator.updateDepartmentCounter("d");
-        IdGenerator.updateDepartmentCounter("d+");
-        IdGenerator.updateDepartmentCounter("dabc");
-        assertEquals("d001", IdGenerator.generateDepartmentId());
-
-        IdGenerator.updateSpecialityCounter("spec001");
-        IdGenerator.updateSpecialityCounter("sp");
-        IdGenerator.updateSpecialityCounter("sp+");
-        IdGenerator.updateSpecialityCounter("spxyz");
-        assertEquals("sp001", IdGenerator.generateSpecialityId());
-    }
-
-    @Test
-    void updateMethodsAdvanceWhenEqualToCurrentCounter() {
-        assertEquals("f001", IdGenerator.generateFacultyId());
-        IdGenerator.updateFacultyCounter("f002");
-        assertEquals("f003", IdGenerator.generateFacultyId());
-
-        assertEquals("d001", IdGenerator.generateDepartmentId());
-        IdGenerator.updateDepartmentCounter("d002");
-        assertEquals("d003", IdGenerator.generateDepartmentId());
-
-        assertEquals("sp001", IdGenerator.generateSpecialityId());
-        IdGenerator.updateSpecialityCounter("sp002");
-        assertEquals("sp003", IdGenerator.generateSpecialityId());
-    }
-
-    @Test
-    void updateMethodsSupportLargeAndZeroPaddedValues() {
-        IdGenerator.updateFacultyCounter("f0009");
-        assertEquals("f010", IdGenerator.generateFacultyId());
-
-        IdGenerator.updateDepartmentCounter("d1000");
-        assertEquals("d1001", IdGenerator.generateDepartmentId());
-
-        IdGenerator.updateSpecialityCounter("sp0123");
-        assertEquals("sp124", IdGenerator.generateSpecialityId());
-    }
-
-    private void setCounter(String fieldName, int value) throws Exception {
-        Field field = IdGenerator.class.getDeclaredField(fieldName);
-        field.setAccessible(true);
-        field.setInt(null, value);
+        assertEquals("st20260001", IdGenerator.generateStudentId(university, 2026));
     }
 }
-

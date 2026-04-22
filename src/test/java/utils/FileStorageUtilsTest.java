@@ -240,9 +240,9 @@ class FileStorageUtilsTest {
         assertEquals("Irena", f002.getDean().getOnlyName());
         assertNull(f010.getDean());
 
-        assertEquals("f011", IdGenerator.generateFacultyId());
-        assertEquals("sp121", IdGenerator.generateSpecialityId());
-        assertEquals("d043", IdGenerator.generateDepartmentId());
+        assertEquals("f011", IdGenerator.generateFacultyId(university));
+        assertEquals("sp121", IdGenerator.generateSpecialityId(university));
+        assertEquals("d043", IdGenerator.generateDepartmentId(university));
     }
 
     @Test

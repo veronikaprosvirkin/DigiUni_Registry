@@ -41,6 +41,7 @@ public class ServerMain {
 
     public static void main(String[] args) {
         log.info("Starting DigiUni Server...");
+        System.out.println("Starting DigiUni Server...");
 
         University university = new University();
         UserService userService = UserService.getInstance();
@@ -133,6 +134,7 @@ public class ServerMain {
                 }
                 case "ADD_TEACHER" -> {
                     Teacher newTeacher = (Teacher) request.getData();
+                    newTeacher.setId(IdGenerator.generateTeacherId(university));
                     teacherService.addTeacher(newTeacher);
                     FileStorageUtils.saveAll(university, userService, universityService);
                     responseMessage = "Teacher successfully added!";
@@ -186,6 +188,7 @@ public class ServerMain {
                 }
                 case "ADD_STUDENT" -> {
                     Student newStudent = (Student) request.getData();
+                    newStudent.setId(IdGenerator.generateStudentId(university, newStudent.getEnrollmentDate().getYear()));
                     if (newStudent.getSpeciality() == null) {
                         isSuccess = false;
                         responseMessage = "Student speciality is required";
@@ -315,6 +318,36 @@ public class ServerMain {
                         facultyService.editFacultyName(faculty, newName, userService);
                         FileStorageUtils.saveAll(university, userService, universityService);
                         responseMessage = "Faculty name successfully updated!";
+                    }
+                }
+                case "EDIT_FACULTY_CONTACTS" -> {
+                    Map<String, Object> data = asMap(request.getData());
+                    String facultyId = (String) data.get("facultyId");
+                    String newContacts = (String) data.get("newContacts");
+
+                    Faculty faculty = facultyService.findById(facultyId);
+                    if (faculty == null) {
+                        isSuccess = false;
+                        responseMessage = "Faculty not found";
+                    } else {
+                        faculty.setContacts(newContacts);
+                        FileStorageUtils.saveAll(university, userService, universityService);
+                        responseMessage = "Contacts updated successfully!";
+                    }
+                }
+                case "EDIT_FACULTY_SHORT_NAME" -> {
+                    Map<String, Object> data = asMap(request.getData());
+                    String facultyId = (String) data.get("facultyId");
+                    String newShortName = (String) data.get("newShortName");
+
+                    Faculty faculty = facultyService.findById(facultyId);
+                    if (faculty == null) {
+                        isSuccess = false;
+                        responseMessage = "Faculty not found";
+                    } else {
+                        faculty.setShortName(newShortName);
+                        FileStorageUtils.saveAll(university, userService, universityService);
+                        responseMessage = "Short name updated successfully!";
                     }
                 }
                 case "ASSIGN_FACULTY_DEAN" -> {
@@ -549,6 +582,12 @@ public class ServerMain {
                     responseMessage = "Data successfully reloaded";
                 }
                 case "GET_UNIVERSITY" -> responseData = university;
+                case "EDIT_UNIVERSITY" -> {
+                    university.UniversityInfo newInfo = (university.UniversityInfo) request.getData();
+                    university.setInfo(newInfo);
+                    FileStorageUtils.saveAll(university, userService, universityService);
+                    responseMessage = "University settings successfully updated!";
+                }
 
                 default -> {
                     isSuccess = false;

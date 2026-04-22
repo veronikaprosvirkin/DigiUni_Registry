@@ -12,6 +12,10 @@ public class Request implements Serializable {
         this.action = action;
         this.data = data;
     }
+    public Request(String action) {
+        this.action = action;
+        this.data = null;
+    }
 
     public String getAction() { return action; }
     public Object getData() { return data; }

@@ -1,5 +1,4 @@
 id;name;surname;patronymic;gender;position;academicDegree;academicTitle;employmentDate;workload;email;phone;department;dateOfBirth;age
-t0001;Andrii;Hlybovets;Mykolaiovych;Male;Dean;Doctor of Sciences;Professor;2005-09-01;40.0;a.hlybovets@digiuni.ukma.edu;+380501234567;DEAN:f001;1975-04-12;51
 t0002;Semen;Horokhovskyi;Samuilovych;Male;Head of Department;Candidate of Sciences;Associate Professor;2010-09-01;40.0;s.horokhovskyi@digiuni.ukma.edu;+380671234567;d001;;
 t0043;Volodymyr;Zaslavskyi;Anatoliiovych;Male;Professor;Doctor of Sciences;Professor;2012-09-01;40.0;v.zaslavskyi@digiuni.ukma.edu;+380501234588;d001;1972-11-20;53
 t0044;Tetiana;Kovaliuk;Volodymyrivna;Female;Associate Professor;Candidate of Sciences;Associate Professor;2014-09-01;40.0;t.kovaliuk@digiuni.ukma.edu;+380671234588;d001;1983-03-08;43
@@ -23,7 +22,7 @@ t0336;Yevhen;Kropyvnytskyi;Ihorovych;Male;Assistant;Master;;2018-09-01;40.0;y.kr
 t0358;Olha;Pustovoit;Serhiivna;Female;Assistant;Master;;2022-09-01;40.0;o.pustovoit@ukma.edu.ua;+380444252336;d001;1999-08-22;26
 t0363;Sergii;Medvid;Oleksandrovych;Male;Senior Lecturer;Candidate of Sciences;;2014-09-01;40.0;s.medvid@ukma.edu.ua;+380544256481;d001;1980-10-25;45
 t0364;Andrii;Makarets;Oleksandrovych;Male;Assistant;Candidate of Sciences;;2023-09-01;20.0;a.makarets@ukma.edu.ua;+380674256481;d001;2000-10-25;25
-t0365;Mykyta;Shcheglov;Vladyslavovych;Male;Senior Lecturer;Candidate of Sciences;;2026-09-01;40.0;m.shcheglov@ukma.edu.ua;+380674256481;d001;1980-10-25;46
+t0365;Mykyta;Shcheglov;Vladyslavovych;Male;Senior Lecturer;Candidate of Sciences;;2026-09-01;40.0;m.shcheglov@ukma.edu.ua;+380674256481;d001;1980-10-25;45
 t0003;Oleksandr;Zhezherun;Petrovych;Male;Head of Department;Candidate of Sciences;Associate Professor;2012-09-01;40.0;o.zhezherun@digiuni.ukma.edu;+380631234567;d002;;
 t0112;Andrii;Volokhov;Mykolaiovych;Male;Senior Lecturer;Master;;2015-09-01;40.0;a.volokhov@digiuni.ukma.edu;+380671234621;d002;1990-11-03;35
 t0116;Iryna;Zavadovska;Vasylivna;Female;Associate Professor;Candidate of Sciences;Associate Professor;2012-09-01;40.0;i.zavadovska@digiuni.ukma.edu;+380631234623;d002;1984-01-30;42
@@ -149,7 +148,7 @@ t0234;Nataliia;Kryvda;Vasylivna;Female;Professor;Doctor of Sciences;Professor;20
 t0270;Liubov;Honchar;Vasylivna;Female;Senior Lecturer;Master;;2021-09-01;40.0;l.honchar@digiuni.ukma.edu;+380631234819;d010;1996-03-20;30
 t0291;Maksym;Panchenko;Yuriiovych;Male;Professor;Doctor of Sciences;Professor;2005-09-01;40.0;m.panchenko@digiuni.ukma.edu;+380631234840;d010;1967-07-22;58
 t0308;Mykola;Lykhohliad;Mykolaiovych;Male;Lecturer;Master;;2024-09-01;40.0;m.lykhohliad@ukma.edu.ua;+380444250010;d010;1999-07-19;26
-t0321;Roman;Kobets;Stepanovych;Male;Associate Professor;Candidate of Sciences;Associate Professor;2013-09-01;40.0;r.kobets@ukma.edu.ua;+380444253259;d010;1982-04-21;43
+t0321;Roman;Kobets;Stepanovych;Male;Associate Professor;Candidate of Sciences;Associate Professor;2013-09-01;40.0;r.kobets@ukma.edu.ua;+380444253259;d010;1982-04-21;44
 t0013;Roman;Veretelnyk;Mykolaiovych;Male;Head of Department;Candidate of Sciences;Associate Professor;2001-09-01;40.0;r.veretelnyk@digiuni.ukma.edu;+380501234571;d011;;
 t0140;Viktoriia;Pelenska;Andriivna;Female;Associate Professor;Candidate of Sciences;Associate Professor;2011-09-01;40.0;v.pelenska@digiuni.ukma.edu;+380631234635;d011;1981-03-08;45
 t0144;Yaroslav;Tkachuk;Viktorovych;Male;Senior Lecturer;Master;;2020-09-01;40.0;y.tkachuk@digiuni.ukma.edu;+380501234637;d011;1995-01-15;31

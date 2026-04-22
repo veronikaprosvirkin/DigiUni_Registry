@@ -165,7 +165,6 @@ public class FileStorageUtils {
                 if (dean != null)
                     dean.setFaculty(faculty);
                 u.getFaculties().add(faculty);
-                IdGenerator.updateFacultyCounter(id);
             }
         }
     }
@@ -212,7 +211,6 @@ public class FileStorageUtils {
                         .findFirst()
                         .ifPresent(f -> {
                             f.getSpeciality().add(s);
-                            IdGenerator.updateSpecialityCounter(id);
                         });
             }
         }
@@ -284,7 +282,6 @@ public class FileStorageUtils {
                         .ifPresent(f -> {
                             d.setFaculty(f);
                             f.getDepartments().add(d);
-                            IdGenerator.updateDepartmentCounter(id);
                         });
             }
         }
@@ -406,7 +403,6 @@ public class FileStorageUtils {
                         if (!dobStr.isEmpty() && !dobStr.equals("null")) {
                             student.setDateOfBirth(LocalDate.parse(dobStr));
                         }
-                        IdGenerator.updateStudentCounter(student.getId());
 
                         if (status != null) {
                             student.setStatus(status);
@@ -669,7 +665,6 @@ public class FileStorageUtils {
                             }
                         }
                     }
-                    IdGenerator.updateTeacherCounter(canonicalTeacher.getId());
                 }
             }
         }

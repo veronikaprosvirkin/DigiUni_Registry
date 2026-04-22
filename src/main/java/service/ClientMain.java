@@ -8,7 +8,6 @@ import java.util.Scanner;
 
 public class ClientMain {
     public static void main(String[] args) {
-        // Initialize JavaFX for the graphical cards
         Platform.startup(() -> {});
         Platform.setImplicitExit(false);
 
@@ -38,7 +37,6 @@ public class ClientMain {
                 }
             }
 
-            // Open main menu (Note: we only pass scanner and user!)
             MainMenu.showMenu(scanner, currentUser);
 
             currentUser = null;

@@ -14,14 +14,16 @@ import utils.validation.EntityValidator;
 public class TeacherService {
     private static final Logger log = LoggerFactory.getLogger(TeacherService.class);
     private final TeacherRepository teacherRepository;
+    private final University university;
 
     public TeacherService(University university) {
+        this.university = university;
         this.teacherRepository = new TeacherRepository(university);
     }
     // Adding a teacher
     public void addTeacher(String name, String surname, String patronymic, Position position, Department selectedDept) {
         Objects.requireNonNull(selectedDept, "Department cannot be null");
-        Teacher newTeacher = new Teacher(IdGenerator.generateTeacherId(), name, surname, patronymic, position, selectedDept);
+        Teacher newTeacher = new Teacher(IdGenerator.generateTeacherId(university), name, surname, patronymic, position, selectedDept);
         try {
             EntityValidator.validate(newTeacher);
         } catch (IllegalArgumentException e) {

@@ -34,7 +34,7 @@ public class FacultyService {
             System.out.println("Error: Faculty with name '" + name + "' already exists.");
             return;
         }
-        Faculty faculty = new Faculty(IdGenerator.generateFacultyId(),name, shortName, contact, dean);
+        Faculty faculty = new Faculty(IdGenerator.generateFacultyId(university),name, shortName, contact, dean);
         university.getFaculties().add(faculty);
         FileStorageUtils.saveAll(university, userService);
         log.info("Faculty {} created", faculty.getId());

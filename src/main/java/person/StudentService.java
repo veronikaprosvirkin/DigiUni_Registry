@@ -32,7 +32,7 @@ public class StudentService {
             Speciality defaultSpec = defaultFaculty.getSpeciality().get(0);
             Student newStudent;
             try {
-                newStudent = new Student(IdGenerator.generateStudentId(enrollmentDate.getYear()), name, surname, patronymic, enrollmentDate, groupNumber,
+                newStudent = new Student(IdGenerator.generateStudentId(university,enrollmentDate.getYear()), name, surname, patronymic, enrollmentDate, groupNumber,
                         defaultFaculty,
                         defaultSpec, studyForm);
                 EntityValidator.validate(newStudent);
