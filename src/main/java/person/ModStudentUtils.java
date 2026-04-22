@@ -159,49 +159,49 @@ public class ModStudentUtils {
         // Create a draft student for live preview
         Student draftStudent = new Student("PENDING", "", "", "", LocalDate.of(LocalDate.now().getYear(), 9, 1), 1, selectedFaculty, selectedSpeciality, null);
 
-        StudentCardWindow.open(draftStudent, showId);
+        javafx.application.Platform.runLater(() -> StudentCardWindow.open(draftStudent, showId));
         try {
             String name = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Name: ", false, false), true, false, false, false);
             draftStudent.setName(name);
-            StudentCardWindow.refresh(draftStudent);
+            javafx.application.Platform.runLater(() -> StudentCardWindow.refresh(draftStudent));
 
             String surname = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Surname: ", false, false), true, false, false, false);
             draftStudent.setSurname(surname);
-            StudentCardWindow.refresh(draftStudent);
+            javafx.application.Platform.runLater(() -> StudentCardWindow.refresh(draftStudent));
 
             String patronymic = InputUtils.removeSpaces(InputUtils.readLine(scanner, "Patronymic: ", false, false), true, false, false, false);
             draftStudent.setPatronymic(patronymic);
-            StudentCardWindow.refresh(draftStudent);
+            javafx.application.Platform.runLater(() -> StudentCardWindow.refresh(draftStudent));
 
             int enrollmentYear = InputUtils.readInt(scanner, "Enter the year of enrollment: ", 1990, 2026);
             LocalDate enrollmentDate = LocalDate.of(enrollmentYear, 9, 1);
             draftStudent.setEnrollmentDate(enrollmentDate);
-            StudentCardWindow.refresh(draftStudent);
+            javafx.application.Platform.runLater(() -> StudentCardWindow.refresh(draftStudent));
 
             int groupNumber = InputUtils.readInt(scanner, "Enter Group: ", 1, Integer.MAX_VALUE);
             draftStudent.setGroup(groupNumber);
-            StudentCardWindow.refresh(draftStudent);
+            javafx.application.Platform.runLater(() -> StudentCardWindow.refresh(draftStudent));
 
             int studyForm = InputUtils.readInt(scanner, "Enter study form (1 - BUDGET, 2 - CONTRACT): ", 1, 2);
             draftStudent.setStudyForm((studyForm == 1) ? StudyForm.BUDGET : StudyForm.CONTRACT);
-            StudentCardWindow.refresh(draftStudent);
+            javafx.application.Platform.runLater(() -> StudentCardWindow.refresh(draftStudent));
 
             // Fetch emails for validation
             List<Student> allS = (List<Student>) NetworkClient.sendRequest(new Request("GET_ALL_STUDENTS")).getData();
             List<Teacher> allT = (List<Teacher>) NetworkClient.sendRequest(new Request("GET_ALL_TEACHERS")).getData();
 
-            String domain = "@student.ukma.edu.ua";
+            String domain = "@ukma.edu.ua";
             String finalEmail = InputUtils.readAndValidateEmail(
                     scanner, domain,
                     () -> ModEntitiesUtils.generateFullEmail(name, surname, domain),
                     email -> ModEntitiesUtils.isEmailGloballyTaken(email, allS, allT)
             );
             draftStudent.setEmail(finalEmail);
-            StudentCardWindow.refresh(draftStudent);
+            javafx.application.Platform.runLater(() -> StudentCardWindow.refresh(draftStudent));
 
             String phone = InputUtils.readLine(scanner, "Enter phone number (optional): ", true, true);
             draftStudent.setPhone(phone.isEmpty() ? null : InputUtils.removeSpaces(phone, false, true, true, true));
-            StudentCardWindow.refresh(draftStudent);
+            javafx.application.Platform.runLater(() -> StudentCardWindow.refresh(draftStudent));
 
             String dobStr = InputUtils.readLine(scanner, "Enter date of birth (YYYY-MM-DD, optional): ", true, true);
             if (!dobStr.isEmpty()) {
@@ -209,7 +209,7 @@ public class ModStudentUtils {
                 catch (Exception e) { System.out.println("Invalid date format. Skipping."); }
             }
 
-            StudentCardWindow.refresh(draftStudent);
+            javafx.application.Platform.runLater(() -> StudentCardWindow.refresh(draftStudent));
 
             System.out.println("Detected gender: " + draftStudent.getGender());
 
@@ -218,7 +218,7 @@ public class ModStudentUtils {
             System.out.println(addRes.getMessage());
 
         } finally {
-            StudentCardWindow.close();
+            javafx.application.Platform.runLater(StudentCardWindow::close);
         }
     }
 

@@ -133,11 +133,28 @@ public class ServerMain {
                     responseData = teacherService.findTeacherById(id);
                 }
                 case "ADD_TEACHER" -> {
-                    Teacher newTeacher = (Teacher) request.getData();
-                    newTeacher.setId(IdGenerator.generateTeacherId(university));
-                    teacherService.addTeacher(newTeacher);
-                    FileStorageUtils.saveAll(university, userService, universityService);
-                    responseMessage = "Teacher successfully added!";
+                    Teacher clientTeacher = (Teacher) request.getData();
+
+                    Department realDept = null;
+                    if (clientTeacher.getDepartment() != null) {
+                        realDept = findDepartmentById(university, clientTeacher.getDepartment().getId());
+                    }
+
+                    if (realDept == null) {
+                        isSuccess = false;
+                        responseMessage = "Error: Department not found. Make sure to provide a valid department ID for the teacher.";
+                    } else {
+                        clientTeacher.setDepartment(realDept);
+                        clientTeacher.setFaculty(realDept.getFaculty());
+
+                        clientTeacher.setId(IdGenerator.generateTeacherId(university));
+
+                        teacherService.addTeacher(clientTeacher);
+                        FileStorageUtils.saveAll(university, userService, universityService);
+
+                        responseData = clientTeacher;
+                        responseMessage = "Teacher successfully added!";
+                    }
                 }
                 case "EDIT_TEACHER" -> {
                     Teacher updatedTeacher = (Teacher) request.getData();
@@ -187,14 +204,25 @@ public class ServerMain {
                     }
                 }
                 case "ADD_STUDENT" -> {
-                    Student newStudent = (Student) request.getData();
-                    newStudent.setId(IdGenerator.generateStudentId(university, newStudent.getEnrollmentDate().getYear()));
-                    if (newStudent.getSpeciality() == null) {
+                    Student clientStudent = (Student) request.getData();
+
+                    Faculty realFaculty = facultyService.findById(clientStudent.getFaculty().getId());
+                    Speciality realSpec = specialityService.findById(clientStudent.getSpeciality().getId());
+
+                    if (realFaculty == null || realSpec == null) {
                         isSuccess = false;
-                        responseMessage = "Student speciality is required";
+                        responseMessage = "Error: Faculty or Speciality not found. Make sure to provide valid IDs for both.";
                     } else {
-                        studentService.addStudentToSpeciality(newStudent, newStudent.getSpeciality(), newStudent.getGroup());
+                        clientStudent.setFaculty(realFaculty);
+                        clientStudent.setSpeciality(realSpec);
+
+                        clientStudent.setId(IdGenerator.generateStudentId(university, clientStudent.getEnrollmentDate().getYear()));
+
+                        studentService.addStudentToSpeciality(clientStudent, realSpec, clientStudent.getGroup());
+
                         FileStorageUtils.saveAll(university, userService, universityService);
+
+                        responseData = clientStudent;
                         responseMessage = "Student successfully added!";
                     }
                 }

@@ -155,53 +155,92 @@ public class ModTeacherUtils {
         }
         int posChoice = InputUtils.readInt(scanner, "> ", 1, positions.length);
         Position position = positions[posChoice - 1];
+        Teacher draftTeacher = new Teacher("PENDING", "", "", "", position, selectedDept);
 
-        String name = InputUtils.readLine(scanner, "Enter teacher's name: ", false, false);
-        String surname = InputUtils.readLine(scanner, "Enter teacher's surname: ", false, false);
-        String patronymic = InputUtils.readLine(scanner, "Enter teacher's patronymic (optional): ", true, false);
+        javafx.application.Platform.runLater(() -> TeacherCardWindow.open(draftTeacher, false));
 
-        // Fetching all emails temporarily for validation
-        List<Teacher> allT = (List<Teacher>) NetworkClient.sendRequest(new Request("GET_ALL_TEACHERS")).getData();
-        List<Student> allS = (List<Student>) NetworkClient.sendRequest(new Request("GET_ALL_STUDENTS")).getData();
+        try {
+            String name = InputUtils.readLine(scanner, "Enter teacher's name: ", false, false);
+            draftTeacher.setName(name);
+            javafx.application.Platform.runLater(() -> TeacherCardWindow.refresh(draftTeacher));
 
-        String domain = "@ukma.edu.ua";
-        String finalEmail = InputUtils.readAndValidateEmail(
-                scanner, domain,
-                () -> ModEntitiesUtils.generateFullEmail(name, surname, domain),
-                email -> ModEntitiesUtils.isEmailGloballyTaken(email, allS, allT) // Assuming you overload this or pass lists
-        );
+            String surname = InputUtils.readLine(scanner, "Enter teacher's surname: ", false, false);
+            draftTeacher.setSurname(surname);
+            javafx.application.Platform.runLater(() -> TeacherCardWindow.refresh(draftTeacher));
 
-        String phone = InputUtils.readLine(scanner, "Enter phone number (optional): ", true, true);
-        String academicDegree = InputUtils.readLine(scanner, "Enter academic degree (optional): ", true, true);
-        String academicTitle = InputUtils.readLine(scanner, "Enter academic title (optional): ", true, true);
-        String empDateStr = InputUtils.readLine(scanner, "Enter employment date (YYYY-MM-DD, optional): ", true, true);
-        String workloadStr = InputUtils.readLine(scanner, "Enter workload (e.g. 1.0, optional): ", true, true);
-        String dobStr = InputUtils.readLine(scanner, "Enter date of birth (YYYY-MM-DD, optional): ", true, true);
+            String patronymic = InputUtils.readLine(scanner, "Enter teacher's patronymic (optional): ", true, false);
+            draftTeacher.setPatronymic(patronymic);
+            javafx.application.Platform.runLater(() -> TeacherCardWindow.refresh(draftTeacher));
 
-        LocalDate dateOfBirth = null;
-        if (!dobStr.isEmpty()) {
-            try { dateOfBirth = LocalDate.parse(dobStr); } catch (Exception ignored) {}
+            // Fetching all emails temporarily for validation
+            List<Teacher> allT = (List<Teacher>) NetworkClient.sendRequest(new Request("GET_ALL_TEACHERS")).getData();
+            List<Student> allS = (List<Student>) NetworkClient.sendRequest(new Request("GET_ALL_STUDENTS")).getData();
+
+            String domain = "@ukma.edu.ua";
+            String finalEmail = InputUtils.readAndValidateEmail(
+                    scanner, domain,
+                    () -> ModEntitiesUtils.generateFullEmail(name, surname, domain),
+                    email -> ModEntitiesUtils.isEmailGloballyTaken(email, allS, allT)
+            );
+            if (!finalEmail.isEmpty()) {
+                draftTeacher.setEmail(finalEmail);
+                javafx.application.Platform.runLater(() -> TeacherCardWindow.refresh(draftTeacher));
+            }
+
+            String phone = InputUtils.readLine(scanner, "Enter phone number (optional): ", true, true);
+            if (!phone.isEmpty()) {
+                draftTeacher.setPhone(phone);
+                javafx.application.Platform.runLater(() -> TeacherCardWindow.refresh(draftTeacher));
+            }
+
+            String academicDegree = InputUtils.readLine(scanner, "Enter academic degree (optional): ", true, true);
+            if (!academicDegree.isEmpty()) {
+                draftTeacher.setAcademicDegree(academicDegree);
+                javafx.application.Platform.runLater(() -> TeacherCardWindow.refresh(draftTeacher));
+            }
+
+            String academicTitle = InputUtils.readLine(scanner, "Enter academic title (optional): ", true, true);
+            if (!academicTitle.isEmpty()) {
+                draftTeacher.setAcademicTitle(academicTitle);
+                javafx.application.Platform.runLater(() -> TeacherCardWindow.refresh(draftTeacher));
+            }
+
+            String empDateStr = InputUtils.readLine(scanner, "Enter employment date (YYYY-MM-DD, optional): ", true, true);
+            if (!empDateStr.isEmpty()) {
+                try { draftTeacher.setEmploymentDate(LocalDate.parse(empDateStr)); } catch (Exception ignored) {}
+            } else {
+                draftTeacher.setEmploymentDate(LocalDate.now());
+            }
+            javafx.application.Platform.runLater(() -> TeacherCardWindow.refresh(draftTeacher));
+
+            String workloadStr = InputUtils.readLine(scanner, "Enter workload (e.g. 1.0, optional): ", true, true);
+            if (!workloadStr.isEmpty()) {
+                try { draftTeacher.setWorkload(Double.parseDouble(workloadStr)); } catch (Exception ignored) {}
+                javafx.application.Platform.runLater(() -> TeacherCardWindow.refresh(draftTeacher));
+            }
+
+            String dobStr = InputUtils.readLine(scanner, "Enter date of birth (YYYY-MM-DD, optional): ", true, true);
+            if (!dobStr.isEmpty()) {
+                try { draftTeacher.setDateOfBirth(LocalDate.parse(dobStr)); } catch (Exception ignored) {}
+                javafx.application.Platform.runLater(() -> TeacherCardWindow.refresh(draftTeacher));
+            }
+
+            Response addRes = NetworkClient.sendRequest(new Request("ADD_TEACHER", draftTeacher));
+
+            if (addRes.isSuccess() && addRes.getData() != null) {
+                Teacher savedTeacher = (Teacher) addRes.getData();
+                javafx.application.Platform.runLater(() -> TeacherCardWindow.refresh(savedTeacher));
+            }
+
+            System.out.println(addRes.getMessage() + " Press Enter to сlose the teacher card.");
+            scanner.nextLine();
+
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+
+            javafx.application.Platform.runLater(TeacherCardWindow::close);
         }
-
-        Teacher newTeacher = new Teacher("", name, surname, patronymic, position, selectedDept, dateOfBirth);
-        if (!finalEmail.isEmpty()) newTeacher.setEmail(finalEmail);
-        if (!phone.isEmpty()) newTeacher.setPhone(phone);
-        if (!academicDegree.isEmpty()) newTeacher.setAcademicDegree(academicDegree);
-        if (!academicTitle.isEmpty()) newTeacher.setAcademicTitle(academicTitle);
-        if (!empDateStr.isEmpty()) {
-            try { newTeacher.setEmploymentDate(LocalDate.parse(empDateStr)); } catch (Exception ignored) {}
-        } else {
-            newTeacher.setEmploymentDate(LocalDate.now());
-        }
-        if (!workloadStr.isEmpty()) {
-            try { newTeacher.setWorkload(Double.parseDouble(workloadStr)); } catch (Exception ignored) {}
-        }
-
-        // NETWORK: Send the complete object to the server to save
-        Response addRes = NetworkClient.sendRequest(new Request("ADD_TEACHER", newTeacher));
-        System.out.println(addRes.getMessage());
-
-        InputUtils.pause(scanner);
     }
 
     static void teacherDeleteById(Scanner scanner, boolean showId) {
