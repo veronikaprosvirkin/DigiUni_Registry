@@ -31,12 +31,13 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class FileStorageUtils {
 
-    private static final Path FACULTIES_FILE = Path.of("data", "faculties.csv");
-    private static final Path SPECIALITIES_FILE = Path.of("data", "specialities.csv");
-    private static final Path DEPARTMENTS_FILE = Path.of("data", "departments.csv");
-    private static final Path TEACHERS_FILE = Path.of("data", "teachers.csv");
-    private static final Path STUDENTS_FILE = Path.of("data", "students.csv");
-    private static final Path USERS_FILE = Path.of("data", "users.csv");
+    private static Path storageRoot = defaultStorageRoot();
+    private static Path FACULTIES_FILE = storageRoot.resolve("faculties.csv");
+    private static Path SPECIALITIES_FILE = storageRoot.resolve("specialities.csv");
+    private static Path DEPARTMENTS_FILE = storageRoot.resolve("departments.csv");
+    private static Path TEACHERS_FILE = storageRoot.resolve("teachers.csv");
+    private static Path STUDENTS_FILE = storageRoot.resolve("students.csv");
+    private static Path USERS_FILE = storageRoot.resolve("users.csv");
     private static final String DELIMITER = ";";
     private static final String STUDENTS_HEADER = "id;name;surname;patronymic;gender;course;enrollmentDate;group;faculty;speciality;studyForm;status;email;phone;dateOfBirth;age";
     private static final String TEACHERS_HEADER = "id;name;surname;patronymic;gender;position;academicDegree;academicTitle;employmentDate;workload;email;phone;department;dateOfBirth;age";
@@ -46,6 +47,49 @@ public class FileStorageUtils {
     private static final String USERS_HEADER = "username;password;role";
 
     private static final ReentrantLock saveLock = new ReentrantLock();
+
+    private static Path defaultStorageRoot() {
+        String configuredRoot = System.getProperty("diguni.storage.root");
+        if (configuredRoot != null && !configuredRoot.isBlank()) {
+            return Path.of(configuredRoot);
+        }
+
+        if (isTestRuntime()) {
+            return Path.of("target", "test-data");
+        }
+
+        return Path.of("data");
+    }
+
+    private static boolean isTestRuntime() {
+        if (System.getProperty("surefire.test.class.path") != null) {
+            return true;
+        }
+        String command = System.getProperty("sun.java.command", "");
+        return command.contains("org.junit") || command.contains("com.intellij.rt.junit");
+    }
+
+    private static void refreshStoragePaths() {
+        FACULTIES_FILE = storageRoot.resolve("faculties.csv");
+        SPECIALITIES_FILE = storageRoot.resolve("specialities.csv");
+        DEPARTMENTS_FILE = storageRoot.resolve("departments.csv");
+        TEACHERS_FILE = storageRoot.resolve("teachers.csv");
+        STUDENTS_FILE = storageRoot.resolve("students.csv");
+        USERS_FILE = storageRoot.resolve("users.csv");
+    }
+
+    static void setStorageRootForTests(Path newStorageRoot) {
+        if (newStorageRoot == null) {
+            throw new IllegalArgumentException("Storage root cannot be null");
+        }
+        storageRoot = newStorageRoot;
+        refreshStoragePaths();
+    }
+
+    static void resetStorageRootForTests() {
+        storageRoot = defaultStorageRoot();
+        refreshStoragePaths();
+    }
 
     // Backward-compatible overload for existing call sites that do not use UniversityService.
     public static void saveAll(University university, UserService userService) {
@@ -165,7 +209,6 @@ public class FileStorageUtils {
                 if (dean != null)
                     dean.setFaculty(faculty);
                 u.getFaculties().add(faculty);
-                IdGenerator.updateFacultyCounter(id);
             }
         }
     }
@@ -212,7 +255,6 @@ public class FileStorageUtils {
                         .findFirst()
                         .ifPresent(f -> {
                             f.getSpeciality().add(s);
-                            IdGenerator.updateSpecialityCounter(id);
                         });
             }
         }
@@ -284,7 +326,6 @@ public class FileStorageUtils {
                         .ifPresent(f -> {
                             d.setFaculty(f);
                             f.getDepartments().add(d);
-                            IdGenerator.updateDepartmentCounter(id);
                         });
             }
         }
@@ -406,7 +447,6 @@ public class FileStorageUtils {
                         if (!dobStr.isEmpty() && !dobStr.equals("null")) {
                             student.setDateOfBirth(LocalDate.parse(dobStr));
                         }
-                        IdGenerator.updateStudentCounter(student.getId());
 
                         if (status != null) {
                             student.setStatus(status);
@@ -669,7 +709,6 @@ public class FileStorageUtils {
                             }
                         }
                     }
-                    IdGenerator.updateTeacherCounter(canonicalTeacher.getId());
                 }
             }
         }

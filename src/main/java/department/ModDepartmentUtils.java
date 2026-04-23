@@ -3,50 +3,57 @@ package department;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
+import java.util.HashMap;
+import java.util.Map;
 
 import speciality.Speciality;
-import user.UserService;
+import user.User;
 import utils.input.InputUtils;
-import department.Department;
-import department.DepartmentService;
-import faculty.FacultyService;
-import person.TeacherService;
-import person.Teacher;
 import utils.ModEntitiesUtils;
-import utils.EntityNotFoundException;
 import faculty.Faculty;
+import person.Teacher;
+
+// NETWORK IMPORTS
+import service.NetworkClient;
+import service.Request;
+import service.Response;
 
 public class ModDepartmentUtils {
-    //! ======= WORK WITH DEPARTMENT ===== //
+    //! ======= WORK WITH DEPARTMENT (CLIENT) ===== //
 
-    //show menu for department
-    public static void showDepartmentMenu(Scanner scanner, DepartmentService departmentService, FacultyService facultyService, TeacherService teacherService, UserService userService) {
+    public static void showDepartmentMenu(Scanner scanner, User currentUser) {
         System.out.println("1. Add Department");
         System.out.println("2. Manage existing Department");
         System.out.println("3. Show detail info of Department");
         System.out.println("0. Back");
         int action = InputUtils.readInt(scanner, "> ", 0, 3);
 
-        if (action == 1) { // add a new department
-            ModDepartmentUtils.departmentAddDepartment(scanner, departmentService, facultyService, teacherService, userService);
-        } else if (action == 2) { // manage existing department
-            // Select Faculty and Department
-            java.util.Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty");
+        if (action == 1) {
+            departmentAddDepartment(scanner);
+        } else if (action == 2) {
+            // NETWORK: Fetch Faculties (ВИКОРИСТОВУЄМО ТВІЙ НОВИЙ КОНСТРУКТОР БЕЗ NULL)
+            Response res = NetworkClient.sendRequest(new Request("GET_ALL_FACULTIES"));
+            if (!res.isSuccess() || res.getData() == null) {
+                System.out.println("Failed to load faculties.");
+                return;
+            }
+            @SuppressWarnings("unchecked")
+            List<Faculty> faculties = (List<Faculty>) res.getData();
+
+            Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, faculties, "Faculty");
             if (optFaculty.isEmpty()) {
                 System.out.println("Faculty wasn't chosen or found");
                 return;
             }
             Faculty selectedFaculty = optFaculty.get();
 
-            java.util.Optional<Department> optDept = ModEntitiesUtils.selectEntity(scanner, selectedFaculty.getDepartments(), "Department");
+            Optional<Department> optDept = ModEntitiesUtils.selectEntity(scanner, selectedFaculty.getDepartments(), "Department");
             if (optDept.isEmpty()) {
                 System.out.println("Department wasn't chosen or found");
                 return;
             }
             Department selectedDept = optDept.get();
 
-
-            //Work with a selected department
             System.out.println("\nDepartment: " + selectedDept.getName());
             if (selectedDept.getHead() != null) {
                 System.out.println("Head: " + selectedDept.getHead().getDisplayInfo());
@@ -67,24 +74,30 @@ public class ModDepartmentUtils {
             System.out.println("0. Back");
             int workWithDepartment = InputUtils.readInt(scanner, "> ", 0, 5);
 
-            if (workWithDepartment == 1) { // edit department name
-                ModDepartmentUtils.departmentRenameDepartment(scanner, departmentService, selectedDept, selectedFaculty, userService);
-            } else if (workWithDepartment == 2) { //delete department
-                ModDepartmentUtils.departmentDeleteDepartment(scanner, departmentService, selectedDept, selectedFaculty, userService);
-            } else if (workWithDepartment == 3) { //show all teachers in the department
-                ModDepartmentUtils.departmentShowTeachers(teacherService, selectedDept, scanner);
-            } else if (workWithDepartment == 4) { // change head
-                ModDepartmentUtils.departmentChangeHead(scanner, departmentService, teacherService, selectedDept, userService);
-            } else if (workWithDepartment == 5) { // change location
-                ModDepartmentUtils.departmentChangeLocation(scanner, departmentService, selectedDept,userService );
+            if (workWithDepartment == 1) {
+                departmentRenameDepartment(scanner, selectedDept, selectedFaculty);
+            } else if (workWithDepartment == 2) {
+                departmentDeleteDepartment(scanner, selectedDept, selectedFaculty);
+            } else if (workWithDepartment == 3) {
+                departmentShowTeachers(selectedDept, scanner);
+            } else if (workWithDepartment == 4) {
+                departmentChangeHead(scanner, selectedDept);
+            } else if (workWithDepartment == 5) {
+                departmentChangeLocation(scanner, selectedDept);
             }
-        } else if (action == 3) { // show detail info of department
-            showDepartmentDetails(scanner, facultyService, teacherService);
+        } else if (action == 3) {
+            showDepartmentDetails(scanner);
         }
     }
 
-    public static void showDepartmentDetails(Scanner scanner, FacultyService facultyService, TeacherService teacherService) {
-        Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty");
+    public static void showDepartmentDetails(Scanner scanner) {
+        // NETWORK: Fetch Faculties
+        Response res = NetworkClient.sendRequest(new Request("GET_ALL_FACULTIES"));
+        if (!res.isSuccess() || res.getData() == null) return;
+        @SuppressWarnings("unchecked")
+        List<Faculty> faculties = (List<Faculty>) res.getData();
+
+        Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, faculties, "Faculty");
         if (optFaculty.isEmpty()) {
             System.out.println("Faculty wasn't chosen or found");
             return;
@@ -97,34 +110,46 @@ public class ModDepartmentUtils {
             return;
         }
         Department selectedDept = optDept.get();
-        showDepartmentDetails(selectedDept, selectedFaculty, teacherService);
+        showDepartmentDetails(selectedDept, selectedFaculty);
 
         System.out.println("=========================================\n");
         InputUtils.pause(scanner);
     }
 
-    public static void showDepartmentDetails(Department selectedDept, Faculty selectedFaculty, TeacherService teacherService) {
+    public static void showDepartmentDetails(Department selectedDept, Faculty selectedFaculty) {
         ModEntitiesUtils.printDetailedInfo(selectedDept);
-        long teachersCount = teacherService.getTeachersByDepartment(selectedDept).size();
+
+        // NETWORK: Get teachers count in this department
+        long teachersCount = 0;
+        Response res = NetworkClient.sendRequest(new Request("GET_TEACHERS_BY_DEPARTMENT", selectedDept.getId()));
+        if (res.isSuccess() && res.getData() != null) {
+            @SuppressWarnings("unchecked")
+            List<Teacher> teachers = (List<Teacher>) res.getData();
+            teachersCount = teachers.size();
+        }
         System.out.println("Active Teachers: " + teachersCount);
 
         System.out.println(" ---- Associated Specialities: ----");
-        if (selectedFaculty.getSpecialities() == null || selectedFaculty.getSpecialities().isEmpty()) {
+        List<Speciality> specialities = selectedFaculty.getSpeciality();
+        if (specialities == null || specialities.isEmpty()) {
             System.out.println("No specialities associated with this faculty.");
         } else {
-            selectedFaculty.getSpecialities().forEach(s ->
-                    System.out.println("  * " + s.getNameOfSpeciality())
-            );
+            specialities.forEach(s -> System.out.println("  * " + s.getName()));
         }
     }
 
     /**
      * Add new Department
      */
-    static void departmentAddDepartment(Scanner scanner, DepartmentService departmentService, FacultyService facultyService,
-                                        TeacherService teacherService, UserService userService) {
+    static void departmentAddDepartment(Scanner scanner) {
         System.out.println("Choose faculty where department will be added:");
-        java.util.Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculties");
+
+        Response res = NetworkClient.sendRequest(new Request("GET_ALL_FACULTIES"));
+        if (!res.isSuccess() || res.getData() == null) return;
+        @SuppressWarnings("unchecked")
+        List<Faculty> faculties = (List<Faculty>) res.getData();
+
+        Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, faculties, "Faculties");
         if (optFaculty.isEmpty()) {
             System.out.println("Faculty wasn't selected or found");
             return;
@@ -132,23 +157,37 @@ public class ModDepartmentUtils {
         Faculty selectedFaculty = optFaculty.get();
         String name = InputUtils.readLine(scanner, "Enter new Department name: ", false, true);
         name = InputUtils.removeSpaces(name, false, true, true, true);
-        
-        Teacher head = null;
+
+        String headId = null;
         System.out.print("Do you want to assign a Head of Department now? (y/n): ");
         if (scanner.nextLine().trim().toLowerCase().startsWith("y")) {
-             var optionalHead = ModEntitiesUtils.selectEntity(scanner, teacherService.getAllTeachers(), "Teachers");
-             if (optionalHead.isPresent()) {
-                 head = optionalHead.get();
-             }
+            // NETWORK: Fetch all teachers
+            Response teachRes = NetworkClient.sendRequest(new Request("GET_ALL_TEACHERS"));
+            if (teachRes.isSuccess() && teachRes.getData() != null) {
+                @SuppressWarnings("unchecked")
+                List<Teacher> allTeachers = (List<Teacher>) teachRes.getData();
+                var optionalHead = ModEntitiesUtils.selectEntity(scanner, allTeachers, "Teachers");
+                if (optionalHead.isPresent()) {
+                    headId = optionalHead.get().getId();
+                }
+            }
         }
 
         System.out.print("Do you want to set a Location now? (y/n): ");
         String location = null;
         if (scanner.nextLine().trim().toLowerCase().startsWith("y")) {
-             location = InputUtils.readLine(scanner, "Enter location: ", false, true);
+            location = InputUtils.readLine(scanner, "Enter location: ", false, true);
         }
 
-        departmentService.addNewDepartment(name, selectedFaculty, head, location, userService );
+        // NETWORK CALL
+        Map<String, Object> data = new HashMap<>();
+        data.put("facultyId", selectedFaculty.getId());
+        data.put("name", name);
+        data.put("headId", headId);
+        data.put("location", location);
+
+        Response addRes = NetworkClient.sendRequest(new Request("ADD_DEPARTMENT", data));
+        System.out.println(addRes.getMessage());
 
         InputUtils.pause(scanner);
     }
@@ -156,11 +195,17 @@ public class ModDepartmentUtils {
     /**
      * Rename the Department
      */
-    static void departmentRenameDepartment(Scanner scanner, DepartmentService departmentService, Department selectedDept,
-                                           Faculty selectedFaculty, UserService userService) {
+    static void departmentRenameDepartment(Scanner scanner, Department selectedDept, Faculty selectedFaculty) {
         String editName = InputUtils.readLine(scanner, "Write new name for " + selectedDept.getName() + ": ", false, true);
         editName = InputUtils.removeSpaces(editName, false, true, true, true);
-        departmentService.editDepartmentName(selectedDept, editName, selectedFaculty, userService);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("facultyId", selectedFaculty.getId());
+        data.put("departmentId", selectedDept.getId());
+        data.put("newName", editName);
+
+        Response res = NetworkClient.sendRequest(new Request("EDIT_DEPARTMENT_NAME", data));
+        System.out.println(res.getMessage());
 
         InputUtils.pause(scanner);
     }
@@ -168,49 +213,74 @@ public class ModDepartmentUtils {
     /**
      * Delete the Department
      */
-    static void departmentDeleteDepartment(Scanner scanner, DepartmentService departmentService, Department selectedDept,
-                                           Faculty selectedFaculty, UserService userService) {
+    static void departmentDeleteDepartment(Scanner scanner, Department selectedDept, Faculty selectedFaculty) {
         System.out.print("Are you sure you want or delete " + selectedDept.getName() + "? (y/n): ");
         if (scanner.nextLine().toLowerCase().startsWith("y")) {
-            departmentService.deleteDepartment(selectedDept, selectedFaculty, userService);
-            System.out.println("Department deleted successfully!");
+
+            Map<String, Object> data = new HashMap<>();
+            data.put("facultyId", selectedFaculty.getId());
+            data.put("departmentId", selectedDept.getId());
+
+            Response res = NetworkClient.sendRequest(new Request("DELETE_DEPARTMENT", data));
+            System.out.println(res.getMessage());
         } else {
             System.out.println("Operation cancelled.");
         }
-
     }
 
     /**
      * Show all teachers in the Department
      */
-    static void departmentShowTeachers(TeacherService teacherService, Department selectedDept, Scanner scanner) {
-        List<Teacher> teachers = teacherService.getTeachersByDepartment(selectedDept);
-        if (teachers.isEmpty()) {
-            System.out.println("There are no teachers assigned to " + selectedDept.getName() + " yet.");
+    static void departmentShowTeachers(Department selectedDept, Scanner scanner) {
+        Response res = NetworkClient.sendRequest(new Request("GET_TEACHERS_BY_DEPARTMENT", selectedDept.getId()));
+        if (res.isSuccess() && res.getData() != null) {
+            @SuppressWarnings("unchecked")
+            List<Teacher> teachers = (List<Teacher>) res.getData();
+            if (teachers.isEmpty()) {
+                System.out.println("There are no teachers assigned to " + selectedDept.getName() + " yet.");
+            } else {
+                System.out.println("\n--- Teachers in " + selectedDept.getName() + " ---");
+                teachers.forEach(t -> System.out.println(t.getDisplayInfo()));
+            }
         } else {
-            System.out.println("\n--- Teachers in " + selectedDept.getName() + " ---");
-            teachers.forEach(System.out::println);
+            System.out.println("Could not load teachers for this department.");
         }
         InputUtils.pause(scanner);
     }
 
-    static void departmentChangeHead(Scanner scanner, DepartmentService departmentService, TeacherService teacherService,
-                                     Department selectedDept, UserService userService) {
+    static void departmentChangeHead(Scanner scanner, Department selectedDept) {
         System.out.println("Current head: " + (selectedDept.getHead() != null ? selectedDept.getHead().getDisplayInfo() : "None"));
-        var optionalHead = ModEntitiesUtils.selectEntity(scanner, teacherService.getAllTeachers(), "Teachers");
-        if (optionalHead.isPresent()) {
-            departmentService.editDepartmentHead(selectedDept, optionalHead.get(), userService);
-        } else {
-            System.out.println("No head assigned.");
+
+        Response teachRes = NetworkClient.sendRequest(new Request("GET_ALL_TEACHERS"));
+        if (teachRes.isSuccess() && teachRes.getData() != null) {
+            @SuppressWarnings("unchecked")
+            List<Teacher> allTeachers = (List<Teacher>) teachRes.getData();
+            var optionalHead = ModEntitiesUtils.selectEntity(scanner, allTeachers, "Teachers");
+            if (optionalHead.isPresent()) {
+                Map<String, Object> data = new HashMap<>();
+                data.put("departmentId", selectedDept.getId());
+                data.put("teacherId", optionalHead.get().getId());
+
+                Response res = NetworkClient.sendRequest(new Request("EDIT_DEPARTMENT_HEAD", data));
+                System.out.println(res.getMessage());
+            } else {
+                System.out.println("No head assigned.");
+            }
         }
         InputUtils.pause(scanner);
     }
 
-    static void departmentChangeLocation(Scanner scanner, DepartmentService departmentService, Department selectedDept,
-                                         UserService userService) {
+    static void departmentChangeLocation(Scanner scanner, Department selectedDept) {
         System.out.println("Current location: " + (selectedDept.getLocation() != null ? selectedDept.getLocation() : "None"));
         String location = InputUtils.readLine(scanner, "Enter new location (or leave empty to clear): ", true, true);
-        departmentService.editDepartmentLocation(selectedDept, location, userService);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("departmentId", selectedDept.getId());
+        data.put("location", location);
+
+        Response res = NetworkClient.sendRequest(new Request("EDIT_DEPARTMENT_LOCATION", data));
+        System.out.println(res.getMessage());
+
         InputUtils.pause(scanner);
     }
 }

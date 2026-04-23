@@ -25,8 +25,8 @@ class FacultyServiceTest {
 
     @Test
     void addNewFaculty_increasesListSize_andStoresFacultyWithGivenProperties() {
-        Department dept = new Department(IdGenerator.generateDepartmentId(), "Dept");
-        Teacher dean = new Teacher(IdGenerator.generateTeacherId(), "A", "B", "", "Prof", dept);
+        Department dept = new Department(IdGenerator.generateDepartmentId(university), "Dept");
+        Teacher dean = new Teacher(IdGenerator.generateTeacherId(university), "A", "B", "", "Prof", dept);
 
         facultyService.addNewFaculty("Test Faculty", "TF", "contact", dean, userService);
         assertEquals(1, university.getFaculties().size());
@@ -39,8 +39,8 @@ class FacultyServiceTest {
 
     @Test
     void addNewFaculty_duplicateName_isIgnored() {
-        Department dept = new Department(IdGenerator.generateDepartmentId(), "Dept");
-        Teacher dean = new Teacher(IdGenerator.generateTeacherId(), "A", "B", "", "Prof", dept);
+        Department dept = new Department(IdGenerator.generateDepartmentId(university), "Dept");
+        Teacher dean = new Teacher(IdGenerator.generateTeacherId(university), "A", "B", "", "Prof", dept);
 
         facultyService.addNewFaculty("Dup Faculty", "D1", "c", dean, userService);
         assertEquals(1, university.getFaculties().size());
@@ -52,8 +52,8 @@ class FacultyServiceTest {
 
     @Test
     void deleteFaculty_removesItFromUniversity() {
-        Department dept = new Department(IdGenerator.generateDepartmentId(), "Dept");
-        Teacher dean = new Teacher(IdGenerator.generateTeacherId(), "A", "B", "", "Prof", dept);
+        Department dept = new Department(IdGenerator.generateDepartmentId(university), "Dept");
+        Teacher dean = new Teacher(IdGenerator.generateTeacherId(university), "A", "B", "", "Prof", dept);
 
         facultyService.addNewFaculty("ToDelete", "TD", "c", dean, userService);
         Faculty f = university.getFaculties().get(0);
@@ -65,8 +65,8 @@ class FacultyServiceTest {
 
     @Test
     void editFacultyName_changesNameWhenUnique_andPreventsDuplicate() {
-        Department dept = new Department(IdGenerator.generateDepartmentId(), "Dept");
-        Teacher dean = new Teacher(IdGenerator.generateTeacherId(), "A", "B", "", "Prof", dept);
+        Department dept = new Department(IdGenerator.generateDepartmentId(university), "Dept");
+        Teacher dean = new Teacher(IdGenerator.generateTeacherId(university), "A", "B", "", "Prof", dept);
 
         facultyService.addNewFaculty("First", "F1", "c", dean, userService);
         facultyService.addNewFaculty("Second", "F2", "c2", dean, userService);

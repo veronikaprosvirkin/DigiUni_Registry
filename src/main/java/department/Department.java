@@ -3,6 +3,8 @@ package department;
 import faculty.Faculty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import person.Teacher;
@@ -12,7 +14,8 @@ import utils.namedEntity.NamedEntity;
 // Department entity
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public final class Department implements NamedEntity {
+public final class Department implements NamedEntity, Serializable {
+    private static final long serialVersionUID = 1L;
     private Faculty faculty;
     @EqualsAndHashCode.Include
     @DetailDisplay(label = "Department Code")

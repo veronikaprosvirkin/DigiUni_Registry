@@ -1,25 +1,24 @@
 package faculty;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
-import person.StudentService;
-import user.Permission;
 import user.User;
-import user.UserService;
 import utils.input.InputUtils;
-import faculty.Faculty;
-import faculty.FacultyService;
-import person.TeacherService;
 import utils.ModEntitiesUtils;
-import utils.EntityNotFoundException;
 import person.Teacher;
 
-public class ModFacultyUtils {
-    //! ======= WORK WITH FACULTY ===== //
+// NETWORK IMPORTS
+import service.NetworkClient;
+import service.Request;
+import service.Response;
+import person.Student;
 
-    public static void showFacultiesMenu(Scanner scanner, FacultyService facultyService, TeacherService teacherService,
-                                         User currentUser, UserService userService, StudentService studentService){
+public class ModFacultyUtils {
+    //! ======= WORK WITH FACULTY (CLIENT) ===== //
+
+    public static void showFacultiesMenu(Scanner scanner, User currentUser) {
         System.out.println("1. Add Faculty");
         System.out.println("2. Manage Existing Faculty");
         System.out.println("3. Show details of Faculty");
@@ -27,53 +26,73 @@ public class ModFacultyUtils {
         int action = InputUtils.readInt(scanner, "> ", 0, 3);
 
         if (action == 1) {
-            ModFacultyUtils.facultyAddFaculty(scanner, facultyService, teacherService, userService);
-        } else if (action == 2) { //manage existing faculties
-            java.util.Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty");
+            facultyAddFaculty(scanner);
+        } else if (action == 2) {
+            Response res = NetworkClient.sendRequest(new Request("GET_ALL_FACULTIES"));
+            if (!res.isSuccess() || res.getData() == null) {
+                System.out.println("Failed to load faculties.");
+                return;
+            }
+            @SuppressWarnings("unchecked")
+            List<Faculty> faculties = (List<Faculty>) res.getData();
+
+            Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, faculties, "Faculty");
             if (optFaculty.isEmpty()) {
                 System.out.println("Faculty wasn't chosen or found");
                 return;
             }
             Faculty selectedFaculty = optFaculty.get();
 
-            System.out.println("1. Edit Faculty");
+            System.out.println("1. Edit Faculty Name");
             System.out.println("2. Delete Faculty");
             System.out.println("3. Edit contacts");
             System.out.println("4. Assign Dean");
             System.out.println("5. Edit Short Name");
             System.out.println("0. Back");
             int workWithFaculty = InputUtils.readInt(scanner, "> ", 0, 5);
-            if (workWithFaculty == 1) { //edit faculty name
-                ModFacultyUtils.facultyManageExistingFacultyRename(scanner, facultyService, selectedFaculty, userService);
-            } else if (workWithFaculty == 2) { //delete faculty
-                ModFacultyUtils.facultyManageExistingFacultyDelete(scanner, facultyService, selectedFaculty, userService);
-            } else if (workWithFaculty == 3) { //edit contacts
-                ModFacultyUtils.facultyManageExistingFacultyEditContacts(scanner, facultyService, selectedFaculty);
+
+            if (workWithFaculty == 1) {
+                facultyManageExistingFacultyRename(scanner, selectedFaculty);
+            } else if (workWithFaculty == 2) {
+                facultyManageExistingFacultyDelete(scanner, selectedFaculty);
+            } else if (workWithFaculty == 3) {
+                facultyManageExistingFacultyEditContacts(scanner, selectedFaculty);
             } else if (workWithFaculty == 4) {
-                Teacher dean = selectTeacherFlow(scanner, teacherService);
+                Teacher dean = selectTeacherFlow(scanner);
                 if (dean != null) {
-                    facultyService.assignDean(selectedFaculty, dean, userService);
-                    System.out.println("Success! " + dean.getFullName() + " is now the Dean.");
+
+                    java.util.Map<String, Object> data = new java.util.HashMap<>();
+                    data.put("facultyId", selectedFaculty.getId());
+                    data.put("teacherId", dean.getId());
+                    Response assignRes = NetworkClient.sendRequest(new Request("ASSIGN_FACULTY_DEAN", data));
+                    System.out.println(assignRes.getMessage());
                 }
             } else if (workWithFaculty == 5) {
-                ModFacultyUtils.facultyManageExistingFacultyRenameShort(scanner, facultyService, selectedFaculty);
+                facultyManageExistingFacultyRenameShort(scanner, selectedFaculty);
             }
         } else if (action == 3) {
-            showFacultiesDetails(scanner, facultyService, studentService);
+            showFacultiesDetails(scanner);
         }
     }
 
-    private static void showFacultiesDetails(Scanner scanner, FacultyService facultyService, StudentService studentService) {
-        java.util.Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, facultyService.getFaculties(), "Faculty");
+    public static void showFacultiesDetails(Scanner scanner) {
+        Response res = NetworkClient.sendRequest(new Request("GET_ALL_FACULTIES"));
+        if (!res.isSuccess() || res.getData() == null) {
+            System.out.println("Failed to load faculties.");
+            return;
+        }
+        @SuppressWarnings("unchecked")
+        List<Faculty> faculties = (List<Faculty>) res.getData();
+
+        Optional<Faculty> optFaculty = ModEntitiesUtils.selectEntity(scanner, faculties, "Faculty");
         if (optFaculty.isEmpty()) {
             System.out.println("Faculty wasn't chosen or found");
             return;
         }
-        Faculty selectedFaculty = optFaculty.get();
-        showFacultiesDetails(selectedFaculty, studentService, scanner);
-
+        showFacultiesDetails(optFaculty.get(), scanner);
     }
-    public static void showFacultiesDetails(Faculty selectedFaculty, StudentService studentService, Scanner scanner) {
+
+    public static void showFacultiesDetails(Faculty selectedFaculty, Scanner scanner) {
         ModEntitiesUtils.printDetailedInfo(selectedFaculty);
         System.out.println("--- Faculty Structure & Size ---");
 
@@ -83,16 +102,23 @@ public class ModFacultyUtils {
         int specCount = selectedFaculty.getSpeciality().size();
         System.out.println(" - Total Specialities: " + specCount);
 
-        long studentCount = studentService.getAllStudents().stream()
-                .filter(s -> s.getFaculty().equals(selectedFaculty))
-                .count();
+        // NETWORK: Fetch all students to count them
+        long studentCount = 0;
+        Response res = NetworkClient.sendRequest(new Request("GET_ALL_STUDENTS"));
+        if (res.isSuccess() && res.getData() != null) {
+            @SuppressWarnings("unchecked")
+            List<Student> allStudents = (List<Student>) res.getData();
+            studentCount = allStudents.stream()
+                    .filter(s -> s.getFaculty() != null && s.getFaculty().getId().equals(selectedFaculty.getId()))
+                    .count();
+        }
         System.out.println(" - Total Students: " + studentCount);
 
         System.out.println("=========================================\n");
         InputUtils.pause(scanner);
     }
 
-    private static Teacher selectTeacherFlow(Scanner scanner, TeacherService teacherService) {
+    private static Teacher selectTeacherFlow(Scanner scanner) {
         System.out.println("How would you like to find the teacher?");
         System.out.println("1. Search by ID");
         System.out.println("2. Search by Name");
@@ -103,36 +129,44 @@ public class ModFacultyUtils {
 
         if (searchChoice == 1) {
             String teacherId = InputUtils.readLine(scanner, "Enter Teacher ID: ", false, true);
-            List<Teacher> foundById = teacherService.findTeacherById(teacherId);
-            if (foundById != null && !foundById.isEmpty()) {
-                selectedTeacher = foundById.get(0);
+            Response res = NetworkClient.sendRequest(new Request("SEARCH_TEACHER_BY_ID", teacherId));
+            if (res.isSuccess() && res.getData() != null) {
+                @SuppressWarnings("unchecked")
+                List<Teacher> foundById = (List<Teacher>) res.getData();
+                if (!foundById.isEmpty()) selectedTeacher = foundById.get(0);
             }
         } else if (searchChoice == 2) {
             String teacherName = InputUtils.readLine(scanner, "Enter Teacher Name: ", false, false);
-            List<Teacher> foundByName = teacherService.findTeachersByFullName(teacherName);
-
-            if (foundByName != null && !foundByName.isEmpty()) {
-                if (foundByName.size() == 1) {
-                    selectedTeacher = foundByName.get(0);
-                } else {
-                    // Твій блок вибору з декількох (залишаємо як було)
-                    for (int i = 0; i < foundByName.size(); i++) {
-                        System.out.println((i + 1) + ". [" + foundByName.get(i).getId() + "] " + foundByName.get(i).getFullName());
+            Response res = NetworkClient.sendRequest(new Request("SEARCH_TEACHER_BY_NAME", teacherName));
+            if (res.isSuccess() && res.getData() != null) {
+                @SuppressWarnings("unchecked")
+                List<Teacher> foundByName = (List<Teacher>) res.getData();
+                if (!foundByName.isEmpty()) {
+                    if (foundByName.size() == 1) {
+                        selectedTeacher = foundByName.get(0);
+                    } else {
+                        for (int i = 0; i < foundByName.size(); i++) {
+                            System.out.println((i + 1) + ". [" + foundByName.get(i).getId() + "] " + foundByName.get(i).getFullName());
+                        }
+                        int pick = InputUtils.readInt(scanner, "Your choice: ", 0, foundByName.size());
+                        if (pick > 0) selectedTeacher = foundByName.get(pick - 1);
                     }
-                    int pick = InputUtils.readInt(scanner, "Your choice: ", 0, foundByName.size());
-                    if (pick > 0) selectedTeacher = foundByName.get(pick - 1);
                 }
             }
         }
-        return selectedTeacher; // Повертаємо об'єкт
+        return selectedTeacher;
     }
 
-    private static void facultyManageExistingFacultyEditContacts(Scanner scanner, FacultyService facultyService, Faculty selectedFaculty) {
+    private static void facultyManageExistingFacultyEditContacts(Scanner scanner, Faculty selectedFaculty) {
         System.out.println("Current contacts: " + selectedFaculty.getContacts());
-
         String newContacts = InputUtils.readLine(scanner, "Enter new contact information", false, true);
-        selectedFaculty.setContacts(newContacts);
-        System.out.println("Contacts for " + selectedFaculty.getName() + " updated successfully!");
+
+        java.util.Map<String, Object> data = new java.util.HashMap<>();
+        data.put("facultyId", selectedFaculty.getId());
+        data.put("newContacts", newContacts);
+
+        Response res = NetworkClient.sendRequest(new Request("EDIT_FACULTY_CONTACTS", data));
+        System.out.println(res.getMessage());
     }
 
     private static String generateShortName(String name) {
@@ -155,10 +189,7 @@ public class ModFacultyUtils {
         return res;
     }
 
-    /**
-     * Add new Faculty
-     */
-    static void facultyAddFaculty(Scanner scanner, FacultyService facultyService, TeacherService teacherService, UserService userService) {
+    static void facultyAddFaculty(Scanner scanner) {
         String name = InputUtils.readLine(scanner, "Enter new Faculty name: ", false, true);
         name = InputUtils.removeSpaces(name, false, true, true, true);
 
@@ -173,48 +204,55 @@ public class ModFacultyUtils {
         String contact = InputUtils.readLine(scanner, "Enter contact information: ", false, true);
 
         System.out.println("Assign a Dean:");
-        Teacher dean = selectTeacherFlow(scanner, teacherService);
+        Teacher dean = selectTeacherFlow(scanner);
 
         if (dean != null) {
-            facultyService.addNewFaculty(name, shortName, contact, dean, userService);
+            java.util.Map<String, Object> data = new java.util.HashMap<>();
+            data.put("name", name);
+            data.put("shortName", shortName);
+            data.put("contacts", contact);
+            data.put("dean", dean);
+
+            Response res = NetworkClient.sendRequest(new Request("ADD_FACULTY", data));
+            System.out.println(res.getMessage());
         } else {
             System.out.println("Error: Faculty cannot be created without a Dean!");
         }
         InputUtils.pause(scanner);
     }
 
-    /**
-     * Rename Faculty
-     */
-    static void facultyManageExistingFacultyRename(Scanner scanner, FacultyService facultyService, Faculty selectedFacultyToRename,
-                                                   UserService userService) {
+    static void facultyManageExistingFacultyRename(Scanner scanner, Faculty selectedFacultyToRename) {
         String newName = InputUtils.readLine(scanner, "Enter new Faculty name: ", false, true);
         newName = InputUtils.removeSpaces(newName, false, true, true, true);
-        facultyService.editFacultyName(selectedFacultyToRename, newName, userService);
+
+        java.util.Map<String, Object> data = new java.util.HashMap<>();
+        data.put("id", selectedFacultyToRename.getId());
+        data.put("newName", newName);
+
+        Response res = NetworkClient.sendRequest(new Request("EDIT_FACULTY_NAME", data));
+        System.out.println(res.getMessage());
         InputUtils.pause(scanner);
     }
 
-    /**
-     * Rename Faculty Short Name
-     */
-    static void facultyManageExistingFacultyRenameShort(Scanner scanner, FacultyService facultyService, Faculty selectedFacultyToRename) {
+    static void facultyManageExistingFacultyRenameShort(Scanner scanner, Faculty selectedFacultyToRename) {
         System.out.println("Current short name: " + selectedFacultyToRename.getShortName());
         String newName = InputUtils.readLine(scanner, "Enter new Faculty short name: ", false, true);
         newName = InputUtils.removeSpaces(newName, false, true, true, true);
-        selectedFacultyToRename.setShortName(newName);
-        System.out.println("Short name updated successfully!");
+
+        java.util.Map<String, Object> data = new java.util.HashMap<>();
+        data.put("facultyId", selectedFacultyToRename.getId());
+        data.put("newShortName", newName);
+
+        Response res = NetworkClient.sendRequest(new Request("EDIT_FACULTY_SHORT_NAME", data));
+        System.out.println(res.getMessage());
         InputUtils.pause(scanner);
     }
 
-    /**
-     * Delete Faculty
-     */
-    static void facultyManageExistingFacultyDelete(Scanner scanner, FacultyService facultyService, Faculty selectedFacultyToDelete,
-                                                   UserService userService) {
+    static void facultyManageExistingFacultyDelete(Scanner scanner, Faculty selectedFacultyToDelete) {
         System.out.print("Are you sure you want to delete " + selectedFacultyToDelete.getName() + "? (y/n): ");
         if (scanner.nextLine().toLowerCase().startsWith("y")) {
-            facultyService.deleteFaculty(selectedFacultyToDelete, userService);
-            System.out.println("Faculty deleted successfully!");
+            Response res = NetworkClient.sendRequest(new Request("DELETE_FACULTY", selectedFacultyToDelete.getId()));
+            System.out.println(res.getMessage());
         } else {
             System.out.println("Operation cancelled.");
         }

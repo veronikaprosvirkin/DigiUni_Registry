@@ -1,13 +1,14 @@
 package university;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import faculty.Faculty;
 
-public class University {
+public class University implements Serializable {
     private List<Faculty> faculties = new ArrayList<>();
     private  UniversityInfo info;
-
+    private static final long serialVersionUID = 1L;
     public University() {
         this(new UniversityInfo(
                 "National University Kyiv Mohyla Academy",

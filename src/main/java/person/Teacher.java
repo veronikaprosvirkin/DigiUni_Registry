@@ -2,6 +2,8 @@ package person;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
 import java.time.LocalDate;
 import department.Department;
 import faculty.Faculty;
@@ -9,7 +11,8 @@ import faculty.Faculty;
 // Teacher entity
 @Data
 @EqualsAndHashCode(callSuper = true)
-public final class Teacher extends Person {
+public final class Teacher extends Person implements Serializable {
+    private static final long serialVersionUID = 1L;
     private Position position;
     private Department department;
     private Faculty faculty;

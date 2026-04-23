@@ -8,7 +8,6 @@ import ui.StudentCardWindow;
 import ui.TeacherCardWindow;
 import utils.input.InputUtils;
 import utils.sort.SortUtils;
-import utils.namedEntity.NamedEntity;
 import person.StudentService;
 import person.Student;
 import person.TeacherService;
@@ -20,8 +19,6 @@ import speciality.Speciality;
 import user.Role;
 import user.User;
 import user.UserService;
-import utils.EntityNotFoundException;
-import utils.ModEntitiesUtils;
 
 public class SearchUtils {
     //! ======= SEARCH ===== //

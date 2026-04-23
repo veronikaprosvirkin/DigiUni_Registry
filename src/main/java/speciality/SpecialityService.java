@@ -35,7 +35,7 @@ public class SpecialityService {
             System.out.println("Error: Speciality with this name already exists!");
             return;
         }
-        Speciality speciality = new Speciality(IdGenerator.generateSpecialityId(),newSpecialityName);
+        Speciality speciality = new Speciality(IdGenerator.generateSpecialityId(university),newSpecialityName);
         selectedFaculty.getSpeciality().add(speciality);
         FileStorageUtils.saveAll(university, userService);
         log.info("Speciality {} created in faculty {}", speciality.getId(), selectedFaculty.getId());

@@ -14,6 +14,7 @@ import person.StudyForm;
 import department.Department;
 import faculty.Faculty;
 import speciality.Speciality;
+import university.University;
 import utils.sort.SortUtils;
 
 public class SortUtilsTest {
@@ -26,7 +27,8 @@ public class SortUtilsTest {
     @BeforeEach
     void setUp() {
         students = new ArrayList<>();
-        Teacher testDean = new Teacher(IdGenerator.generateTeacherId(), "Ivan", "Ivanov", "Ivanovych", "Dean", null);
+        University university = new University();
+        Teacher testDean = new Teacher(IdGenerator.generateTeacherId(university), "Ivan", "Ivanov", "Ivanovych", "Dean", null);
         Faculty f = new Faculty("fc01", "Faculty of Informatics", "FI", "contacts1", testDean);
         Speciality s = new Speciality("sp01","SE");
 

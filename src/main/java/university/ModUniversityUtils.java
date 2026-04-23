@@ -4,20 +4,43 @@ import utils.ModEntitiesUtils;
 import utils.input.InputUtils;
 import java.util.Scanner;
 
+// NETWORK IMPORTS
+import service.NetworkClient;
+import service.Request;
+import service.Response;
+
 public class ModUniversityUtils {
 
-    public static void showUniversityProfile(University university, Scanner scanner) {
+    public static void showUniversityProfile(Scanner scanner) {
         System.out.println("\n--- UNIVERSITY PROFILE ---");
 
-        ModEntitiesUtils.printDetailedInfo(university.getInfo());
+        // NETWORK: Fetch University from server
+        Response res = NetworkClient.sendRequest(new Request("GET_UNIVERSITY"));
+        if (!res.isSuccess() || res.getData() == null) {
+            System.out.println("Failed to load university profile.");
+            return;
+        }
 
+        University university = (University) res.getData();
+
+        ModEntitiesUtils.printDetailedInfo(university.getInfo());
         System.out.println("Total Faculties: " + university.getFaculties().size());
+
         InputUtils.pause(scanner);
     }
 
-    public static void editUniversityMenu(University university, Scanner scanner) {
+    public static void editUniversityMenu(Scanner scanner) {
         while (true) {
+            // NETWORK: Fetch current University info
+            Response res = NetworkClient.sendRequest(new Request("GET_UNIVERSITY"));
+            if (!res.isSuccess() || res.getData() == null) {
+                System.out.println("Failed to load university profile.");
+                return;
+            }
+
+            University university = (University) res.getData();
             UniversityInfo current = university.getInfo();
+
             System.out.println("\n--- Edit University Settings ---");
             System.out.println("Current Name: " + current.fullName());
             System.out.println("1. Edit Full Name");
@@ -72,8 +95,10 @@ public class ModUniversityUtils {
                 }
             }
 
-            university.setInfo(new UniversityInfo(newFullName, newShortName, newCity, newAddress));
-            System.out.println("Successfully updated!");
+            // NETWORK: Send updated info to server
+            UniversityInfo newInfo = new UniversityInfo(newFullName, newShortName, newCity, newAddress);
+            Response updateRes = NetworkClient.sendRequest(new Request("EDIT_UNIVERSITY", newInfo));
+            System.out.println(updateRes.getMessage());
         }
     }
 }

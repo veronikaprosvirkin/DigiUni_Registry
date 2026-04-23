@@ -28,7 +28,7 @@ class StudentServiceTest {
 
         university = new University();
         studentService = new StudentService(university);
-        Teacher testDean = new Teacher(IdGenerator.generateTeacherId(), "Ivan", "Ivanov", "Ivanovych", "Dean", null);
+        Teacher testDean = new Teacher(IdGenerator.generateTeacherId(university), "Ivan", "Ivanov", "Ivanovych", "Dean", null);
         faculty = new Faculty("fc001", "Faculty of Computer Science", "FCS", "contacts", testDean);
         speciality = new Speciality("sp001","Software Engineering");
         faculty.getSpeciality().add(speciality);
@@ -63,7 +63,7 @@ class StudentServiceTest {
 
     @Test
     void testMoveStudentToSpecialityAcrossFaculties() {
-        Teacher secondDean = new Teacher(IdGenerator.generateTeacherId(), "Petro", "Petrenko", "Petrovych", "Dean", null);
+        Teacher secondDean = new Teacher(IdGenerator.generateTeacherId(university), "Petro", "Petrenko", "Petrovych", "Dean", null);
         Faculty newFaculty = new Faculty("fc002", "Faculty of Mathematics", "FM", "contacts", secondDean);
         Speciality newSpeciality = new Speciality("sp002", "Applied Mathematics");
         newFaculty.getSpeciality().add(newSpeciality);

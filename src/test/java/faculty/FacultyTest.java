@@ -3,16 +3,19 @@ package faculty;
 import department.Department;
 import org.junit.jupiter.api.Test;
 import person.Teacher;
+import university.University;
 import utils.IdGenerator;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class FacultyTest {
 
     @Test
     void toString_includesDeanWhenPresent_andShowsNotAssignedWhenNull() {
-        Department dept = new Department(IdGenerator.generateDepartmentId(), "Dept");
-        Teacher dean = new Teacher(IdGenerator.generateTeacherId(), "John", "Doe", "", "Prof", dept);
+        University university = new University();
+        Department dept = new Department(IdGenerator.generateDepartmentId(university), "Dept");
+        Teacher dean = new Teacher(IdGenerator.generateTeacherId(university), "John", "Doe", "", "Prof", dept);
 
         Faculty withDean = new Faculty("f001", "Engineering Faculty", "EF", "Contacts", dean);
         String s = withDean.toString();
@@ -40,4 +43,3 @@ class FacultyTest {
         assertEquals("New Name", f.getName());
     }
 }
-

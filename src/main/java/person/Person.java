@@ -7,6 +7,8 @@ import lombok.Setter;
 import lombok.AccessLevel;
 import utils.namedEntity.NamedEntity;
 import utils.validation.NotNull;
+
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
 
@@ -14,7 +16,8 @@ import java.time.Period;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public abstract sealed class Person implements NamedEntity permits Student, Teacher {
+public abstract sealed class Person implements NamedEntity, Serializable permits Student, Teacher {
+    private static final long serialVersionUID = 1L;
     @EqualsAndHashCode.Include
     protected String id;
     @NotNull(message = "Name is required")

@@ -13,6 +13,8 @@ import speciality.Speciality;
 import speciality.Group;
 import utils.IdGenerator;
 import utils.validation.EntityValidator;
+import utils.exceptions.StudentNotFoundException;
+import utils.exceptions.InvalidEnrollmentException;
 
 public class StudentService {
     private static final Logger log = LoggerFactory.getLogger(StudentService.class);
@@ -30,9 +32,15 @@ public class StudentService {
 
             Faculty defaultFaculty = university.getFaculties().get(0);
             Speciality defaultSpec = defaultFaculty.getSpeciality().get(0);
+            
+            if (groupNumber <= 0) {
+                log.error("Invalid group number: {}", groupNumber);
+                throw InvalidEnrollmentException.invalidGroup(groupNumber);
+            }
+            
             Student newStudent;
             try {
-                newStudent = new Student(IdGenerator.generateStudentId(enrollmentDate.getYear()), name, surname, patronymic, enrollmentDate, groupNumber,
+                newStudent = new Student(IdGenerator.generateStudentId(university,enrollmentDate.getYear()), name, surname, patronymic, enrollmentDate, groupNumber,
                         defaultFaculty,
                         defaultSpec, studyForm);
                 EntityValidator.validate(newStudent);
@@ -48,7 +56,11 @@ public class StudentService {
 
         } else {
             log.error("Failed to add student: no default faculty/speciality available");
-            System.out.println("Error: No department found to add student!");
+            if (university.getFaculties().isEmpty()) {
+                throw InvalidEnrollmentException.missingFaculty();
+            } else {
+                throw InvalidEnrollmentException.missingSpeciality();
+            }
         }
     }
 
@@ -276,8 +288,19 @@ public class StudentService {
         if (result.isEmpty()){
             log.info("No student found by id {}", id);
             System.out.println("No student found by id " + id);
+            throw StudentNotFoundException.byId(id);
         }
         return result;
+    }
+
+    // Get student by ID (throws exception if not found)
+    public Student getStudentById(String id) {
+        Student student = studentRepository.findById(id);
+        if (student == null) {
+            log.error("Student not found with id: {}", id);
+            throw StudentNotFoundException.byId(id);
+        }
+        return student;
     }
 
     private Faculty findFacultyBySpeciality(Speciality speciality) {

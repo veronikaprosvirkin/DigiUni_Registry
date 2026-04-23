@@ -1,80 +1,80 @@
 package utils;
 
+import university.University;
+import person.Student;
+import person.Teacher;
+import department.Department;
+import faculty.Faculty;
+import speciality.Speciality;
+
 public class IdGenerator {
-    private static int studentCounter = 1;
-    private static int teacherCounter = 1;
-    private static int facultyCounter = 1;
-    private static int departmentCounter = 1;
-    private static int specialityCounter = 1;
 
+    
+    public static String generateTeacherId(University university) {
+        int maxId = university.getFaculties().stream()
+                .flatMap(f -> f.getDepartments().stream())
+                .flatMap(d -> d.getTeachers().stream())
+                .map(Teacher::getId)
+                .mapToInt(id -> extractNumericPart(id, "t"))
+                .max()
+                .orElse(0); // Якщо вчителів взагалі немає, почнемо з 0
 
+        return String.format("t%04d", maxId + 1);
+    }
+    
+    public static String generateStudentId(University university, int year) {
+        int maxId = university.getFaculties().stream()
+                .flatMap(f -> f.getSpeciality().stream())
+                .flatMap(s -> s.getGroups().stream())
+                .flatMap(g -> g.getStudents().stream())
+                .map(Student::getId)
+                // Студентські ID довші (st20260001), тому беремо останні 4 цифри
+                .mapToInt(id -> {
+                    try {
+                        return Integer.parseInt(id.substring(6));
+                    } catch (Exception e) { return 0; }
+                })
+                .max()
+                .orElse(0);
 
-    public static String generateStudentId(int year) {
-       return String.format("st%d%04d", year, studentCounter++);
+        return String.format("st%d%04d", year, maxId + 1);
+    }
+    
+    public static String generateFacultyId(University university) {
+        int maxId = university.getFaculties().stream()
+                .map(Faculty::getId)
+                .mapToInt(id -> extractNumericPart(id, "f"))
+                .max()
+                .orElse(0);
+        return String.format("f%03d", maxId + 1);
     }
 
-    public static String generateTeacherId(){
-        return String.format("t%04d", teacherCounter++);
-    }
-    public static String generateFacultyId(){
-        return String.format("f%03d", facultyCounter++);
-    }
-    public static String generateDepartmentId(){
-        return String.format("d%03d", departmentCounter++);
-    }
-    public static String generateSpecialityId(){
-        return String.format("sp%03d", specialityCounter++);
+    public static String generateDepartmentId(University university) {
+        int maxId = university.getFaculties().stream()
+                .flatMap(f -> f.getDepartments().stream())
+                .map(Department::getId)
+                .mapToInt(id -> extractNumericPart(id, "d"))
+                .max()
+                .orElse(0);
+        return String.format("d%03d", maxId + 1);
     }
 
-    public static void updateFacultyCounter(String id) {
-        int numericPart = extractNumericPart(id, "f");
-        if (numericPart >= facultyCounter) {
-            facultyCounter = numericPart + 1;
-        }
+    public static String generateSpecialityId(University university) {
+        int maxId = university.getFaculties().stream()
+                .flatMap(f -> f.getSpeciality().stream())
+                .map(Speciality::getId)
+                .mapToInt(id -> extractNumericPart(id, "sp"))
+                .max()
+                .orElse(0);
+        return String.format("sp%03d", maxId + 1);
     }
-
-    public static void updateDepartmentCounter(String id) {
-        int numericPart = extractNumericPart(id, "d");
-        if (numericPart >= departmentCounter) {
-            departmentCounter = numericPart + 1;
-        }
-    }
-
-    public static void updateSpecialityCounter(String id) {
-        int numericPart = extractNumericPart(id, "sp");
-        if (numericPart >= specialityCounter) {
-            specialityCounter = numericPart + 1;
-        }
-    }
-
+    
     private static int extractNumericPart(String id, String prefix) {
-        if (id == null || !id.startsWith(prefix)) {
-            return -1;
-        }
-
+        if (id == null || !id.startsWith(prefix)) return 0;
         try {
-            return Integer.parseInt(id.substring(prefix.length()));
-        } catch (NumberFormatException ignored) {
-            return -1;
-        }
-    }
-
-    public static void updateTeacherCounter(String id) {
-        int numericPart = extractNumericPart(id, "t");
-        if (numericPart >= teacherCounter) {
-            teacherCounter = numericPart + 1;
-        }
-    }
-    public static void updateStudentCounter(String id) {
-        if (id != null && id.startsWith("st") && id.length() > 6) {
-            try {
-                int numericPart = Integer.parseInt(id.substring(6));
-                if (numericPart >= studentCounter) {
-                    studentCounter = numericPart + 1;
-                }
-            } catch (NumberFormatException ignored) {
-
-            }
+            return Integer.parseInt(id.replace(prefix, ""));
+        } catch (NumberFormatException e) {
+            return 0;
         }
     }
 }

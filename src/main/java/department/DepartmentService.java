@@ -41,7 +41,7 @@ public class DepartmentService {
             System.out.println("Error: Department with this name already exists!");
             return;
         }
-        Department d = new Department(IdGenerator.generateDepartmentId(),newDepartmentName);
+        Department d = new Department(IdGenerator.generateDepartmentId(university),newDepartmentName);
         d.setFaculty(selectedFaculty);
         if (head != null) {
             d.setHead(head);
