@@ -10,6 +10,9 @@ import university.University;
 import department.Department;
 import utils.IdGenerator;
 import utils.validation.EntityValidator;
+import utils.exceptions.TeacherNotFoundException;
+import utils.exceptions.DuplicateTeacherException;
+import utils.exceptions.InvalidDepartmentException;
 
 public class TeacherService {
     private static final Logger log = LoggerFactory.getLogger(TeacherService.class);
@@ -23,7 +26,18 @@ public class TeacherService {
     // Adding a teacher
     public void addTeacher(String name, String surname, String patronymic, Position position, Department selectedDept) {
         Objects.requireNonNull(selectedDept, "Department cannot be null");
+        if (selectedDept.getTeachers() == null) {
+            log.error("Department {} is invalid: has no teachers list", selectedDept.getId());
+            throw InvalidDepartmentException.orphaned();
+        }
         Teacher newTeacher = new Teacher(IdGenerator.generateTeacherId(university), name, surname, patronymic, position, selectedDept);
+        
+        // Check for duplicates
+        if (teacherRepository.findById(newTeacher.getId()) != null) {
+            log.error("Teacher with id {} already exists", newTeacher.getId());
+            throw DuplicateTeacherException.byId(newTeacher.getId());
+        }
+        
         try {
             EntityValidator.validate(newTeacher);
         } catch (IllegalArgumentException e) {
@@ -37,6 +51,13 @@ public class TeacherService {
 
     public void addTeacher(Teacher teacher) {
         Objects.requireNonNull(teacher, "Teacher cannot be null");
+        
+        // Check for duplicates
+        if (teacherRepository.findById(teacher.getId()) != null) {
+            log.error("Teacher with id {} already exists", teacher.getId());
+            throw DuplicateTeacherException.byId(teacher.getId());
+        }
+        
         try {
             EntityValidator.validate(teacher);
         } catch (IllegalArgumentException e) {
@@ -86,8 +107,19 @@ public class TeacherService {
         if (result.isEmpty()){
             log.info("No teacher found by id {}", id);
             System.out.println("No teacher found by id " + id);
+            throw TeacherNotFoundException.byId(id);
         }
         return result;
+    }
+
+    // Get teacher by ID (throws exception if not found)
+    public Teacher getTeacherById(String id) {
+        Teacher teacher = teacherRepository.findById(id);
+        if (teacher == null) {
+            log.error("Teacher not found with id: {}", id);
+            throw TeacherNotFoundException.byId(id);
+        }
+        return teacher;
     }
 
     public List<Teacher> getTeachersByDepartment(Department department) {

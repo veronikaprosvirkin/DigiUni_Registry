@@ -9,6 +9,7 @@ import user.UserService;
 import utils.IdGenerator;
 import utils.FileStorageUtils;
 import person.Teacher;
+import utils.exceptions.FacultyNotFoundException;
 
 public class FacultyService {
     private static final Logger log = LoggerFactory.getLogger(FacultyService.class);
@@ -76,6 +77,15 @@ public class FacultyService {
     public Faculty findById(String id){
         return university.getFaculties().stream()
                 .filter(f -> f.getId().equals(id))
-                .findFirst().orElse(null);
+                .findFirst()
+                .orElseThrow(() -> {
+                    log.error("Faculty not found with id: {}", id);
+                    return FacultyNotFoundException.byId(id);
+                });
+    }
+
+    // Same as findById, explicit name
+    public Faculty getFacultyById(String id) {
+        return findById(id);
     }
 }

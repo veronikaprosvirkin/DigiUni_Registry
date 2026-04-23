@@ -18,7 +18,6 @@ import person.Student;
 public class ModFacultyUtils {
     //! ======= WORK WITH FACULTY (CLIENT) ===== //
 
-    // Notice: All Services removed! Only Scanner and current User are needed.
     public static void showFacultiesMenu(Scanner scanner, User currentUser) {
         System.out.println("1. Add Faculty");
         System.out.println("2. Manage Existing Faculty");
