@@ -111,9 +111,13 @@ public class StudentCardController {
         facultyLabel.setText(student.getFaculty() != null ? normalized(student.getFaculty().getName(), "N/A") : "N/A");
         specialityLabel.setText(student.getSpeciality() != null ? normalized(student.getSpeciality().getName(), "N/A") : "N/A");
 
-        String courseStr = (student.getEnrollmentDate() == null) ? "N/A" : String.valueOf(student.getCourse());
-        String groupStr = (student.getGroup() <= 0) ? "N/A" : String.valueOf(student.getGroup());
-        courseGroupLabel.setText("Course " + courseStr + " | Group " + groupStr);
+        String courseDisplay = (student.getEnrollmentDate() == null) ? "N/A" : student.getCourseDisplay();
+        if ("Graduated".equals(courseDisplay)) {
+            courseGroupLabel.setText("Graduated");
+        } else {
+            String groupStr = (student.getGroup() <= 0) ? "N/A" : String.valueOf(student.getGroup());
+            courseGroupLabel.setText("Course " + courseDisplay + " | Group " + groupStr);
+        }
 
         phoneLabel.setText(normalized(student.getPhone(), "Not set"));
         emailLabel.setText(normalized(student.getEmail(), "Not set"));

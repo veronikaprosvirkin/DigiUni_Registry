@@ -178,9 +178,14 @@ public class ModStudentUtils {
             draftStudent.setEnrollmentDate(enrollmentDate);
             javafx.application.Platform.runLater(() -> StudentCardWindow.refresh(draftStudent));
 
-            int groupNumber = InputUtils.readInt(scanner, "Enter Group: ", 1, Integer.MAX_VALUE);
-            draftStudent.setGroup(groupNumber);
-            javafx.application.Platform.runLater(() -> StudentCardWindow.refresh(draftStudent));
+            boolean isGraduated = "Graduated".equals(draftStudent.getCourseDisplay());
+            if (!isGraduated) {
+                int groupNumber = InputUtils.readInt(scanner, "Enter Group: ", 1, Integer.MAX_VALUE);
+                draftStudent.setGroup(groupNumber);
+                javafx.application.Platform.runLater(() -> StudentCardWindow.refresh(draftStudent));
+            } else {
+                System.out.println("Student is already graduated, group input is skipped.");
+            }
 
             int studyForm = InputUtils.readInt(scanner, "Enter study form (1 - BUDGET, 2 - CONTRACT): ", 1, 2);
             draftStudent.setStudyForm((studyForm == 1) ? StudyForm.BUDGET : StudyForm.CONTRACT);

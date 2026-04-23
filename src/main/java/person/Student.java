@@ -1,7 +1,8 @@
 package person;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -10,8 +11,9 @@ import faculty.Faculty;
 import utils.validation.MinValue;
 
 // Student entity
-@Data
 @EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
 public final class Student extends Person implements Serializable {
     private static final long serialVersionUID = 1L;
     private LocalDate enrollmentDate;
@@ -46,7 +48,16 @@ public final class Student extends Person implements Serializable {
             course++;
         }
 
-        return Math.max(1, course);
+        course = Math.max(1, course);
+        
+        // Auto-graduate if course > 6
+        if (course > 6 && this.status == StudentStatus.ACTIVE) {
+            this.status = StudentStatus.GRADUATED;
+            System.out.println("AUTOMATIC GRADUATION: Student " + this.getFullName() +
+                             " (ID: " + this.id + ") has completed more than 6 years of study. Status changed to GRADUATED.");
+        }
+
+        return course;
     }
 
     // Format course output
@@ -56,13 +67,14 @@ public final class Student extends Person implements Serializable {
         if (status == StudentStatus.ACADEMIC_LEAVE) return "Academic Leave";
         return String.valueOf(getCourse());
     }
-
-    // Get status with auto-graduation
-    public StudentStatus getStatus() {
-        if (this.status == StudentStatus.ACTIVE && getCourse() > 6) {
-            return StudentStatus.GRADUATED;
+    
+    // Setter for status with validation and notification
+    public void setStatus(StudentStatus newStatus) {
+        if (this.status != newStatus) {
+            System.out.println("Student " + this.getFullName() + " status changed from " +
+                             this.status + " to " + newStatus);
         }
-        return status;
+        this.status = newStatus;
     }
 
     @Override
