@@ -17,6 +17,7 @@ import user.UserService;
 import faculty.FacultyService;
 import faculty.Faculty;
 import department.Department;
+import utils.exceptions.EntityNotFoundException;
 
 public class SearchUtilsTest {
     private University university;
@@ -120,7 +121,7 @@ public class SearchUtilsTest {
         Scanner scanner = getScanner("0\n");
         try {
             SearchUtils.searchStudentBySpeciality(scanner, studentService, facultyService);
-        } catch (utils.EntityNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             // expected
         }
     }
